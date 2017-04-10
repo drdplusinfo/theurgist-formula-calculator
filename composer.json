@@ -1,0 +1,25 @@
+{
+  "name": "drd-plus/theurgist-formulas",
+  "license": "MIT",
+  "type": "project",
+  "description": "Formulas for Drd+ theurgist",
+  "autoload": {
+    "psr-4": {
+      "DrdPlus\\": "DrdPlus/"
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "roave/security-advisories": "dev-master",
+    "granam/strict-object": "dev-master",
+    "drd-plus/tables": "dev-master",
+    "drd-plus/theurgist-codes": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0",
+    "mockery/mockery": "~0.9",
+    "granam/exceptions-hierarchy": "~4.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
