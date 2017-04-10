@@ -1,8 +1,8 @@
 {
-  "name": "drd-plus/theurgist-formulas",
+  "name": "drd-plus/theurgist-configurator",
   "license": "MIT",
   "type": "project",
-  "description": "Formulas for Drd+ theurgist",
+  "description": "Configurator of formulas for Drd+ theurgist",
   "autoload": {
     "psr-4": {
       "DrdPlus\\": "DrdPlus/"
@@ -12,8 +12,7 @@
     "php": ">=7.0",
     "roave/security-advisories": "dev-master",
     "granam/strict-object": "dev-master",
-    "drd-plus/tables": "dev-master",
-    "drd-plus/theurgist-codes": "dev-master"
+    "drd-plus/theurgist-formulas": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
