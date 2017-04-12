@@ -13,7 +13,7 @@ error_reporting(-1);
 ini_set('display_errors', '1');
 
 $formulasTable = new FormulasTable();
-$selectedFormula = $_GET['formula'] ?? false;
+$selectedFormula = $_GET['formula'] ?? FormulaCode::getIt(current(FormulaCode::getPossibleValues()));
 $previouslySelectedFormula = $_GET['previousFormula'] ?? false;
 $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
     $modifiers = [];
