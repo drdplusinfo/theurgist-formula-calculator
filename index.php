@@ -111,7 +111,7 @@ if (count($selectedModifiers) > 0) {
                         return implode($wrapped);
                     };
                     $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts) use (&$showModifiers, $modifierCombinations, $createModifierInputIndex) {
-                        if (array_key_exists($currentModifierValue, $selectedModifiers)) {
+                        if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
                             /** @var array|string[] $selectedRelatedModifiers */
                             $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
                             foreach ($modifierCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
