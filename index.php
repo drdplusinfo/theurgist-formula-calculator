@@ -90,10 +90,10 @@ if (count($selectedModifiers) > 0) {
 
         ?>
         <div id="modifiers">
-            Modifikátory:
+            <div>Modifikátory:</div>
             <?php
             foreach ($formulasTable->getModifiers(FormulaCode::getIt($selectedFormula)) as $modifier) { ?>
-                <div class="modifier">
+                <div class="modifier direct">
                     <label>
                         <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox" value="<?= $modifier ?>"
                                <?php if (array_key_exists($modifier->getValue(), $selectedModifiers)): ?>checked<?php endif ?>>

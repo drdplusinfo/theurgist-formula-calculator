@@ -1,7 +1,12 @@
 .modifier {
     margin-left: 1em;
+    min-width: 8em;
 }
 
 .hidden {
     visibility: hidden;
+}
+
+.modifier.direct {
+    float: left;
 }

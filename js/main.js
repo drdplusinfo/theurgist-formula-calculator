@@ -24,6 +24,6 @@ window.addEventListener('load', function () {
         disableInputs();
     });
     for (var buttonsI = 0, buttonsLength = buttons.length; buttonsI < buttonsLength; buttonsI++) {
-        buttons[buttonsI].className = 'hidden';
+        buttons[buttonsI].className += 'hidden';
     }
 });
