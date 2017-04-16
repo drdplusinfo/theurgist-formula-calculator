@@ -894,12 +894,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-theurgist-codes.git",
-                "reference": "0df9f35c9c49c2c505f7f0697407d1e4fd6f217d"
+                "reference": "26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/0df9f35c9c49c2c505f7f0697407d1e4fd6f217d",
-                "reference": "0df9f35c9c49c2c505f7f0697407d1e4fd6f217d",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73",
+                "reference": "26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "MIT"
             ],
             "description": "Codes with keywords for Drd+ theurgist",
-            "time": "2017-04-10 08:11:22"
+            "time": "2017-04-15 06:46:05"
         },
         {
             "name": "drd-plus/theurgist-formulas",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-formulas.git",
-                "reference": "3f2ab3b0a5d87f28c3550110dd675b4039d1cace"
+                "reference": "b6b116247e4533d55f0b421b3fa9115acce0b302"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/3f2ab3b0a5d87f28c3550110dd675b4039d1cace",
-                "reference": "3f2ab3b0a5d87f28c3550110dd675b4039d1cace",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/b6b116247e4533d55f0b421b3fa9115acce0b302",
+                "reference": "b6b116247e4533d55f0b421b3fa9115acce0b302",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas for Drd+ theurgist",
-            "time": "2017-04-10 08:42:45"
+            "time": "2017-04-16 06:09:51"
         },
         {
             "name": "drd/dice-rolls",
@@ -1706,12 +1706,12 @@
             "version": "0.9.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/padraic/mockery.git",
+                "url": "https://github.com/mockery/mockery.git",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/6fdb61243844dc924071d3404bb23994ea0b6856",
                 "reference": "6fdb61243844dc924071d3404bb23994ea0b6856",
                 "shasum": ""
             },
@@ -1768,16 +1768,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
                 "shasum": ""
             },
             "require": {
@@ -1806,7 +1806,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-01-26T22:05:40+00:00"
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2121,16 +2121,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "cff36444733ac6d3f153866f55898373ca184610"
+                "reference": "bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/cff36444733ac6d3f153866f55898373ca184610",
-                "reference": "cff36444733ac6d3f153866f55898373ca184610",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc",
+                "reference": "bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc",
                 "shasum": ""
             },
             "require": {
@@ -2180,7 +2180,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-07T04:39:58+00:00"
+            "time": "2017-04-12T07:59:32+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",

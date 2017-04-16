@@ -40,11 +40,9 @@ if (count($selectedModifiers) > 0) {
         foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
             if (!array_key_exists($modifierValue, $modifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
-                foreach ($modifiersTable->getProfiles($modifierCode) as $relatedProfileCode) {
-                    foreach ($profilesTable->getModifiersForProfile($relatedProfileCode) as $relatedModifierCode) {
-                        // by-related-modifier-indexed flat array
-                        $modifiers[$modifierValue][$relatedModifierCode->getValue()] = $relatedModifierCode;
-                    }
+                foreach ($modifiersTable->getChildModifiers($modifierCode) as $relatedModifierCode) {
+                    // by-related-modifier-indexed flat array
+                    $modifiers[$modifierValue][$relatedModifierCode->getValue()] = $relatedModifierCode;
                 }
             }
             // tree structure
