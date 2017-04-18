@@ -13,6 +13,7 @@
 }
 
 .footer {
+    float: left;
     clear: left;
     margin-top: 1em;
 }

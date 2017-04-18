@@ -3,6 +3,7 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
+use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
 
@@ -138,23 +139,30 @@ if (count($selectedModifiers) > 0) {
     </form>
 </div>
 <div class="footer">
-    <div>
-        <?php
-        $keysToModifiers = function (array $modifierNamesAsKeys) use (&$keysToModifiers) {
-            $modifiers = [];
-            foreach ($modifierNamesAsKeys as $modifierName => $childModifierNamesAsKeys) {
-                $modifiers[] = ModifierCode::getIt($modifierName);
-                if (is_array($childModifierNamesAsKeys)) {
-                    foreach ($keysToModifiers($childModifierNamesAsKeys) as $childModifier) {
-                        $modifiers[] = $childModifier;
-                    }
+    <?php
+    $keysToModifiers = function (array $modifierNamesAsKeys) use (&$keysToModifiers) {
+        $modifiers = [];
+        foreach ($modifierNamesAsKeys as $modifierName => $childModifierNamesAsKeys) {
+            $modifiers[] = ModifierCode::getIt($modifierName);
+            if (is_array($childModifierNamesAsKeys)) {
+                foreach ($keysToModifiers($childModifierNamesAsKeys) as $childModifier) {
+                    $modifiers[] = $childModifier;
                 }
             }
+        }
 
-            return $modifiers;
-        };
-        $usedModifiers[] = $keysToModifiers($selectedModifiers);
-        ?>
+        return $modifiers;
+    };
+    $usedModifiers = $keysToModifiers($selectedModifiers);
+    ?>
+    <div>
+        Sféra: <?= $formulasTable->getRequiredRealmOfModified(
+            FormulaCode::getIt($selectedFormula),
+            $usedModifiers,
+            $modifiersTable
+        ); ?>
+    </div>
+    <div>
         Náročnost: <?= $formulasTable->getDifficultyOfModified(
             FormulaCode::getIt($selectedFormula),
             $usedModifiers,
@@ -162,11 +170,24 @@ if (count($selectedModifiers) > 0) {
         ) ?>
     </div>
     <div>
-        Sféra: <?= $formulasTable->getRequiredRealmOfModified(
+        <?php
+        $affectionsOfModified = $formulasTable->getAffectionsOfModified(
             FormulaCode::getIt($selectedFormula),
             $usedModifiers,
             $modifiersTable
-        ); ?>
+        );
+        if (count($affectionsOfModified) > 1):?>
+            Náklonnosti:
+        <?php else: ?>
+            Náklonnost:
+        <?php endif;
+        $inCzech = [];
+        /** @var Affection $affectionOfModified */
+        foreach ($affectionsOfModified as $affectionOfModified) {
+            $inCzech[] = $affectionOfModified->getValue() . ' ' . $affectionOfModified->getAffectionPeriod()->translateTo('cs');
+        }
+        echo implode(', ', $inCzech);
+        ?>
     </div>
 </div>
 </body>
