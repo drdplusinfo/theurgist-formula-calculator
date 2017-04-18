@@ -5,7 +5,6 @@ use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
-use DrdPlus\Theurgist\Formulas\ProfilesTable;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -32,10 +31,9 @@ if ($selectedFormula === $previouslySelectedFormula && !empty($_GET['modifiers']
     $selectedModifiers = $buildModifiers((array)$_GET['modifiers']);
 }
 $modifierCombinations = [];
+$modifiersTable = new ModifiersTable();
 if (count($selectedModifiers) > 0) {
-    $modifiersTable = new ModifiersTable();
-    $profilesTable = new ProfilesTable();
-    $buildPossibleModifiers = function (array $modifierValues) use (&$buildPossibleModifiers, $modifiersTable, $profilesTable) {
+    $buildPossibleModifiers = function (array $modifierValues) use (&$buildPossibleModifiers, $modifiersTable) {
         $modifiers = [];
         foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
             if (!array_key_exists($modifierValue, $modifiers)) { // otherwise skip already processed relating modifiers
@@ -67,74 +65,109 @@ if (count($selectedModifiers) > 0) {
     <script src="js/main.js"></script>
 </head>
 <body>
-<form id="configurator" method="get">
-    <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
-    <div>
-        <label>Formule:
-            <select id="formula" name="formula">
-                <?php
-                foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-                    ?>
-                    <option value="<?= $formulaValue ?>"
-                            <?php if ($formulaValue === $selectedFormula): ?>selected<?php endif ?>>
-                        <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
-                    </option>
-                <?php } ?>
-            </select>
-        </label>
-        <button type="submit">Vybrat</button>
-    </div>
-    <?php if ($selectedFormula !== false) {
-
-        ?>
-        <div id="modifiers">
-            <div>Modifikátory:</div>
-            <?php
-            foreach ($formulasTable->getModifiers(FormulaCode::getIt($selectedFormula)) as $modifier) { ?>
-                <div class="modifier direct">
-                    <label>
-                        <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox" value="<?= $modifier ?>"
-                               <?php if (array_key_exists($modifier->getValue(), $selectedModifiers)): ?>checked<?php endif ?>>
-                        <?= $modifier->translateTo('cs') ?>
-                    </label>
+<div>
+    <form id="configurator" class="body" method="get">
+        <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
+        <div>
+            <label>Formule:
+                <select id="formula" name="formula">
                     <?php
-                    $createModifierInputIndex = function (array $modifiersChain) {
-                        $wrapped = array_map(
-                            function (string $chainPart) {
-                                return "[$chainPart]";
-                            },
-                            $modifiersChain
-                        );
-
-                        return implode($wrapped);
-                    };
-                    $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts) use (&$showModifiers, $modifierCombinations, $createModifierInputIndex) {
-                        if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
-                            /** @var array|string[] $selectedRelatedModifiers */
-                            $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
-                            foreach ($modifierCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
-                                $currentInputNameParts = $inputNameParts;
-                                $currentInputNameParts[] = $possibleModifierValue;
-                                ?>
-                                <div class="modifier">
-                                    <label>
-                                        <input name="modifiers<?= $createModifierInputIndex($currentInputNameParts) ?>"
-                                               type="checkbox" value="<?= $possibleModifierValue ?>"
-                                               <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
-                                        <?= /** @var ModifierCode $possibleModifier */
-                                        $possibleModifier->translateTo('cs') ?>
-                                    </label>
-                                    <?php $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $currentInputNameParts) ?>
-                                </div>
-                            <?php }
-                        }
-                    };
-                    $showModifiers($modifier->getValue(), $selectedModifiers, [$modifier->getValue()]); ?>
-                </div>
-            <?php } ?>
+                    foreach (FormulaCode::getPossibleValues() as $formulaValue) {
+                        ?>
+                        <option value="<?= $formulaValue ?>"
+                                <?php if ($formulaValue === $selectedFormula): ?>selected<?php endif ?>>
+                            <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </label>
+            <button type="submit">Vybrat</button>
         </div>
-    <?php } ?>
-    <button type="submit">Vybrat</button>
-</form>
+        <?php if ($selectedFormula !== false) {
+
+            ?>
+            <div id="modifiers">
+                <div>Modifikátory:</div>
+                <?php
+                foreach ($formulasTable->getModifiers(FormulaCode::getIt($selectedFormula)) as $modifier) { ?>
+                    <div class="modifier direct">
+                        <label>
+                            <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox"
+                                   value="<?= $modifier ?>"
+                                   <?php if (array_key_exists($modifier->getValue(), $selectedModifiers)): ?>checked<?php endif ?>>
+                            <?= $modifier->translateTo('cs') ?>
+                        </label>
+                        <?php
+                        $createModifierInputIndex = function (array $modifiersChain) {
+                            $wrapped = array_map(
+                                function (string $chainPart) {
+                                    return "[$chainPart]";
+                                },
+                                $modifiersChain
+                            );
+
+                            return implode($wrapped);
+                        };
+                        $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts) use (&$showModifiers, $modifierCombinations, $createModifierInputIndex) {
+                            if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
+                                /** @var array|string[] $selectedRelatedModifiers */
+                                $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
+                                foreach ($modifierCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
+                                    $currentInputNameParts = $inputNameParts;
+                                    $currentInputNameParts[] = $possibleModifierValue;
+                                    ?>
+                                    <div class="modifier">
+                                        <label>
+                                            <input name="modifiers<?= $createModifierInputIndex($currentInputNameParts) ?>"
+                                                   type="checkbox" value="<?= $possibleModifierValue ?>"
+                                                   <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
+                                            <?= /** @var ModifierCode $possibleModifier */
+                                            $possibleModifier->translateTo('cs') ?>
+                                        </label>
+                                        <?php $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $currentInputNameParts) ?>
+                                    </div>
+                                <?php }
+                            }
+                        };
+                        $showModifiers($modifier->getValue(), $selectedModifiers, [$modifier->getValue()]); ?>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php } ?>
+        <button type="submit">Vybrat</button>
+    </form>
+</div>
+<div class="footer">
+    <div>
+        <?php
+        $keysToModifiers = function (array $modifierNamesAsKeys) use (&$keysToModifiers) {
+            $modifiers = [];
+            foreach ($modifierNamesAsKeys as $modifierName => $childModifierNamesAsKeys) {
+                $modifiers[] = ModifierCode::getIt($modifierName);
+                if (is_array($childModifierNamesAsKeys)) {
+                    foreach ($keysToModifiers($childModifierNamesAsKeys) as $childModifier) {
+                        $modifiers[] = $childModifier;
+                    }
+                }
+            }
+
+            return $modifiers;
+        };
+        $usedModifiers[] = $keysToModifiers($selectedModifiers);
+        ?>
+        Náročnost: <?= $formulasTable->getDifficultyOfModified(
+            FormulaCode::getIt($selectedFormula),
+            $usedModifiers,
+            $modifiersTable
+        ) ?>
+    </div>
+    <div>
+        Sféra: <?= $formulasTable->getRequiredRealmOfModified(
+            FormulaCode::getIt($selectedFormula),
+            $usedModifiers,
+            $modifiersTable
+        ); ?>
+    </div>
+</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 .modifier {
     margin-left: 1em;
     min-width: 8em;
+    font-style: italic;
 }
 
 .hidden {
@@ -9,4 +10,9 @@
 
 .modifier.direct {
     float: left;
+}
+
+.footer {
+    clear: left;
+    margin-top: 1em;
 }
