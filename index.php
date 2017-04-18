@@ -64,6 +64,7 @@ if (count($selectedModifiers) > 0) {
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <noscript><link rel="stylesheet" type="text/css" href="css/no_script.css"></noscript>
     <script src="js/main.js"></script>
 </head>
 <body>

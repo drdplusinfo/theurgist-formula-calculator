@@ -17,3 +17,7 @@
     clear: left;
     margin-top: 1em;
 }
+
+button[type="submit"] {
+    display: none;
+}

@@ -2,7 +2,6 @@ window.addEventListener('load', function () {
     var form = document.getElementById('configurator');
     var inputs = document.getElementsByTagName('input');
     var formula = document.getElementById('formula');
-    var buttons = form.getElementsByTagName('button');
     var submitForm = function () {
         form.submit();
     };
@@ -23,7 +22,4 @@ window.addEventListener('load', function () {
         submitForm();
         disableInputs();
     });
-    for (var buttonsI = 0, buttonsLength = buttons.length; buttonsI < buttonsLength; buttonsI++) {
-        buttons[buttonsI].className += 'hidden';
-    }
 });
