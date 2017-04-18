@@ -1,6 +1,7 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
+use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
@@ -13,7 +14,7 @@ error_reporting(-1);
 ini_set('display_errors', '1');
 
 $formulasTable = new FormulasTable();
-$selectedFormula = $_GET['formula'] ?? FormulaCode::getIt(current(FormulaCode::getPossibleValues()));
+$selectedFormula = FormulaCode::getIt($_GET['formula'] ?? current(FormulaCode::getPossibleValues()));
 $previouslySelectedFormula = $_GET['previousFormula'] ?? false;
 $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
     $modifiers = [];
@@ -28,7 +29,7 @@ $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
     return $modifiers;
 };
 $selectedModifiers = [];
-if ($selectedFormula === $previouslySelectedFormula && !empty($_GET['modifiers'])) {
+if ($selectedFormula->getValue() === $previouslySelectedFormula && !empty($_GET['modifiers'])) {
     $selectedModifiers = $buildModifiers((array)$_GET['modifiers']);
 }
 $modifierCombinations = [];
@@ -76,7 +77,7 @@ if (count($selectedModifiers) > 0) {
                     foreach (FormulaCode::getPossibleValues() as $formulaValue) {
                         ?>
                         <option value="<?= $formulaValue ?>"
-                                <?php if ($formulaValue === $selectedFormula): ?>selected<?php endif ?>>
+                                <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
                             <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
                         </option>
                     <?php } ?>
@@ -90,7 +91,7 @@ if (count($selectedModifiers) > 0) {
             <div id="modifiers">
                 <div>Modifikátory:</div>
                 <?php
-                foreach ($formulasTable->getModifiers(FormulaCode::getIt($selectedFormula)) as $modifier) { ?>
+                foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
                     <div class="modifier direct">
                         <label>
                             <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox"
@@ -119,7 +120,8 @@ if (count($selectedModifiers) > 0) {
                                     ?>
                                     <div class="modifier">
                                         <label>
-                                            <input name="modifiers<?= $createModifierInputIndex($currentInputNameParts) ?>"
+                                            <input name="modifiers<?= /** @noinspection PhpParamsInspection */
+                                            $createModifierInputIndex($currentInputNameParts) ?>"
                                                    type="checkbox" value="<?= $possibleModifierValue ?>"
                                                    <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
                                             <?= /** @var ModifierCode $possibleModifier */
@@ -156,15 +158,15 @@ if (count($selectedModifiers) > 0) {
     $usedModifiers = $keysToModifiers($selectedModifiers);
     ?>
     <div>
-        Sféra: <?= $formulasTable->getRequiredRealmOfModified(
-            FormulaCode::getIt($selectedFormula),
+        Sféra: <?= $formulasTable->getRealmOfModified(
+            $selectedFormula,
             $usedModifiers,
             $modifiersTable
         ); ?>
     </div>
     <div>
         Náročnost: <?= $formulasTable->getDifficultyOfModified(
-            FormulaCode::getIt($selectedFormula),
+            $selectedFormula,
             $usedModifiers,
             $modifiersTable
         ) ?>
@@ -172,7 +174,7 @@ if (count($selectedModifiers) > 0) {
     <div>
         <?php
         $affectionsOfModified = $formulasTable->getAffectionsOfModified(
-            FormulaCode::getIt($selectedFormula),
+            $selectedFormula,
             $usedModifiers,
             $modifiersTable
         );
@@ -184,9 +186,26 @@ if (count($selectedModifiers) > 0) {
         $inCzech = [];
         /** @var Affection $affectionOfModified */
         foreach ($affectionsOfModified as $affectionOfModified) {
-            $inCzech[] = $affectionOfModified->getValue() . ' ' . $affectionOfModified->getAffectionPeriod()->translateTo('cs');
+            $inCzech[] = $affectionOfModified->getAffectionPeriod()->translateTo('cs') . ' ' . $affectionOfModified->getValue();
         }
         echo implode(', ', $inCzech);
+        ?>
+    </div>
+    <?php $timeTable = Tables::getIt()->getTimeTable(); ?>
+    <div>
+        Vyvolání:
+        <?php $castingTimeBonus = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTimeBonus();
+        $castingTime = $castingTimeBonus->getTime();
+        echo ($castingTimeBonus->getValue() > 0 ? '+' : '')
+            . "{$castingTimeBonus->getValue()}  ({$castingTime->getValue()} {$castingTime->getUnit()})";
+        ?>
+    </div>
+    <div>
+        Doba trvání:
+        <?php $durationTimeBonus = $formulasTable->getDuration($selectedFormula, $timeTable)->getDurationTimeBonus();
+        $durationTime = $durationTimeBonus->getTime();
+        echo ($durationTimeBonus->getValue() > 0 ? '+' : '')
+            . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationTime->getUnit()})";
         ?>
     </div>
 </div>
