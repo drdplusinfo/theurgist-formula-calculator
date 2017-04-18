@@ -21,3 +21,12 @@
 button[type="submit"] {
     display: none;
 }
+
+.block {
+    clear: left;
+    float: left;
+}
+
+.facebook {
+    margin-top: 1em;
+}

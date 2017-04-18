@@ -64,10 +64,22 @@ if (count($selectedModifiers) > 0) {
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <noscript><link rel="stylesheet" type="text/css" href="css/no_script.css"></noscript>
+    <noscript>
+        <link rel="stylesheet" type="text/css" href="css/no_script.css">
+    </noscript>
     <script src="js/main.js"></script>
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v2.9";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
@@ -209,6 +221,12 @@ if (count($selectedModifiers) > 0) {
             . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationTime->getUnit()})";
         ?>
     </div>
+</div>
+<div class="block facebook">
+    <div class="fb-like"
+         data-href="https://formule.theurg.drdplus.info/<?= $_SERVER['QUERY_STRING'] ? ('?' . $_SERVER['QUERY_STRING']) : '' ?>"
+         data-layout="button" data-action="recommend"
+         data-size="small" data-show-faces="false" data-share="true"></div>
 </div>
 </body>
 </html>
