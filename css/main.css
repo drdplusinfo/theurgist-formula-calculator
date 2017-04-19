@@ -43,10 +43,11 @@ button[type="submit"] {
     float: left;
 }
 
-.facebook {
-    margin-top: 1em;
+.panel {
+    float: left;
 }
 
-.github-fork-ribbon.right-bottom:before {
-    background-color: #333;
+.forms {
+    padding-left: 0.5em;
+    font-size: smaller;
 }

@@ -64,6 +64,7 @@ if (count($selectedModifiers) > 0) {
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/socials.css">
     <noscript>
         <link rel="stylesheet" type="text/css" href="css/no_script.css">
     </noscript>
@@ -85,25 +86,35 @@ if (count($selectedModifiers) > 0) {
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
-        <div>
-            <label>Formule:
-                <select id="formula" name="formula">
-                    <?php
-                    foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-                        ?>
-                        <option value="<?= $formulaValue ?>"
-                                <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
-                            <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </label>
-            <button type="submit">Vybrat</button>
+        <div class="block">
+            <div class="panel"><label>Formule:
+                    <select id="formula" name="formula">
+                        <?php
+                        foreach (FormulaCode::getPossibleValues() as $formulaValue) {
+                            ?>
+                            <option value="<?= $formulaValue ?>"
+                                    <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
+                                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <button type="submit">Vybrat</button>
+            </div>
+            <?php if ($selectedFormula): ?>
+                <div class="panel forms">
+                    (Forma: <?php
+                    $forms = [];
+                    foreach ($formulasTable->getForms($selectedFormula) as $formCode) {
+                        $forms[] = $formCode->translateTo('cs');
+                    }
+                    echo implode(', ', $forms);
+                    ?>)
+                </div>
+            <?php endif ?>
         </div>
-        <?php if ($selectedFormula !== false) {
-
-            ?>
-            <div id="modifiers">
+        <?php if ($selectedFormula) { ?>
+            <div id="modifiers" class="block">
                 <div>Modifikátory:</div>
                 <?php
                 foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
