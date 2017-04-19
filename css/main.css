@@ -66,11 +66,11 @@ ol.realm li {
 }
 
 ol.realm li:after { /* hide number dot */
-    content: ".";
+    content: "█";
     color: white;
     display: inline-block;
     position: relative;
-    left: -0.5em;
+    left: -9px;
     z-index: 1;
     font-weight: bold;
     font-size: x-large;
