@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-formulas.git",
-                "reference": "b9c711bb066957eecbf356d6457444f32aaab53e"
+                "reference": "b442d30ee32243a32c67814a92f3dddc1636184f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/b9c711bb066957eecbf356d6457444f32aaab53e",
-                "reference": "b9c711bb066957eecbf356d6457444f32aaab53e",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/b442d30ee32243a32c67814a92f3dddc1636184f",
+                "reference": "b442d30ee32243a32c67814a92f3dddc1636184f",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas for Drd+ theurgist",
-            "time": "2017-04-19 12:28:55"
+            "time": "2017-04-19 19:50:11"
         },
         {
             "name": "drd/dice-rolls",

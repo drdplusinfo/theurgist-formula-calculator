@@ -251,7 +251,7 @@ if (count($selectedModifiers) > 0) {
         <?php $castingTimeBonus = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTimeBonus();
         $castingTime = $castingTimeBonus->getTime();
         $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
-        echo ($castingTimeBonus->getValue() > 0 ? '+' : '')
+        echo ($castingTimeBonus->getValue() >= 0 ? '+' : '')
             . "{$castingTimeBonus->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
@@ -260,7 +260,7 @@ if (count($selectedModifiers) > 0) {
         <?php $durationTimeBonus = $formulasTable->getDuration($selectedFormula, $timeTable)->getDurationTimeBonus();
         $durationTime = $durationTimeBonus->getTime();
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
-        echo ($durationTimeBonus->getValue() > 0 ? '+' : '')
+        echo ($durationTimeBonus->getValue() >= 0 ? '+' : '')
             . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
@@ -270,11 +270,18 @@ if (count($selectedModifiers) > 0) {
             Poloměr:
             <?php $radiusDistance = $radiusAsDistanceBonus->getDistance();
             $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
-            echo ($radiusAsDistanceBonus->getValue() > 0 ? '+' : '')
+            echo ($radiusAsDistanceBonus->getValue() >= 0 ? '+' : '')
                 . "{$radiusAsDistanceBonus->getValue()}  ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
             ?>
         </div>
-        <?php } ?>
+    <?php }
+    $powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $usedModifiers, $modifiersTable);
+    if ($powerOfModified !== null) { ?>
+        <div>
+            Síla:
+            <?= ($powerOfModified->getValue() >= 0 ? '+' : '') . $powerOfModified->getValue(); ?>
+        </div>
+    <?php } ?>
 </div>
 <div class="block facebook">
     <div class="fb-like"
