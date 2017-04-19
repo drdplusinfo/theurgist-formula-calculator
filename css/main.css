@@ -48,6 +48,31 @@ button[type="submit"] {
     font-style: normal;
 }
 
-.panel+.forms {
+.panel + .forms {
     padding-left: 0.5em;
+}
+
+ol.realm {
+    margin: 0;
+    padding: 0;
+    list-style-type: upper-roman;
+    list-style-position: inside;
+    display: inline-block;
+}
+
+ol.realm li {
+    margin: 0;
+    padding: 0;
+}
+
+ol.realm li:after { /* hide number dot */
+    content: ".";
+    color: white;
+    display: inline-block;
+    position: relative;
+    left: -0.5em;
+    z-index: 1;
+    font-weight: bold;
+    font-size: x-large;
+    bottom: -1px;
 }

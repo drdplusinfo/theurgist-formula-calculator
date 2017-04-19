@@ -205,11 +205,16 @@ if (count($selectedModifiers) > 0) {
     $usedModifiers = $keysToModifiers($selectedModifiers);
     ?>
     <div>
-        Sféra: <?= $formulasTable->getRealmOfModified(
+        Sféra:
+        <?php
+        $realm = $formulasTable->getRealmOfModified(
             $selectedFormula,
             $usedModifiers,
             $modifiersTable
         ); ?>
+        <ol class="realm" start="<?= $realm->getValue() ?>">
+            <li></li>
+        </ol>
     </div>
     <div>
         Náročnost: <?= $formulasTable->getDifficultyOfModified(
