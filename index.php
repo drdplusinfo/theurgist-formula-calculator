@@ -1,6 +1,7 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
+use DrdPlus\Tables\Measurements\Distance\DistanceTable;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
@@ -203,6 +204,7 @@ if (count($selectedModifiers) > 0) {
         return $modifiers;
     };
     $usedModifiers = $keysToModifiers($selectedModifiers);
+    $distanceTable = new DistanceTable();
     ?>
     <div>
         Sféra:
@@ -262,6 +264,17 @@ if (count($selectedModifiers) > 0) {
             . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
+    <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $usedModifiers, $modifiersTable, $distanceTable);
+    if ($radiusAsDistanceBonus !== null) { ?>
+        <div>
+            Poloměr:
+            <?php $radiusDistance = $radiusAsDistanceBonus->getDistance();
+            $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
+            echo ($radiusAsDistanceBonus->getValue() > 0 ? '+' : '')
+                . "{$radiusAsDistanceBonus->getValue()}  ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
+            ?>
+        </div>
+        <?php } ?>
 </div>
 <div class="block facebook">
     <div class="fb-like"

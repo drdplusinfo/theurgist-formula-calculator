@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "ce3929aa97f9e89e603b0d50cc42d419c46705e3"
+                "reference": "518e051e8dbbd4e57318b9c9e471bd06ea4c74fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/ce3929aa97f9e89e603b0d50cc42d419c46705e3",
-                "reference": "ce3929aa97f9e89e603b0d50cc42d419c46705e3",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/518e051e8dbbd4e57318b9c9e471bd06ea4c74fe",
+                "reference": "518e051e8dbbd4e57318b9c9e471bd06ea4c74fe",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +797,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2017-04-19 07:29:46"
+            "time": "2017-04-19 12:43:31"
         },
         {
             "name": "drd-plus/properties",
@@ -849,12 +849,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-tables.git",
-                "reference": "a8efeeea42d46f486c35c8e757f6d50f996e64cb"
+                "reference": "8656d82b88a65fedb087a3f450e734cb732b9c99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/a8efeeea42d46f486c35c8e757f6d50f996e64cb",
-                "reference": "a8efeeea42d46f486c35c8e757f6d50f996e64cb",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/8656d82b88a65fedb087a3f450e734cb732b9c99",
+                "reference": "8656d82b88a65fedb087a3f450e734cb732b9c99",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2017-04-19 07:07:04"
+            "time": "2017-04-19 12:55:59"
         },
         {
             "name": "drd-plus/theurgist-codes",
@@ -894,12 +894,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-theurgist-codes.git",
-                "reference": "26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73"
+                "reference": "9febb3a53d67060b9a1004daa2b2ee2fabccabda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73",
-                "reference": "26c114d3a72fb0fb5976de5b9d4c51b6f03cdc73",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/9febb3a53d67060b9a1004daa2b2ee2fabccabda",
+                "reference": "9febb3a53d67060b9a1004daa2b2ee2fabccabda",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "MIT"
             ],
             "description": "Codes with keywords for Drd+ theurgist",
-            "time": "2017-04-15 06:46:05"
+            "time": "2017-04-19 12:59:46"
         },
         {
             "name": "drd-plus/theurgist-formulas",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-formulas.git",
-                "reference": "0c005314f366332365caeb74fdc61f4a54f07933"
+                "reference": "b9c711bb066957eecbf356d6457444f32aaab53e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/0c005314f366332365caeb74fdc61f4a54f07933",
-                "reference": "0c005314f366332365caeb74fdc61f4a54f07933",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/b9c711bb066957eecbf356d6457444f32aaab53e",
+                "reference": "b9c711bb066957eecbf356d6457444f32aaab53e",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas for Drd+ theurgist",
-            "time": "2017-04-18 20:21:33"
+            "time": "2017-04-19 12:28:55"
         },
         {
             "name": "drd/dice-rolls",
