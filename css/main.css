@@ -24,10 +24,6 @@ body:after {
     visibility: hidden;
 }
 
-.modifier.direct {
-    float: left;
-}
-
 .footer {
     float: left;
     clear: left;
@@ -48,6 +44,10 @@ button[type="submit"] {
 }
 
 .forms {
-    padding-left: 0.5em;
     font-size: smaller;
+    font-style: normal;
+}
+
+.panel+.forms {
+    padding-left: 0.5em;
 }

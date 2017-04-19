@@ -102,7 +102,7 @@ if (count($selectedModifiers) > 0) {
                 <button type="submit">Vybrat</button>
             </div>
             <?php if ($selectedFormula): ?>
-                <div class="panel forms">
+                <span class="panel forms">
                     (Forma: <?php
                     $forms = [];
                     foreach ($formulasTable->getForms($selectedFormula) as $formCode) {
@@ -110,7 +110,7 @@ if (count($selectedModifiers) > 0) {
                     }
                     echo implode(', ', $forms);
                     ?>)
-                </div>
+                </span>
             <?php endif ?>
         </div>
         <?php if ($selectedFormula) { ?>
@@ -118,12 +118,22 @@ if (count($selectedModifiers) > 0) {
                 <div>Modifikátory:</div>
                 <?php
                 foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
-                    <div class="modifier direct">
+                    <div class="modifier panel">
                         <label>
                             <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox"
                                    value="<?= $modifier ?>"
                                    <?php if (array_key_exists($modifier->getValue(), $selectedModifiers)): ?>checked<?php endif ?>>
                             <?= $modifier->translateTo('cs') ?>
+                            <span class="forms">
+                                <?php
+                                $forms = [];
+                                foreach ($modifiersTable->getForms($modifier) as $formCode) {
+                                    $forms[] = $formCode->translateTo('cs');
+                                }
+                                if (count($forms) > 0) {
+                                    echo '(Forma: ' . implode(', ', $forms) . ')';
+                                } ?>
+                            </span>
                         </label>
                         <?php
                         $createModifierInputIndex = function (array $modifiersChain) {
@@ -136,7 +146,8 @@ if (count($selectedModifiers) > 0) {
 
                             return implode($wrapped);
                         };
-                        $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts) use (&$showModifiers, $modifierCombinations, $createModifierInputIndex) {
+                        $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts)
+                        use (&$showModifiers, $modifierCombinations, $createModifierInputIndex, $modifiersTable) {
                             if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
                                 /** @var array|string[] $selectedRelatedModifiers */
                                 $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
@@ -152,6 +163,16 @@ if (count($selectedModifiers) > 0) {
                                                    <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
                                             <?= /** @var ModifierCode $possibleModifier */
                                             $possibleModifier->translateTo('cs') ?>
+                                            <span class="forms">
+                                            <?php
+                                            $forms = [];
+                                            foreach ($modifiersTable->getForms($possibleModifier) as $formCode) {
+                                                $forms[] = $formCode->translateTo('cs');
+                                            }
+                                            if (count($forms) > 0) {
+                                                echo '(Forma: ' . implode(', ', $forms) . ')';
+                                            } ?>
+                                            </span>
                                         </label>
                                         <?php $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $currentInputNameParts) ?>
                                     </div>
