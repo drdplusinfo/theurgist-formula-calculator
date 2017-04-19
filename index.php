@@ -243,16 +243,18 @@ if (count($selectedModifiers) > 0) {
         Vyvolání:
         <?php $castingTimeBonus = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTimeBonus();
         $castingTime = $castingTimeBonus->getTime();
+        $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
         echo ($castingTimeBonus->getValue() > 0 ? '+' : '')
-            . "{$castingTimeBonus->getValue()}  ({$castingTime->getValue()} {$castingTime->getUnit()})";
+            . "{$castingTimeBonus->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
         Doba trvání:
         <?php $durationTimeBonus = $formulasTable->getDuration($selectedFormula, $timeTable)->getDurationTimeBonus();
         $durationTime = $durationTimeBonus->getTime();
+        $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
         echo ($durationTimeBonus->getValue() > 0 ? '+' : '')
-            . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationTime->getUnit()})";
+            . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
 </div>
