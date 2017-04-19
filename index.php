@@ -68,6 +68,8 @@ if (count($selectedModifiers) > 0) {
         <link rel="stylesheet" type="text/css" href="css/no_script.css">
     </noscript>
     <script src="js/main.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"/>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -228,5 +230,7 @@ if (count($selectedModifiers) > 0) {
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
 </div>
+<a class="github-fork-ribbon right-bottom fixed" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
+   title="Fork me on GitHub">Fork me</a>
 </body>
 </html>
