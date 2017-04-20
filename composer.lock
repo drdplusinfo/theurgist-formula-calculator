@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e8108b3bed55bba7fce4ab7cf10620a",
+    "content-hash": "c04890cd22a400a5c61d3b12295204ed",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -927,17 +927,17 @@
             "time": "2017-04-19 12:59:46"
         },
         {
-            "name": "drd-plus/theurgist-formulas",
+            "name": "drd-plus/theurgist-spells",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jaroslavtyc/drd-plus-therugist-formulas.git",
-                "reference": "b442d30ee32243a32c67814a92f3dddc1636184f"
+                "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
+                "reference": "26b4e8377c8118abb752a024ac5b5f24d4c213bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-formulas/zipball/b442d30ee32243a32c67814a92f3dddc1636184f",
-                "reference": "b442d30ee32243a32c67814a92f3dddc1636184f",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/26b4e8377c8118abb752a024ac5b5f24d4c213bf",
+                "reference": "26b4e8377c8118abb752a024ac5b5f24d4c213bf",
                 "shasum": ""
             },
             "require": {
@@ -962,8 +962,8 @@
             "license": [
                 "MIT"
             ],
-            "description": "Formulas for Drd+ theurgist",
-            "time": "2017-04-19 19:50:11"
+            "description": "Formulas with modifiers and demons for Drd+ theurgist",
+            "time": "2017-04-20 08:02:56"
         },
         {
             "name": "drd/dice-rolls",
@@ -3126,7 +3126,7 @@
     "stability-flags": {
         "roave/security-advisories": 20,
         "granam/strict-object": 20,
-        "drd-plus/theurgist-formulas": 20
+        "drd-plus/theurgist-spells": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
