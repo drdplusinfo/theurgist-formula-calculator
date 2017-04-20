@@ -271,7 +271,7 @@ if (count($selectedModifiers) > 0) {
             <?php $radiusDistance = $radiusAsDistanceBonus->getDistance();
             $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
             echo ($radiusAsDistanceBonus->getValue() >= 0 ? '+' : '')
-                . "{$radiusAsDistanceBonus->getValue()}  ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
+                . "{$radiusAsDistanceBonus->getValue()} ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
             ?>
         </div>
     <?php }
@@ -281,7 +281,19 @@ if (count($selectedModifiers) > 0) {
             Síla:
             <?= ($powerOfModified->getValue() >= 0 ? '+' : '') . $powerOfModified->getValue(); ?>
         </div>
-    <?php } ?>
+    <?php }
+    $epicenterShiftOfModified = $formulasTable->getEpicenterShiftOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $distanceTable);
+    if ($epicenterShiftOfModified !== null) {
+        $epicenterShiftDistance = $epicenterShiftOfModified->getDistance();
+        $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
+        ?>
+        <div>
+            Posun epicentra:
+            <?= ($epicenterShiftOfModified->getValue() >= 0 ? '+' : '') .
+            "{$epicenterShiftOfModified->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
+        </div>
+    <?php }
+    ?>
 </div>
 <div class="block facebook">
     <div class="fb-like"
