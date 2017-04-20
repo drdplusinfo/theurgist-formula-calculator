@@ -288,7 +288,7 @@ if (count($selectedModifiers) > 0) {
         $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
         ?>
         <div>
-            Posun epicentra:
+            Posun transpozicí:
             <?= ($epicenterShiftOfModified->getValue() >= 0 ? '+' : '') .
             "{$epicenterShiftOfModified->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
         </div>
