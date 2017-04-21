@@ -309,6 +309,14 @@ if (count($selectedModifiers) > 0) {
             <?= ($sizeChange->getValue() >= 0 ? '+' : '') . $sizeChange->getValue() ?>
         </div>
     <?php }
+    $brightness = $formulasTable->getBrightness($selectedFormula);
+    if ($brightness !== null) {
+        ?>
+        <div>
+            Jas:
+            <?= ($brightness->getValue() >= 0 ? '+' : '') . $brightness->getValue() ?>
+        </div>
+    <?php }
     ?>
 </div>
 <div class="block facebook">
