@@ -301,6 +301,14 @@ if (count($selectedModifiers) > 0) {
             <?= ($detailLevel->getValue() >= 0 ? '+' : '') . $detailLevel->getValue() ?>
         </div>
     <?php }
+    $sizeChange = $formulasTable->getSizeChange($selectedFormula);
+    if ($sizeChange !== null) {
+        ?>
+        <div>
+            Změna velikosti:
+            <?= ($sizeChange->getValue() >= 0 ? '+' : '') . $sizeChange->getValue() ?>
+        </div>
+    <?php }
     ?>
 </div>
 <div class="block facebook">
