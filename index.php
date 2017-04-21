@@ -293,6 +293,14 @@ if (count($selectedModifiers) > 0) {
             "{$epicenterShiftOfModified->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
         </div>
     <?php }
+    $detailLevel = $formulasTable->getDetailLevel($selectedFormula);
+    if ($detailLevel !== null) {
+        ?>
+        <div>
+            Detailnost:
+            <?= ($detailLevel->getValue() >= 0 ? '+' : '') . $detailLevel->getValue() ?>
+        </div>
+    <?php }
     ?>
 </div>
 <div class="block facebook">
