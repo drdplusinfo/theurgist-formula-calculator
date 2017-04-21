@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Measurements\Distance\DistanceTable;
+use DrdPlus\Tables\Measurements\Speed\SpeedTable;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
@@ -205,6 +206,7 @@ if (count($selectedModifiers) > 0) {
     };
     $usedModifiers = $keysToModifiers($selectedModifiers);
     $distanceTable = new DistanceTable();
+    $speedTable = new SpeedTable();
     ?>
     <div>
         Sféra:
@@ -248,11 +250,10 @@ if (count($selectedModifiers) > 0) {
     <?php $timeTable = Tables::getIt()->getTimeTable(); ?>
     <div>
         Vyvolání:
-        <?php $castingTimeBonus = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTimeBonus();
-        $castingTime = $castingTimeBonus->getTime();
+        <?php $castingTime = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTime();
         $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
-        echo ($castingTimeBonus->getValue() >= 0 ? '+' : '')
-            . "{$castingTimeBonus->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
+        echo ($castingTime->getValue() >= 0 ? '+' : '')
+            . "{$castingTime->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
@@ -315,6 +316,17 @@ if (count($selectedModifiers) > 0) {
         <div>
             Jas:
             <?= ($brightness->getValue() >= 0 ? '+' : '') . $brightness->getValue() ?>
+        </div>
+    <?php }
+    $spellSpeedOfModified = $formulasTable->getSpellSpeedOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $speedTable);
+    if ($spellSpeedOfModified !== null) {
+        $spellSpeed = $spellSpeedOfModified->getSpeed();
+        $spellSpeedUnitInCzech = $spellSpeed->getUnitCode()->translateTo('cs', $spellSpeed->getValue());
+        ?>
+        <div>
+            Rychlost:
+            <?= ($spellSpeedOfModified->getValue() >= 0 ? '+' : '') .
+            "{$spellSpeedOfModified->getValue()} ({$spellSpeed->getValue()} {$spellSpeedUnitInCzech})" ?>
         </div>
     <?php }
     ?>

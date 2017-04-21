@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "518e051e8dbbd4e57318b9c9e471bd06ea4c74fe"
+                "reference": "88fc4e01f360525896a33e751e37a0af0c495c94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/518e051e8dbbd4e57318b9c9e471bd06ea4c74fe",
-                "reference": "518e051e8dbbd4e57318b9c9e471bd06ea4c74fe",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/88fc4e01f360525896a33e751e37a0af0c495c94",
+                "reference": "88fc4e01f360525896a33e751e37a0af0c495c94",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +797,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2017-04-19 12:43:31"
+            "time": "2017-04-21 12:35:30"
         },
         {
             "name": "drd-plus/properties",
@@ -849,12 +849,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-tables.git",
-                "reference": "8656d82b88a65fedb087a3f450e734cb732b9c99"
+                "reference": "eb463cfea57c263384d3841334aa042832f230c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/8656d82b88a65fedb087a3f450e734cb732b9c99",
-                "reference": "8656d82b88a65fedb087a3f450e734cb732b9c99",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/eb463cfea57c263384d3841334aa042832f230c2",
+                "reference": "eb463cfea57c263384d3841334aa042832f230c2",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2017-04-19 12:55:59"
+            "time": "2017-04-21 12:46:42"
         },
         {
             "name": "drd-plus/theurgist-codes",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "26b4e8377c8118abb752a024ac5b5f24d4c213bf"
+                "reference": "a0ebfef40557532263b6133ea191eb9f04bb11da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/26b4e8377c8118abb752a024ac5b5f24d4c213bf",
-                "reference": "26b4e8377c8118abb752a024ac5b5f24d4c213bf",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/a0ebfef40557532263b6133ea191eb9f04bb11da",
+                "reference": "a0ebfef40557532263b6133ea191eb9f04bb11da",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-04-20 08:02:56"
+            "time": "2017-04-21 12:08:35"
         },
         {
             "name": "drd/dice-rolls",
@@ -2121,16 +2121,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.1.1",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc"
+                "reference": "dc421f9ca5082a0c0cb04afb171c765f79add85b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc",
-                "reference": "bc433b7af27e0ab9b6b4c6d8ec918a493875f6bc",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/dc421f9ca5082a0c0cb04afb171c765f79add85b",
+                "reference": "dc421f9ca5082a0c0cb04afb171c765f79add85b",
                 "shasum": ""
             },
             "require": {
@@ -2141,20 +2141,21 @@
                 "phpunit/php-text-template": "^1.2",
                 "phpunit/php-token-stream": "^1.4.11 || ^2.0",
                 "sebastian/code-unit-reverse-lookup": "^1.0",
-                "sebastian/environment": "^2.0",
-                "sebastian/version": "^2.0"
+                "sebastian/environment": "^3.0",
+                "sebastian/version": "^2.0",
+                "theseer/tokenizer": "^1.1"
             },
             "require-dev": {
                 "ext-xdebug": "^2.5",
                 "phpunit/phpunit": "^6.0"
             },
             "suggest": {
-                "ext-xdebug": "^2.5.1"
+                "ext-xdebug": "^2.5.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.1.x-dev"
+                    "dev-master": "5.2.x-dev"
                 }
             },
             "autoload": {
@@ -2180,7 +2181,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-12T07:59:32+00:00"
+            "time": "2017-04-21T08:03:57+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2370,16 +2371,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "2aa57c530381662b01c2cf705b03e8c12e918f1d"
+                "reference": "9fbc261d90eda9e7ef9f7441d32997270f8e2019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2aa57c530381662b01c2cf705b03e8c12e918f1d",
-                "reference": "2aa57c530381662b01c2cf705b03e8c12e918f1d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9fbc261d90eda9e7ef9f7441d32997270f8e2019",
+                "reference": "9fbc261d90eda9e7ef9f7441d32997270f8e2019",
                 "shasum": ""
             },
             "require": {
@@ -2393,14 +2394,14 @@
                 "phar-io/version": "^1.0",
                 "php": "^7.0",
                 "phpspec/prophecy": "^1.7",
-                "phpunit/php-code-coverage": "^5.0",
+                "phpunit/php-code-coverage": "^5.2",
                 "phpunit/php-file-iterator": "^1.4",
                 "phpunit/php-text-template": "^1.2",
                 "phpunit/php-timer": "^1.0.6",
                 "phpunit/phpunit-mock-objects": "^4.0",
                 "sebastian/comparator": "^2.0",
                 "sebastian/diff": "^1.2",
-                "sebastian/environment": "^2.0",
+                "sebastian/environment": "^3.0",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^1.1 || ^2.0",
                 "sebastian/object-enumerator": "^3.0.2",
@@ -2450,7 +2451,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-07T04:45:38+00:00"
+            "time": "2017-04-21T08:02:24+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2674,28 +2675,28 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "5795ffe5dc5b02460c3e34222fee8cbe245d8fac"
+                "reference": "9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/5795ffe5dc5b02460c3e34222fee8cbe245d8fac",
-                "reference": "5795ffe5dc5b02460c3e34222fee8cbe245d8fac",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e",
+                "reference": "9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.0"
+                "phpunit/phpunit": "^6.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -2720,7 +2721,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-11-26T07:53:53+00:00"
+            "time": "2017-04-21T07:54:19+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -3069,6 +3070,46 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "theseer/tokenizer",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/tokenizer.git",
+                "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/cb2f008f3f05af2893a87208fe6a6c4985483f8b",
+                "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
+            "time": "2017-04-07T12:08:54+00:00"
         },
         {
             "name": "webmozart/assert",
