@@ -250,19 +250,20 @@ if (count($selectedModifierIndexes) > 0) {
     <?php $timeTable = Tables::getIt()->getTimeTable(); ?>
     <div>
         Vyvolání:
-        <?php $castingTime = $formulasTable->getCasting($selectedFormula, $timeTable)->getCastingTime();
+        <?php $casting = $formulasTable->getCasting($selectedFormula, $timeTable);
+        $castingTime = $casting->getCastingTime();
         $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
-        echo ($castingTime->getValue() >= 0 ? '+' : '')
-            . "{$castingTime->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
+        echo ($casting->getValue() >= 0 ? '+' : '')
+            . "{$casting->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
         Doba trvání:
-        <?php $durationTimeBonus = $formulasTable->getDuration($selectedFormula, $timeTable)->getDurationTimeBonus();
-        $durationTime = $durationTimeBonus->getTime();
+        <?php $duration = $formulasTable->getDuration($selectedFormula, $timeTable);
+        $durationTime = $duration->getDurationTimeBonus()->getTime();
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
-        echo ($durationTimeBonus->getValue() >= 0 ? '+' : '')
-            . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
+        echo ($duration->getValue() >= 0 ? '+' : '')
+            . "{$duration->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
     <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $distanceTable);
