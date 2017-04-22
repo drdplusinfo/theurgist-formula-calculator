@@ -330,6 +330,12 @@ if (count($selectedModifierIndexes) > 0) {
             "{$spellSpeedOfModified->getValue()} ({$spellSpeed->getValue()} {$spellSpeedUnitInCzech})" ?>
         </div>
     <?php }
+    $attackOfModified = $formulasTable->getAttackOfModified($selectedFormula, $selectedModifiers, $modifiersTable);
+    if ($attackOfModified !== null) { ?>
+        <div>
+            Útočnost: <?= ($attackOfModified->getValue() >= 0 ? '+' : '') . $attackOfModified->getValue(); ?>
+        </div>
+    <?php }
     ?>
 </div>
 <div class="block facebook">
@@ -338,7 +344,8 @@ if (count($selectedModifierIndexes) > 0) {
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
 </div>
-<a class="github-fork-ribbon right-bottom fixed" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
+<a class="github-fork-ribbon right-bottom fixed"
+   href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
    title="Fork me on GitHub">Fork me</a>
 </body>
 </html>
