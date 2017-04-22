@@ -30,13 +30,13 @@ $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
 
     return $modifiers;
 };
-$selectedModifiers = [];
+$selectedModifierIndexes = [];
 if ($selectedFormula->getValue() === $previouslySelectedFormula && !empty($_GET['modifiers'])) {
-    $selectedModifiers = $buildModifiers((array)$_GET['modifiers']);
+    $selectedModifierIndexes = $buildModifiers((array)$_GET['modifiers']);
 }
 $modifierCombinations = [];
 $modifiersTable = new ModifiersTable();
-if (count($selectedModifiers) > 0) {
+if (count($selectedModifierIndexes) > 0) {
     $buildPossibleModifiers = function (array $modifierValues) use (&$buildPossibleModifiers, $modifiersTable) {
         $modifiers = [];
         foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
@@ -56,7 +56,7 @@ if (count($selectedModifiers) > 0) {
 
         return $modifiers;
     };
-    $modifierCombinations = $buildPossibleModifiers($selectedModifiers);
+    $modifierCombinations = $buildPossibleModifiers($selectedModifierIndexes);
 }
 ?>
 <!DOCTYPE html>
@@ -124,7 +124,7 @@ if (count($selectedModifiers) > 0) {
                         <label>
                             <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox"
                                    value="<?= $modifier ?>"
-                                   <?php if (array_key_exists($modifier->getValue(), $selectedModifiers)): ?>checked<?php endif ?>>
+                                   <?php if (array_key_exists($modifier->getValue(), $selectedModifierIndexes)): ?>checked<?php endif ?>>
                             <?= $modifier->translateTo('cs') ?>
                             <span class="forms">
                                 <?php
@@ -181,7 +181,7 @@ if (count($selectedModifiers) > 0) {
                                 <?php }
                             }
                         };
-                        $showModifiers($modifier->getValue(), $selectedModifiers, [$modifier->getValue()]); ?>
+                        $showModifiers($modifier->getValue(), $selectedModifierIndexes, [$modifier->getValue()]); ?>
                     </div>
                 <?php } ?>
             </div>
@@ -204,7 +204,7 @@ if (count($selectedModifiers) > 0) {
 
         return $modifiers;
     };
-    $usedModifiers = $keysToModifiers($selectedModifiers);
+    $selectedModifiers = $keysToModifiers($selectedModifierIndexes);
     $distanceTable = new DistanceTable();
     $speedTable = new SpeedTable();
     ?>
@@ -213,7 +213,7 @@ if (count($selectedModifiers) > 0) {
         <?php
         $realm = $formulasTable->getRealmOfModified(
             $selectedFormula,
-            $usedModifiers,
+            $selectedModifiers,
             $modifiersTable
         ); ?>
         <ol class="realm" start="<?= $realm->getValue() ?>">
@@ -223,7 +223,7 @@ if (count($selectedModifiers) > 0) {
     <div>
         Náročnost: <?= $formulasTable->getDifficultyOfModified(
             $selectedFormula,
-            $usedModifiers,
+            $selectedModifiers,
             $modifiersTable
         ) ?>
     </div>
@@ -231,7 +231,7 @@ if (count($selectedModifiers) > 0) {
         <?php
         $affectionsOfModified = $formulasTable->getAffectionsOfModified(
             $selectedFormula,
-            $usedModifiers,
+            $selectedModifiers,
             $modifiersTable
         );
         if (count($affectionsOfModified) > 1):?>
@@ -265,7 +265,7 @@ if (count($selectedModifiers) > 0) {
             . "{$durationTimeBonus->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
-    <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $usedModifiers, $modifiersTable, $distanceTable);
+    <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $distanceTable);
     if ($radiusAsDistanceBonus !== null) { ?>
         <div>
             Poloměr:
@@ -276,7 +276,7 @@ if (count($selectedModifiers) > 0) {
             ?>
         </div>
     <?php }
-    $powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $usedModifiers, $modifiersTable);
+    $powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $selectedModifiers, $modifiersTable);
     if ($powerOfModified !== null) { ?>
         <div>
             Síla:

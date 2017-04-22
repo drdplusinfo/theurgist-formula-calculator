@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "a0ebfef40557532263b6133ea191eb9f04bb11da"
+                "reference": "06975b789c5c69571d28b6749cc2a27ebbbeacf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/a0ebfef40557532263b6133ea191eb9f04bb11da",
-                "reference": "a0ebfef40557532263b6133ea191eb9f04bb11da",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/06975b789c5c69571d28b6749cc2a27ebbbeacf3",
+                "reference": "06975b789c5c69571d28b6749cc2a27ebbbeacf3",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-04-21 12:08:35"
+            "time": "2017-04-22 12:09:21"
         },
         {
             "name": "drd/dice-rolls",
@@ -2675,16 +2675,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "3.0.0",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e"
+                "reference": "11e7710b7724d42c62249b0e9d3030240398949d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e",
-                "reference": "9d38d4afcf391dbcc949fb0ba7b1ae25fe9cef3e",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/11e7710b7724d42c62249b0e9d3030240398949d",
+                "reference": "11e7710b7724d42c62249b0e9d3030240398949d",
                 "shasum": ""
             },
             "require": {
@@ -2721,7 +2721,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-04-21T07:54:19+00:00"
+            "time": "2017-04-21T14:40:32+00:00"
         },
         {
             "name": "sebastian/exporter",
