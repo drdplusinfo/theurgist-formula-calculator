@@ -1,8 +1,6 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
-use DrdPlus\Tables\Measurements\Distance\DistanceTable;
-use DrdPlus\Tables\Measurements\Speed\SpeedTable;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
@@ -15,7 +13,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 error_reporting(-1);
 ini_set('display_errors', '1');
 
-$formulasTable = new FormulasTable();
+$modifiersTable = new ModifiersTable(Tables::getIt());
+$formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable);
 $selectedFormula = FormulaCode::getIt($_GET['formula'] ?? current(FormulaCode::getPossibleValues()));
 $previouslySelectedFormula = $_GET['previousFormula'] ?? false;
 $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
@@ -31,11 +30,10 @@ $buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
     return $modifiers;
 };
 $selectedModifierIndexes = [];
-if ($selectedFormula->getValue() === $previouslySelectedFormula && !empty($_GET['modifiers'])) {
+if (!empty($_GET['modifiers']) && $selectedFormula->getValue() === $previouslySelectedFormula) {
     $selectedModifierIndexes = $buildModifiers((array)$_GET['modifiers']);
 }
 $modifierCombinations = [];
-$modifiersTable = new ModifiersTable();
 if (count($selectedModifierIndexes) > 0) {
     $buildPossibleModifiers = function (array $modifierValues) use (&$buildPossibleModifiers, $modifiersTable) {
         $modifiers = [];
@@ -153,6 +151,7 @@ if (count($selectedModifierIndexes) > 0) {
                             if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
                                 /** @var array|string[] $selectedRelatedModifiers */
                                 $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
+                                /** @var array|ModifierCode[][] $modifierCombinations */
                                 foreach ($modifierCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
                                     $currentInputNameParts = $inputNameParts;
                                     $currentInputNameParts[] = $possibleModifierValue;
@@ -205,35 +204,21 @@ if (count($selectedModifierIndexes) > 0) {
         return $modifiers;
     };
     $selectedModifiers = $keysToModifiers($selectedModifierIndexes);
-    $distanceTable = new DistanceTable();
-    $speedTable = new SpeedTable();
     ?>
     <div>
         Sféra:
         <?php
-        $realm = $formulasTable->getRealmOfModified(
-            $selectedFormula,
-            $selectedModifiers,
-            $modifiersTable
-        ); ?>
+        $realm = $formulasTable->getRealmOfModified($selectedFormula, $selectedModifiers); ?>
         <ol class="realm" start="<?= $realm->getValue() ?>">
             <li></li>
         </ol>
     </div>
     <div>
-        Náročnost: <?= $formulasTable->getDifficultyOfModified(
-            $selectedFormula,
-            $selectedModifiers,
-            $modifiersTable
-        ) ?>
+        Náročnost: <?= $formulasTable->getDifficultyOfModified($selectedFormula, $selectedModifiers) ?>
     </div>
     <div>
         <?php
-        $affectionsOfModified = $formulasTable->getAffectionsOfModified(
-            $selectedFormula,
-            $selectedModifiers,
-            $modifiersTable
-        );
+        $affectionsOfModified = $formulasTable->getAffectionsOfModified($selectedFormula, $selectedModifiers);
         if (count($affectionsOfModified) > 1):?>
             Náklonnosti:
         <?php else: ?>
@@ -247,26 +232,25 @@ if (count($selectedModifierIndexes) > 0) {
         echo implode(', ', $inCzech);
         ?>
     </div>
-    <?php $timeTable = Tables::getIt()->getTimeTable(); ?>
     <div>
         Vyvolání:
-        <?php $casting = $formulasTable->getCasting($selectedFormula, $timeTable);
-        $castingTime = $casting->getCastingTime();
+        <?php $castingTime = $formulasTable->getCasting($selectedFormula);
         $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
-        echo ($casting->getValue() >= 0 ? '+' : '')
-            . "{$casting->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
+        $castingBonus = $castingTime->getBonus();
+        echo ($castingBonus->getValue() >= 0 ? '+' : '')
+            . "{$castingBonus->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
         Doba trvání:
-        <?php $duration = $formulasTable->getDuration($selectedFormula, $timeTable);
+        <?php $duration = $formulasTable->getDuration($selectedFormula);
         $durationTime = $duration->getDurationTimeBonus()->getTime();
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
         echo ($duration->getValue() >= 0 ? '+' : '')
             . "{$duration->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
-    <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $distanceTable);
+    <?php $radiusAsDistanceBonus = $formulasTable->getRadiusOfModified($selectedFormula, $selectedModifiers);
     if ($radiusAsDistanceBonus !== null) { ?>
         <div>
             Poloměr:
@@ -277,14 +261,14 @@ if (count($selectedModifierIndexes) > 0) {
             ?>
         </div>
     <?php }
-    $powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $selectedModifiers, $modifiersTable);
+    $powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $selectedModifiers);
     if ($powerOfModified !== null) { ?>
         <div>
             Síla:
             <?= ($powerOfModified->getValue() >= 0 ? '+' : '') . $powerOfModified->getValue(); ?>
         </div>
     <?php }
-    $epicenterShiftOfModified = $formulasTable->getEpicenterShiftOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $distanceTable);
+    $epicenterShiftOfModified = $formulasTable->getEpicenterShiftOfModified($selectedFormula, $selectedModifiers);
     if ($epicenterShiftOfModified !== null) {
         $epicenterShiftDistance = $epicenterShiftOfModified->getDistance();
         $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
@@ -319,7 +303,7 @@ if (count($selectedModifierIndexes) > 0) {
             <?= ($brightness->getValue() >= 0 ? '+' : '') . $brightness->getValue() ?>
         </div>
     <?php }
-    $spellSpeedOfModified = $formulasTable->getSpellSpeedOfModified($selectedFormula, $selectedModifiers, $modifiersTable, $speedTable);
+    $spellSpeedOfModified = $formulasTable->getSpellSpeedOfModified($selectedFormula, $selectedModifiers);
     if ($spellSpeedOfModified !== null) {
         $spellSpeed = $spellSpeedOfModified->getSpeed();
         $spellSpeedUnitInCzech = $spellSpeed->getUnitCode()->translateTo('cs', $spellSpeed->getValue());
@@ -330,7 +314,7 @@ if (count($selectedModifierIndexes) > 0) {
             "{$spellSpeedOfModified->getValue()} ({$spellSpeed->getValue()} {$spellSpeedUnitInCzech})" ?>
         </div>
     <?php }
-    $attackOfModified = $formulasTable->getAttackOfModified($selectedFormula, $selectedModifiers, $modifiersTable);
+    $attackOfModified = $formulasTable->getAttackOfModified($selectedFormula, $selectedModifiers);
     if ($attackOfModified !== null) { ?>
         <div>
             Útočnost: <?= ($attackOfModified->getValue() >= 0 ? '+' : '') . $attackOfModified->getValue(); ?>
@@ -338,14 +322,14 @@ if (count($selectedModifierIndexes) > 0) {
     <?php }
     ?>
 </div>
-<div class="block facebook">
-    <div class="fb-like"
+<div class="block">
+    <div class="fb-like facebook"
          data-href="https://formule.theurg.drdplus.info/<?= $_SERVER['QUERY_STRING'] ? ('?' . $_SERVER['QUERY_STRING']) : '' ?>"
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
+    <a class="github-fork-ribbon right-bottom fixed"
+       href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
+       title="Fork me on GitHub">Fork me</a>
 </div>
-<a class="github-fork-ribbon right-bottom fixed"
-   href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
-   title="Fork me on GitHub">Fork me</a>
 </body>
 </html>
