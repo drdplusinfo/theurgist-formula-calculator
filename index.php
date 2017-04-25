@@ -233,18 +233,27 @@ if (count($selectedModifierIndexes) > 0) {
         ?>
     </div>
     <div>
-        Vyvolání:
-        <?php $castingTime = $formulasTable->getCasting($selectedFormula);
-        $castingUnitInCzech = $castingTime->getUnitCode()->translateTo('cs', $castingTime->getValue());
-        $castingBonus = $castingTime->getBonus();
+        Vyvolání (příprava formule):
+        <?php $evocation = $formulasTable->getEvocationOfModified($selectedFormula, $selectedModifiers);
+        $evocationTime = $evocation->getTime();
+        $evocationUnitInCzech = $evocationTime->getUnitCode()->translateTo('cs', $evocationTime->getValue());
+        echo ($evocation->getValue() >= 0 ? '+' : '')
+            . "{$evocation->getValue()}  ({$evocationTime->getValue()} {$evocationUnitInCzech})";
+        ?>
+    </div>
+    <div>
+        Seslání (vypuštění kouzla):
+        <?php $casting = $formulasTable->getCastingOfModified($selectedFormula, $selectedModifiers);
+        $castingBonus = $casting->getBonus();
+        $castingUnitInCzech = $casting->getUnitCode()->translateTo('cs', $casting->getValue());
         echo ($castingBonus->getValue() >= 0 ? '+' : '')
-            . "{$castingBonus->getValue()}  ({$castingTime->getValue()} {$castingUnitInCzech})";
+            . "{$castingBonus->getValue()}  ({$casting->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
         Doba trvání:
         <?php $duration = $formulasTable->getDuration($selectedFormula);
-        $durationTime = $duration->getDurationTimeBonus()->getTime();
+        $durationTime = $duration->getDurationTime(Tables::getIt()->getTimeTable());
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
         echo ($duration->getValue() >= 0 ? '+' : '')
             . "{$duration->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
