@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "5eb4e4cad9b1490ba54e8e8467c17c0b4b59f7ce"
+                "reference": "708a0824658d3fbfd569b9155edb8b26f34067aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/5eb4e4cad9b1490ba54e8e8467c17c0b4b59f7ce",
-                "reference": "5eb4e4cad9b1490ba54e8e8467c17c0b4b59f7ce",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/708a0824658d3fbfd569b9155edb8b26f34067aa",
+                "reference": "708a0824658d3fbfd569b9155edb8b26f34067aa",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-04-25 10:52:18"
+            "time": "2017-04-26 08:08:46"
         },
         {
             "name": "drd/dice-rolls",
@@ -2371,16 +2371,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.1.1",
+            "version": "6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9fbc261d90eda9e7ef9f7441d32997270f8e2019"
+                "reference": "fbf2e46d5c563ee78c9b559bcbeb1c97cad6af0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9fbc261d90eda9e7ef9f7441d32997270f8e2019",
-                "reference": "9fbc261d90eda9e7ef9f7441d32997270f8e2019",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fbf2e46d5c563ee78c9b559bcbeb1c97cad6af0f",
+                "reference": "fbf2e46d5c563ee78c9b559bcbeb1c97cad6af0f",
                 "shasum": ""
             },
             "require": {
@@ -2401,7 +2401,7 @@
                 "phpunit/phpunit-mock-objects": "^4.0",
                 "sebastian/comparator": "^2.0",
                 "sebastian/diff": "^1.2",
-                "sebastian/environment": "^3.0",
+                "sebastian/environment": "^3.0.1",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^1.1 || ^2.0",
                 "sebastian/object-enumerator": "^3.0.2",
@@ -2451,7 +2451,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-21T08:02:24+00:00"
+            "time": "2017-04-25T21:30:13+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
