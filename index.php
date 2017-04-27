@@ -5,59 +5,22 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
-use DrdPlus\Theurgist\Formulas\CastingParameters\SpellTraitsTable;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
+use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 error_reporting(-1);
 ini_set('display_errors', '1');
 
-$modifiersTable = new ModifiersTable(Tables::getIt());
+$controller = new IndexController($modifiersTable = new ModifiersTable(Tables::getIt()));
+$selectedFormula = $controller->getSelectedFormula();
+$selectedModifierIndexes = $controller->getSelectedModifierIndexes();
+$modifierCombinations = $controller->getModifierCombinations();
+
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
-$selectedFormula = FormulaCode::getIt($_GET['formula'] ?? current(FormulaCode::getPossibleValues()));
-$previouslySelectedFormula = $_GET['previousFormula'] ?? false;
-$buildModifiers = function (array $modifierValues) use (&$buildModifiers) {
-    $modifiers = [];
-    foreach ($modifierValues as $modifierValue => $linkedModifiers) {
-        if (is_array($linkedModifiers)) {
-            $modifiers[$modifierValue] = $buildModifiers($linkedModifiers); // tree structure
-        } else {
-            $modifiers[$modifierValue] = []; // dead end
-        }
-    }
-
-    return $modifiers;
-};
-$selectedModifierIndexes = [];
-if (!empty($_GET['modifiers']) && $selectedFormula->getValue() === $previouslySelectedFormula) {
-    $selectedModifierIndexes = $buildModifiers((array)$_GET['modifiers']);
-}
-$modifierCombinations = [];
-if (count($selectedModifierIndexes) > 0) {
-    $buildPossibleModifiers = function (array $modifierValues) use (&$buildPossibleModifiers, $modifiersTable) {
-        $modifiers = [];
-        foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
-            if (!array_key_exists($modifierValue, $modifiers)) { // otherwise skip already processed relating modifiers
-                $modifierCode = ModifierCode::getIt($modifierValue);
-                foreach ($modifiersTable->getChildModifiers($modifierCode) as $relatedModifierCode) {
-                    // by-related-modifier-indexed flat array
-                    $modifiers[$modifierValue][$relatedModifierCode->getValue()] = $relatedModifierCode;
-                }
-            }
-            // tree structure
-            foreach ($buildPossibleModifiers($relatedModifierValues) as $relatedModifierValue => $relatedModifiers) {
-                // into flat array
-                $modifiers[$relatedModifierValue] = $relatedModifiers; // can overrides previously set (would be the very same so no harm)
-            }
-        }
-
-        return $modifiers;
-    };
-    $modifierCombinations = $buildPossibleModifiers($selectedModifierIndexes);
-}
 ?>
 <!DOCTYPE html>
 <html lang="cs" xmlns="http://www.w3.org/1999/html">
@@ -73,18 +36,10 @@ if (count($selectedModifierIndexes) > 0) {
     <script src="js/main.js"></script>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"/>
+    <script type="text/javascript" src="js/facebook.js"></script>
 </head>
 <body>
 <div id="fb-root"></div>
-<script>(function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v2.9";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
@@ -138,18 +93,8 @@ if (count($selectedModifierIndexes) > 0) {
                             </span>
                         </label>
                         <?php
-                        $createModifierInputIndex = function (array $modifiersChain) {
-                            $wrapped = array_map(
-                                function (string $chainPart) {
-                                    return "[$chainPart]";
-                                },
-                                $modifiersChain
-                            );
-
-                            return implode($wrapped);
-                        };
                         $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts)
-                        use (&$showModifiers, $modifierCombinations, $createModifierInputIndex, $modifiersTable) {
+                        use (&$showModifiers, $modifierCombinations, $modifiersTable, $controller) {
                             if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
                                 /** @var array|string[] $selectedRelatedModifiers */
                                 $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
@@ -161,17 +106,14 @@ if (count($selectedModifierIndexes) > 0) {
                                     <div class="modifier">
                                         <label>
                                             <input name="modifiers<?= /** @noinspection PhpParamsInspection */
-                                            $createModifierInputIndex($currentInputNameParts) ?>"
+                                            $controller->createModifierInputIndex($currentInputNameParts) ?>"
                                                    type="checkbox" value="<?= $possibleModifierValue ?>"
                                                    <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
                                             <?= /** @var ModifierCode $possibleModifier */
                                             $possibleModifier->translateTo('cs') ?>
                                             <span class="forms">
                                             <?php
-                                            $forms = [];
-                                            foreach ($modifiersTable->getForms($possibleModifier) as $formCode) {
-                                                $forms[] = $formCode->translateTo('cs');
-                                            }
+                                            $forms = $controller->getModifiersFormNames($possibleModifier, 'cs');
                                             if (count($forms) > 0) {
                                                 echo '(Forma: ' . implode(', ', $forms) . ')';
                                             } ?>
@@ -192,20 +134,7 @@ if (count($selectedModifierIndexes) > 0) {
 </div>
 <div class="footer">
     <?php
-    $keysToModifiers = function (array $modifierNamesAsKeys) use (&$keysToModifiers) {
-        $modifiers = [];
-        foreach ($modifierNamesAsKeys as $modifierName => $childModifierNamesAsKeys) {
-            $modifiers[] = ModifierCode::getIt($modifierName);
-            if (is_array($childModifierNamesAsKeys)) {
-                foreach ($keysToModifiers($childModifierNamesAsKeys) as $childModifier) {
-                    $modifiers[] = $childModifier;
-                }
-            }
-        }
-
-        return $modifiers;
-    };
-    $selectedModifiers = $keysToModifiers($selectedModifierIndexes);
+    $selectedModifiers = $controller->getSelectedModifiers();
     $selectedSpellTraits = [];
     ?>
     <div>
