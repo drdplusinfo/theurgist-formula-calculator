@@ -38,16 +38,16 @@ $selectedFormula = $controller->getSelectedFormula();
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
-        <?php require __DIR__ . '/selectedFormula.php'; ?>
+        <?php require __DIR__ . '/formula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>
-            <?php require __DIR__ . '/possibleModifiers.php' ?>
+            <?php require __DIR__ . '/modifiers.php' ?>
         </div>
         <button type="submit">Vybrat</button>
     </form>
 </div>
 <div id="result" class="result">
-    <?php require __DIR__ . '/resultingCharacteristics.php'; ?>
+    <?php require __DIR__ . '/result.php'; ?>
 </div>
 <div class="block">
     <div class="fb-like facebook"
