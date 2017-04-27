@@ -60,29 +60,28 @@ class IndexController extends StrictObject
     }
 
     /**
-     * @return array
+     * @return array|ModifierCode[][]
      */
-    public function getModifierCombinations(): array
+    public function getSelectedModifierCombinations(): array
     {
         $selectedModifierIndexes = $this->getSelectedModifierIndexes();
         if (count($selectedModifierIndexes) === 0) {
             return [];
         }
 
-        return $this->buildPossibleModifiers($selectedModifierIndexes);
+        return $this->buildPossibleModifiersTree($selectedModifierIndexes);
     }
 
     public function getSelectedModifierIndexes(): array
     {
-        $selectedModifierIndexes = [];
-        if (!empty($_GET['modifiers']) && $this->getSelectedFormula()->getValue() === $this->getPreviouslySelectedFormulaValue()) {
-            $selectedModifierIndexes = $this->buildModifiers((array)$_GET['modifiers']);
+        if (empty($_GET['modifiers']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+            return [];
         }
 
-        return $selectedModifierIndexes;
+        return $this->buildSelectedModifiersTree((array)$_GET['modifiers']);
     }
 
-    private function buildPossibleModifiers(array $modifierValues): array
+    private function buildPossibleModifiersTree(array $modifierValues): array
     {
         $modifiers = [];
         foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
@@ -95,7 +94,7 @@ class IndexController extends StrictObject
                 }
             }
             // tree structure
-            foreach ($this->buildPossibleModifiers($relatedModifierValues) as $relatedModifierValue => $relatedModifiers) {
+            foreach ($this->buildPossibleModifiersTree($relatedModifierValues) as $relatedModifierValue => $relatedModifiers) {
                 // into flat array
                 $modifiers[$relatedModifierValue] = $relatedModifiers; // can overrides previously set (would be the very same so no harm)
             }
@@ -104,12 +103,12 @@ class IndexController extends StrictObject
         return $modifiers;
     }
 
-    private function buildModifiers(array $modifierValues): array
+    private function buildSelectedModifiersTree(array $modifierValues): array
     {
         $modifiers = [];
         foreach ($modifierValues as $modifierValue => $linkedModifiers) {
             if (is_array($linkedModifiers)) {
-                $modifiers[$modifierValue] = $this->buildModifiers($linkedModifiers); // tree structure
+                $modifiers[$modifierValue] = $this->buildSelectedModifiersTree($linkedModifiers); // tree structure
             } else {
                 $modifiers[$modifierValue] = []; // dead end
             }
@@ -178,5 +177,17 @@ class IndexController extends StrictObject
         }
 
         return $formNames;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getSelectedSpellTraitIndexes(): array
+    {
+        if (empty($_GET['spellTraits']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+            return [];
+        }
+
+        return array_keys($_GET['spellTraits']);
     }
 }

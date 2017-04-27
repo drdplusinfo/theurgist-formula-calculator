@@ -41,7 +41,7 @@ $selectedFormula = $controller->getSelectedFormula();
         <?php require __DIR__ . '/selectedFormula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>
-            <?php require __DIR__ . '/possibleModifiersOfFormula.php' ?>
+            <?php require __DIR__ . '/possibleModifiers.php' ?>
         </div>
         <button type="submit">Vybrat</button>
     </form>

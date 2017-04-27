@@ -20,6 +20,12 @@ body:after {
     font-style: italic;
 }
 
+.spell-trait {
+    margin-left: 1em;
+    min-width: 8em;
+    font-style: italic;
+}
+
 .hidden {
     visibility: hidden;
 }
