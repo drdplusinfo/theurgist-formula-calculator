@@ -9,8 +9,8 @@ use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 
-$selectedModifiers = $controller->getSelectedModifiers();
-$selectedSpellTraits = [];
+$selectedModifiers = $controller->getSelectedModifierCodes();
+$selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
 ?>
     <div>
         Sféra:

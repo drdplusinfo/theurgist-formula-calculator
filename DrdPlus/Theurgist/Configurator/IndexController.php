@@ -3,6 +3,8 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
+use DrdPlus\Theurgist\Codes\SpellTraitCode;
+use DrdPlus\Theurgist\Formulas\CastingParameters\SpellTrait;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
 use Granam\Strict\Object\StrictObject;
@@ -128,7 +130,7 @@ class IndexController extends StrictObject
     /**
      * @return array|ModifierCode[]
      */
-    public function getSelectedModifiers(): array
+    public function getSelectedModifierCodes(): array
     {
         return $this->keysToModifiers($this->getSelectedModifierIndexes());
     }
@@ -189,5 +191,18 @@ class IndexController extends StrictObject
         }
 
         return array_keys($_GET['spellTraits']);
+    }
+
+    /**
+     * @return array|SpellTrait[]
+     */
+    public function getSelectedSpellTraitCodes(): array
+    {
+        $selectedSpellTraitCodes = [];
+        foreach ($this->getSelectedSpellTraitIndexes() as $selectedSpellTraitValue) {
+            $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedSpellTraitValue);
+        }
+
+        return $selectedSpellTraitCodes;
     }
 }
