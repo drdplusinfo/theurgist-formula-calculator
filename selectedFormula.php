@@ -34,7 +34,7 @@ $selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitInd
 if (count($formulaSpellTraits) > 0) { ?>
     <div class="block">
         <div class="panel">
-            <span class="panel">Rysy:</span>
+            <div>Rysy:</div>
             <?php foreach ($formulaSpellTraits as $formulaSpellTrait) { ?>
                 <div class="spell-trait panel">
                     <label>

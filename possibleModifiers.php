@@ -31,7 +31,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
         <?php $modifierSpellTraits = $modifiersTable->getSpellTraits($modifier);
         $selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitIndexes();
         if (count($modifierSpellTraits) > 0) { ?>
-            <div style="background-color: #1b6d85">
+            <div>
                 <?php foreach ($modifierSpellTraits as $modifierSpellTrait) { ?>
                     <div class="spell-trait">
                         <label>

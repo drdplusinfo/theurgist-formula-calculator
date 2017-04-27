@@ -4,7 +4,7 @@ body:after {
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url("/images/circle.png");
+    background-image: url(/images/circle.png);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -23,17 +23,21 @@ body:after {
 .spell-trait {
     margin-left: 1em;
     min-width: 8em;
-    font-style: italic;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .hidden {
     visibility: hidden;
 }
 
-.footer {
+.result {
     float: left;
     clear: left;
     margin-top: 1em;
+}
+
+.obsolete {
+    text-decoration: line-through;
 }
 
 button[type="submit"] {

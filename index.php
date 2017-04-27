@@ -46,7 +46,7 @@ $selectedFormula = $controller->getSelectedFormula();
         <button type="submit">Vybrat</button>
     </form>
 </div>
-<div class="footer">
+<div id="result" class="result">
     <?php require __DIR__ . '/resultingCharacteristics.php'; ?>
 </div>
 <div class="block">
