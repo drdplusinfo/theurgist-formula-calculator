@@ -199,10 +199,62 @@ class IndexController extends StrictObject
     public function getSelectedSpellTraitCodes(): array
     {
         $selectedSpellTraitCodes = [];
-        foreach ($this->getSelectedFormulaSpellTraitIndexes() as $selectedSpellTraitValue) {
-            $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedSpellTraitValue);
+        foreach ($this->getSelectedFormulaSpellTraitIndexes() as $selectedFormulaSpellTraitIndex) {
+            $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedFormulaSpellTraitIndex);
+        }
+        foreach ($this->toFlatArray($this->getSelectedModifiersSpellTraitIndexes()) as $selectedModifiersSpellTraitIndex) {
+            $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedModifiersSpellTraitIndex);
         }
 
         return $selectedSpellTraitCodes;
     }
+
+    private function toFlatArray(array $values): array
+    {
+        $flat = [];
+        foreach ($values as $value) {
+            if (is_array($value)) {
+                foreach ($this->toFlatArray($value) as $subItem) {
+                    $flat[] = $subItem;
+                }
+            } else {
+                $flat[] = $value;
+            }
+        }
+
+        return $flat;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getSelectedModifiersSpellTraitIndexes(): array
+    {
+        if (empty($_GET['modifierSpellTraits'])
+            || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()
+        ) {
+            return [];
+        }
+
+        return $this->buildSelectedTraitsTree((array)$_GET['modifierSpellTraits']);
+    }
+
+    /**
+     * @param array $traitValues
+     * @return array
+     */
+    private function buildSelectedTraitsTree(array $traitValues): array
+    {
+        $traitsTree = [];
+        foreach ($traitValues as $traitValue => $linkedTraits) {
+            if (is_array($linkedTraits)) {
+                $traitsTree[$traitValue] = $this->buildSelectedTraitsTree($linkedTraits); // tree structure
+            } else {
+                $traitsTree[$traitValue] = $traitValue;
+            }
+        }
+
+        return $traitsTree;
+    }
+
 }

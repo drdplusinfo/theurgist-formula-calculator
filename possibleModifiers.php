@@ -9,16 +9,19 @@ use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 
 $selectedModifierIndexes = $controller->getSelectedModifierIndexes();
 $selectedModifierCombinations = $controller->getSelectedModifierCombinations();
+$selectedModifiersSpellTraitIndexes = $controller->getSelectedModifiersSpellTraitIndexes();
 
 /** @var FormulasTable $formulasTable */
 /** @var ModifiersTable $modifiersTable */
 /** @var FormulaCode $selectedFormula */
 /** @var SpellTraitsTable $spellTraitsTable */
-foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
+foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
+    $modifierValue = $modifier->getValue();
+    ?>
     <div class="modifier panel">
         <label>
-            <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox" value="1"
-                   <?php if (array_key_exists($modifier->getValue(), $selectedModifierIndexes)): ?>checked<?php endif ?>>
+            <input name="modifiers[<?= $modifierValue ?>]" type="checkbox" value="1"
+                   <?php if (array_key_exists($modifierValue, $selectedModifierIndexes)): ?>checked<?php endif ?>>
             <?= $modifier->translateTo('cs') ?>
             <span class="forms" title="Forma">
                 <?php
@@ -29,20 +32,24 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
             </span>
         </label>
         <?php $modifierSpellTraits = $modifiersTable->getSpellTraits($modifier);
-        $selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitIndexes();
         if (count($modifierSpellTraits) > 0) { ?>
             <div>
-                <?php foreach ($modifierSpellTraits as $modifierSpellTrait) { ?>
+                <?php foreach ($modifierSpellTraits as $modifierSpellTrait) {
+                    $spellTraitValue = $modifierSpellTrait->getSpellTraitCode()->getValue();
+                    ?>
                     <div class="spell-trait">
                         <label>
                             <input type="checkbox" value="1"
-                                   name="modifierSpellTraits[<?= $modifier->getValue() ?>][<?= $modifierSpellTrait->getSpellTraitCode() ?>]"
-                                   <?php if (in_array($modifierSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
+                                   name="modifierSpellTraits[<?= $modifierValue ?>][<?= $spellTraitValue ?>]"
+                                   <?php if (($selectedModifiersSpellTraitIndexes[$modifierValue][$spellTraitValue] ?? false) === $spellTraitValue) : ?>checked<?php endif ?>>
                             <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
-                            <?php $modifierSpellTrap = $modifierSpellTrait->getTrap($spellTraitsTable);
-                            if ($modifierSpellTrap !== null) {
-                                echo "({$modifierSpellTrap})";
-                            } ?>
+                            <?php $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
+                            if ($trap !== null) { ?>
+                                <span class="trap">(<?php echo $trap->getValue();
+                                    echo " {$trap->getPropertyCode()} [{$trap->getAdditionByRealms()}]";
+
+                                    ?>)</span>
+                            <?php } ?>
                         </label>
                     </div>
                 <?php } ?>
