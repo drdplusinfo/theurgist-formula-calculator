@@ -3,10 +3,12 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
+use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 
 /** @var FormulaCode $selectedFormula */
 /** @var IndexController $controller */
 /** @var FormulasTable $formulasTable */
+/** @var SpellTraitsTable $spellTraitsTable */
 ?>
     <div class="block">
         <div class="panel">
@@ -27,18 +29,23 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             (<?= $formulaForms ?>)
         </span>
     </div>
-<?php $spellTraits = $formulasTable->getSpellTraits($selectedFormula);
-$selectedSpellTraitIndexes = $controller->getSelectedSpellTraitIndexes();
-if (count($spellTraits) > 0) { ?>
+<?php $formulaSpellTraits = $formulasTable->getSpellTraits($selectedFormula);
+$selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitIndexes();
+if (count($formulaSpellTraits) > 0) { ?>
     <div class="block">
         <div class="panel">
             <span class="panel">Rysy:</span>
-            <?php foreach ($spellTraits as $spellTrait) { ?>
+            <?php foreach ($formulaSpellTraits as $formulaSpellTrait) { ?>
                 <div class="spell-trait panel">
                     <label>
-                        <input type="checkbox" name="spellTraits[<?= $spellTrait->getSpellTraitCode() ?>]" value="1"
-                               <?php if (in_array($spellTrait->getSpellTraitCode()->getValue(), $selectedSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
-                        <?= $spellTrait->getSpellTraitCode()->translateTo('cs') ?>
+                        <input type="checkbox" name="formulaSpellTraits[<?= $formulaSpellTrait->getSpellTraitCode() ?>]"
+                               value="1"
+                               <?php if (in_array($formulaSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
+                        <?= $formulaSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
+                        <?php $formulaSpellTrap = $formulaSpellTrait->getTrap($spellTraitsTable);
+                        if ($formulaSpellTrap !== null) {
+                            echo "({$formulaSpellTrap})";
+                        } ?>
                     </label>
                 </div>
             <?php } ?>

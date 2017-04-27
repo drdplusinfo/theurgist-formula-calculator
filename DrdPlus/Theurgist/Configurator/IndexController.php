@@ -184,13 +184,13 @@ class IndexController extends StrictObject
     /**
      * @return array|string[]
      */
-    public function getSelectedSpellTraitIndexes(): array
+    public function getSelectedFormulaSpellTraitIndexes(): array
     {
-        if (empty($_GET['spellTraits']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+        if (empty($_GET['formulaSpellTraits']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
             return [];
         }
 
-        return array_keys($_GET['spellTraits']);
+        return array_keys($_GET['formulaSpellTraits']);
     }
 
     /**
@@ -199,7 +199,7 @@ class IndexController extends StrictObject
     public function getSelectedSpellTraitCodes(): array
     {
         $selectedSpellTraitCodes = [];
-        foreach ($this->getSelectedSpellTraitIndexes() as $selectedSpellTraitValue) {
+        foreach ($this->getSelectedFormulaSpellTraitIndexes() as $selectedSpellTraitValue) {
             $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedSpellTraitValue);
         }
 

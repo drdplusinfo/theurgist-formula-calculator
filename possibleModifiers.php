@@ -5,6 +5,7 @@ namespace DrdPlus\Theurgist\Configurator;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
+use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 
 $selectedModifierIndexes = $controller->getSelectedModifierIndexes();
 $selectedModifierCombinations = $controller->getSelectedModifierCombinations();
@@ -12,6 +13,7 @@ $selectedModifierCombinations = $controller->getSelectedModifierCombinations();
 /** @var FormulasTable $formulasTable */
 /** @var ModifiersTable $modifiersTable */
 /** @var FormulaCode $selectedFormula */
+/** @var SpellTraitsTable $spellTraitsTable */
 foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
     <div class="modifier panel">
         <label>
@@ -26,7 +28,26 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
                 } ?>
             </span>
         </label>
-        <?php
+        <?php $modifierSpellTraits = $modifiersTable->getSpellTraits($modifier);
+        $selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitIndexes();
+        if (count($modifierSpellTraits) > 0) { ?>
+            <div style="background-color: #1b6d85">
+                <?php foreach ($modifierSpellTraits as $modifierSpellTrait) { ?>
+                    <div class="spell-trait">
+                        <label>
+                            <input type="checkbox" value="1"
+                                   name="modifierSpellTraits[<?= $modifier->getValue() ?>][<?= $modifierSpellTrait->getSpellTraitCode() ?>]"
+                                   <?php if (in_array($modifierSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
+                            <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
+                            <?php $modifierSpellTrap = $modifierSpellTrait->getTrap($spellTraitsTable);
+                            if ($modifierSpellTrap !== null) {
+                                echo "({$modifierSpellTrap})";
+                            } ?>
+                        </label>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php }
         // modifiers of modifiers (their chain)
         $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts)
         use (&$showModifiers, $selectedModifierCombinations, $controller) {
