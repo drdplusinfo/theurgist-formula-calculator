@@ -2,7 +2,6 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Tables;
-use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
 use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
@@ -39,27 +38,7 @@ $selectedFormula = $controller->getSelectedFormula();
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
-        <div class="block">
-            <div class="panel">
-                <label>Formule:
-                    <select id="formula" name="formula">
-                        <?php
-                        foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-                            ?>
-                            <option value="<?= $formulaValue ?>"
-                                    <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
-                                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <button type="submit">Vybrat</button>
-            </div>
-            <span class="panel forms">
-                <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormula, 'cs')); ?>
-                (<?= $formulaForms ?> )
-            </span>
-        </div>
+        <?php require __DIR__ . '/selectedFormula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>
             <?php require __DIR__ . '/possibleModifiersOfFormula.php' ?>
