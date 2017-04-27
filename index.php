@@ -3,7 +3,6 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
 use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
@@ -14,10 +13,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 error_reporting(-1);
 ini_set('display_errors', '1');
 
-$controller = new IndexController($modifiersTable = new ModifiersTable(Tables::getIt()));
+$modifiersTable = new ModifiersTable(Tables::getIt());
+$controller = new IndexController($modifiersTable);
 $selectedFormula = $controller->getSelectedFormula();
-$selectedModifierIndexes = $controller->getSelectedModifierIndexes();
-$modifierCombinations = $controller->getModifierCombinations();
 
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
@@ -44,7 +42,8 @@ $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTrait
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
         <div class="block">
-            <div class="panel"><label>Formule:
+            <div class="panel">
+                <label>Formule:
                     <select id="formula" name="formula">
                         <?php
                         foreach (FormulaCode::getPossibleValues() as $formulaValue) {
@@ -58,77 +57,20 @@ $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTrait
                 </label>
                 <button type="submit">Vybrat</button>
             </div>
-            <?php if ($selectedFormula): ?>
-                <span class="panel forms">
+            <span class="panel forms">
                     (Forma: <?php
-                    $forms = [];
-                    foreach ($formulasTable->getForms($selectedFormula) as $formCode) {
-                        $forms[] = $formCode->translateTo('cs');
-                    }
-                    echo implode(', ', $forms);
-                    ?>)
-                </span>
-            <?php endif ?>
+                $forms = [];
+                foreach ($formulasTable->getForms($selectedFormula) as $formCode) {
+                    $forms[] = $formCode->translateTo('cs');
+                }
+                echo implode(', ', $forms);
+                ?>)
+            </span>
         </div>
-        <?php if ($selectedFormula) { ?>
-            <div id="modifiers" class="block">
-                <div>Modifikátory:</div>
-                <?php
-                foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
-                    <div class="modifier panel">
-                        <label>
-                            <input name="modifiers[<?= $modifier->getValue() ?>]" type="checkbox"
-                                   value="<?= $modifier ?>"
-                                   <?php if (array_key_exists($modifier->getValue(), $selectedModifierIndexes)): ?>checked<?php endif ?>>
-                            <?= $modifier->translateTo('cs') ?>
-                            <span class="forms">
-                                <?php
-                                $forms = [];
-                                foreach ($modifiersTable->getForms($modifier) as $formCode) {
-                                    $forms[] = $formCode->translateTo('cs');
-                                }
-                                if (count($forms) > 0) {
-                                    echo '(Forma: ' . implode(', ', $forms) . ')';
-                                } ?>
-                            </span>
-                        </label>
-                        <?php
-                        $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts)
-                        use (&$showModifiers, $modifierCombinations, $modifiersTable, $controller) {
-                            if (array_key_exists($currentModifierValue, $selectedModifiers) && array_key_exists($currentModifierValue, $modifierCombinations)) {
-                                /** @var array|string[] $selectedRelatedModifiers */
-                                $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
-                                /** @var array|ModifierCode[][] $modifierCombinations */
-                                foreach ($modifierCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
-                                    $currentInputNameParts = $inputNameParts;
-                                    $currentInputNameParts[] = $possibleModifierValue;
-                                    ?>
-                                    <div class="modifier">
-                                        <label>
-                                            <input name="modifiers<?= /** @noinspection PhpParamsInspection */
-                                            $controller->createModifierInputIndex($currentInputNameParts) ?>"
-                                                   type="checkbox" value="<?= $possibleModifierValue ?>"
-                                                   <?php if (array_key_exists($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
-                                            <?= /** @var ModifierCode $possibleModifier */
-                                            $possibleModifier->translateTo('cs') ?>
-                                            <span class="forms">
-                                            <?php
-                                            $forms = $controller->getModifiersFormNames($possibleModifier, 'cs');
-                                            if (count($forms) > 0) {
-                                                echo '(Forma: ' . implode(', ', $forms) . ')';
-                                            } ?>
-                                            </span>
-                                        </label>
-                                        <?php $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $currentInputNameParts) ?>
-                                    </div>
-                                <?php }
-                            }
-                        };
-                        $showModifiers($modifier->getValue(), $selectedModifierIndexes, [$modifier->getValue()]); ?>
-                    </div>
-                <?php } ?>
-            </div>
-        <?php } ?>
+        <div id="modifiers" class="block">
+            <div>Modifikátory:</div>
+            <?php require __DIR__ . '/possibleModifiersOfFormula.php' ?>
+        </div>
         <button type="submit">Vybrat</button>
     </form>
 </div>

@@ -148,7 +148,7 @@ class IndexController extends StrictObject
      * @param string $language
      * @return array|string[]
      */
-    public function getModifiersFormNames(ModifierCode $modifierCode, string $language): array
+    public function getModifierFormNames(ModifierCode $modifierCode, string $language): array
     {
         $formNames = [];
         foreach ($this->modifiersTable->getForms($modifierCode) as $formCode) {
