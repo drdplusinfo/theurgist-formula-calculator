@@ -13,11 +13,10 @@ error_reporting(-1);
 ini_set('display_errors', '1');
 
 $modifiersTable = new ModifiersTable(Tables::getIt());
-$controller = new IndexController($modifiersTable);
-$selectedFormula = $controller->getSelectedFormula();
-
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
+$controller = new IndexController($formulasTable, $modifiersTable);
+$selectedFormula = $controller->getSelectedFormula();
 ?>
 <!DOCTYPE html>
 <html lang="cs" xmlns="http://www.w3.org/1999/html">
@@ -57,13 +56,8 @@ $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTrait
                 <button type="submit">Vybrat</button>
             </div>
             <span class="panel forms">
-                    (Forma: <?php
-                $forms = [];
-                foreach ($formulasTable->getForms($selectedFormula) as $formCode) {
-                    $forms[] = $formCode->translateTo('cs');
-                }
-                echo implode(', ', $forms);
-                ?>)
+                <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormula, 'cs')); ?>
+                (<?= $formulaForms ?> )
             </span>
         </div>
         <div id="modifiers" class="block">

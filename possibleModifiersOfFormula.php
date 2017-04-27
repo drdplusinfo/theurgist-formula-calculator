@@ -23,7 +23,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) { ?>
                 <?php
                 $forms = $controller->getModifierFormNames($modifier, 'cs');
                 if (count($forms) > 0) {
-                    echo '(Forma: ' . implode(', ', $forms) . ')';
+                    echo '(' . implode(', ', $forms) . ')';
                 } ?>
             </span>
         </label>

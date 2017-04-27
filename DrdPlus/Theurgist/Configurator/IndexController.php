@@ -3,11 +3,16 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
+use DrdPlus\Theurgist\Formulas\FormulasTable;
 use DrdPlus\Theurgist\Formulas\ModifiersTable;
 use Granam\Strict\Object\StrictObject;
 
 class IndexController extends StrictObject
 {
+    /**
+     * @var FormulasTable
+     */
+    private $formulasTable;
     /**
      * @var ModifiersTable
      */
@@ -18,10 +23,12 @@ class IndexController extends StrictObject
     private $selectedFormula;
 
     /**
+     * @param FormulasTable $formulasTable
      * @param ModifiersTable $modifiersTable
      */
-    public function __construct(ModifiersTable $modifiersTable)
+    public function __construct(FormulasTable $formulasTable, ModifiersTable $modifiersTable)
     {
+        $this->formulasTable = $formulasTable;
         $this->modifiersTable = $modifiersTable;
     }
 
@@ -35,6 +42,21 @@ class IndexController extends StrictObject
         }
 
         return $this->selectedFormula;
+    }
+
+    /**
+     * @param FormulaCode $formulaCode
+     * @param string $language
+     * @return array|string[]
+     */
+    public function getFormulaFormNames(FormulaCode $formulaCode, string $language): array
+    {
+        $formNames = [];
+        foreach ($this->formulasTable->getForms($formulaCode) as $formCode) {
+            $formNames[] = $formCode->translateTo($language);
+        }
+
+        return $formNames;
     }
 
     /**
