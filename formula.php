@@ -12,19 +12,21 @@ use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 ?>
     <div class="block">
         <div class="panel">
-            <label>Formule:
-                <select id="formula" name="formula">
-                    <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
-                        <option value="<?= $formulaValue ?>"
-                                <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
-                            <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </label>
-            <button type="submit">Vybrat</button>
-            <?php $formulaDifficulty = $formulasTable->getDifficulty($selectedFormula); ?>
-            <span><?= ($formulaDifficulty->getValue() > 0 ? '+' : '') . $formulaDifficulty ?></span>
+            <span class="panel">
+                <label>Formule:
+                    <select id="formula" name="formula">
+                        <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
+                            <option value="<?= $formulaValue ?>"
+                                    <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
+                                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </label>
+                <button type="submit">Vybrat</button>
+                <?php $formulaDifficulty = $formulasTable->getDifficulty($selectedFormula); ?>
+            </span>
+            <span class="panel"><?= ($formulaDifficulty->getValue() > 0 ? '+' : '') . $formulaDifficulty ?></span>
         </div>
         <span class="panel forms" title="Forma">
             <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormula, 'cs')); ?>
