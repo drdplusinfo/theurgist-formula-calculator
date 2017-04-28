@@ -160,6 +160,24 @@ class IndexController extends StrictObject
     }
 
     /**
+     * @param array $modifiersChain
+     * @param string $spellTraitName
+     * @return string
+     */
+    public function createSpellTraitInputIndex(array $modifiersChain, string $spellTraitName): string
+    {
+        $wrapped = array_map(
+            function (string $chainPart) {
+                return "[!$chainPart!]"; // wrapped by ! to avoid conflict with same named spell trait on long chain
+            },
+            $modifiersChain
+        );
+        $wrapped[] = "[{$spellTraitName}]";
+
+        return implode($wrapped);
+    }
+
+    /**
      * @param ModifierCode $modifierCode
      * @param string $language
      * @return array|string[]
@@ -195,7 +213,7 @@ class IndexController extends StrictObject
         foreach ($this->getSelectedFormulaSpellTraitIndexes() as $selectedFormulaSpellTraitIndex) {
             $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedFormulaSpellTraitIndex);
         }
-        foreach ($this->toFlatArray($this->getSelectedModifiersSpellTraits()) as $selectedModifiersSpellTraitIndex) {
+        foreach ($this->getBagEnds($this->getSelectedModifiersSpellTraits()) as $selectedModifiersSpellTraitIndex) {
             $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedModifiersSpellTraitIndex);
         }
 
@@ -219,6 +237,22 @@ class IndexController extends StrictObject
         return $flat;
     }
 
+    private function getBagEnds(array $values): array
+    {
+        $bagEnds = [];
+        foreach ($values as $value) {
+            if (is_array($value)) {
+                foreach ($this->getBagEnds($value) as $subItem) {
+                    $bagEnds[] = $subItem;
+                }
+            } else {
+                $bagEnds[] = $value;
+            }
+        }
+
+        return $bagEnds;
+    }
+
     /**
      * @return array|string[]
      */
@@ -240,11 +274,11 @@ class IndexController extends StrictObject
     private function buildSelectedTraitsTree(array $traitValues): array
     {
         $traitsTree = [];
-        foreach ($traitValues as $traitValue => $linkedTraits) {
+        foreach ($traitValues as $movementOrTrait => $linkedTraits) {
             if (is_array($linkedTraits)) {
-                $traitsTree[$traitValue] = $this->buildSelectedTraitsTree($linkedTraits); // tree structure
+                $traitsTree[trim($movementOrTrait, '!')] = $this->buildSelectedTraitsTree($linkedTraits); // tree structure
             } else {
-                $traitsTree[$traitValue] = $traitValue;
+                $traitsTree[$movementOrTrait /* trait */] = $movementOrTrait;
             }
         }
 

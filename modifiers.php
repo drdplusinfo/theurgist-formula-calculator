@@ -53,7 +53,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                         <div class="spell-trait">
                             <label>
                                 <input type="checkbox" value="1"
-                                       name="modifierSpellTraits[<?= $modifierValue ?>][<?= $spellTraitValue ?>]"
+                                       name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex([$modifierValue], $spellTraitValue) ?>"
                                        <?php if (($selectedModifiersSpellTraits[$modifierValue][$spellTraitValue] ?? false) === $spellTraitValue) : ?>checked<?php endif ?>>
                                 <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
                                 <?php $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
@@ -112,7 +112,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                             <div class="spell-trait">
                                                 <label>
                                                     <input type="checkbox" value="1"
-                                                           name="modifierSpellTraits<?= $controller->createModifierInputIndex($currentInputNameParts) ?>[<?= $spellTraitValue ?>]"
+                                                           name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex($currentInputNameParts, $spellTraitValue) ?>"
                                                            <?php if (array_key_exists($spellTraitValue, $selectedModifierSpellTraits)) : ?>checked<?php endif ?>>
                                                     <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
                                                     <?php $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
