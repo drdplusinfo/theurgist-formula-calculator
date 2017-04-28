@@ -205,8 +205,9 @@ class IndexController extends StrictObject
     private function toFlatArray(array $values): array
     {
         $flat = [];
-        foreach ($values as $value) {
+        foreach ($values as $index => $value) {
             if (is_array($value)) {
+                $flat[] = $index;
                 foreach ($this->toFlatArray($value) as $subItem) {
                     $flat[] = $subItem;
                 }

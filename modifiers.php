@@ -17,8 +17,7 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiersT
         return false;
     }
 
-    return $selection === $modifierValue /* bag end */ || is_array($selection) /* still traversing on the tree */
-        ;
+    return $selection === $modifierValue /* bag end */ || is_array($selection); /* still traversing on the tree */
 };
 
 /** @var FormulasTable $formulasTable */
