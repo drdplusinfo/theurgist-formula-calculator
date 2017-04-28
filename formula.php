@@ -44,6 +44,9 @@ if (count($formulaSpellTraits) > 0) { ?>
                                value="1"
                                <?php if (in_array($formulaSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
                         <?= $formulaSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
+                        <?php
+                        $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($formulaSpellTrait->getSpellTraitCode());
+                        echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() ?>
                         <?php $trap = $formulaSpellTrait->getTrap($spellTraitsTable);
                         if ($trap !== null) { ?>
                             <span class="trap">(<?php echo $trap->getValue();

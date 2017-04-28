@@ -32,8 +32,8 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
             <input name="modifiers[<?= $modifierValue ?>]" type="checkbox" value="1"
                    <?php if ($isModifierSelected($modifierValue, $selectedModifiersTree)): ?>checked<?php endif ?>>
             <?= $modifier->translateTo('cs') ?>
-            <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($modifier) ?>
-            <span><?= ($modifierDifficultyChange->getValue() > 0 ? '+' : '') . $modifiersTable->getDifficultyChange($modifier) ?></span>
+            <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($modifier)->getValue() ?>
+            <span><?= ($modifierDifficultyChange > 0 ? '+' : '') . $modifierDifficultyChange ?></span>
             <span class="forms" title="Forma">
                 <?php
                 $forms = $controller->getModifierFormNames($modifier, 'cs');
@@ -56,7 +56,9 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                        name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex([$modifierValue], $spellTraitValue) ?>"
                                        <?php if (($selectedModifiersSpellTraits[$modifierValue][$spellTraitValue] ?? false) === $spellTraitValue) : ?>checked<?php endif ?>>
                                 <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
-                                <?php $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
+                                <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
+                                echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
+                                $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
                                 if ($trap !== null) { ?>
                                     <span class="trap">(<?php echo $trap->getValue();
                                         echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByRealms()}]";
@@ -92,7 +94,9 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                        value="1"
                                        <?php if ($isModifierSelected($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
                                 <?= /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
-                                $possibleModifier->translateTo('cs') ?>
+                                $possibleModifier->translateTo('cs');
+                                $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
+                                <span><?= ($modifierDifficultyChange > 0 ? '+' : '') . $modifierDifficultyChange ?></span>
                                 <span class="forms" title="Forma">
                                 <?php
                                 $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
@@ -115,7 +119,9 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                                            name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex($currentInputNameParts, $spellTraitValue) ?>"
                                                            <?php if (array_key_exists($spellTraitValue, $selectedModifierSpellTraits)) : ?>checked<?php endif ?>>
                                                     <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
-                                                    <?php $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
+                                                    <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
+                                                    echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
+                                                    $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
                                                     if ($trap !== null) { ?>
                                                         <span class="trap">(<?php echo $trap->getValue();
                                                             echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByRealms()}]";
