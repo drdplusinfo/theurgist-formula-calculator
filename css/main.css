@@ -27,6 +27,12 @@ body:after {
     font-style: normal;
 }
 
+.spell-trait input[type=checkbox] {
+    margin: 0;
+    position: relative;
+    left: 0.3em;
+}
+
 .trap {
     font-size: small;
 }
@@ -56,6 +62,7 @@ button[type="submit"] {
 
 .panel {
     float: left;
+    margin-bottom: 0.2em;
 }
 
 .forms {

@@ -64,17 +64,17 @@ class IndexController extends StrictObject
     /**
      * @return array|ModifierCode[][]
      */
-    public function getSelectedModifierCombinations(): array
+    public function getSelectedModifiersCombinations(): array
     {
-        $selectedModifierIndexes = $this->getSelectedModifierIndexes();
-        if (count($selectedModifierIndexes) === 0) {
+        $selectedModifiersTree = $this->getSelectedModifiersTree();
+        if (count($selectedModifiersTree) === 0) {
             return [];
         }
 
-        return $this->buildPossibleModifiersTree($selectedModifierIndexes);
+        return $this->buildPossibleModifiersTree($selectedModifiersTree);
     }
 
-    public function getSelectedModifierIndexes(): array
+    public function getSelectedModifiersTree(): array
     {
         if (empty($_GET['modifiers']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
             return [];
@@ -95,6 +95,9 @@ class IndexController extends StrictObject
                     $modifiers[$modifierValue][$relatedModifierCode->getValue()] = $relatedModifierCode;
                 }
             }
+            if (!is_array($relatedModifierValues)) {
+                continue; // bag end
+            }
             // tree structure
             foreach ($this->buildPossibleModifiersTree($relatedModifierValues) as $relatedModifierValue => $relatedModifiers) {
                 // into flat array
@@ -112,7 +115,7 @@ class IndexController extends StrictObject
             if (is_array($linkedModifiers)) {
                 $modifiers[$modifierValue] = $this->buildSelectedModifiersTree($linkedModifiers); // tree structure
             } else {
-                $modifiers[$modifierValue] = []; // dead end
+                $modifiers[$modifierValue] = $modifierValue;
             }
         }
 
@@ -132,22 +135,12 @@ class IndexController extends StrictObject
      */
     public function getSelectedModifierCodes(): array
     {
-        return $this->keysToModifiers($this->getSelectedModifierIndexes());
-    }
-
-    private function keysToModifiers(array $modifierNamesAsKeys): array
-    {
-        $modifiers = [];
-        foreach ($modifierNamesAsKeys as $modifierName => $childModifierNamesAsKeys) {
-            $modifiers[] = ModifierCode::getIt($modifierName);
-            if (is_array($childModifierNamesAsKeys)) {
-                foreach ($this->keysToModifiers($childModifierNamesAsKeys) as $childModifier) {
-                    $modifiers[] = $childModifier;
-                }
-            }
+        $selectedModifierCodes = [];
+        foreach ($this->toFlatArray($this->getSelectedModifiersTree()) as $selectedModifierValue) {
+            $selectedModifierCodes[] = ModifierCode::getIt($selectedModifierValue);
         }
 
-        return $modifiers;
+        return $selectedModifierCodes;
     }
 
     /**
@@ -202,7 +195,7 @@ class IndexController extends StrictObject
         foreach ($this->getSelectedFormulaSpellTraitIndexes() as $selectedFormulaSpellTraitIndex) {
             $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedFormulaSpellTraitIndex);
         }
-        foreach ($this->toFlatArray($this->getSelectedModifiersSpellTraitIndexes()) as $selectedModifiersSpellTraitIndex) {
+        foreach ($this->toFlatArray($this->getSelectedModifiersSpellTraits()) as $selectedModifiersSpellTraitIndex) {
             $selectedSpellTraitCodes[] = SpellTraitCode::getIt($selectedModifiersSpellTraitIndex);
         }
 
@@ -228,7 +221,7 @@ class IndexController extends StrictObject
     /**
      * @return array|string[]
      */
-    public function getSelectedModifiersSpellTraitIndexes(): array
+    public function getSelectedModifiersSpellTraits(): array
     {
         if (empty($_GET['modifierSpellTraits'])
             || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()

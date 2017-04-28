@@ -42,10 +42,12 @@ if (count($formulaSpellTraits) > 0) { ?>
                                value="1"
                                <?php if (in_array($formulaSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraitIndexes, true)) : ?>checked<?php endif ?>>
                         <?= $formulaSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
-                        <?php $formulaSpellTrap = $formulaSpellTrait->getTrap($spellTraitsTable);
-                        if ($formulaSpellTrap !== null) {
-                            echo "({$formulaSpellTrap})";
-                        } ?>
+                        <?php $trap = $formulaSpellTrait->getTrap($spellTraitsTable);
+                        if ($trap !== null) { ?>
+                            <span class="trap">(<?php echo $trap->getValue();
+                                echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByRealms()}]"; ?>
+                                )</span>
+                        <?php } ?>
                     </label>
                 </div>
             <?php } ?>
