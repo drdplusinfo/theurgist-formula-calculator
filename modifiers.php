@@ -67,8 +67,8 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
             // modifiers of modifiers (their chain)
             $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts)
             use (&$showModifiers, $selectedModifiersCombinations, $controller, $isModifierSelected) {
-                if ($isModifierSelected($currentModifierValue, $selectedModifiers) // is selected
-                    && array_key_exists($currentModifierValue, $selectedModifiersCombinations) // and combination is still possible
+                if (array_key_exists($currentModifierValue, $selectedModifiersCombinations) // combination is still possible
+                    && $isModifierSelected($currentModifierValue, $selectedModifiers) // and is selected
                 ) {
                     /** @var array|string[] $selectedRelatedModifiers */
                     $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
