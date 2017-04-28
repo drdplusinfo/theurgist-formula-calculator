@@ -23,6 +23,8 @@ use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
                 </select>
             </label>
             <button type="submit">Vybrat</button>
+            <?php $formulaDifficulty = $formulasTable->getDifficulty($selectedFormula); ?>
+            <span><?= ($formulaDifficulty->getValue() > 0 ? '+' : '') . $formulaDifficulty ?></span>
         </div>
         <span class="panel forms" title="Forma">
             <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormula, 'cs')); ?>
@@ -34,7 +36,7 @@ $selectedFormulaSpellTraitIndexes = $controller->getSelectedFormulaSpellTraitInd
 if (count($formulaSpellTraits) > 0) { ?>
     <div class="block">
         <div class="panel">
-            <div>Rysy:</div>
+            <span class="panel">Rysy:</span>
             <?php foreach ($formulaSpellTraits as $formulaSpellTrait) { ?>
                 <div class="spell-trait panel">
                     <label>

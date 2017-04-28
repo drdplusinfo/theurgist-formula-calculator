@@ -58,11 +58,11 @@ button[type="submit"] {
 .block {
     clear: left;
     float: left;
+    margin-bottom: 0.3em;
 }
 
 .panel {
     float: left;
-    margin-bottom: 0.2em;
 }
 
 .forms {

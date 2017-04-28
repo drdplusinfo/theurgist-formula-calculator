@@ -21,7 +21,7 @@ $selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
         </ol>
     </div>
     <div>
-        Náročnost: <?= $formulasTable->getDifficultyOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits) ?>
+        Náročnost: <?= $formulasTable->getDifficultyOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits)->getValue() ?>
     </div>
     <div>
         <?php
