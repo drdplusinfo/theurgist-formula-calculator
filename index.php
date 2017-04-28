@@ -29,9 +29,8 @@ $selectedFormula = $controller->getSelectedFormula();
         <link rel="stylesheet" type="text/css" href="css/no_script.css">
     </noscript>
     <script src="js/main.js"></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"/>
-    <script type="text/javascript" src="js/facebook.js"></script>
+    <link rel="stylesheet" href="css/gh-fork-ribbon.min.css"/>
+    <script type="text/javascript" src="js/facebook.js" async></script>
 </head>
 <body>
 <div id="fb-root"></div>
