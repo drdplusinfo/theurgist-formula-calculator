@@ -18,9 +18,12 @@ body:after {
     margin-right: 0.5em;
 }
 
+.attribute {
+    margin-left: 1em;
+}
+
 .modifier {
     margin-left: 1em;
-    min-width: 8em;
     font-style: italic;
 }
 
