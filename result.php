@@ -4,6 +4,7 @@ namespace DrdPlus\Theurgist\Configurator;
 /** @var FormulaCode $selectedFormula */
 /** @var FormulasTable $formulasTable */
 /** @var IndexController $controller */
+use DrdPlus\Codes\TimeUnitCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
@@ -44,8 +45,14 @@ $selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
         <?php $evocationOfModified = $formulasTable->getEvocationOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
         $evocationTime = $evocationOfModified->getEvocationTime(Tables::getIt()->getTimeTable());
         $evocationUnitInCzech = $evocationTime->getUnitCode()->translateTo('cs', $evocationTime->getValue());
-        echo ($evocationOfModified->getValue() >= 0 ? '+' : '')
-            . "{$evocationOfModified->getValue()}  ({$evocationTime->getValue()} {$evocationUnitInCzech})";
+        $evocationTimeDescription = ($evocationOfModified->getValue() >= 0 ? '+' : '') . $evocationOfModified->getValue();
+        $evocationTimeDescription .= " ({$evocationTime->getValue()} {$evocationUnitInCzech}";
+        if ($evocationTime->getUnitCode()->getValue() === TimeUnitCode::ROUND && $evocationTimeInMinutes = $evocationTime->findMinutes()) {
+            $evocationInMinutesUnitInCzech = $evocationTimeInMinutes->getUnitCode()->translateTo('cs', $evocationTimeInMinutes->getValue());
+            $evocationTimeDescription .= ', ' . $evocationTimeInMinutes->getValue() . ' ' . $evocationInMinutesUnitInCzech;
+        }
+        $evocationTimeDescription .= ')';
+        echo $evocationTimeDescription;
         ?>
     </div>
     <div>
