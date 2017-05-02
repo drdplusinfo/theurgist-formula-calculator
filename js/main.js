@@ -5,11 +5,20 @@ window.addEventListener('load', function () {
     var submitForm = function () {
         form.submit();
     };
-    var disableInputs = function () {
+    var enableInputs = function () {
+        for (var j = 0, length = inputs.length; j < length; j++) {
+            inputs[j].disabled = null;
+        }
+        formula.disabled = null;
+    };
+    var disableInputs = function (forMiliSeconds) {
         for (var j = 0, length = inputs.length; j < length; j++) {
             inputs[j].disabled = true;
         }
         formula.disabled = true;
+        if (forMiliSeconds) {
+            window.setTimeout(enableInputs, forMiliSeconds /* unlock after */)
+        }
     };
     var invalidateResult = function () {
         document.getElementById('result').className += ' obsolete';
@@ -25,7 +34,7 @@ window.addEventListener('load', function () {
     }
     formula.addEventListener('change', function () {
         submitForm();
-        disableInputs();
+        disableInputs(5000);
         invalidateResult();
     });
 });

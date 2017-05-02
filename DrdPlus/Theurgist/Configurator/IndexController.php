@@ -64,14 +64,9 @@ class IndexController extends StrictObject
     /**
      * @return array|ModifierCode[][]
      */
-    public function getSelectedModifiersCombinations(): array
+    public function getModifierCombinations(): array
     {
-        $selectedModifiersTree = $this->getSelectedModifiersTree();
-        if (count($selectedModifiersTree) === 0) {
-            return [];
-        }
-
-        return $this->buildPossibleModifiersTree($selectedModifiersTree);
+        return $this->buildPossibleModifiersTree(ModifierCode::getPossibleValues());
     }
 
     public function getSelectedModifiersTree(): array
@@ -83,25 +78,26 @@ class IndexController extends StrictObject
         return $this->buildSelectedModifiersTree((array)$_GET['modifiers']);
     }
 
-    private function buildPossibleModifiersTree(array $modifierValues): array
+    private function buildPossibleModifiersTree(array $modifierValues, array $processedModifiers = []): array
     {
         $modifiers = [];
-        foreach ($modifierValues as $modifierValue => $relatedModifierValues) {
-            if (!array_key_exists($modifierValue, $modifiers)) { // otherwise skip already processed relating modifiers
+        $childModifierValues = [];
+        foreach ($modifierValues as $modifierValue) {
+            if (!array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
                 /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-                foreach ($this->modifiersTable->getChildModifiers($modifierCode) as $relatedModifierCode) {
+                foreach ($this->modifiersTable->getChildModifiers($modifierCode) as $childModifier) {
                     // by-related-modifier-indexed flat array
-                    $modifiers[$modifierValue][$relatedModifierCode->getValue()] = $relatedModifierCode;
+                    $modifiers[$modifierValue][$childModifier->getValue()] = $childModifier;
+                    $childModifierValues[] = $childModifier->getValue();
                 }
             }
-            if (!is_array($relatedModifierValues)) {
-                continue; // bag end
-            }
-            // tree structure
-            foreach ($this->buildPossibleModifiersTree($relatedModifierValues) as $relatedModifierValue => $relatedModifiers) {
-                // into flat array
-                $modifiers[$relatedModifierValue] = $relatedModifiers; // can overrides previously set (would be the very same so no harm)
+        }
+        $childModifiersToAdd = array_diff($childModifierValues, $modifierValues); // not yet processed in current loop
+        if (count($childModifiersToAdd) > 0) {
+            // flat array
+            foreach ($this->buildPossibleModifiersTree($childModifiersToAdd, $modifiers) as $modifierValueToAdd => $modifierToAdd) {
+                $modifiers[$modifierValueToAdd] = $modifierToAdd;
             }
         }
 
@@ -111,11 +107,22 @@ class IndexController extends StrictObject
     private function buildSelectedModifiersTree(array $modifierValues): array
     {
         $modifiers = [];
-        foreach ($modifierValues as $modifierValue => $linkedModifiers) {
-            if (is_array($linkedModifiers)) {
-                $modifiers[$modifierValue] = $this->buildSelectedModifiersTree($linkedModifiers); // tree structure
-            } else {
-                $modifiers[$modifierValue] = $modifierValue;
+        $expectedParentModifier = '';
+        /**
+         * @var string $levelToParentModifier
+         * @var array|string[] $levelModifiers
+         */
+        foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
+            list($level, $parentModifier) = explode('-', $levelToParentModifier);
+            if ($expectedParentModifier !== $parentModifier) {
+                continue; // skip branch without selected parent modifier (early bag end)
+            }
+            if (array_key_exists($level, $modifiers)) {
+                throw new \LogicException("Level {$level} of modifiers tree has been already processed");
+            }
+            $modifiers[$level] = [];
+            foreach ($levelModifiers as $levelModifier) {
+                $modifiers[$level][$levelModifier] = $levelModifier;
             }
         }
 
@@ -136,8 +143,10 @@ class IndexController extends StrictObject
     public function getSelectedModifierCodes(): array
     {
         $selectedModifierCodes = [];
-        foreach ($this->toFlatArray($this->getSelectedModifiersTree()) as $selectedModifierValue) {
-            $selectedModifierCodes[] = ModifierCode::getIt($selectedModifierValue);
+        foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
+            foreach ($selectedLevelModifiers as $selectedLevelModifier) {
+                $selectedModifierCodes[] = ModifierCode::getIt($selectedLevelModifier);
+            }
         }
 
         return $selectedModifierCodes;

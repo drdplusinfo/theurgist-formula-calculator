@@ -33,6 +33,6 @@ use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
             (<?= $formulaForms ?>)
         </span>
     </div>
-<?php
+    <?php
 require __DIR__ . '/formula_parameters.php';
 require __DIR__ . '/formula_spell_traits.php';

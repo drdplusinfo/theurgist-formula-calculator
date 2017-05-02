@@ -8,11 +8,15 @@ use DrdPlus\Theurgist\Formulas\ModifiersTable;
 use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
 
 $selectedModifiersTree = $controller->getSelectedModifiersTree();
-$selectedModifiersCombinations = $controller->getSelectedModifiersCombinations();
+$modifierCombinations = $controller->getModifierCombinations();
 $selectedModifiersSpellTraits = $controller->getSelectedModifiersSpellTraits();
 
-$isModifierSelected = function (string $modifierValue, array $selectedModifiersTreePart) {
-    $selection = $selectedModifiersTreePart[$modifierValue] ?? false;
+$isModifierSelected = function (string $modifierValue, array $selectedModifiers, int $treeLevel) {
+    $levelSelection = $selectedModifiers[$treeLevel] ?? false;
+    if ($levelSelection === false) {
+        return false;
+    }
+    $selection = $levelSelection[$modifierValue] ?? false;
     if ($selection === false) {
         return false;
     }
@@ -29,8 +33,8 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
     ?>
     <div class="modifier panel">
         <label>
-            <input name="modifiers[<?= $modifierValue ?>]" type="checkbox" value="1"
-                   <?php if ($isModifierSelected($modifierValue, $selectedModifiersTree)): ?>checked<?php endif ?>>
+            <input name="modifiers[1-][]" type="checkbox" value="<?= $modifierValue ?>"
+                   <?php if ($isModifierSelected($modifierValue, $selectedModifiersTree, 1)): ?>checked<?php endif ?>>
             <?= $modifier->translateTo('cs') ?>
             <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($modifier)->getValue() ?>
             <span><?= ($modifierDifficultyChange > 0 ? '+' : '') . $modifierDifficultyChange ?></span>
@@ -43,7 +47,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
             </span>
         </label>
         <?php
-        if ($isModifierSelected($modifierValue, $selectedModifiersTree)) {
+        if ($isModifierSelected($modifierValue, $selectedModifiersTree, 1)) {
             $modifierSpellTraits = $modifiersTable->getSpellTraits($modifier);
             if (count($modifierSpellTraits) > 0) { ?>
                 <div>
@@ -53,7 +57,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                         <div class="spell-trait">
                             <label>
                                 <input type="checkbox" value="1"
-                                       name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex([$modifierValue], $spellTraitValue) ?>"
+                                       name="modifierSpellTraits[1-][[]"
                                        <?php if (($selectedModifiersSpellTraits[$modifierValue][$spellTraitValue] ?? false) === $spellTraitValue) : ?>checked<?php endif ?>>
                                 <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
                                 <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
@@ -70,29 +74,27 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                 </div>
             <?php }
             // modifiers of modifiers (their chain)
-            $showModifiers = function (string $currentModifierValue, array $selectedModifiers, array $inputNameParts, array $selectedSpellTraits, bool $showUnchecked = false)
-            use (&$showModifiers, $selectedModifiersCombinations, $controller, $isModifierSelected, $modifiersTable, $spellTraitsTable) {
-                if ($showUnchecked
-                    || (array_key_exists($currentModifierValue, $selectedModifiersCombinations) // combination is possible
-                        && $isModifierSelected($currentModifierValue, $selectedModifiers) // and is selected
+            $showModifiers = function (string $parentModifierValue, array $selectedModifiers, int $treeLevel, array $selectedSpellTraits, bool $showUnchecked = false)
+            use (&$showModifiers, $modifierCombinations, $controller, $isModifierSelected, $modifiersTable, $spellTraitsTable) {
+                if ($showUnchecked // show tree of selected modifiers only
+                    || (array_key_exists($parentModifierValue, $modifierCombinations) // combination is possible
+                        && $isModifierSelected($parentModifierValue, $selectedModifiers, $treeLevel) // and is selected
                     )
                 ) {
                     /** @var array|string[] $selectedRelatedModifiers */
-                    $selectedRelatedModifiers = $selectedModifiers[$currentModifierValue];
+                    $selectedRelatedModifiers = $selectedModifiers[$parentModifierValue];
                     $selectedRelatedModifiers = is_array($selectedRelatedModifiers) ? $selectedRelatedModifiers : []; // bag end
-                    $selectedRelatedSpellTraits = $selectedSpellTraits[$currentModifierValue] ?? [];
+                    $selectedRelatedSpellTraits = $selectedSpellTraits[$parentModifierValue] ?? [];
                     $selectedRelatedSpellTraits = is_array($selectedRelatedSpellTraits) ? $selectedRelatedSpellTraits : []; // bag end
-                    /** @var array|\DrdPlus\Theurgist\Codes\ModifierCode[][] $selectedModifiersCombinations */
-                    foreach ($selectedModifiersCombinations[$currentModifierValue] as $possibleModifierValue => $possibleModifier) {
-                        $currentInputNameParts = $inputNameParts;
-                        $currentInputNameParts[] = $possibleModifierValue;
-                        ?>
+                    $modifiersIndex = "{$treeLevel}-{$parentModifierValue}";
+                    /** @var array|\DrdPlus\Theurgist\Codes\ModifierCode[][] $modifierCombinations */
+                    foreach ($modifierCombinations[$parentModifierValue] as $possibleModifierValue => $possibleModifier) { ?>
                         <div class="modifier">
                             <label>
-                                <input name="modifiers<?= $controller->createModifierInputIndex($currentInputNameParts) ?>"
+                                <input name="modifiers[<?= $modifiersIndex ?>][]"
                                        type="checkbox"
-                                       value="1"
-                                       <?php if ($isModifierSelected($possibleModifierValue, $selectedRelatedModifiers)): ?>checked<?php endif ?>>
+                                       value="<?= $possibleModifierValue ?>"
+                                       <?php if ($isModifierSelected($possibleModifierValue, $selectedModifiers, $treeLevel)): ?>checked<?php endif ?>>
                                 <?= /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
                                 $possibleModifier->translateTo('cs');
                                 $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
@@ -105,7 +107,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                 } ?>
                             </span>
                             </label>
-                            <?php if ($isModifierSelected($possibleModifierValue, $selectedRelatedModifiers)) {
+                            <?php if ($isModifierSelected($possibleModifierValue, $selectedRelatedModifiers, $treeLevel)) {
                                 $modifierSpellTraits = $modifiersTable->getSpellTraits($possibleModifier);
                                 $selectedModifierSpellTraits = $selectedRelatedSpellTraits[$possibleModifierValue] ?? [];
                                 if (count($modifierSpellTraits) > 0) { ?>
@@ -116,7 +118,7 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                             <div class="spell-trait">
                                                 <label>
                                                     <input type="checkbox" value="1"
-                                                           name="modifierSpellTraits<?= $controller->createSpellTraitInputIndex($currentInputNameParts, $spellTraitValue) ?>"
+                                                           name="modifierSpellTraits[<?= "{$modifiersIndex}-{$parentModifierValue}" ?>][]"
                                                            <?php if (array_key_exists($spellTraitValue, $selectedModifierSpellTraits)) : ?>checked<?php endif ?>>
                                                     <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
                                                     <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
@@ -133,12 +135,12 @@ foreach ($formulasTable->getModifiers($selectedFormula) as $modifier) {
                                     </div>
                                 <?php }
                             }
-                            $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $currentInputNameParts, $selectedRelatedSpellTraits); /* recursion to build tree */ ?>
+                            $showModifiers($possibleModifierValue, $selectedRelatedModifiers, $treeLevel + 1, $selectedRelatedSpellTraits); /* recursion to build tree */ ?>
                         </div>
                     <?php }
                 }
             };
-            $showModifiers($modifier->getValue(), $selectedModifiersTree, [$modifier->getValue()], $selectedModifiersSpellTraits, false /* do not show not-checked */);
+            $showModifiers($modifier->getValue(), $selectedModifiersTree, 2 /* tree level */, $selectedModifiersSpellTraits, false /* do not show not-checked */);
         } ?>
     </div>
 <?php }
