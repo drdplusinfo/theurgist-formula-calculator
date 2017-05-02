@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "d776b48cc5ec938fdd246afe2ce7507cbef33159"
+                "reference": "0fc19e97472bb570bfb809a0003b6a2b157aa3d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/d776b48cc5ec938fdd246afe2ce7507cbef33159",
-                "reference": "d776b48cc5ec938fdd246afe2ce7507cbef33159",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/0fc19e97472bb570bfb809a0003b6a2b157aa3d2",
+                "reference": "0fc19e97472bb570bfb809a0003b6a2b157aa3d2",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +797,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2017-04-29 19:48:13"
+            "time": "2017-04-30 11:34:01"
         },
         {
             "name": "drd-plus/properties",
@@ -805,12 +805,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-properties.git",
-                "reference": "7a6d906f7454435917d9e0e1a45e5d2a8468556b"
+                "reference": "dce46c42bd949a8c39932419423fd8f7cdfd7bfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-properties/zipball/7a6d906f7454435917d9e0e1a45e5d2a8468556b",
-                "reference": "7a6d906f7454435917d9e0e1a45e5d2a8468556b",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-properties/zipball/dce46c42bd949a8c39932419423fd8f7cdfd7bfd",
+                "reference": "dce46c42bd949a8c39932419423fd8f7cdfd7bfd",
                 "shasum": ""
             },
             "require": {
@@ -841,7 +841,7 @@
                 "MIT"
             ],
             "description": "Drd+ properties",
-            "time": "2017-04-22 12:54:37"
+            "time": "2017-04-30 06:24:31"
         },
         {
             "name": "drd-plus/tables",
@@ -849,12 +849,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-tables.git",
-                "reference": "b01c38a0e2e120557658296419c9c639b03fd83c"
+                "reference": "a0dd1aaaea271d64d7d23963d9999a9efafcbcbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/b01c38a0e2e120557658296419c9c639b03fd83c",
-                "reference": "b01c38a0e2e120557658296419c9c639b03fd83c",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/a0dd1aaaea271d64d7d23963d9999a9efafcbcbd",
+                "reference": "a0dd1aaaea271d64d7d23963d9999a9efafcbcbd",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2017-04-29 19:58:16"
+            "time": "2017-04-30 11:45:23"
         },
         {
             "name": "drd-plus/theurgist-codes",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "253b1612925a2e48a0d679345388218f6b0abc43"
+                "reference": "48bc1fedee3248b851396af6a3b5e3b15abbe5bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/253b1612925a2e48a0d679345388218f6b0abc43",
-                "reference": "253b1612925a2e48a0d679345388218f6b0abc43",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/48bc1fedee3248b851396af6a3b5e3b15abbe5bc",
+                "reference": "48bc1fedee3248b851396af6a3b5e3b15abbe5bc",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-04-27 10:55:00"
+            "time": "2017-05-02 05:08:59"
         },
         {
             "name": "drd/dice-rolls",

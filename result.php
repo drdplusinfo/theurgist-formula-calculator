@@ -47,7 +47,7 @@ $selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
         $evocationUnitInCzech = $evocationTime->getUnitCode()->translateTo('cs', $evocationTime->getValue());
         $evocationTimeDescription = ($evocationOfModified->getValue() >= 0 ? '+' : '') . $evocationOfModified->getValue();
         $evocationTimeDescription .= " ({$evocationTime->getValue()} {$evocationUnitInCzech}";
-        if ($evocationTime->getUnitCode()->getValue() === TimeUnitCode::ROUND && $evocationTimeInMinutes = $evocationTime->findMinutes()) {
+        if (($evocationTimeInMinutes = $evocationTime->findMinutes()) && $evocationTime->getUnitCode()->getValue() === TimeUnitCode::ROUND) {
             $evocationInMinutesUnitInCzech = $evocationTimeInMinutes->getUnitCode()->translateTo('cs', $evocationTimeInMinutes->getValue());
             $evocationTimeDescription .= ', ' . $evocationTimeInMinutes->getValue() . ' ' . $evocationInMinutesUnitInCzech;
         }
