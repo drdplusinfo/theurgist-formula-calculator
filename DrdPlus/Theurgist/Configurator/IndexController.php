@@ -64,18 +64,23 @@ class IndexController extends StrictObject
     /**
      * @return array|ModifierCode[][]
      */
-    public function getModifierCombinations(): array
+    public function getPossibleModifierCombinations(): array
     {
         return $this->buildPossibleModifiersTree(ModifierCode::getPossibleValues());
     }
 
+    private $selectedModifiersTree;
+
     public function getSelectedModifiersTree(): array
     {
+        if ($this->selectedModifiersTree !== null) {
+            return $this->selectedModifiersTree;
+        }
         if (empty($_GET['modifiers']) || $this->getSelectedFormula()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
-            return [];
+            return $this->selectedModifiersTree = [];
         }
 
-        return $this->buildSelectedModifiersTree((array)$_GET['modifiers']);
+        return $this->selectedModifiersTree = $this->buildSelectedModifiersTree((array)$_GET['modifiers']);
     }
 
     private function buildPossibleModifiersTree(array $modifierValues, array $processedModifiers = []): array
@@ -107,14 +112,14 @@ class IndexController extends StrictObject
     private function buildSelectedModifiersTree(array $modifierValues): array
     {
         $modifiers = [];
-        $expectedParentModifier = '';
+        $expectedParentModifiers = [''];
         /**
          * @var string $levelToParentModifier
          * @var array|string[] $levelModifiers
          */
         foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
             list($level, $parentModifier) = explode('-', $levelToParentModifier);
-            if ($expectedParentModifier !== $parentModifier) {
+            if (!in_array($parentModifier, $expectedParentModifiers, true)) {
                 continue; // skip branch without selected parent modifier (early bag end)
             }
             if (array_key_exists($level, $modifiers)) {
@@ -124,6 +129,7 @@ class IndexController extends StrictObject
             foreach ($levelModifiers as $levelModifier) {
                 $modifiers[$level][$levelModifier] = $levelModifier;
             }
+            $expectedParentModifiers = $modifiers[$level];
         }
 
         return $modifiers;
