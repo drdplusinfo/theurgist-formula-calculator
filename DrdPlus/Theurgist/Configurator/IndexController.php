@@ -160,6 +160,7 @@ class IndexController extends StrictObject
     {
         $selectedModifierCodes = [];
         foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
+            /** @var array|string[] $selectedLevelModifiers */
             foreach ($selectedLevelModifiers as $selectedLevelModifier) {
                 $selectedModifierCodes[] = ModifierCode::getIt($selectedLevelModifier);
             }
@@ -238,10 +239,13 @@ class IndexController extends StrictObject
         foreach ($this->getSelectedFormulaSpellTraits() as $selectedFormulaSpellTrait) {
             $selectedSpellTraitCodes['0'] = SpellTraitCode::getIt($selectedFormulaSpellTrait);
         }
-        /** @var array|string[] $selectedModifiersLevelSpellTrait */
+        /** @var array $selectedModifiersLevelSpellTrait */
         foreach ($this->getSelectedModifiersSpellTraits() as $level => $selectedModifiersLevelSpellTrait) {
-            foreach ($selectedModifiersLevelSpellTrait as $levelSpellTrait) {
-                $selectedSpellTraitCodes[$level][] = SpellTraitCode::getIt($levelSpellTrait);
+            foreach ($selectedModifiersLevelSpellTrait as $levelSpellTraits) {
+                /** @var array|string[] $modifierSpellTraits */
+                foreach ($levelSpellTraits as $modifier => $modifierSpellTrait) {
+                    $selectedSpellTraitCodes[$level][] = SpellTraitCode::getIt($modifierSpellTrait);
+                }
             }
         }
 
@@ -297,21 +301,28 @@ class IndexController extends StrictObject
             return $this->selectedModifiersSpellTraits = [];
         }
 
-        return $this->selectedModifiersSpellTraits = $this->buildSelectedModifierTraitsTree((array)$_GET['modifierSpellTraits']);
+        return $this->selectedModifiersSpellTraits = $this->buildSelectedModifierTraitsTree(
+            (array)$_GET['modifierSpellTraits'],
+            $this->getSelectedModifiersTree()
+        );
     }
 
     /**
      * @param array $traitValues
+     * @param array $selectedModifiersTree
      * @return array|string[][]
      */
-    private function buildSelectedModifierTraitsTree(array $traitValues): array
+    private function buildSelectedModifierTraitsTree(array $traitValues, array $selectedModifiersTree): array
     {
         $traitsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitValues as $levelAndModifier => $levelTraitValues) {
-            list($level) = explode('-', $levelAndModifier);
+            list($level, $modifier) = explode('-', $levelAndModifier);
+            if (empty($selectedModifiersTree[$level][$modifier])) {
+                continue; // skip still selected traits but without selected parent modifier
+            }
             foreach ($levelTraitValues as $levelTraitValue) {
-                $traitsTree[$level][] = $levelTraitValue;
+                $traitsTree[$level][$modifier][] = $levelTraitValue;
             }
         }
 

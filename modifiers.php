@@ -63,14 +63,16 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                     $modifierSpellTraits = $modifiersTable->getSpellTraits($possibleModifier);
                     if (count($modifierSpellTraits) > 0) { ?>
                         <div>
-                            <?php foreach ($modifierSpellTraits as $modifierSpellTrait) {
+                            <?php
+                            $spellTraitsInputIndex = "{$treeLevel}-{$possibleModifierValue}";
+                            foreach ($modifierSpellTraits as $modifierSpellTrait) {
                                 $spellTraitValue = $modifierSpellTrait->getSpellTraitCode()->getValue();
                                 ?>
                                 <div class="spell-trait">
                                     <label>
                                         <input type="checkbox" value="<?= $spellTraitValue ?>"
-                                               name="modifierSpellTraits[<?= $modifiersIndex ?>][]"
-                                               <?php if (in_array($spellTraitValue, $selectedModifiersSpellTraits[$treeLevel] ?? [], true)) : ?>checked<?php endif ?>>
+                                               name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
+                                               <?php if (in_array($spellTraitValue, $selectedModifiersSpellTraits[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
                                         <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
                                         <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
                                         echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
