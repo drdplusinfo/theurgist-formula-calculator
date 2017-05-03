@@ -50,7 +50,7 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                     <?= /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
                     $possibleModifier->translateTo('cs');
                     $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
-                    <span><?= ($modifierDifficultyChange > 0 ? '+' : '') . $modifierDifficultyChange ?></span>
+                    <span><?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?></span>
                     <span class="forms" title="Forma">
                                 <?php
                                 $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
