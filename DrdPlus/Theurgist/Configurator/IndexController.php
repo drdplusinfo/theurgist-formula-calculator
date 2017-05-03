@@ -62,21 +62,41 @@ class IndexController extends StrictObject
     }
 
     /**
+     * All formula direct modifiers, already selected modifiers and children of them all
+     *
      * @return array|ModifierCode[][]
      */
     public function getPossibleModifierCombinations(): array
     {
-        $possibleModifiersTree = $this->buildPossibleModifiersTree(ModifierCode::getPossibleValues());
-        $root = [];
-        /** @var array|ModifierCode[] $childModifiers */
-        foreach ($possibleModifiersTree as $modifierValue => $childModifiers) {
-            foreach ($childModifiers as $childModifierValue => $childModifier) {
-                $root[$childModifierValue] = $childModifier; // we do not care about overwrite
-            }
-        }
-        $possibleModifiersTree[''] = $root; // root parent
+        $formulaModifiersTree = $this->getFormulaDirectModifierCombinations();
+        $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getSelectedModifierValues());
+        $possibleModifiersTree[''] = $formulaModifiersTree;
 
         return $possibleModifiersTree;
+    }
+
+    private function getFormulaDirectModifierCombinations(): array
+    {
+        $formulaModifiersTree = [];
+        /** @var array|ModifierCode[] $childModifiers */
+        foreach ($this->formulasTable->getModifiers($this->getSelectedFormula()) as $modifier) {
+            $formulaModifiersTree[$modifier->getValue()] = $modifier; // as a child modifier
+        }
+
+        return $formulaModifiersTree;
+    }
+
+    private function getSelectedModifierValues(): array
+    {
+        $selectedModifierValues = [];
+        foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
+            /** @var array|string[] $selectedLevelModifiers */
+            foreach ($selectedLevelModifiers as $selectedLevelModifier) {
+                $selectedModifierValues[] = $selectedLevelModifier;
+            }
+        }
+
+        return $selectedModifierValues;
     }
 
     private $selectedModifiersTree;
@@ -158,15 +178,12 @@ class IndexController extends StrictObject
      */
     public function getSelectedModifierCodes(): array
     {
-        $selectedModifierCodes = [];
-        foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
-            /** @var array|string[] $selectedLevelModifiers */
-            foreach ($selectedLevelModifiers as $selectedLevelModifier) {
-                $selectedModifierCodes[] = ModifierCode::getIt($selectedLevelModifier);
-            }
-        }
-
-        return $selectedModifierCodes;
+        return array_map(
+            function (string $selectedModifierValue) {
+                return ModifierCode::getIt($selectedModifierValue);
+            },
+            $this->getSelectedModifierValues()
+        );
     }
 
     /**
@@ -239,10 +256,10 @@ class IndexController extends StrictObject
         foreach ($this->getSelectedFormulaSpellTraits() as $selectedFormulaSpellTrait) {
             $selectedSpellTraitCodes['0'] = SpellTraitCode::getIt($selectedFormulaSpellTrait);
         }
-        /** @var array $selectedModifiersLevelSpellTrait */
         foreach ($this->getSelectedModifiersSpellTraits() as $level => $selectedModifiersLevelSpellTrait) {
+            /** @var array|string[][] $selectedModifiersLevelSpellTrait */
             foreach ($selectedModifiersLevelSpellTrait as $levelSpellTraits) {
-                /** @var array|string[] $modifierSpellTraits */
+                /** @var array|string[] $levelSpellTraits */
                 foreach ($levelSpellTraits as $modifier => $modifierSpellTrait) {
                     $selectedSpellTraitCodes[$level][] = SpellTraitCode::getIt($modifierSpellTrait);
                 }
@@ -288,7 +305,7 @@ class IndexController extends StrictObject
     private $selectedModifiersSpellTraits;
 
     /**
-     * @return array|string[][]
+     * @return array|string[][][]
      */
     public function getSelectedModifiersSpellTraits(): array
     {

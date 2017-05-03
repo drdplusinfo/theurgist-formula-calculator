@@ -28,7 +28,6 @@ $selectedFormula = $controller->getSelectedFormula();
     <noscript>
         <link rel="stylesheet" type="text/css" href="css/no_script.css">
     </noscript>
-    <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/gh-fork-ribbon.min.css"/>
     <script type="text/javascript" src="js/facebook.js" async></script>
 </head>
@@ -57,5 +56,6 @@ $selectedFormula = $controller->getSelectedFormula();
        href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
        title="Fork me on GitHub">Fork me</a>
 </div>
+<script src="js/main.js"></script>
 </body>
 </html>
