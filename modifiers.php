@@ -9,7 +9,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
 $selectedModifiersTree = $controller->getSelectedModifiersTree();
 $possibleModifierCombinations = $controller->getPossibleModifierCombinations();
-$selectedModifiersSpellTraits = $controller->getSelectedModifiersSpellTraits();
+$selectedModifiersSpellTraitValues = $controller->getSelectedModifiersSpellTraitValues();
 
 $isModifierSelected = function (string $modifierValue, array $selectedModifiers, int $treeLevel) {
     $levelSelection = $selectedModifiers[$treeLevel] ?? false;
@@ -32,8 +32,9 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
 <div class="modifier panel">
     <?php
     // modifiers of modifiers (their chain)
+    /** @noinspection OnlyWritesOnParameterInspection */
     $showModifiers = function (string $parentModifierValue, int $treeLevel)
-    use (&$showModifiers, $selectedModifiersTree, $possibleModifierCombinations, $controller, $isModifierSelected, $selectedModifiersSpellTraits, $modifiersTable, $spellTraitsTable) {
+    use (&$showModifiers, $selectedModifiersTree, $possibleModifierCombinations, $controller, $isModifierSelected, $selectedModifiersSpellTraitValues, $modifiersTable, $spellTraitsTable) {
         if (!array_key_exists($parentModifierValue, $possibleModifierCombinations)) {
             return;
         }

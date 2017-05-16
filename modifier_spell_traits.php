@@ -14,7 +14,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                 <label>
                     <input type="checkbox" value="<?= $spellTraitCodeValue ?>"
                            name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
-                           <?php if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraits[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
+                           <?php if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
                     <?= $modifierSpellTraitCode->translateTo('cs') ?>
                     <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTraitCode);
                     echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();

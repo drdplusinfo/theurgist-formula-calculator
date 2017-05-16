@@ -82,7 +82,7 @@ class IndexController extends StrictObject
     public function getPossibleModifierCombinations(): array
     {
         $formulaModifiersTree = $this->getFormulaDirectModifierCombinations();
-        $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getSelectedModifierValues());
+        $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getSelectedModifiersFlatArrayValues());
         $possibleModifiersTree[''] = $formulaModifiersTree;
 
         return $possibleModifiersTree;
@@ -103,7 +103,7 @@ class IndexController extends StrictObject
         return $formulaModifierCodesTree;
     }
 
-    private function getSelectedModifierValues(): array
+    private function getSelectedModifiersFlatArrayValues(): array
     {
         $selectedModifierValues = [];
         foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
@@ -127,7 +127,7 @@ class IndexController extends StrictObject
             return $this->selectedModifiersTree = [];
         }
 
-        return $this->selectedModifiersTree = $this->buildSelectedModifiersTree((array)$_GET['modifiers']);
+        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree((array)$_GET['modifiers']);
     }
 
     private function buildPossibleModifiersTree(array $modifierValues, array $processedModifiers = []): array
@@ -156,7 +156,7 @@ class IndexController extends StrictObject
         return $modifiers;
     }
 
-    private function buildSelectedModifiersTree(array $modifierValues): array
+    private function buildSelectedModifierValuesTree(array $modifierValues): array
     {
         $modifiers = [];
         /**
@@ -200,20 +200,64 @@ class IndexController extends StrictObject
     /**
      * @return array|Modifier[]
      */
-    public function getSelectedModifiers(): array
+    private function getSelectedModifiers(): array
     {
-        return array_map(
-            function (string $selectedModifierValue) {
-                /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-                return new Modifier(
-                    ModifierCode::getIt($selectedModifierValue),
-                    $this->modifiersTable,
-                    [], // modifier spell parameter changes
-                    [] // modifier spell traits
-                );
-            },
-            $this->getSelectedModifierValues()
+        return $this->buildSelectedModifiersTree(
+            $this->getSelectedModifiersTree(),
+            $this->getSelectedModifiersSpellTraits()
         );
+    }
+
+    /**
+     * @return array|SpellTrait[]
+     */
+    private function getSelectedModifiersSpellTraits(): array
+    {
+        return $this->buildSpellTraitsTree($this->getSelectedModifiersSpellTraitValues());
+    }
+
+    /**
+     * @param array $spellTraitsBranch
+     * @return array|SpellTrait[]
+     */
+    private function buildSpellTraitsTree(array $spellTraitsBranch): array
+    {
+        $spellTraitsTree = [];
+        foreach ($spellTraitsBranch as $index => $spellTraitsLeaf) {
+            if (is_array($spellTraitsLeaf)) {
+                $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf);
+                continue;
+            }
+            $spellTraitsTree[$index] = new SpellTrait(
+                SpellTraitCode::getIt($spellTraitsLeaf),
+                $this->spellTraitsTable,
+                0
+            );
+        }
+
+        return $spellTraitsTree;
+    }
+
+    private function buildSelectedModifiersTree(array $selectedModifierValues, array $selectedModifierSpellTraits): array
+    {
+        $modifierValuesWithSpellTraits = [];
+        foreach ($selectedModifierValues as $index => $selectedModifiersBranch) {
+            if (is_array($selectedModifiersBranch)) {
+                $modifierValuesWithSpellTraits[$index] = $this->buildSelectedModifiersTree(
+                    $selectedModifiersBranch,
+                    $selectedModifierSpellTraits[$index] ?? []
+                );
+                continue;
+            }
+            $modifierValuesWithSpellTraits[$index] = new Modifier(
+                ModifierCode::getIt($selectedModifiersBranch),
+                $this->modifiersTable,
+                [], // modifier spell parameter changes
+                $selectedModifierSpellTraits[$selectedModifiersBranch] ?? []
+            );
+        }
+
+        return $modifierValuesWithSpellTraits;
     }
 
     /**
@@ -221,25 +265,7 @@ class IndexController extends StrictObject
      */
     public function getSelectedFormulaSpellTraits(): array
     {
-        return $this->buildSpellTraitsBranch($this->getSelectedFormulaSpellTraitCodes());
-    }
-
-    private function buildSpellTraitsBranch(array $spellTraitCodesBranch): array
-    {
-        $selectedFormulaSpellTraits = [];
-        foreach ($spellTraitCodesBranch as $index => $spellTraitCodesLeaf) {
-            if (is_array($spellTraitCodesLeaf)) {
-                $selectedFormulaSpellTraits[$index] = $this->buildSpellTraitsBranch($spellTraitCodesLeaf);
-                continue;
-            }
-            $selectedFormulaSpellTraits[$index] = new SpellTrait(
-                $spellTraitCodesLeaf,
-                $this->spellTraitsTable,
-                0 // TODO spell trait property trap change
-            );
-        }
-
-        return $selectedFormulaSpellTraits;
+        return $this->buildSpellTraitsTree($this->getSelectedFormulaSpellTraitCodes());
     }
 
     /**
@@ -253,28 +279,6 @@ class IndexController extends StrictObject
         }
 
         return $selectedFormulaSpellTraitCodes;
-    }
-
-    /**
-     * @return array|SpellTraitCode[]
-     */
-    private function getSelectedSpellTraitCodes(): array
-    {
-        $selectedSpellTraitCodes = [];
-        foreach ($this->getSelectedFormulaSpellTraitValues() as $selectedFormulaSpellTrait) {
-            $selectedSpellTraitCodes['0'][] = SpellTraitCode::getIt($selectedFormulaSpellTrait);
-        }
-        foreach ($this->getSelectedModifiersSpellTraits() as $level => $selectedModifiersLevelSpellTrait) {
-            /** @var array|string[][] $selectedModifiersLevelSpellTrait */
-            foreach ($selectedModifiersLevelSpellTrait as $levelSpellTraits) {
-                /** @var array|string[] $levelSpellTraits */
-                foreach ($levelSpellTraits as $modifier => $modifierSpellTrait) {
-                    $selectedSpellTraitCodes[$level][] = SpellTraitCode::getIt($modifierSpellTrait);
-                }
-            }
-        }
-
-        return $selectedSpellTraitCodes;
     }
 
     /**
@@ -376,7 +380,7 @@ class IndexController extends StrictObject
     /**
      * @return array|string[][][]
      */
-    public function getSelectedModifiersSpellTraits(): array
+    public function getSelectedModifiersSpellTraitValues(): array
     {
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
@@ -396,7 +400,7 @@ class IndexController extends StrictObject
     /**
      * @param array $traitValues
      * @param array $selectedModifiersTree
-     * @return array|string[][]
+     * @return array|string[][][]
      */
     private function buildSelectedModifierTraitsTree(array $traitValues, array $selectedModifiersTree): array
     {
