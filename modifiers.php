@@ -3,9 +3,9 @@ namespace DrdPlus\Theurgist\Configurator;
 
 /** @var IndexController $controller */
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Formulas\FormulasTable;
-use DrdPlus\Theurgist\Formulas\ModifiersTable;
-use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
+use DrdPlus\Theurgist\Spells\FormulasTable;
+use DrdPlus\Theurgist\Spells\ModifiersTable;
+use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
 $selectedModifiersTree = $controller->getSelectedModifiersTree();
 $possibleModifierCombinations = $controller->getPossibleModifierCombinations();
@@ -26,7 +26,7 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
 
 /** @var FormulasTable $formulasTable */
 /** @var ModifiersTable $modifiersTable */
-/** @var FormulaCode $selectedFormula */
+/** @var FormulaCode $selectedFormulaCode */
 /** @var SpellTraitsTable $spellTraitsTable */
 ?>
 <div class="modifier panel">

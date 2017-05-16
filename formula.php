@@ -2,10 +2,10 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Formulas\FormulasTable;
-use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
+use DrdPlus\Theurgist\Spells\FormulasTable;
+use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
-/** @var FormulaCode $selectedFormula */
+/** @var FormulaCode $selectedFormulaCode */
 /** @var IndexController $controller */
 /** @var FormulasTable $formulasTable */
 /** @var SpellTraitsTable $spellTraitsTable */
@@ -17,19 +17,19 @@ use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
                     <select id="formula" name="formula">
                         <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
                             <option value="<?= $formulaValue ?>"
-                                    <?php if ($formulaValue === $selectedFormula->getValue()): ?>selected<?php endif ?>>
+                                    <?php if ($formulaValue === $selectedFormulaCode->getValue()): ?>selected<?php endif ?>>
                                 <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
                             </option>
                         <?php } ?>
                     </select>
                 </label>
                 <button type="submit">Vybrat</button>
-                <?php $formulaDifficulty = $formulasTable->getDifficulty($selectedFormula); ?>
+                <?php $formulaDifficulty = $formulasTable->getFormulaDifficulty($selectedFormulaCode); ?>
             </span>
             <span class="panel"><?= ($formulaDifficulty->getValue() > 0 ? '+' : '') . $formulaDifficulty ?></span>
         </div>
         <span class="panel forms" title="Forma">
-            <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormula, 'cs')); ?>
+            <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormulaCode, 'cs')); ?>
             (<?= $formulaForms ?>)
         </span>
     </div>

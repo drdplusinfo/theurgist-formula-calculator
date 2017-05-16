@@ -1,51 +1,44 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
-/** @var FormulaCode $selectedFormula */
-/** @var FormulasTable $formulasTable */
-/** @var IndexController $controller */
+/** @var Formula $selectedFormula */
 use DrdPlus\Codes\TimeUnitCode;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Formulas\CastingParameters\Affection;
-use DrdPlus\Theurgist\Formulas\FormulasTable;
+use DrdPlus\Theurgist\Spells\Formula;
+use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
 
-$selectedModifiers = $controller->getSelectedModifierCodes();
-$selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
 ?>
     <div>
         Sféra:
-        <?php
-        $realmOfModified = $formulasTable->getRealmOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits); ?>
-        <ol class="realm" start="<?= $realmOfModified->getValue() ?>">
+        <ol class="realm" start="<?= $selectedFormula->getRequiredRealm() ?>">
             <li></li>
         </ol>
     </div>
     <div>
-        Náročnost: <?= $formulasTable->getDifficultyOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits)->getValue() ?>
+        Náročnost: <?= $selectedFormula->getCurrentDifficulty(); ?>
     </div>
     <div>
         <?php
-        $affectionsOfModified = $formulasTable->getAffectionsOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-        if (count($affectionsOfModified) > 1):?>
+        $realmsAffections = $selectedFormula->getCurrentRealmsAffections();
+        if (count($realmsAffections) > 1):?>
             Náklonnosti:
         <?php else: ?>
             Náklonnost:
         <?php endif;
         $inCzech = [];
-        /** @var Affection $affectionOfModified */
-        foreach ($affectionsOfModified as $affectionOfModified) {
-            $inCzech[] = $affectionOfModified->getAffectionPeriod()->translateTo('cs') . ' ' . $affectionOfModified->getValue();
+        /** @var RealmsAffection $realmsAffection */
+        foreach ($realmsAffections as $realmsAffection) {
+            $inCzech[] = $realmsAffection->getAffectionPeriod()->translateTo('cs') . ' ' . $realmsAffection->getValue();
         }
         echo implode(', ', $inCzech);
         ?>
     </div>
     <div>
         Vyvolání (příprava formule):
-        <?php $evocationOfModified = $formulasTable->getEvocationOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-        $evocationTime = $evocationOfModified->getEvocationTime(Tables::getIt()->getTimeTable());
+        <?php $evocation = $selectedFormula->getCurrentEvocation();
+        $evocationTime = $evocation->getEvocationTime(Tables::getIt()->getTimeTable());
         $evocationUnitInCzech = $evocationTime->getUnitCode()->translateTo('cs', $evocationTime->getValue());
-        $evocationTimeDescription = ($evocationOfModified->getValue() >= 0 ? '+' : '') . $evocationOfModified->getValue();
+        $evocationTimeDescription = ($evocation->getValue() >= 0 ? '+' : '') . $evocation->getValue();
         $evocationTimeDescription .= " ({$evocationTime->getValue()} {$evocationUnitInCzech}";
         if (($evocationTimeInMinutes = $evocationTime->findMinutes()) && $evocationTime->getUnitCode()->getValue() === TimeUnitCode::ROUND) {
             $evocationInMinutesUnitInCzech = $evocationTimeInMinutes->getUnitCode()->translateTo('cs', $evocationTimeInMinutes->getValue());
@@ -57,41 +50,42 @@ $selectedSpellTraits = $controller->getSelectedSpellTraitCodes();
     </div>
     <div>
         Seslání (vypuštění kouzla):
-        <?php $castingOfModified = $formulasTable->getCastingOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-        $castingBonus = $castingOfModified->getBonus();
-        $castingUnitInCzech = $castingOfModified->getUnitCode()->translateTo('cs', $castingOfModified->getValue());
+        <?php $castingRounds = $selectedFormula->getCurrentCastingRounds();
+        $castingBonus = $castingRounds->getTime(Tables::getIt()->getTimeTable())->getBonus();
+        $casting = $castingBonus->getTime();
+        $castingUnitInCzech = $casting->getUnitCode()->translateTo('cs', $casting->getValue());
         echo ($castingBonus->getValue() >= 0 ? '+' : '')
-            . "{$castingBonus->getValue()}  ({$castingOfModified->getValue()} {$castingUnitInCzech})";
+            . "{$castingBonus->getValue()}  ({$casting->getValue()} {$castingUnitInCzech})";
         ?>
     </div>
     <div>
         Doba trvání:
-        <?php $durationOfModified = $formulasTable->getDurationOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-        $durationTime = $durationOfModified->getDurationTime(Tables::getIt()->getTimeTable());
+        <?php $duration = $selectedFormula->getCurrentDuration();
+        $durationTime = $duration->getDurationTime(Tables::getIt()->getTimeTable());
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
-        echo ($durationOfModified->getValue() >= 0 ? '+' : '')
-            . "{$durationOfModified->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
+        echo ($duration->getValue() >= 0 ? '+' : '')
+            . "{$duration->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
-<?php $radiusOfModified = $formulasTable->getRadiusOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($radiusOfModified !== null) { ?>
+<?php $radius = $selectedFormula->getCurrentRadius();
+if ($radius !== null) { ?>
     <div>
         Poloměr:
-        <?php $radiusDistance = $radiusOfModified->getDistance(Tables::getIt()->getDistanceTable());
+        <?php $radiusDistance = $radius->getDistance(Tables::getIt()->getDistanceTable());
         $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
-        echo ($radiusOfModified->getValue() >= 0 ? '+' : '')
-            . "{$radiusOfModified->getValue()} ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
+        echo ($radius->getValue() >= 0 ? '+' : '')
+            . "{$radius->getValue()} ({$radiusDistance->getValue()} {$radiusUnitInCzech})";
         ?>
     </div>
 <?php }
-$powerOfModified = $formulasTable->getPowerOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($powerOfModified !== null) { ?>
+$power = $selectedFormula->getCurrentPower();
+if ($power !== null) { ?>
     <div>
         Síla:
-        <?= ($powerOfModified->getValue() >= 0 ? '+' : '') . $powerOfModified->getValue(); ?>
+        <?= ($power->getValue() >= 0 ? '+' : '') . $power->getValue(); ?>
     </div>
 <?php }
-$epicenterShiftOfModified = $formulasTable->getEpicenterShiftOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
+$epicenterShiftOfModified = $selectedFormula->getCurrentEpicenterShift();
 if ($epicenterShiftOfModified !== null) {
     $epicenterShiftDistance = $epicenterShiftOfModified->getDistance(Tables::getIt()->getDistanceTable());
     $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
@@ -102,44 +96,44 @@ if ($epicenterShiftOfModified !== null) {
         "{$epicenterShiftOfModified->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
     </div>
 <?php }
-$detailLevelOfModified = $formulasTable->getDetailLevelOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($detailLevelOfModified !== null) {
+$detailLevel = $selectedFormula->getCurrentDetailLevel();
+if ($detailLevel !== null) {
     ?>
     <div>
         Detailnost:
-        <?= ($detailLevelOfModified->getValue() >= 0 ? '+' : '') . $detailLevelOfModified->getValue() ?>
+        <?= ($detailLevel->getValue() >= 0 ? '+' : '') . $detailLevel->getValue() ?>
     </div>
 <?php }
-$sizeChangeOfModified = $formulasTable->getSizeChangeOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($sizeChangeOfModified !== null) {
+$sizeChange = $selectedFormula->getCurrentSizeChange();
+if ($sizeChange !== null) {
     ?>
     <div>
         Změna velikosti:
-        <?= ($sizeChangeOfModified->getValue() >= 0 ? '+' : '') . $sizeChangeOfModified->getValue() ?>
+        <?= ($sizeChange->getValue() >= 0 ? '+' : '') . $sizeChange->getValue() ?>
     </div>
 <?php }
-$brightnessOfModified = $formulasTable->getBrightnessOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($brightnessOfModified !== null) {
+$brightness = $selectedFormula->getCurrentBrightness();
+if ($brightness !== null) {
     ?>
     <div>
         Jas:
-        <?= ($brightnessOfModified->getValue() >= 0 ? '+' : '') . $brightnessOfModified->getValue() ?>
+        <?= ($brightness->getValue() >= 0 ? '+' : '') . $brightness->getValue() ?>
     </div>
 <?php }
-$spellSpeedOfModified = $formulasTable->getSpellSpeedOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($spellSpeedOfModified !== null) {
-    $spellSpeed = $spellSpeedOfModified->getSpeed(Tables::getIt()->getSpeedTable());
-    $spellSpeedUnitInCzech = $spellSpeed->getUnitCode()->translateTo('cs', $spellSpeed->getValue());
+$spellSpeed = $selectedFormula->getCurrentSpellSpeed();
+if ($spellSpeed !== null) {
+    $speed = $spellSpeed->getSpeed(Tables::getIt()->getSpeedTable());
+    $spellSpeedUnitInCzech = $speed->getUnitCode()->translateTo('cs', $speed->getValue());
     ?>
     <div>
         Rychlost:
-        <?= ($spellSpeedOfModified->getValue() >= 0 ? '+' : '') .
-        "{$spellSpeedOfModified->getValue()} ({$spellSpeed->getValue()} {$spellSpeedUnitInCzech})" ?>
+        <?= ($spellSpeed->getValue() >= 0 ? '+' : '') .
+        "{$spellSpeed->getValue()} ({$speed->getValue()} {$spellSpeedUnitInCzech})" ?>
     </div>
 <?php }
-$attackOfModified = $formulasTable->getAttackOfModified($selectedFormula, $selectedModifiers, $selectedSpellTraits);
-if ($attackOfModified !== null) { ?>
+$attack = $selectedFormula->getCurrentAttack();
+if ($attack !== null) { ?>
     <div>
-        Útočnost: <?= ($attackOfModified->getValue() >= 0 ? '+' : '') . $attackOfModified->getValue(); ?>
+        Útočnost: <?= ($attack->getValue() >= 0 ? '+' : '') . $attack->getValue(); ?>
     </div>
 <?php }

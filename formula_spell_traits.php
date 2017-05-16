@@ -1,24 +1,24 @@
 <?php
-$formulaSpellTraits = $formulasTable->getSpellTraits($selectedFormula);
-$selectedFormulaSpellTraits = $controller->getSelectedFormulaSpellTraits();
-if (count($formulaSpellTraits) > 0) { ?>
+$formulaSpellTraitCodes = $formulasTable->getSpellTraitCodes($selectedFormulaCode);
+$selectedFormulaSpellTraits = $controller->getSelectedFormulaSpellTraitValues();
+if (count($formulaSpellTraitCodes) > 0) { ?>
     <div class="block">
         <div class="panel">
             <span class="panel">Rysy:</span>
-            <?php foreach ($formulaSpellTraits as $formulaSpellTrait) { ?>
+            <?php foreach ($formulaSpellTraitCodes as $formulaSpellTraitCode) { ?>
                 <div class="spell-trait panel">
                     <label>
                         <input type="checkbox" name="formulaSpellTraits[]"
-                               value="<?= $formulaSpellTrait->getSpellTraitCode() ?>"
-                               <?php if (in_array($formulaSpellTrait->getSpellTraitCode()->getValue(), $selectedFormulaSpellTraits, true)) : ?>checked<?php endif ?>>
-                        <?= $formulaSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
+                               value="<?= $formulaSpellTraitCode ?>"
+                               <?php if (in_array($formulaSpellTraitCode->getValue(), $selectedFormulaSpellTraits, true)) : ?>checked<?php endif ?>>
+                        <?= $formulaSpellTraitCode->translateTo('cs') ?>
                         <?php
-                        $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($formulaSpellTrait->getSpellTraitCode());
+                        $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($formulaSpellTraitCode);
                         echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() ?>
-                        <?php $trap = $formulaSpellTrait->getTrap($spellTraitsTable);
+                        <?php $trap = $spellTraitsTable->getTrap($formulaSpellTraitCode);
                         if ($trap !== null) { ?>
                             <span class="trap">(<?php echo $trap->getValue();
-                                echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByRealms()}]"; ?>
+                                echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByDifficulty()}]"; ?>
                                 )</span>
                         <?php } ?>
                     </label>

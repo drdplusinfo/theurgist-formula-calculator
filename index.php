@@ -2,9 +2,9 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Tables;
-use DrdPlus\Theurgist\Formulas\FormulasTable;
-use DrdPlus\Theurgist\Formulas\ModifiersTable;
-use DrdPlus\Theurgist\Formulas\SpellTraitsTable;
+use DrdPlus\Theurgist\Spells\FormulasTable;
+use DrdPlus\Theurgist\Spells\ModifiersTable;
+use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -14,8 +14,9 @@ ini_set('display_errors', '1');
 $modifiersTable = new ModifiersTable(Tables::getIt());
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
-$controller = new IndexController($formulasTable, $modifiersTable);
+$controller = new IndexController($formulasTable, $modifiersTable, $spellTraitsTable);
 $selectedFormula = $controller->getSelectedFormula();
+$selectedFormulaCode = $selectedFormula->getFormulaCode();
 ?>
 <!DOCTYPE html>
 <html lang="cs" xmlns="http://www.w3.org/1999/html">
@@ -35,7 +36,7 @@ $selectedFormula = $controller->getSelectedFormula();
 <div id="fb-root"></div>
 <div>
     <form id="configurator" class="body" method="get">
-        <input type="hidden" name="previousFormula" value="<?= $selectedFormula ?>">
+        <input type="hidden" name="previousFormula" value="<?= $selectedFormulaCode->getValue() ?>">
         <?php require __DIR__ . '/formula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>

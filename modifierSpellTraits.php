@@ -2,26 +2,26 @@
 /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
 /** @var int $treeLevel */
 /** @var string $possibleModifierValue */
-$modifierSpellTraits = $modifiersTable->getSpellTraits($possibleModifier);
-if (count($modifierSpellTraits) > 0) { ?>
+$modifierSpellTraitCodes = $modifiersTable->getSpellTraitCodes($possibleModifier);
+if (count($modifierSpellTraitCodes) > 0) { ?>
     <div>
         <?php
         $spellTraitsInputIndex = "{$treeLevel}-{$possibleModifierValue}";
-        foreach ($modifierSpellTraits as $modifierSpellTrait) {
-            $spellTraitValue = $modifierSpellTrait->getSpellTraitCode()->getValue();
+        foreach ($modifierSpellTraitCodes as $modifierSpellTraitCode) {
+            $spellTraitCodeValue = $modifierSpellTraitCode->getValue();
             ?>
             <div class="spell-trait">
                 <label>
-                    <input type="checkbox" value="<?= $spellTraitValue ?>"
+                    <input type="checkbox" value="<?= $spellTraitCodeValue ?>"
                            name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
-                           <?php if (in_array($spellTraitValue, $selectedModifiersSpellTraits[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
-                    <?= $modifierSpellTrait->getSpellTraitCode()->translateTo('cs') ?>
-                    <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTrait->getSpellTraitCode());
+                           <?php if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraits[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
+                    <?= $modifierSpellTraitCode->translateTo('cs') ?>
+                    <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTraitCode);
                     echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
-                    $trap = $modifierSpellTrait->getTrap($spellTraitsTable);
+                    $trap = $spellTraitsTable->getTrap($modifierSpellTraitCode);
                     if ($trap !== null) { ?>
                         <span class="trap">(<?php echo $trap->getValue();
-                            echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByRealms()}]";
+                            echo " {$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByDifficulty()}]";
                             ?>)</span>
                     <?php } ?>
                 </label>

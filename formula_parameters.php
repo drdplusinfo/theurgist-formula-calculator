@@ -3,9 +3,9 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Formulas\FormulasTable;
+use DrdPlus\Theurgist\Spells\FormulasTable;
 
-/** @var FormulaCode $selectedFormula */
+/** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
 /** @var IndexController $controller */
 
@@ -15,14 +15,14 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
     <div class="attribute panel">
         Doba trvání:
         <?php
-        $duration = $formulasTable->getDuration($selectedFormula);
+        $duration = $formulasTable->getDuration($selectedFormulaCode);
         $durationTime = $duration->getDurationTime(Tables::getIt()->getTimeTable());
         $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
         echo ($duration->getValue() >= 0 ? '+' : '')
             . "{$duration->getValue()}  ({$durationTime->getValue()} {$durationUnitInCzech})";
         ?>
     </div>
-    <?php $radius = $formulasTable->getRadius($selectedFormula);
+    <?php $radius = $formulasTable->getRadius($selectedFormulaCode);
     if ($radius !== null) { ?>
         <div class="attribute panel">
             Poloměr:
@@ -33,14 +33,14 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             ?>
         </div>
     <?php }
-    $power = $formulasTable->getPower($selectedFormula);
+    $power = $formulasTable->getPower($selectedFormulaCode);
     if ($power !== null) { ?>
         <div class="attribute panel">
             Síla:
             <?= ($power->getValue() >= 0 ? '+' : '') . $power->getValue(); ?>
         </div>
     <?php }
-    $epicenterShift = $formulasTable->getEpicenterShift($selectedFormula);
+    $epicenterShift = $formulasTable->getEpicenterShift($selectedFormulaCode);
     if ($epicenterShift !== null) {
         $epicenterShiftDistance = $epicenterShift->getDistance(Tables::getIt()->getDistanceTable());
         $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
@@ -51,7 +51,7 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             "{$epicenterShift->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
         </div>
     <?php }
-    $detailLevel = $formulasTable->getDetailLevel($selectedFormula);
+    $detailLevel = $formulasTable->getDetailLevel($selectedFormulaCode);
     if ($detailLevel !== null) {
         ?>
         <div class="attribute panel">
@@ -59,7 +59,7 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             <?= ($detailLevel->getValue() >= 0 ? '+' : '') . $detailLevel->getValue() ?>
         </div>
     <?php }
-    $sizeChange = $formulasTable->getSizeChange($selectedFormula);
+    $sizeChange = $formulasTable->getSizeChange($selectedFormulaCode);
     if ($sizeChange !== null) {
         ?>
         <div class="attribute panel">
@@ -67,7 +67,7 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             <?= ($sizeChange->getValue() >= 0 ? '+' : '') . $sizeChange->getValue() ?>
         </div>
     <?php }
-    $brightness = $formulasTable->getBrightness($selectedFormula);
+    $brightness = $formulasTable->getBrightness($selectedFormulaCode);
     if ($brightness !== null) {
         ?>
         <div class="attribute panel">
@@ -75,7 +75,7 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             <?= ($brightness->getValue() >= 0 ? '+' : '') . $brightness->getValue() ?>
         </div>
     <?php }
-    $spellSpeed = $formulasTable->getSpellSpeed($selectedFormula);
+    $spellSpeed = $formulasTable->getSpellSpeed($selectedFormulaCode);
     if ($spellSpeed !== null) {
         $spellSpeed = $spellSpeed->getSpeed(Tables::getIt()->getSpeedTable());
         $spellSpeedUnitInCzech = $spellSpeed->getUnitCode()->translateTo('cs', $spellSpeed->getValue());
@@ -86,7 +86,7 @@ use DrdPlus\Theurgist\Formulas\FormulasTable;
             "{$spellSpeed->getValue()} ({$spellSpeed->getValue()} {$spellSpeedUnitInCzech})" ?>
         </div>
     <?php }
-    $attack = $formulasTable->getAttack($selectedFormula);
+    $attack = $formulasTable->getAttack($selectedFormulaCode);
     if ($attack !== null) { ?>
         <div class="attribute panel">
             Útočnost: <?= ($attack->getValue() >= 0 ? '+' : '') . $attack->getValue(); ?>
