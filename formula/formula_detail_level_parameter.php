@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -20,7 +21,7 @@ if ($detailLevel === null) {
         $optionDetailLevelValue = $detailLevel->getDefaultValue(); // from the lowest
         $previousOptionDetailLevelValue = null;
         ?>
-        <select name="formula-parameter[detailLevel]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::DETAIL_LEVEL ?>]">
             <?php
             do {
                 if ($previousOptionDetailLevelValue === null || $previousOptionDetailLevelValue < $optionDetailLevelValue) { ?>

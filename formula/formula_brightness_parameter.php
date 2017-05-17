@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -20,7 +21,7 @@ if ($brightness === null) {
         $optionBrightnessValue = $brightness->getDefaultValue(); // from the lowest
         $previousOptionBrightnessValue = null;
         ?>
-        <select name="formula-parameter[brightness]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::BRIGHTNESS ?>]">
             <?php
             do {
                 if ($previousOptionBrightnessValue === null || $previousOptionBrightnessValue < $optionBrightnessValue) { ?>

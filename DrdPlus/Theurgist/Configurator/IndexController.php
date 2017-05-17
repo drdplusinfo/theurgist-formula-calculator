@@ -10,6 +10,7 @@ use DrdPlus\Theurgist\Spells\Modifier;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTrait;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
+use Granam\Integer\Tools\ToInteger;
 use Granam\Strict\Object\StrictObject;
 
 class IndexController extends StrictObject
@@ -30,6 +31,10 @@ class IndexController extends StrictObject
      * @var SpellTraitsTable
      */
     private $spellTraitsTable;
+    /**
+     * @var array
+     */
+    private $selectedFormulaSpellParameters;
 
     /**
      * @param FormulasTable $formulasTable
@@ -191,10 +196,31 @@ class IndexController extends StrictObject
         return new Formula(
             $this->getSelectedFormulaCode(),
             $this->formulasTable,
-            [], // formula spell parameter changes
+            // TODO wrong - we are providing total of spell parameter value, not delta
+            $this->getSelectedFormulaSpellParameters(), // formula spell parameter changes
             $this->getSelectedModifiers(),
             $this->getSelectedFormulaSpellTraits()
         );
+    }
+
+    /**
+     * @return array|int[]
+     */
+    public function getSelectedFormulaSpellParameters(): array
+    {
+        if ($this->selectedFormulaSpellParameters !== null) {
+            return $this->selectedFormulaSpellParameters;
+        }
+        if (empty($_GET['formulaParameters']) || $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+            return $this->selectedFormulaSpellParameters = [];
+        }
+        $this->selectedFormulaSpellParameters = [];
+        /** @var array|int[][] $_GET */
+        foreach ($_GET['formulaParameters'] as $formulaParameterName => $value) {
+            $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
+        }
+
+        return $this->selectedFormulaSpellParameters;
     }
 
     /**

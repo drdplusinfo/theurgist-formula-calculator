@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -20,7 +21,7 @@ if ($power === null) {
         $optionPowerValue = $power->getDefaultValue(); // from the lowest
         $previousOptionPowerValue = null;
         ?>
-        <select name="formula-parameter[power]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::POWER ?>]">
             <?php
             do {
                 if ($previousOptionPowerValue === null || $previousOptionPowerValue < $optionPowerValue) { ?>

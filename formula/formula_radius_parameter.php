@@ -5,6 +5,7 @@ use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -24,7 +25,7 @@ if ($radius === null) {
         /** @var Distance $previousOptionRadiusDistance */
         $previousOptionRadiusDistance = null;
         ?>
-        <select name="formula-parameter[radius]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::RADIUS ?>]">
             <?php
             do {
                 $optionRadiusDistance = (new DistanceBonus($optionRadiusValue, Tables::getIt()->getDistanceTable()))->getDistance();

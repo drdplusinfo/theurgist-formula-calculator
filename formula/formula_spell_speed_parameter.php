@@ -4,6 +4,7 @@ namespace DrdPlus\Theurgist\Configurator;
 use DrdPlus\Tables\Measurements\Speed\SpeedBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -23,7 +24,7 @@ if ($spellSpeed === null) {
         $optionSpellSpeedValue = $spellSpeed->getDefaultValue(); // from the lowest
         $previousOptionSpellSpeedValue = null;
         ?>
-        <select name="formula-parameter[spellSpeed]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::SPELL_SPEED ?>]">
             <?php
             do {
                 if ($previousOptionSpellSpeedValue === null || $previousOptionSpellSpeedValue < $optionSpellSpeedValue) {

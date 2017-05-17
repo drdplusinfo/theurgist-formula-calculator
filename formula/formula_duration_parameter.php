@@ -5,6 +5,7 @@ use DrdPlus\Tables\Measurements\Time\Time;
 use DrdPlus\Tables\Measurements\Time\TimeBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -22,7 +23,7 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
         /** @var Time $previousOptionDurationTime */
         $previousOptionDurationTime = null;
         ?>
-        <select name="formula-parameter[duration]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::DURATION ?>]">
             <?php
             do {
                 $optionDurationTime = (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();

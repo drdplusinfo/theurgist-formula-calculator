@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -21,7 +22,7 @@ if ($sizeChange === null) {
         $optionSizeChangeValue = $sizeChange->getDefaultValue(); // from the lowest
         $previousOptionSizeChangeValue = null;
         ?>
-        <select name="formula-parameter[sizeChange]">
+        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::SIZE_CHANGE ?>]">
             <?php
             do {
                 if ($previousOptionSizeChangeValue === null || $previousOptionSizeChangeValue < $optionSizeChangeValue) { ?>

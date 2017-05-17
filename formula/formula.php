@@ -17,7 +17,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
                     <select id="formula" name="formula">
                         <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
                             <option value="<?= $formulaValue ?>"
-                                    <?php if ($formulaValue === $selectedFormulaCode->getValue()): ?>selected<?php endif ?>>
+                                    <?php if ($formulaValue === $selectedFormulaCode->getValue()){ ?>selected="selected"<?php } ?>>
                                 <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
                             </option>
                         <?php } ?>

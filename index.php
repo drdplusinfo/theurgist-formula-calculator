@@ -37,7 +37,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <div>
     <form id="configurator" class="body" method="get">
         <input type="hidden" name="previousFormula" value="<?= $selectedFormulaCode->getValue() ?>">
-        <?php require __DIR__ . '/formula.php'; ?>
+        <?php require __DIR__ . '/formula/formula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>
             <?php require __DIR__ . '/modifiers.php' ?>
