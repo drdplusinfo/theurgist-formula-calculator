@@ -1,7 +1,7 @@
 <?php
 $formulaSpellTraitCodes = $formulasTable->getSpellTraitCodes($selectedFormulaCode);
-$selectedFormulaSpellTraits = $controller->getSelectedFormulaSpellTraitValues();
-if (count($formulaSpellTraitCodes) > 0) { ?>
+if (count($formulaSpellTraitCodes) > 0) {
+    $selectedFormulaSpellTraitValues = $controller->getSelectedFormulaSpellTraitValues(); ?>
     <div class="block">
         <div class="panel">
             <span class="panel">Rysy:</span>
@@ -10,7 +10,7 @@ if (count($formulaSpellTraitCodes) > 0) { ?>
                     <label>
                         <input type="checkbox" name="formulaSpellTraits[]"
                                value="<?= $formulaSpellTraitCode ?>"
-                               <?php if (in_array($formulaSpellTraitCode->getValue(), $selectedFormulaSpellTraits, true)) : ?>checked<?php endif ?>>
+                               <?php if (in_array($formulaSpellTraitCode->getValue(), $selectedFormulaSpellTraitValues, true)) : ?>checked<?php endif ?>>
                         <?= $formulaSpellTraitCode->translateTo('cs') ?>
                         <?php
                         $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($formulaSpellTraitCode);

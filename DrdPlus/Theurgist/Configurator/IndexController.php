@@ -196,7 +196,6 @@ class IndexController extends StrictObject
         return new Formula(
             $this->getSelectedFormulaCode(),
             $this->formulasTable,
-            // TODO wrong - we are providing total of spell parameter value, not delta
             $this->getSelectedFormulaSpellParameters(), // formula spell parameter changes
             $this->getSelectedModifiers(),
             $this->getSelectedFormulaSpellTraits()
@@ -287,7 +286,7 @@ class IndexController extends StrictObject
     }
 
     /**
-     * @return array|Modifier[]
+     * @return array|SpellTrait[]
      */
     public function getSelectedFormulaSpellTraits(): array
     {
