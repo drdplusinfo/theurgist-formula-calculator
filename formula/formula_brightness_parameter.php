@@ -2,11 +2,12 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
+/** @var IndexController $controller */
 
 $brightness = $formulasTable->getBrightness($selectedFormulaCode);
 if ($brightness === null) {
@@ -20,12 +21,14 @@ if ($brightness === null) {
         $difficultyOfAdditionStep = $brightnessAddition->getDifficultyOfAdditionStep();
         $optionBrightnessValue = $brightness->getDefaultValue(); // from the lowest
         $previousOptionBrightnessValue = null;
+        $selectedBrightnessValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::BRIGHTNESS] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::BRIGHTNESS ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::BRIGHTNESS ?>]">
             <?php
             do {
                 if ($previousOptionBrightnessValue === null || $previousOptionBrightnessValue < $optionBrightnessValue) { ?>
-                    <option value="<?= $optionBrightnessValue ?>">
+                    <option value="<?= $optionBrightnessValue ?>"
+                            <?php if ($selectedBrightnessValue !== false && $selectedBrightnessValue === $optionBrightnessValue) { ?>selected<?php } ?>>
                         <?= ($optionBrightnessValue >= 0 ? '+' : '')
                         . "{$optionBrightnessValue}"; ?>
                     </option>

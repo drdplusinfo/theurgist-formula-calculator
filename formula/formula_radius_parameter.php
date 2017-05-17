@@ -5,11 +5,12 @@ use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
+/** @var IndexController $controller */
 
 $radius = $formulasTable->getRadius($selectedFormulaCode);
 if ($radius === null) {
@@ -24,8 +25,9 @@ if ($radius === null) {
         $optionRadiusValue = $radius->getDefaultValue(); // from the lowest
         /** @var Distance $previousOptionRadiusDistance */
         $previousOptionRadiusDistance = null;
+        $selectedRadiusValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::RADIUS] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::RADIUS ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::RADIUS ?>]">
             <?php
             do {
                 $optionRadiusDistance = (new DistanceBonus($optionRadiusValue, Tables::getIt()->getDistanceTable()))->getDistance();
@@ -34,7 +36,8 @@ if ($radius === null) {
                     || $previousOptionRadiusDistance->getValue() < $optionRadiusDistance->getValue()
                 ) {
                     $radiusUnitInCzech = $optionRadiusDistance->getUnitCode()->translateTo('cs', $optionRadiusDistance->getValue()); ?>
-                    <option value="<?= $optionRadiusValue ?>">
+                    <option value="<?= $optionRadiusValue ?>"
+                            <?php if ($selectedRadiusValue !== false && $selectedRadiusValue === $optionRadiusValue){ ?>selected<?php } ?>>
                         <?= ($optionRadiusValue >= 0 ? '+' : '')
                         . "{$optionRadiusValue} ({$optionRadiusDistance->getValue()} {$radiusUnitInCzech})"; ?>
                     </option>

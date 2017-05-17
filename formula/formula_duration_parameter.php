@@ -5,11 +5,12 @@ use DrdPlus\Tables\Measurements\Time\Time;
 use DrdPlus\Tables\Measurements\Time\TimeBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
+/** @var IndexController $controller */
 
 ?>
 <div class="parameter panel">
@@ -22,8 +23,9 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
         $optionDurationValue = $duration->getDefaultValue(); // from the lowest
         /** @var Time $previousOptionDurationTime */
         $previousOptionDurationTime = null;
+        $selectedDurationValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::DURATION] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::DURATION ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::DURATION ?>]">
             <?php
             do {
                 $optionDurationTime = (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();
@@ -32,7 +34,8 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
                     || $previousOptionDurationTime->getValue() < $optionDurationTime->getValue()
                 ) {
                     $optionDurationUnitInCzech = $optionDurationTime->getUnitCode()->translateTo('cs', $optionDurationTime->getValue()); ?>
-                    <option value="<?= $optionDurationValue ?>">
+                    <option value="<?= $optionDurationValue ?>"
+                            <?php if ($selectedDurationValue !== false && $selectedDurationValue === $optionDurationValue){ ?>selected<?php } ?>>
                         <?= ($optionDurationValue >= 0 ? '+' : '')
                         . "$optionDurationValue ({$optionDurationTime->getValue()} {$optionDurationUnitInCzech})" ?>
                     </option>

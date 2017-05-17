@@ -2,11 +2,12 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
+/** @var IndexController $controller */
 
 $detailLevel = $formulasTable->getDetailLevel($selectedFormulaCode);
 if ($detailLevel === null) {
@@ -20,12 +21,14 @@ if ($detailLevel === null) {
         $difficultyOfAdditionStep = $detailLevelAddition->getDifficultyOfAdditionStep();
         $optionDetailLevelValue = $detailLevel->getDefaultValue(); // from the lowest
         $previousOptionDetailLevelValue = null;
+        $selectedDetailLevelValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::DETAIL_LEVEL] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::DETAIL_LEVEL ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::DETAIL_LEVEL ?>]">
             <?php
             do {
                 if ($previousOptionDetailLevelValue === null || $previousOptionDetailLevelValue < $optionDetailLevelValue) { ?>
-                    <option value="<?= $optionDetailLevelValue ?>">
+                    <option value="<?= $optionDetailLevelValue ?>"
+                            <?php if ($selectedDetailLevelValue !== false && $selectedDetailLevelValue === $optionDetailLevelValue){ ?>selected<?php } ?>>
                         <?= ($optionDetailLevelValue >= 0 ? '+' : '')
                         . "{$optionDetailLevelValue}"; ?>
                     </option>

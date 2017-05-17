@@ -2,7 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -21,9 +21,9 @@ if ($attack === null) {
         $difficultyOfAdditionStep = $attackAddition->getDifficultyOfAdditionStep();
         $optionAttackValue = $attack->getDefaultValue(); // from the lowest
         $previousOptionAttackValue = null;
-        $selectedAttackValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableCastingParameterCode::ATTACK] ?? false;
+        $selectedAttackValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::ATTACK] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::ATTACK ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::ATTACK ?>]">
             <?php
             do {
                 if ($previousOptionAttackValue === null || $previousOptionAttackValue < $optionAttackValue) { ?>

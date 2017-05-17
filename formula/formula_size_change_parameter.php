@@ -2,11 +2,12 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\FormulaMutableCastingParameterCode;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
+/** @var IndexController $controller */
 
 $sizeChange = $formulasTable->getSizeChange($selectedFormulaCode);
 if ($sizeChange === null) {
@@ -21,12 +22,14 @@ if ($sizeChange === null) {
         $difficultyOfAdditionStep = $sizeChangeAddition->getDifficultyOfAdditionStep();
         $optionSizeChangeValue = $sizeChange->getDefaultValue(); // from the lowest
         $previousOptionSizeChangeValue = null;
+        $selectedSizeChangeValue = $controller->getSelectedFormulaSpellParameters()[FormulaMutableSpellParameterCode::SIZE_CHANGE] ?? false;
         ?>
-        <select name="formulaParameters[<?= FormulaMutableCastingParameterCode::SIZE_CHANGE ?>]">
+        <select name="formulaParameters[<?= FormulaMutableSpellParameterCode::SIZE_CHANGE ?>]">
             <?php
             do {
                 if ($previousOptionSizeChangeValue === null || $previousOptionSizeChangeValue < $optionSizeChangeValue) { ?>
-                    <option value="<?= $optionSizeChangeValue ?>">
+                    <option value="<?= $optionSizeChangeValue ?>"
+                            <?php if ($selectedSizeChangeValue !== false && $selectedSizeChangeValue === $optionSizeChangeValue){ ?>selected<?php } ?>>
                         <?= ($optionSizeChangeValue >= 0 ? '+' : '')
                         . "{$optionSizeChangeValue}"; ?>
                     </option>

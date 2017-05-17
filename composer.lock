@@ -894,12 +894,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-theurgist-codes.git",
-                "reference": "bb21fe155c9933c43df01f4bec669e4f3775bbf5"
+                "reference": "434d35ecb08efe8d95f00a77d0f48b06df83b9ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/bb21fe155c9933c43df01f4bec669e4f3775bbf5",
-                "reference": "bb21fe155c9933c43df01f4bec669e4f3775bbf5",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-theurgist-codes/zipball/434d35ecb08efe8d95f00a77d0f48b06df83b9ec",
+                "reference": "434d35ecb08efe8d95f00a77d0f48b06df83b9ec",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "MIT"
             ],
             "description": "Codes with keywords for Drd+ theurgist",
-            "time": "2017-05-04 16:56:59"
+            "time": "2017-05-17 10:44:00"
         },
         {
             "name": "drd-plus/theurgist-spells",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "287c3f82236689d36d07a811bf12459adeff2aae"
+                "reference": "3f265afb207c00f5f9db4c1d471a4baa32de3e0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/287c3f82236689d36d07a811bf12459adeff2aae",
-                "reference": "287c3f82236689d36d07a811bf12459adeff2aae",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/3f265afb207c00f5f9db4c1d471a4baa32de3e0a",
+                "reference": "3f265afb207c00f5f9db4c1d471a4baa32de3e0a",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-05-16 07:08:00"
+            "time": "2017-05-17 11:15:26"
         },
         {
             "name": "drd/dice-rolls",
