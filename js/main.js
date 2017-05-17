@@ -1,38 +1,45 @@
 var form = document.getElementById('configurator');
 var inputs = document.getElementsByTagName('input');
-var formula = document.getElementById('formula');
+var selects = document.getElementsByTagName('select');
+var controls = [];
+for (var inputIndex = 0, inputsLength = inputs.length; inputIndex < inputsLength; inputIndex++) {
+    var input = inputs[inputIndex];
+    if (input.type !== 'hidden') {
+        controls.push(inputs[inputIndex]);
+    }
+}
+for (var selectIndex = 0, selectsLength = selects.length; selectIndex < selectsLength; selectIndex++) {
+    controls.push(selects[selectIndex]);
+}
+console.log(controls);
 var submitForm = function () {
     form.submit();
 };
-var enableInputs = function () {
-    for (var j = 0, length = inputs.length; j < length; j++) {
-        inputs[j].disabled = null;
+var formula = document.getElementById('formula');
+var enableControls = function () {
+    for (var j = 0, length = controls.length; j < length; j++) {
+        controls[j].disabled = null;
     }
     formula.disabled = null;
 };
-var disableInputs = function (forMiliSeconds) {
-    for (var j = 0, length = inputs.length; j < length; j++) {
-        inputs[j].disabled = true;
+var disableControls = function (forMilliSeconds) {
+    for (var j = 0, length = controls.length; j < length; j++) {
+        controls[j].disabled = true;
     }
     formula.disabled = true;
-    if (forMiliSeconds) {
-        window.setTimeout(enableInputs, forMiliSeconds /* unlock after */)
+    if (forMilliSeconds) {
+        window.setTimeout(enableControls, forMilliSeconds /* unlock after */)
     }
 };
 var invalidateResult = function () {
     document.getElementById('result').className += ' obsolete';
     document.getElementById('result').style.opacity = '0.5';
 };
-for (var i = 0, length = inputs.length; i < length; i++) {
-    var input = inputs[i];
-    input.addEventListener('change', function () {
+for (var i = 0, controlsLength = controls.length; i < controlsLength; i++) {
+    var control = controls[i];
+    control.addEventListener('change', function () {
         submitForm();
-        disableInputs();
+        disableControls(5000);
         invalidateResult();
     });
 }
-formula.addEventListener('change', function () {
-    submitForm();
-    disableInputs(5000);
-    invalidateResult();
-});
