@@ -11,7 +11,6 @@ for (var inputIndex = 0, inputsLength = inputs.length; inputIndex < inputsLength
 for (var selectIndex = 0, selectsLength = selects.length; selectIndex < selectsLength; selectIndex++) {
     controls.push(selects[selectIndex]);
 }
-console.log(controls);
 var submitForm = function () {
     form.submit();
 };
@@ -35,6 +34,16 @@ var invalidateResult = function () {
     document.getElementById('result').className += ' obsolete';
     document.getElementById('result').style.opacity = '0.5';
 };
+for (selectIndex = 0; selectIndex < selectsLength; selectIndex++) {
+    selects[selectIndex].addEventListener('change', (function (selectIndex) {
+        return function () {
+            var inputsWithSelects = selects[selectIndex].parentNode.parentNode.getElementsByTagName('input');
+            for (var inputWithSelectIndex = 0, inputsWithSelectsLength = inputsWithSelects.length; inputWithSelectIndex < inputsWithSelectsLength; inputWithSelectIndex++) {
+                inputsWithSelects[inputWithSelectIndex].checked = true;
+            }
+        }
+    })(selectIndex));
+}
 for (var i = 0, controlsLength = controls.length; i < controlsLength; i++) {
     var control = controls[i];
     control.addEventListener('change', function () {
