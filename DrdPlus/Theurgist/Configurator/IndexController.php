@@ -257,10 +257,11 @@ class IndexController extends StrictObject
                 $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf, $spellTraitsTrapsBranch[$index] ?? []);
                 continue;
             }
+            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $spellTraitsTree[$index] = new SpellTrait(
                 SpellTraitCode::getIt($spellTraitsLeaf),
                 $this->spellTraitsTable,
-                $spellTraitsTrapsBranch[$spellTraitsLeaf] // TODO wrong, we are providing final value, not change
+                $spellTraitsTrapsBranch[$spellTraitsLeaf] ?? null
             );
         }
 
@@ -295,22 +296,9 @@ class IndexController extends StrictObject
     public function getSelectedFormulaSpellTraits(): array
     {
         return $this->buildSpellTraitsTree(
-            $this->getSelectedFormulaSpellTraitCodes(),
+            $this->getSelectedFormulaSpellTraitValues(),
             [] /* no traps for formula spell traits */
         );
-    }
-
-    /**
-     * @return array|SpellTrait[]
-     */
-    private function getSelectedFormulaSpellTraitCodes(): array
-    {
-        $selectedFormulaSpellTraitCodes = [];
-        foreach ($this->getSelectedFormulaSpellTraitValues() as $selectedFormulaSpellTrait) {
-            $selectedFormulaSpellTraitCodes[] = SpellTraitCode::getIt($selectedFormulaSpellTrait);
-        }
-
-        return $selectedFormulaSpellTraitCodes;
     }
 
     /**
