@@ -40,7 +40,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
         <?php require __DIR__ . '/formula/formula.php'; ?>
         <div id="modifiers" class="block">
             <div>Modifikátory:</div>
-            <?php require __DIR__ . '/modifiers.php' ?>
+            <?php require __DIR__ . '/modifiers/modifiers.php' ?>
         </div>
         <button type="submit">Vybrat</button>
     </form>

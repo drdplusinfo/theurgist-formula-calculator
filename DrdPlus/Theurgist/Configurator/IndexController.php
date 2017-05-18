@@ -15,26 +15,20 @@ use Granam\Strict\Object\StrictObject;
 
 class IndexController extends StrictObject
 {
-    /**
-     * @var FormulasTable
-     */
+    /** @var FormulasTable */
     private $formulasTable;
-    /**
-     * @var ModifiersTable
-     */
+    /** @var ModifiersTable */
     private $modifiersTable;
-    /**
-     * @var FormulaCode
-     */
+    /** @var FormulaCode */
     private $selectedFormulaCode;
-    /**
-     * @var SpellTraitsTable
-     */
+    /** @var SpellTraitsTable */
     private $spellTraitsTable;
-    /**
-     * @var array
-     */
+    /** @var array */
     private $selectedFormulaSpellParameters;
+    /** @var array */
+    private $selectedModifiersSpellTraits;
+    /** @var array */
+    private $selectedModifiersSpellTraitsTrapValues;
 
     /**
      * @param FormulasTable $formulasTable
@@ -128,11 +122,16 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersTree !== null) {
             return $this->selectedModifiersTree;
         }
-        if (empty($_GET['modifiers']) || $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+        if (empty($_GET['modifiers']) || $this->isFormulaChanged()) {
             return $this->selectedModifiersTree = [];
         }
 
         return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree((array)$_GET['modifiers']);
+    }
+
+    private function isFormulaChanged(): bool
+    {
+        return $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue();
     }
 
     private function buildPossibleModifiersTree(array $modifierValues, array $processedModifiers = []): array
@@ -210,12 +209,13 @@ class IndexController extends StrictObject
         if ($this->selectedFormulaSpellParameters !== null) {
             return $this->selectedFormulaSpellParameters;
         }
-        if (empty($_GET['formulaParameters']) || $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+        if (empty($_GET['formulaParameters']) || $this->isFormulaChanged()) {
             return $this->selectedFormulaSpellParameters = [];
         }
         $this->selectedFormulaSpellParameters = [];
-        /** @var array|int[][] $_GET */
+        /** @var array|string[][] $_GET */
         foreach ($_GET['formulaParameters'] as $formulaParameterName => $value) {
+            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
         }
 
@@ -229,34 +229,38 @@ class IndexController extends StrictObject
     {
         return $this->buildSelectedModifiersTree(
             $this->getSelectedModifiersTree(),
-            $this->getSelectedModifiersSpellTraits()
+            $this->getSelectedModifiersSpellTraitsTree()
         );
     }
 
     /**
      * @return array|SpellTrait[]
      */
-    private function getSelectedModifiersSpellTraits(): array
+    private function getSelectedModifiersSpellTraitsTree(): array
     {
-        return $this->buildSpellTraitsTree($this->getSelectedModifiersSpellTraitValues());
+        return $this->buildSpellTraitsTree(
+            $this->getSelectedModifiersSpellTraitValues(),
+            $this->getSelectedModifiersSpellTraitsTrapValues()
+        );
     }
 
     /**
      * @param array $spellTraitsBranch
+     * @param array $spellTraitsTrapsBranch
      * @return array|SpellTrait[]
      */
-    private function buildSpellTraitsTree(array $spellTraitsBranch): array
+    private function buildSpellTraitsTree(array $spellTraitsBranch, array $spellTraitsTrapsBranch): array
     {
         $spellTraitsTree = [];
         foreach ($spellTraitsBranch as $index => $spellTraitsLeaf) {
             if (is_array($spellTraitsLeaf)) {
-                $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf);
+                $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf, $spellTraitsTrapsBranch[$index] ?? []);
                 continue;
             }
             $spellTraitsTree[$index] = new SpellTrait(
                 SpellTraitCode::getIt($spellTraitsLeaf),
                 $this->spellTraitsTable,
-                0
+                $spellTraitsTrapsBranch[$spellTraitsLeaf] // TODO wrong, we are providing final value, not change
             );
         }
 
@@ -290,7 +294,10 @@ class IndexController extends StrictObject
      */
     public function getSelectedFormulaSpellTraits(): array
     {
-        return $this->buildSpellTraitsTree($this->getSelectedFormulaSpellTraitCodes());
+        return $this->buildSpellTraitsTree(
+            $this->getSelectedFormulaSpellTraitCodes(),
+            [] /* no traps for formula spell traits */
+        );
     }
 
     /**
@@ -360,7 +367,7 @@ class IndexController extends StrictObject
      */
     public function getSelectedFormulaSpellTraitValues(): array
     {
-        if (empty($_GET['formulaSpellTraits']) || $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue()) {
+        if (empty($_GET['formulaSpellTraits']) || $this->isFormulaChanged()) {
             return [];
         }
 
@@ -400,8 +407,6 @@ class IndexController extends StrictObject
         return $bagEnds;
     }
 
-    private $selectedModifiersSpellTraits;
-
     /**
      * @return array|string[][][]
      */
@@ -410,9 +415,7 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
         }
-        if (empty($_GET['modifierSpellTraits'])
-            || $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue()
-        ) {
+        if (empty($_GET['modifierSpellTraits']) || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraits = [];
         }
 
@@ -444,4 +447,39 @@ class IndexController extends StrictObject
         return $traitsTree;
     }
 
+    public function getSelectedModifiersSpellTraitsTrapValues(): array
+    {
+        if ($this->selectedModifiersSpellTraitsTrapValues !== null) {
+            return $this->selectedModifiersSpellTraitsTrapValues;
+        }
+        if (empty($_GET['modifierSpellTraitTraps']) || $this->isFormulaChanged()) {
+            return $this->selectedModifiersSpellTraitsTrapValues = [];
+        }
+
+        return $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
+            (array)$_GET['modifierSpellTraitTraps'],
+            $this->getSelectedModifiersSpellTraitValues()
+        );
+    }
+
+    /**
+     * @param array $traitTrapValues
+     * @param array $selectedSpellTraitsTree
+     * @return array|string[][][]
+     */
+    private function buildSelectedModifiersSpellTraitsTrapValuesTree(array $traitTrapValues, array $selectedSpellTraitsTree): array
+    {
+        $traitsTrapsTree = [];
+        /** @var array|string[] $levelTraitValues */
+        foreach ($traitTrapValues as $levelModifierAndTrait => $levelTraitValue) {
+            list($level, $modifier, $trait) = explode('-', $levelModifierAndTrait);
+            if (!in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
+                continue; // skip still selected trait trap but without selected parent trait
+            }
+            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
+            $traitsTrapsTree[$level][$modifier][$trait] = ToInteger::toInteger($levelTraitValue);
+        }
+
+        return $traitsTrapsTree;
+    }
 }
