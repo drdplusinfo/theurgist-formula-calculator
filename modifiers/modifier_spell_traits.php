@@ -7,7 +7,7 @@ namespace DrdPlus\Theurgist\Configurator;
 /** @var SpellTraitsTable $spellTraitsTable */
 /** @var array $selectedModifiersSpellTraitValues */
 /** @var IndexController $controller */
-/** @var bool $modifierSelected */
+/** @var bool $modifierIsSelected */
 
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
@@ -28,7 +28,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                            name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
                            <?php
                            if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
-                           if (!$modifierSelected) { ?>disabled<?php }
+                           if (!$modifierIsSelected) { ?>disabled<?php }
                     ?>
                     >
                     <?= $modifierSpellTraitCode->translateTo('cs') ?>
@@ -39,7 +39,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                         $trapSelectIndex = "$spellTraitsInputIndex-{$spellTraitCodeValue}";
                         ?>
                         <span class="trap">
-                        <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]" <?php if (!$modifierSelected) { ?>disabled<?php } ?>>
+                        <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]" <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                             <?php
                             $trapAddition = $trap->getAdditionByDifficulty();
                             $additionStep = $trapAddition->getAdditionStep();

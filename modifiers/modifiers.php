@@ -3,6 +3,7 @@ namespace DrdPlus\Theurgist\Configurator;
 
 /** @var IndexController $controller */
 use DrdPlus\Theurgist\Codes\FormulaCode;
+use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
@@ -24,12 +25,11 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
     return $selection === $modifierValue /* bag end */ || is_array($selection); /* still traversing on the tree */
 };
 
-/** @var FormulasTable $formulasTable */
 /** @var ModifiersTable $modifiersTable */
 /** @var FormulaCode $selectedFormulaCode */
 /** @var SpellTraitsTable $spellTraitsTable */
 ?>
-<div class="modifier panel">
+<div class="panel">
     <?php
     // modifiers of modifiers (their chain)
     /** @noinspection OnlyWritesOnParameterInspection */
@@ -40,17 +40,17 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
         }
         /** @var array|string[] $selectedRelatedModifiers */
         $modifiersIndex = "{$treeLevel}-{$parentModifierValue}";
-        /** @var array|\DrdPlus\Theurgist\Codes\ModifierCode[][] $possibleModifierCombinations */
+        /** @var array|ModifierCode[][] $possibleModifierCombinations */
         foreach ($possibleModifierCombinations[$parentModifierValue] as $possibleModifierValue => $possibleModifier) {
-            $modifierSelected = $isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel);
+            $modifierIsSelected = $isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel);
             ?>
-            <div class="modifier">
+            <div class="modifier panel">
                 <label>
                     <input name="modifiers[<?= $modifiersIndex ?>][]"
                            type="checkbox"
                            value="<?= $possibleModifierValue ?>"
-                           <?php if ($modifierSelected){ ?>checked<?php } ?>>
-                    <?= /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
+                           <?php if ($modifierIsSelected){ ?>checked<?php } ?>>
+                    <?= /** @var ModifierCode $possibleModifier */
                     $possibleModifier->translateTo('cs');
                     $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
                     <span><?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?></span>
@@ -63,6 +63,7 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                             </span>
                 </label>
                 <?php
+                require __DIR__ . '/modifier_quality_parameter.php';
                 require __DIR__ . '/modifier_spell_traits.php';
                 $showModifiers($possibleModifierValue, $treeLevel + 1); /* recursion to build tree */
                 ?>

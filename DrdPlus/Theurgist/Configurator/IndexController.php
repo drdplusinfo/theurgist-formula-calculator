@@ -29,6 +29,8 @@ class IndexController extends StrictObject
     private $selectedModifiersSpellTraits;
     /** @var array */
     private $selectedModifiersSpellTraitsTrapValues;
+    /** @var array */
+    private $selectedModifiersSpellParameters;
 
     /**
      * @param FormulasTable $formulasTable
@@ -229,6 +231,7 @@ class IndexController extends StrictObject
     {
         return $this->buildSelectedModifiersTree(
             $this->getSelectedModifiersTree(),
+            $this->getSelectedModifiersSpellParametersTree(),
             $this->getSelectedModifiersSpellTraitsTree()
         );
     }
@@ -268,13 +271,18 @@ class IndexController extends StrictObject
         return $spellTraitsTree;
     }
 
-    private function buildSelectedModifiersTree(array $selectedModifierValues, array $selectedModifierSpellTraits): array
+    private function buildSelectedModifiersTree(
+        array $selectedModifierValues,
+        array $selectedModifierParameterValues,
+        array $selectedModifierSpellTraits
+    ): array
     {
         $modifierValuesWithSpellTraits = [];
         foreach ($selectedModifierValues as $index => $selectedModifiersBranch) {
             if (is_array($selectedModifiersBranch)) {
                 $modifierValuesWithSpellTraits[$index] = $this->buildSelectedModifiersTree(
                     $selectedModifiersBranch,
+                    $selectedModifierParameterValues[$index] ?? [],
                     $selectedModifierSpellTraits[$index] ?? []
                 );
                 continue;
@@ -282,7 +290,7 @@ class IndexController extends StrictObject
             $modifierValuesWithSpellTraits[$index] = new Modifier(
                 ModifierCode::getIt($selectedModifiersBranch),
                 $this->modifiersTable,
-                [], // modifier spell parameter changes
+                $selectedModifierParameterValues[$selectedModifiersBranch] ?? [],
                 $selectedModifierSpellTraits[$selectedModifiersBranch] ?? []
             );
         }
@@ -469,5 +477,26 @@ class IndexController extends StrictObject
         }
 
         return $traitsTrapsTree;
+    }
+
+    public function getSelectedModifiersSpellParametersTree(): array
+    {
+        if ($this->selectedModifiersSpellParameters !== null) {
+            return $this->selectedModifiersSpellParameters;
+        }
+        if (empty($_GET['modifierParameters']) || $this->isFormulaChanged()) {
+            return $this->selectedModifiersSpellParameters = [];
+        }
+
+        /** @var array|int[][][][] $_GET */
+        foreach ($_GET['modifierParameters'] as $treeLevel => $sameLevelParameters) {
+            foreach ($sameLevelParameters as $modifierName => $modifierParameters) {
+                foreach ($modifierParameters as $parameterName => $value) {
+                    $this->selectedModifiersSpellParameters[$treeLevel][$modifierName][$parameterName] = ToInteger::toInteger($value);
+                }
+            }
+        }
+
+        return $this->selectedModifiersSpellParameters;
     }
 }
