@@ -39,7 +39,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                         $trapSelectIndex = "$spellTraitsInputIndex-{$spellTraitCodeValue}";
                         ?>
                         <span class="trap">
-                        <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]">
+                        <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]" <?php if (!$modifierSelected) { ?>disabled<?php } ?>>
                             <?php
                             $trapAddition = $trap->getAdditionByDifficulty();
                             $additionStep = $trapAddition->getAdditionStep();

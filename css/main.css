@@ -94,6 +94,6 @@ ol.realm li {
     padding: 0;
 }
 
-input[disabled] {
+input[disabled], select[disabled] {
     cursor: not-allowed;
 }
