@@ -119,6 +119,9 @@ class IndexController extends StrictObject
 
     private $selectedModifiersTree;
 
+    /**
+     * @return array|string[][][]
+     */
     public function getSelectedModifiersTree(): array
     {
         if ($this->selectedModifiersTree !== null) {
@@ -488,9 +491,17 @@ class IndexController extends StrictObject
             return $this->selectedModifiersSpellParameters = [];
         }
 
+        $this->selectedModifiersSpellParameters = [];
+        $selectedModifiers = $this->getSelectedModifiersTree();
         /** @var array|int[][][][] $_GET */
         foreach ($_GET['modifierParameters'] as $treeLevel => $sameLevelParameters) {
+            if (!array_key_exists($treeLevel, $selectedModifiers)) {
+                continue;
+            }
             foreach ($sameLevelParameters as $modifierName => $modifierParameters) {
+                if (!array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
+                    continue;
+                }
                 foreach ($modifierParameters as $parameterName => $value) {
                     $this->selectedModifiersSpellParameters[$treeLevel][$modifierName][$parameterName] = ToInteger::toInteger($value);
                 }
