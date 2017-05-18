@@ -7,6 +7,7 @@ namespace DrdPlus\Theurgist\Configurator;
 /** @var SpellTraitsTable $spellTraitsTable */
 /** @var array $selectedModifiersSpellTraitValues */
 /** @var IndexController $controller */
+/** @var bool $modifierSelected */
 
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
@@ -25,7 +26,11 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                 <label>
                     <input type="checkbox" value="<?= $spellTraitCodeValue ?>"
                            name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
-                           <?php if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) : ?>checked<?php endif ?>>
+                           <?php
+                           if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
+                           if (!$modifierSelected) { ?>disabled<?php }
+                    ?>
+                    >
                     <?= $modifierSpellTraitCode->translateTo('cs') ?>
                     <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTraitCode);
                     echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
@@ -54,7 +59,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                             } while ($additionStep > 0 /* at least once even on no addition possible */
                             && $optionTrapValue++ / $additionStep * $difficultyOfAdditionStep < 21 /* difficulty change */) ?>
                         </select>
-                        <?= "{$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByDifficulty()}]" ?>
+                            <?= "{$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByDifficulty()}]" ?>
                         </span>
                     <?php } ?>
                 </label>

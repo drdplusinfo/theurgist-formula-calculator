@@ -41,13 +41,15 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
         /** @var array|string[] $selectedRelatedModifiers */
         $modifiersIndex = "{$treeLevel}-{$parentModifierValue}";
         /** @var array|\DrdPlus\Theurgist\Codes\ModifierCode[][] $possibleModifierCombinations */
-        foreach ($possibleModifierCombinations[$parentModifierValue] as $possibleModifierValue => $possibleModifier) { ?>
+        foreach ($possibleModifierCombinations[$parentModifierValue] as $possibleModifierValue => $possibleModifier) {
+            $modifierSelected = $isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel);
+            ?>
             <div class="modifier">
                 <label>
                     <input name="modifiers[<?= $modifiersIndex ?>][]"
                            type="checkbox"
                            value="<?= $possibleModifierValue ?>"
-                           <?php if ($isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel)): ?>checked<?php endif ?>>
+                           <?php if ($modifierSelected){ ?>checked<?php } ?>>
                     <?= /** @var \DrdPlus\Theurgist\Codes\ModifierCode $possibleModifier */
                     $possibleModifier->translateTo('cs');
                     $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
@@ -60,10 +62,10 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                                 } ?>
                             </span>
                 </label>
-                <?php if ($isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel)) {
-                    require __DIR__ . '/modifier_spell_traits.php';
-                    $showModifiers($possibleModifierValue, $treeLevel + 1); /* recursion to build tree */
-                } ?>
+                <?php
+                require __DIR__ . '/modifier_spell_traits.php';
+                $showModifiers($possibleModifierValue, $treeLevel + 1); /* recursion to build tree */
+                ?>
             </div>
         <?php }
     };
