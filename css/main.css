@@ -93,3 +93,7 @@ ol.realm li {
     margin: 0;
     padding: 0;
 }
+
+input[disabled] {
+    cursor: not-allowed;
+}
