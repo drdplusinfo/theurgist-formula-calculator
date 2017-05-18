@@ -63,9 +63,7 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                             </span>
                 </label>
                 <?php
-                require __DIR__ . '/modifier_quality_parameter.php';
-                require __DIR__ . '/modifier_radius_parameter.php';
-                require __DIR__ . '/modifier_number_of_conditions_parameter.php';
+                require __DIR__ . '/modifier_parameters.php';
                 require __DIR__ . '/modifier_spell_traits.php';
                 $showModifiers($possibleModifierValue, $treeLevel + 1); /* recursion to build tree */
                 ?>
