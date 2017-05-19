@@ -65,7 +65,10 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                 <?php
                 require __DIR__ . '/modifier_parameters.php';
                 require __DIR__ . '/modifier_spell_traits.php';
-                $showModifiers($possibleModifierValue, $treeLevel + 1); /* recursion to build tree */
+                if ($modifierIsSelected) {
+                    /* recursion to build tree */
+                    $showModifiers($possibleModifierValue, $treeLevel + 1);
+                }
                 ?>
             </div>
         <?php }
