@@ -24,7 +24,7 @@ body:after {
 }
 
 .modifier {
-    margin-left: 1em;
+    margin: 0.2em 1em 0 0;
     font-style: italic;
 }
 
@@ -97,4 +97,9 @@ ol.realm li {
 
 input[disabled], select[disabled] {
     cursor: not-allowed;
+}
+
+.modifier.panel {
+    padding: 0.2em;
+    background: rgba(139, 62, 37, 0.1);
 }
