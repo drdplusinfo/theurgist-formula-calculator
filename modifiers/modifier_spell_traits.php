@@ -28,12 +28,11 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                            name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
                            <?php
                            if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
-                           if (!$modifierIsSelected) { ?>disabled<?php }
-                    ?>
+                           if (!$modifierIsSelected) { ?>disabled<?php } ?>
                     >
                     <?= $modifierSpellTraitCode->translateTo('cs') ?>
                     <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTraitCode);
-                    echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue();
+                    echo '[' . ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() . ']';
                     $trap = $spellTraitsTable->getTrap($modifierSpellTraitCode);
                     if ($trap !== null) {
                         $trapSelectIndex = "$spellTraitsInputIndex-{$spellTraitCodeValue}";
