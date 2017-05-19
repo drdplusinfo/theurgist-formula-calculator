@@ -14,12 +14,8 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
     <?php
     include __DIR__ . '/formula_duration_parameter.php';
     include __DIR__ . '/formula_radius_parameter.php';
-    include __DIR__ . '/formula_power_parameter.php';
     include __DIR__ . '/formula_epicenter_shift_parameter.php';
-    include __DIR__ . '/formula_detail_level_parameter.php';
-    include __DIR__ . '/formula_size_change_parameter.php';
-    include __DIR__ . '/formula_brightness_parameter.php';
     include __DIR__ . '/formula_spell_speed_parameter.php';
-    include __DIR__ . '/formula_attack_parameter.php';
+    include __DIR__ . '/formula_parameters_without_unit.php';
     ?>
 </div>
