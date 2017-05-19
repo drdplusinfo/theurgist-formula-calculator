@@ -40,7 +40,10 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
         }
         /** @var array|string[] $selectedRelatedModifiers */
         $modifiersIndex = "{$treeLevel}-{$parentModifierValue}";
-        /** @var array|ModifierCode[][] $possibleModifierCombinations */
+        /**
+         * @var array|ModifierCode[][] $possibleModifierCombinations
+         * @var ModifierCode $possibleModifier
+         */
         foreach ($possibleModifierCombinations[$parentModifierValue] as $possibleModifierValue => $possibleModifier) {
             $modifierIsSelected = $isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel);
             ?>
@@ -50,10 +53,9 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                            type="checkbox"
                            value="<?= $possibleModifierValue ?>"
                            <?php if ($modifierIsSelected){ ?>checked<?php } ?>>
-                    <?= /** @var ModifierCode $possibleModifier */
-                    $possibleModifier->translateTo('cs');
-                    $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
-                    <span><?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?></span>
+                    <?= $possibleModifier->translateTo('cs'); ?>
+                    <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
+                    <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>]</span>
                     <span class="forms" title="Forma">
                                 <?php
                                 $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
