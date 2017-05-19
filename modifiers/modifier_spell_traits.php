@@ -33,17 +33,18 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                     <?= $modifierSpellTraitCode->translateTo('cs') ?>
                     <?php $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($modifierSpellTraitCode);
                     echo '[' . ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() . ']';
-                    $trap = $spellTraitsTable->getTrap($modifierSpellTraitCode);
-                    if ($trap !== null) {
+                    $selectedTrap = $baseTrap = $spellTraitsTable->getTrap($modifierSpellTraitCode);
+                    if ($baseTrap !== null) {
                         $trapSelectIndex = "$spellTraitsInputIndex-{$spellTraitCodeValue}";
                         ?>
                         <span class="trap">
                         <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]"
                                 <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                             <?php
-                            $trapAddition = $trap->getAdditionByDifficulty();
+                            $trapAddition = $baseTrap->getAdditionByDifficulty();
                             $additionStep = $trapAddition->getAdditionStep();
-                            $optionTrapValue = $trap->getDefaultValue(); // from the lowest
+                            $optionTrapValue = $baseTrap->getDefaultValue(); // from the lowest
+                            $trap = $baseTrap;
                             $difficultyChange = $trapAddition->getCurrentDifficultyIncrement();
                             $optionTrapChange = 0;
                             $previousOptionTrapValue = null;
@@ -51,7 +52,10 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                             do {
                                 if ($previousOptionTrapValue === null || $previousOptionTrapValue < $optionTrapValue) { ?>
                                     <option value="<?= $optionTrapValue ?>"
-                                            <?php if ($selectedTrapValue !== false && $selectedTrapValue === $optionTrapValue){ ?>selected<?php } ?>>
+                                            <?php if ($selectedTrapValue !== false && $selectedTrapValue === $optionTrapValue){
+                                            $selectedTrap = $trap;
+                                            ?>selected<?php
+                                    } ?>>
                                         <?= ($optionTrapValue >= 0 ? '+' : '')
                                         . "{$optionTrapValue} [{$difficultyChange}]"; ?>
                                     </option>
@@ -64,7 +68,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                                 $difficultyChange = $trapAddition->getCurrentDifficultyIncrement();
                             } while ($additionStep > 0 /* at least once even on no addition possible */ && $difficultyChange < 21) ?>
                         </select>
-                            <?= "{$trap->getPropertyCode()->translateTo('cs', 1)} [{$trap->getAdditionByDifficulty()}]" ?>
+                            <?= "{$trap->getPropertyCode()->translateTo('cs', 1)} [{$selectedTrap->getAdditionByDifficulty()}]" ?>
                         </span>
                     <?php } ?>
                 </label>
