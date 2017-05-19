@@ -26,26 +26,31 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
     <div class="parameter">
         <label><?= $parameterCode->translateTo('cs') ?>:
             <?php
-            $radiusAddition = $parameter->getAdditionByDifficulty();
-            $additionStep = $radiusAddition->getAdditionStep();
-            $difficultyOfAdditionStep = $radiusAddition->getDifficultyOfAdditionStep();
-            $optionRadiusValue = $parameter->getDefaultValue(); // from the lowest
-            $previousOptionRadiusValue = null;
-            $selectedRadiusValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
+            $parameterAddition = $parameter->getAdditionByDifficulty();
+            $additionStep = $parameterAddition->getAdditionStep();
+            $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
+            $optionParameterValue = $parameter->getDefaultValue(); // from the lowest
+            $optionParameterChange = 0;
+            $previousOptionParameterValue = null;
+            $selectedParameterValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
             ?>
             <select name="modifierParameters[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]">
                 <?php
                 do {
-                    if ($previousOptionRadiusValue === null || $previousOptionRadiusValue < $optionRadiusValue) { ?>
-                        <option value="<?= $optionRadiusValue ?>"
-                                <?php if ($selectedRadiusValue !== false && $selectedRadiusValue === $optionRadiusValue){ ?>selected<?php } ?>>
-                            <?= ($optionRadiusValue >= 0 ? '+' : '')
-                            . "{$optionRadiusValue}"; ?>
+                    if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>
+                        <option value="<?= $optionParameterValue ?>"
+                                <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
+                            <?= ($optionParameterValue >= 0 ? '+' : '')
+                            . "{$optionParameterValue} [{$parameterDifficultyChange}]"; ?>
                         </option>
                     <?php }
-                    $previousOptionRadiusValue = $optionRadiusValue;
-                } while ($additionStep > 0 /* at least once even on no addition possible */
-                && $optionRadiusValue++ / $additionStep * $difficultyOfAdditionStep < 21 /* difficulty change */) ?>
+                    $previousOptionParameterValue = $optionParameterValue;
+                    $optionParameterValue++;
+                    $optionParameterChange++;
+                    $parameter = $parameter->getWithAddition($optionParameterChange);
+                    $parameterAddition = $parameter->getAdditionByDifficulty();
+                    $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
+                } while ($additionStep > 0 /* at least once even on no addition possible */ && $parameterDifficultyChange < 21) ?>
             </select>
         </label>
     </div>

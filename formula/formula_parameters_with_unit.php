@@ -68,12 +68,12 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
                             . "{$optionParameterValue} ({$optionValueWithUnit->getValue()} {$optionUnitInCzech}) [{$parameterDifficultyChange}]"; ?>
                         </option>
                     <?php }
+                    $previousOptionParameterValueWithUnit = $optionValueWithUnit;
                     $optionParameterValue++;
                     $optionParameterChange++;
                     $parameter = $parameter->getWithAddition($optionParameterChange);
                     $parameterAdditionByDifficulty = $parameter->getAdditionByDifficulty();
                     $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();
-                    $previousOptionParameterValueWithUnit = $optionValueWithUnit;
                 } while ($additionStep > 0 /* at least once even on no addition possible */ && $parameterDifficultyChange < 21) ?>
             </select>
         </label>
