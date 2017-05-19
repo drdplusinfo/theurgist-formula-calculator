@@ -17,7 +17,7 @@ $epicenterShiftDistance = $epicenterShift->getDistance(Tables::getIt()->getDista
 $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
 ?>
 <div class="parameter panel">
-    Posun transpozicí:
+    posun transpozicí:
     <?= ($epicenterShift->getValue() >= 0 ? '+' : '') .
     "{$epicenterShift->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
 </div>

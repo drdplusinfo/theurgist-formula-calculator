@@ -20,6 +20,7 @@ body:after {
 
 .parameter {
     margin-left: 1em;
+    font-style: normal;
 }
 
 .modifier {
