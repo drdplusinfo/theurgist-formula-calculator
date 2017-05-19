@@ -26,7 +26,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
                 <button type="submit">Vybrat</button>
                 <?php $formulaDifficulty = $formulasTable->getFormulaDifficulty($selectedFormulaCode); ?>
             </span>
-            <span class="panel"><?= ($formulaDifficulty->getValue() > 0 ? '+' : '') . $formulaDifficulty ?></span>
+            <span class="panel">[<?= $formulaDifficulty->getValue() ?>]</span>
         </div>
         <span class="panel forms" title="Forma">
             <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($selectedFormulaCode, 'cs')); ?>
