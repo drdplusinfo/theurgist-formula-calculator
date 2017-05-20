@@ -13,7 +13,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
     <div class="block">
         <div class="panel">
             <span class="panel">
-                <label>Formule:
+                <label><strong>Formule</strong>:
                     <select id="formula" name="formula">
                         <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
                             <option value="<?= $formulaValue ?>"

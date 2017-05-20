@@ -10,7 +10,7 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
 
 ?>
 <div class="block">
-    <span class="panel">Parametry</span>
+    <span class="panel"><strong>Parametry</strong>:</span>
     <?php
     include __DIR__ . '/formula_parameters_without_unit.php';
     include __DIR__ . '/formula_parameters_with_unit.php';

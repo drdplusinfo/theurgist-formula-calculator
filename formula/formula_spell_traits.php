@@ -4,7 +4,7 @@ if (count($formulaSpellTraitCodes) > 0) {
     $selectedFormulaSpellTraitValues = $controller->getSelectedFormulaSpellTraitValues(); ?>
     <div class="block">
         <div class="panel">
-            <span class="panel">Rysy:</span>
+            <span class="panel"><strong>Rysy</strong>:</span>
             <?php foreach ($formulaSpellTraitCodes as $formulaSpellTraitCode) { ?>
                 <div class="spell-trait panel">
                     <label>
@@ -14,7 +14,7 @@ if (count($formulaSpellTraitCodes) > 0) {
                         <?= $formulaSpellTraitCode->translateTo('cs') ?>
                         <?php
                         $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($formulaSpellTraitCode);
-                        echo ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() ?>
+                        echo '[' . ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() . ']' ?>
                         <?php $trap = $spellTraitsTable->getTrap($formulaSpellTraitCode);
                         if ($trap !== null) { ?>
                             <span class="trap">(<?php echo $trap->getValue();
