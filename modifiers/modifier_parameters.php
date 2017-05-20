@@ -13,6 +13,7 @@ use Granam\String\StringTools;
 /** @var int $treeLevel */
 /** @var string $possibleModifierValue */
 /** @var string $modifiersIndex */
+/** @var bool $modifierIsSelected */
 
 foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possibleParameterName) {
     $getParameter = StringTools::assembleGetterForName($possibleParameterName);
@@ -34,7 +35,8 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
             $previousOptionParameterValue = null;
             $selectedParameterValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
             ?>
-            <select name="modifierParameters[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]">
+            <select name="modifierParameters[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
+                    <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                 <?php
                 do {
                     if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>
