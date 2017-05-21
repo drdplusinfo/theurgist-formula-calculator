@@ -52,9 +52,8 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
          data-href="https://formule.theurg.drdplus.info/<?= $_SERVER['QUERY_STRING'] ? ('?' . $_SERVER['QUERY_STRING']) : '' ?>"
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
-    <a class="github-fork-ribbon right-bottom fixed"
-       href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
-       title="Fork me on GitHub">Fork me</a>
+    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
+       title="Fork me on GitHub"><img class="github" src="/images/octocat.png"></a>
 </div>
 <script src="js/main.js"></script>
 </body>
