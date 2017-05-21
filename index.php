@@ -29,7 +29,6 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <noscript>
         <link rel="stylesheet" type="text/css" href="css/no_script.css">
     </noscript>
-    <link rel="stylesheet" href="css/gh-fork-ribbon.min.css"/>
     <script type="text/javascript" src="js/facebook.js" async></script>
 </head>
 <body>
@@ -53,7 +52,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
     <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
-       title="Fork me on GitHub"><img class="github" src="/images/octocat.png"></a>
+       title="Fork me on GitHub"><img class="github" src="/images/GitHub-Mark-64px.png"></a>
 </div>
 <script src="js/main.js"></script>
 </body>
