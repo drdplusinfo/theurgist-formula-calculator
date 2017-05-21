@@ -73,6 +73,10 @@ button[type="submit"] {
     float: left;
 }
 
+.clear {
+    clear: both;
+}
+
 .forms {
     font-size: smaller;
     font-style: normal;
@@ -102,4 +106,8 @@ input[disabled], select[disabled] {
 .modifier.panel {
     padding: 0.2em;
     background: rgba(139, 62, 37, 0.1);
+}
+
+.modifier.panel > .modifier.panel {
+    margin-left: 1em;
 }
