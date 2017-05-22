@@ -28,6 +28,10 @@ body:after {
     font-style: italic;
 }
 
+.modifier > .modifier {
+    margin: 0.2em 0 0 0;
+}
+
 .spell-trait {
     margin-left: 1em;
     min-width: 8em;
