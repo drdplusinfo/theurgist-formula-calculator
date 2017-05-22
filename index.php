@@ -14,7 +14,7 @@ ini_set('display_errors', '1');
 $modifiersTable = new ModifiersTable(Tables::getIt());
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
-$controller = new IndexController($formulasTable, $modifiersTable, $spellTraitsTable);
+$controller = new IndexController($formulasTable, $modifiersTable, $spellTraitsTable, Tables::getIt()->getBaseOfWoundsTable());
 $selectedFormula = $controller->getSelectedFormula();
 $selectedFormulaCode = $selectedFormula->getFormulaCode();
 ?>

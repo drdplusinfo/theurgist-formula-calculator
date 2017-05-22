@@ -1,6 +1,7 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
+use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\SpellTraitCode;
@@ -19,6 +20,8 @@ class IndexController extends StrictObject
     private $formulasTable;
     /** @var ModifiersTable */
     private $modifiersTable;
+    /** @var BaseOfWoundsTable */
+    private $baseOfWoundsTable;
     /** @var FormulaCode */
     private $selectedFormulaCode;
     /** @var SpellTraitsTable */
@@ -36,16 +39,19 @@ class IndexController extends StrictObject
      * @param FormulasTable $formulasTable
      * @param ModifiersTable $modifiersTable
      * @param SpellTraitsTable $spellTraitsTable
+     * @param BaseOfWoundsTable $baseOfWoundsTable
      */
     public function __construct(
         FormulasTable $formulasTable,
         ModifiersTable $modifiersTable,
-        SpellTraitsTable $spellTraitsTable
+        SpellTraitsTable $spellTraitsTable,
+        BaseOfWoundsTable $baseOfWoundsTable
     )
     {
         $this->formulasTable = $formulasTable;
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
+        $this->baseOfWoundsTable = $baseOfWoundsTable;
     }
 
     /**
@@ -174,7 +180,7 @@ class IndexController extends StrictObject
          */
         foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
             list($level, $parentModifier) = explode('-', $levelToParentModifier);
-            if (count($modifiers) > 0
+            if ($level > 1
                 && (!array_key_exists($level - 1, $modifiers) || !in_array($parentModifier, $modifiers[$level - 1], true))
             ) {
                 continue; // skip branch without selected parent modifier (early bag end)
@@ -200,6 +206,7 @@ class IndexController extends StrictObject
         return new Formula(
             $this->getSelectedFormulaCode(),
             $this->formulasTable,
+            $this->baseOfWoundsTable,
             $this->getSelectedFormulaSpellParameters(), // formula spell parameter changes
             $this->getSelectedModifiers(),
             $this->getSelectedFormulaSpellTraits()
