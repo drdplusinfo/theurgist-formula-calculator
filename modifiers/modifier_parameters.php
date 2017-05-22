@@ -1,10 +1,12 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
+use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\ModifierMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellParameters\Partials\IntegerCastingParameter;
+use DrdPlus\Theurgist\Spells\SpellParameters\SpellSpeed;
 use Granam\String\StringTools;
 
 /** @var ModifierCode $possibleModifier */
@@ -30,7 +32,6 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
             $parameterAddition = $parameter->getAdditionByDifficulty();
             $additionStep = $parameterAddition->getAdditionStep();
             $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
-            $optionParameterValue = $parameter->getDefaultValue(); // from the lowest
             $optionParameterChange = 0;
             $previousOptionParameterValue = null;
             $selectedParameterValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
@@ -39,15 +40,21 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
                     <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                 <?php
                 do {
+                    $optionParameterValue = $parameter->getValue();
                     if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>
                         <option value="<?= $optionParameterValue ?>"
                                 <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
-                            <?= ($optionParameterValue >= 0 ? '+' : '')
-                            . "{$optionParameterValue} [{$parameterDifficultyChange}]"; ?>
+                            <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
+                            if ($possibleParameterName === ModifierMutableSpellParameterCode::SPELL_SPEED) {
+                                /** @var SpellSpeed $parameter */
+                                $speed = $parameter->getSpeed(Tables::getIt()->getSpeedTable());
+                                $speedDescription = $speed->getValue() . ' ' . $speed->getUnitCode()->translateTo('cs', $speed->getValue());
+                                $parameterValueDescription .= ' (' . $speedDescription . ')';
+                            }
+                            echo "$parameterValueDescription [{$parameterDifficultyChange}]"; ?>
                         </option>
                     <?php }
                     $previousOptionParameterValue = $optionParameterValue;
-                    $optionParameterValue++;
                     $optionParameterChange++;
                     $parameter = $parameter->getWithAddition($optionParameterChange);
                     $parameterAddition = $parameter->getAdditionByDifficulty();

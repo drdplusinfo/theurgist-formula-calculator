@@ -44,7 +44,6 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
             <?php
             $parameterAdditionByDifficulty = $parameter->getAdditionByDifficulty();
             $additionStep = $parameterAdditionByDifficulty->getAdditionStep();
-            $optionParameterValue = $parameter->getDefaultValue(); // from the lowest
             $optionParameterChange = 0;
             $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();
             /** @var Measurement $previousOptionParameterValueWithUnit */
@@ -54,6 +53,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
             <select name="formulaParameters[<?= $parameterName ?>]">
                 <?php
                 do {
+                    $optionParameterValue = $parameter->getValue(); // from the lowest
                     /** @var Distance|Time|Speed $optionValueWithUnit */
                     $optionValueWithUnit = $unitFactory($optionParameterValue);
                     if (!$previousOptionParameterValueWithUnit
@@ -69,7 +69,6 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
                         </option>
                     <?php }
                     $previousOptionParameterValueWithUnit = $optionValueWithUnit;
-                    $optionParameterValue++;
                     $optionParameterChange++;
                     $parameter = $parameter->getWithAddition($optionParameterChange);
                     $parameterAdditionByDifficulty = $parameter->getAdditionByDifficulty();

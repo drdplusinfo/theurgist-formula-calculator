@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "0fc19e97472bb570bfb809a0003b6a2b157aa3d2"
+                "reference": "e14958ada7bd974b853461652b07ebb34580f450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/0fc19e97472bb570bfb809a0003b6a2b157aa3d2",
-                "reference": "0fc19e97472bb570bfb809a0003b6a2b157aa3d2",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/e14958ada7bd974b853461652b07ebb34580f450",
+                "reference": "e14958ada7bd974b853461652b07ebb34580f450",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +797,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2017-04-30 11:34:01"
+            "time": "2017-05-22 10:50:11"
         },
         {
             "name": "drd-plus/properties",
@@ -805,12 +805,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-properties.git",
-                "reference": "dce46c42bd949a8c39932419423fd8f7cdfd7bfd"
+                "reference": "d53b9b24b2058b868c986a6e5e00af2a90dcc376"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-properties/zipball/dce46c42bd949a8c39932419423fd8f7cdfd7bfd",
-                "reference": "dce46c42bd949a8c39932419423fd8f7cdfd7bfd",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-properties/zipball/d53b9b24b2058b868c986a6e5e00af2a90dcc376",
+                "reference": "d53b9b24b2058b868c986a6e5e00af2a90dcc376",
                 "shasum": ""
             },
             "require": {
@@ -841,7 +841,7 @@
                 "MIT"
             ],
             "description": "Drd+ properties",
-            "time": "2017-04-30 06:24:31"
+            "time": "2017-05-22 10:35:03"
         },
         {
             "name": "drd-plus/tables",
@@ -849,12 +849,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-tables.git",
-                "reference": "a0dd1aaaea271d64d7d23963d9999a9efafcbcbd"
+                "reference": "4defca18f648346ee1715e05c6444af23b1bf124"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/a0dd1aaaea271d64d7d23963d9999a9efafcbcbd",
-                "reference": "a0dd1aaaea271d64d7d23963d9999a9efafcbcbd",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/4defca18f648346ee1715e05c6444af23b1bf124",
+                "reference": "4defca18f648346ee1715e05c6444af23b1bf124",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2017-04-30 11:45:23"
+            "time": "2017-05-22 10:27:28"
         },
         {
             "name": "drd-plus/theurgist-codes",
@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "c7a831a892884ad4ed65cac9f45d04e90be28335"
+                "reference": "0d0c837266cff83704e5bb1cabaabab5298d3b91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/c7a831a892884ad4ed65cac9f45d04e90be28335",
-                "reference": "c7a831a892884ad4ed65cac9f45d04e90be28335",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/0d0c837266cff83704e5bb1cabaabab5298d3b91",
+                "reference": "0d0c837266cff83704e5bb1cabaabab5298d3b91",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-05-22 05:48:45"
+            "time": "2017-05-22 10:44:42"
         },
         {
             "name": "drd/dice-rolls",
@@ -2371,16 +2371,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.1.3",
+            "version": "6.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "824d02024916525a36b2db21847a5ef91db9e4a8"
+                "reference": "42b7f394a8e009516582331b1e03a1aba40175d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/824d02024916525a36b2db21847a5ef91db9e4a8",
-                "reference": "824d02024916525a36b2db21847a5ef91db9e4a8",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/42b7f394a8e009516582331b1e03a1aba40175d1",
+                "reference": "42b7f394a8e009516582331b1e03a1aba40175d1",
                 "shasum": ""
             },
             "require": {
@@ -2400,8 +2400,8 @@
                 "phpunit/php-timer": "^1.0.6",
                 "phpunit/phpunit-mock-objects": "^4.0",
                 "sebastian/comparator": "^2.0",
-                "sebastian/diff": "^1.2",
-                "sebastian/environment": "^3.0.1",
+                "sebastian/diff": "^1.4.3 || ^2.0",
+                "sebastian/environment": "^3.0.2",
                 "sebastian/exporter": "^3.1",
                 "sebastian/global-state": "^1.1 || ^2.0",
                 "sebastian/object-enumerator": "^3.0.2",
@@ -2451,7 +2451,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-29T10:40:17+00:00"
+            "time": "2017-05-22T07:45:30+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2623,16 +2623,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2"
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
-                "reference": "3c7d21999e815cdfac70c6c7d79d3a9cb1bc7bc2",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/7f066a26a962dbe58ddea9f72a4e82874a3975a4",
+                "reference": "7f066a26a962dbe58ddea9f72a4e82874a3975a4",
                 "shasum": ""
             },
             "require": {
@@ -2671,7 +2671,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-18T13:44:30+00:00"
+            "time": "2017-05-22T07:24:03+00:00"
         },
         {
             "name": "sebastian/environment",

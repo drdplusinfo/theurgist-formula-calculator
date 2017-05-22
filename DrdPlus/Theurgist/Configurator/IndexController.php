@@ -2,6 +2,7 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
+use DrdPlus\Tables\Measurements\Distance\DistanceTable;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\SpellTraitCode;
@@ -21,7 +22,7 @@ class IndexController extends StrictObject
     /** @var ModifiersTable */
     private $modifiersTable;
     /** @var BaseOfWoundsTable */
-    private $baseOfWoundsTable;
+    private $distanceTable;
     /** @var FormulaCode */
     private $selectedFormulaCode;
     /** @var SpellTraitsTable */
@@ -39,19 +40,19 @@ class IndexController extends StrictObject
      * @param FormulasTable $formulasTable
      * @param ModifiersTable $modifiersTable
      * @param SpellTraitsTable $spellTraitsTable
-     * @param BaseOfWoundsTable $baseOfWoundsTable
+     * @param DistanceTable $distanceTable
      */
     public function __construct(
         FormulasTable $formulasTable,
         ModifiersTable $modifiersTable,
         SpellTraitsTable $spellTraitsTable,
-        BaseOfWoundsTable $baseOfWoundsTable
+        DistanceTable $distanceTable
     )
     {
         $this->formulasTable = $formulasTable;
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
-        $this->baseOfWoundsTable = $baseOfWoundsTable;
+        $this->distanceTable = $distanceTable;
     }
 
     /**
@@ -206,7 +207,7 @@ class IndexController extends StrictObject
         return new Formula(
             $this->getSelectedFormulaCode(),
             $this->formulasTable,
-            $this->baseOfWoundsTable,
+            $this->distanceTable,
             $this->getSelectedFormulaSpellParameters(), // formula spell parameter changes
             $this->getSelectedModifiers(),
             $this->getSelectedFormulaSpellTraits()
