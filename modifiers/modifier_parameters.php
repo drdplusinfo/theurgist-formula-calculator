@@ -5,7 +5,9 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\ModifierMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
+use DrdPlus\Theurgist\Spells\SpellParameters\EpicenterShift;
 use DrdPlus\Theurgist\Spells\SpellParameters\Partials\IntegerCastingParameter;
+use DrdPlus\Theurgist\Spells\SpellParameters\Radius;
 use DrdPlus\Theurgist\Spells\SpellParameters\SpellSpeed;
 use Granam\String\StringTools;
 
@@ -16,6 +18,24 @@ use Granam\String\StringTools;
 /** @var string $possibleModifierValue */
 /** @var string $modifiersIndex */
 /** @var bool $modifierIsSelected */
+
+$measurementSizes = [
+    ModifierMutableSpellParameterCode::SPELL_SPEED => function (SpellSpeed $spellSpeed) {
+        $speed = $spellSpeed->getSpeed(Tables::getIt()->getSpeedTable());
+
+        return $speed->getValue() . ' ' . $speed->getUnitCode()->translateTo('cs', $speed->getValue());
+    },
+    ModifierMutableSpellParameterCode::EPICENTER_SHIFT => function (EpicenterShift $epicenterShift) {
+        $distance = $epicenterShift->getDistance(Tables::getIt()->getDistanceTable());
+
+        return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
+    },
+    ModifierMutableSpellParameterCode::RADIUS => function (Radius $radius) {
+        $distance = $radius->getDistance(Tables::getIt()->getDistanceTable());
+
+        return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
+    },
+];
 
 foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possibleParameterName) {
     $getParameter = StringTools::assembleGetterForName($possibleParameterName);
@@ -45,11 +65,9 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
                         <option value="<?= $optionParameterValue ?>"
                                 <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
                             <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
-                            if ($possibleParameterName === ModifierMutableSpellParameterCode::SPELL_SPEED) {
-                                /** @var SpellSpeed $parameter */
-                                $speed = $parameter->getSpeed(Tables::getIt()->getSpeedTable());
-                                $speedDescription = $speed->getValue() . ' ' . $speed->getUnitCode()->translateTo('cs', $speed->getValue());
-                                $parameterValueDescription .= ' (' . $speedDescription . ')';
+                            if (array_key_exists($possibleParameterName, $measurementSizes)) {
+                                $measurementSize = $measurementSizes[$possibleParameterName];
+                                $parameterValueDescription .= ' (' . $measurementSize($parameter) . ')';
                             }
                             echo "$parameterValueDescription [{$parameterDifficultyChange}]"; ?>
                         </option>
