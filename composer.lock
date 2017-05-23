@@ -932,12 +932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-therugist-spells.git",
-                "reference": "0d0c837266cff83704e5bb1cabaabab5298d3b91"
+                "reference": "d7b726157bf89f7eb901f9cbb1e872c614e4fba2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/0d0c837266cff83704e5bb1cabaabab5298d3b91",
-                "reference": "0d0c837266cff83704e5bb1cabaabab5298d3b91",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-therugist-spells/zipball/d7b726157bf89f7eb901f9cbb1e872c614e4fba2",
+                "reference": "d7b726157bf89f7eb901f9cbb1e872c614e4fba2",
                 "shasum": ""
             },
             "require": {
@@ -963,7 +963,7 @@
                 "MIT"
             ],
             "description": "Formulas with modifiers and demons for Drd+ theurgist",
-            "time": "2017-05-22 10:44:42"
+            "time": "2017-05-23 12:36:44"
         },
         {
             "name": "drd/dice-rolls",

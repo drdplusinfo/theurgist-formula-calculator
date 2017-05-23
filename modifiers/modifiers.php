@@ -50,22 +50,25 @@ $isModifierSelected = function (string $modifierValue, array $selectedModifiers,
                 $modifierIsSelected = $isModifierSelected($possibleModifierValue, $selectedModifiersTree, $treeLevel);
                 ?>
                 <div class="modifier panel">
-                    <label>
-                        <input name="modifiers[<?= $modifiersIndex ?>][]"
-                               type="checkbox"
-                               value="<?= $possibleModifierValue ?>"
-                               <?php if ($modifierIsSelected){ ?>checked<?php } ?>>
-                        <?= $possibleModifier->translateTo('cs'); ?>
-                        <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
-                        <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>]</span>
-                        <span class="forms" title="Forma">
+                    <div>
+                        <label>
+                            <input name="modifiers[<?= $modifiersIndex ?>][]"
+                                   type="checkbox"
+                                   value="<?= $possibleModifierValue ?>"
+                                   <?php if ($modifierIsSelected){ ?>checked<?php } ?>>
+                            <?= $possibleModifier->translateTo('cs'); ?>
+                            <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
+                            <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>
+                                ]</span>
+                            <span class="forms" title="Forma">
                                 <?php
                                 $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
                                 if (count($forms) > 0) {
                                     echo '(' . implode(', ', $forms) . ')';
                                 } ?>
                             </span>
-                    </label>
+                        </label>
+                    </div>
                     <?php
                     require __DIR__ . '/modifier_parameters.php';
                     require __DIR__ . '/modifier_spell_traits.php';

@@ -2,8 +2,10 @@
 namespace DrdPlus\Theurgist\Configurator;
 
 /** @var Formula $selectedFormula */
+/** @var IndexController $controller */
 use DrdPlus\Codes\TimeUnitCode;
 use DrdPlus\Tables\Tables;
+use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\Formula;
 use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
 
@@ -15,7 +17,7 @@ use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
         </ol>
     </div>
     <div>
-        Náročnost: <?= $selectedFormula->getCurrentDifficulty(); ?>
+        Náročnost: <?= $selectedFormula->getCurrentDifficulty()->getValue() ?>
     </div>
     <div>
         <?php
@@ -42,7 +44,7 @@ use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
         $evocationTimeDescription .= " ({$evocationTime->getValue()} {$evocationUnitInCzech}";
         if (($evocationTimeInMinutes = $evocationTime->findMinutes()) && $evocationTime->getUnitCode()->getValue() === TimeUnitCode::ROUND) {
             $evocationInMinutesUnitInCzech = $evocationTimeInMinutes->getUnitCode()->translateTo('cs', $evocationTimeInMinutes->getValue());
-            $evocationTimeDescription .= ', ' . $evocationTimeInMinutes->getValue() . ' ' . $evocationInMinutesUnitInCzech;
+            $evocationTimeDescription .= '; ' . $evocationTimeInMinutes->getValue() . ' ' . $evocationInMinutesUnitInCzech;
         }
         $evocationTimeDescription .= ')';
         echo $evocationTimeDescription;
@@ -70,7 +72,7 @@ use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
 <?php $radius = $selectedFormula->getCurrentRadius();
 if ($radius !== null) { ?>
     <div>
-        Poloměr:
+        <?= FormulaMutableSpellParameterCode::getIt(FormulaMutableSpellParameterCode::RADIUS)->translateTo('cs') ?>:
         <?php $radiusDistance = $radius->getDistance(Tables::getIt()->getDistanceTable());
         $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
         echo ($radius->getValue() >= 0 ? '+' : '')

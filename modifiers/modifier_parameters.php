@@ -6,7 +6,7 @@ use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\ModifierMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellParameters\EpicenterShift;
-use DrdPlus\Theurgist\Spells\SpellParameters\Partials\IntegerCastingParameter;
+use DrdPlus\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use DrdPlus\Theurgist\Spells\SpellParameters\Radius;
 use DrdPlus\Theurgist\Spells\SpellParameters\SpellSpeed;
 use Granam\String\StringTools;
@@ -43,7 +43,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
     if ($parameter === null) {
         continue;
     }
-    /** @var IntegerCastingParameter $parameter */
+    /** @var CastingParameter $parameter */
     $parameterCode = ModifierMutableSpellParameterCode::getIt($possibleParameterName);
     ?>
     <div class="parameter">

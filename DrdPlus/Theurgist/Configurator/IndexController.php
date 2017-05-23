@@ -236,7 +236,7 @@ class IndexController extends StrictObject
     }
 
     /**
-     * @return array|Modifier[]
+     * @return array|Modifier[]|Modifier[][] ...
      */
     private function getSelectedModifiers(): array
     {
