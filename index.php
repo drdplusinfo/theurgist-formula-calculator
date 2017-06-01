@@ -46,6 +46,9 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <div id="result" class="result">
     <?php require __DIR__ . '/result.php'; ?>
 </div>
+<div class="block issues">
+    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">Máš nápad 😀? Vidíš chybu  😱?️ Sem s tím !</a>
+</div>
 <div class="block">
     <div class="fb-like facebook"
          data-href="https://formule.theurg.drdplus.info/<?= $_SERVER['QUERY_STRING'] ? ('?' . $_SERVER['QUERY_STRING']) : '' ?>"
