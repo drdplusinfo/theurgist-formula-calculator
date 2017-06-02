@@ -18,15 +18,20 @@ use Granam\Strict\Object\StrictObject;
 class IndexController extends StrictObject
 {
 
+    const DELETE_THEURGIST_CONFIGURATOR_HISTORY = 'delete_theurgist_configurator_history';
+    const THEURGIST_CONFIGURATOR_HISTORY = 'theurgist_configurator_history';
+    const THEURGIST_CONFIGURATOR_HISTORY_TOKEN = 'theurgist_configurator_history_token';
     const FORMULA = 'formula';
     const MODIFIERS = 'modifiers';
-    const PREVIOUS_FORMULA = 'previousFormula';
-    const FORMULA_PARAMETERS = 'formulaParameters';
-    const FORMULA_SPELL_TRAITS = 'formulaSpellTraits';
-    const MODIFIER_SPELL_TRAITS = 'modifierSpellTraits';
-    const MODIFIER_SPELL_TRAIT_TRAPS = 'modifierSpellTraitTraps';
-    const MODIFIER_PARAMETERS = 'modifierParameters';
+    const PREVIOUS_FORMULA = 'previous_formula';
+    const FORMULA_PARAMETERS = 'formula_parameters';
+    const FORMULA_SPELL_TRAITS = 'formula_spell_traits';
+    const MODIFIER_SPELL_TRAITS = 'modifier_spell_traits';
+    const MODIFIER_SPELL_TRAIT_TRAPS = 'modifier_spell_trait_traps';
+    const MODIFIER_PARAMETERS = 'modifier_parameters';
 
+    /** @var array */
+    private $history = [];
     /** @var FormulasTable */
     private $formulasTable;
     /** @var ModifiersTable */
@@ -63,6 +68,51 @@ class IndexController extends StrictObject
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
         $this->distanceTable = $distanceTable;
+
+        if (!empty($_POST[self::DELETE_THEURGIST_CONFIGURATOR_HISTORY])) {
+            $this->deleteHistory();
+            header('Location: /', true, 301);
+            exit;
+        }
+        $afterYear = (new \DateTime('+ 1 year'))->getTimestamp();
+        if (!empty($_GET)) {
+            $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, serialize($_GET), $afterYear);
+            $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, md5_file(__FILE__), $afterYear);
+        } elseif (!$this->cookieHistoryIsValid()) {
+            $this->deleteHistory();
+        }
+        if (!empty($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY])) {
+            $this->history = unserialize($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY], ['allowed_classes' => []]);
+            if (!is_array($this->history)) {
+                $this->history = [];
+            }
+        }
+    }
+
+    private function deleteHistory()
+    {
+        $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, null);
+        $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, null);
+    }
+
+    private function setCookie(string $name, $value, int $expire = 0)
+    {
+        setcookie(
+            $name,
+            $value,
+            $expire,
+            '/',
+            '',
+            !empty($_SERVER['HTTPS']), // secure only ?
+            true // http only
+        );
+        $_COOKIE[$name] = $value;
+    }
+
+    private function cookieHistoryIsValid(): bool
+    {
+        return !empty($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN])
+            && $_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN] === md5_file(__FILE__);
     }
 
     /**
@@ -71,10 +121,28 @@ class IndexController extends StrictObject
     private function getSelectedFormulaCode(): FormulaCode
     {
         if ($this->selectedFormulaCode === null) {
-            $this->selectedFormulaCode = FormulaCode::getIt($_GET[self::FORMULA] ?? current(FormulaCode::getPossibleValues()));
+            $this->selectedFormulaCode = FormulaCode::getIt(
+                $this->getValueFromRequest(self::FORMULA) ?? current(FormulaCode::getPossibleValues())
+            );
         }
 
         return $this->selectedFormulaCode;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    private function getValueFromRequest(string $name)
+    {
+        if (array_key_exists($name, $_GET)) {
+            return $_GET[$name];
+        }
+        if (array_key_exists($name, $this->history) && $this->cookieHistoryIsValid()) {
+            return $this->history[$name];
+        }
+
+        return null;
     }
 
     /**
@@ -144,11 +212,13 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersTree !== null) {
             return $this->selectedModifiersTree;
         }
-        if (empty($_GET[self::MODIFIERS]) || $this->isFormulaChanged()) {
+        if ($this->getValueFromRequest(self::MODIFIERS) === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersTree = [];
         }
 
-        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree((array)$_GET[self::MODIFIERS]);
+        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree(
+            (array)$this->getValueFromRequest(self::MODIFIERS)
+        );
     }
 
     private function isFormulaChanged(): bool
@@ -209,7 +279,7 @@ class IndexController extends StrictObject
      */
     private function getPreviouslySelectedFormulaValue()
     {
-        return (string)$_GET[self::PREVIOUS_FORMULA] ?? null;
+        return $this->getValueFromRequest(self::PREVIOUS_FORMULA);
     }
 
     public function getSelectedFormula(): Formula
@@ -232,12 +302,13 @@ class IndexController extends StrictObject
         if ($this->selectedFormulaSpellParameters !== null) {
             return $this->selectedFormulaSpellParameters;
         }
-        if (empty($_GET[self::FORMULA_PARAMETERS]) || $this->isFormulaChanged()) {
+        $selectedFormulaParameterValues = $this->getValueFromRequest(self::FORMULA_PARAMETERS);
+        if ($selectedFormulaParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedFormulaSpellParameters = [];
         }
         $this->selectedFormulaSpellParameters = [];
-        /** @var array|string[][] $_GET */
-        foreach ($_GET[self::FORMULA_PARAMETERS] as $formulaParameterName => $value) {
+        /** @var array|int[] $selectedFormulaParameterValues */
+        foreach ($selectedFormulaParameterValues as $formulaParameterName => $value) {
             /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
         }
@@ -384,11 +455,12 @@ class IndexController extends StrictObject
      */
     public function getSelectedFormulaSpellTraitValues(): array
     {
-        if (empty($_GET[self::FORMULA_SPELL_TRAITS]) || $this->isFormulaChanged()) {
+        $formulaSpellTraits = $this->getValueFromRequest(self::FORMULA_SPELL_TRAITS);
+        if ($formulaSpellTraits === null || $this->isFormulaChanged()) {
             return [];
         }
 
-        return $_GET[self::FORMULA_SPELL_TRAITS];
+        return (array)$formulaSpellTraits;
     }
 
     private function toFlatArray(array $values): array
@@ -432,12 +504,13 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
         }
-        if (empty($_GET[self::MODIFIER_SPELL_TRAITS]) || $this->isFormulaChanged()) {
+        $selectedModifierSpellTraitValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAITS);
+        if ($selectedModifierSpellTraitValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraits = [];
         }
 
         return $this->selectedModifiersSpellTraits = $this->buildSelectedModifierTraitsTree(
-            (array)$_GET[self::MODIFIER_SPELL_TRAITS],
+            (array)$selectedModifierSpellTraitValues,
             $this->getSelectedModifiersTree()
         );
     }
@@ -469,12 +542,13 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellTraitsTrapValues !== null) {
             return $this->selectedModifiersSpellTraitsTrapValues;
         }
-        if (empty($_GET[self::MODIFIER_SPELL_TRAIT_TRAPS]) || $this->isFormulaChanged()) {
+        $selectedModifierSpellTraitTrapValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAIT_TRAPS);
+        if ($selectedModifierSpellTraitTrapValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraitsTrapValues = [];
         }
 
         return $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
-            (array)$_GET[self::MODIFIER_SPELL_TRAIT_TRAPS],
+            (array)$selectedModifierSpellTraitTrapValues,
             $this->getSelectedModifiersSpellTraitValues()
         );
     }
@@ -505,14 +579,15 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellParameters !== null) {
             return $this->selectedModifiersSpellParameters;
         }
-        if (empty($_GET[self::MODIFIER_PARAMETERS]) || $this->isFormulaChanged()) {
+        $selectedModifierParameterValues = $this->getValueFromRequest(self::MODIFIER_PARAMETERS);
+        if ($selectedModifierParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellParameters = [];
         }
 
         $this->selectedModifiersSpellParameters = [];
         $selectedModifiers = $this->getSelectedModifiersTree();
-        /** @var array|int[][][][] $_GET */
-        foreach ($_GET[self::MODIFIER_PARAMETERS] as $treeLevel => $sameLevelParameters) {
+        /** @var array|int[][][] $sameLevelParameters */
+        foreach ((array)$selectedModifierParameterValues as $treeLevel => $sameLevelParameters) {
             if (!array_key_exists($treeLevel, $selectedModifiers)) {
                 continue;
             }

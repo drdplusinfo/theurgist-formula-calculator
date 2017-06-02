@@ -34,8 +34,13 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <body>
 <div id="fb-root"></div>
 <div>
-    <form id="configurator" class="body" method="get">
-        <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>" value="<?= $selectedFormulaCode->getValue() ?>">
+    <form class="block" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
+        <input type="submit" value="Smazat" name="<?= $controller::DELETE_THEURGIST_CONFIGURATOR_HISTORY ?>">
+        <span class="hint">(včetně paměti uložené v cookies)</span>
+    </form>
+    <form id="configurator" class="body" action="" method="get">
+        <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>"
+               value="<?= $selectedFormulaCode->getValue() ?>">
         <?php require __DIR__ . '/formula/formula.php'; ?>
         <hr class="clear">
         <?php require __DIR__ . '/modifiers/modifiers.php' ?>
@@ -47,7 +52,8 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <?php require __DIR__ . '/result.php'; ?>
 </div>
 <div class="block issues">
-    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">Máš nápad 😀? Vidíš chybu  😱?️ Sem s tím !</a>
+    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">Máš nápad 😀? Vidíš chybu 😱?️ Sem s
+        tím !</a>
 </div>
 <div class="block">
     <div class="fb-like facebook"
