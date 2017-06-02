@@ -56,7 +56,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
             $previousOptionParameterValue = null;
             $selectedParameterValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
             ?>
-            <select name="modifierParameters[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
+            <select name="<?= $controller::MODIFIER_PARAMETERS ?>[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
                     <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                 <?php
                 do {

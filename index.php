@@ -35,7 +35,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <div id="fb-root"></div>
 <div>
     <form id="configurator" class="body" method="get">
-        <input type="hidden" name="previousFormula" value="<?= $selectedFormulaCode->getValue() ?>">
+        <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>" value="<?= $selectedFormulaCode->getValue() ?>">
         <?php require __DIR__ . '/formula/formula.php'; ?>
         <hr class="clear">
         <?php require __DIR__ . '/modifiers/modifiers.php' ?>

@@ -12,7 +12,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\FormulasTable;
-use DrdPlus\Theurgist\Spells\SpellParameters\Partials\IntegerCastingParameter;
+use DrdPlus\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
 /** @var FormulaCode $selectedFormulaCode */
@@ -32,7 +32,7 @@ $formulaParametersWithoutUnit = [
 ];
 foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
     $getParameter = StringTools::assembleGetterForName($parameterName);
-    /** @var IntegerCastingParameter $parameter */
+    /** @var CastingParameter $parameter */
     $parameter = $formulasTable->$getParameter($selectedFormulaCode);
     if ($parameter === null) {
         continue;
@@ -50,7 +50,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
             $previousOptionParameterValueWithUnit = null;
             $selectedParameterValue = $controller->getSelectedFormulaSpellParameters()[$parameterName] ?? false;
             ?>
-            <select name="formulaParameters[<?= $parameterName ?>]">
+            <select name="<?= $controller::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
                 <?php
                 do {
                     $optionParameterValue = $parameter->getValue(); // from the lowest

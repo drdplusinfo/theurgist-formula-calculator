@@ -17,6 +17,16 @@ use Granam\Strict\Object\StrictObject;
 
 class IndexController extends StrictObject
 {
+
+    const FORMULA = 'formula';
+    const MODIFIERS = 'modifiers';
+    const PREVIOUS_FORMULA = 'previousFormula';
+    const FORMULA_PARAMETERS = 'formulaParameters';
+    const FORMULA_SPELL_TRAITS = 'formulaSpellTraits';
+    const MODIFIER_SPELL_TRAITS = 'modifierSpellTraits';
+    const MODIFIER_SPELL_TRAIT_TRAPS = 'modifierSpellTraitTraps';
+    const MODIFIER_PARAMETERS = 'modifierParameters';
+
     /** @var FormulasTable */
     private $formulasTable;
     /** @var ModifiersTable */
@@ -61,7 +71,7 @@ class IndexController extends StrictObject
     private function getSelectedFormulaCode(): FormulaCode
     {
         if ($this->selectedFormulaCode === null) {
-            $this->selectedFormulaCode = FormulaCode::getIt($_GET['formula'] ?? current(FormulaCode::getPossibleValues()));
+            $this->selectedFormulaCode = FormulaCode::getIt($_GET[self::FORMULA] ?? current(FormulaCode::getPossibleValues()));
         }
 
         return $this->selectedFormulaCode;
@@ -134,11 +144,11 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersTree !== null) {
             return $this->selectedModifiersTree;
         }
-        if (empty($_GET['modifiers']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::MODIFIERS]) || $this->isFormulaChanged()) {
             return $this->selectedModifiersTree = [];
         }
 
-        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree((array)$_GET['modifiers']);
+        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree((array)$_GET[self::MODIFIERS]);
     }
 
     private function isFormulaChanged(): bool
@@ -199,7 +209,7 @@ class IndexController extends StrictObject
      */
     private function getPreviouslySelectedFormulaValue()
     {
-        return (string)$_GET['previousFormula'] ?? null;
+        return (string)$_GET[self::PREVIOUS_FORMULA] ?? null;
     }
 
     public function getSelectedFormula(): Formula
@@ -222,12 +232,12 @@ class IndexController extends StrictObject
         if ($this->selectedFormulaSpellParameters !== null) {
             return $this->selectedFormulaSpellParameters;
         }
-        if (empty($_GET['formulaParameters']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::FORMULA_PARAMETERS]) || $this->isFormulaChanged()) {
             return $this->selectedFormulaSpellParameters = [];
         }
         $this->selectedFormulaSpellParameters = [];
         /** @var array|string[][] $_GET */
-        foreach ($_GET['formulaParameters'] as $formulaParameterName => $value) {
+        foreach ($_GET[self::FORMULA_PARAMETERS] as $formulaParameterName => $value) {
             /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
         }
@@ -374,11 +384,11 @@ class IndexController extends StrictObject
      */
     public function getSelectedFormulaSpellTraitValues(): array
     {
-        if (empty($_GET['formulaSpellTraits']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::FORMULA_SPELL_TRAITS]) || $this->isFormulaChanged()) {
             return [];
         }
 
-        return $_GET['formulaSpellTraits'];
+        return $_GET[self::FORMULA_SPELL_TRAITS];
     }
 
     private function toFlatArray(array $values): array
@@ -422,12 +432,12 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
         }
-        if (empty($_GET['modifierSpellTraits']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::MODIFIER_SPELL_TRAITS]) || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraits = [];
         }
 
         return $this->selectedModifiersSpellTraits = $this->buildSelectedModifierTraitsTree(
-            (array)$_GET['modifierSpellTraits'],
+            (array)$_GET[self::MODIFIER_SPELL_TRAITS],
             $this->getSelectedModifiersTree()
         );
     }
@@ -459,12 +469,12 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellTraitsTrapValues !== null) {
             return $this->selectedModifiersSpellTraitsTrapValues;
         }
-        if (empty($_GET['modifierSpellTraitTraps']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::MODIFIER_SPELL_TRAIT_TRAPS]) || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraitsTrapValues = [];
         }
 
         return $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
-            (array)$_GET['modifierSpellTraitTraps'],
+            (array)$_GET[self::MODIFIER_SPELL_TRAIT_TRAPS],
             $this->getSelectedModifiersSpellTraitValues()
         );
     }
@@ -495,14 +505,14 @@ class IndexController extends StrictObject
         if ($this->selectedModifiersSpellParameters !== null) {
             return $this->selectedModifiersSpellParameters;
         }
-        if (empty($_GET['modifierParameters']) || $this->isFormulaChanged()) {
+        if (empty($_GET[self::MODIFIER_PARAMETERS]) || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellParameters = [];
         }
 
         $this->selectedModifiersSpellParameters = [];
         $selectedModifiers = $this->getSelectedModifiersTree();
         /** @var array|int[][][][] $_GET */
-        foreach ($_GET['modifierParameters'] as $treeLevel => $sameLevelParameters) {
+        foreach ($_GET[self::MODIFIER_PARAMETERS] as $treeLevel => $sameLevelParameters) {
             if (!array_key_exists($treeLevel, $selectedModifiers)) {
                 continue;
             }
@@ -517,5 +527,19 @@ class IndexController extends StrictObject
         }
 
         return $this->selectedModifiersSpellParameters;
+    }
+
+    public function isModifierSelected(string $modifierValue, array $selectedModifiers, int $treeLevel): bool
+    {
+        $levelSelection = $selectedModifiers[$treeLevel] ?? false;
+        if ($levelSelection === false) {
+            return false;
+        }
+        $selection = $levelSelection[$modifierValue] ?? false;
+        if ($selection === false) {
+            return false;
+        }
+
+        return $selection === $modifierValue /* bag end */ || is_array($selection); /* still traversing on the tree */
     }
 }

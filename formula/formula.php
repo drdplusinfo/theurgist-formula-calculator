@@ -14,7 +14,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
         <div class="panel">
             <span class="panel">
                 <label><strong>Formule</strong>:
-                    <select id="formula" name="formula">
+                    <select id="formula" name="<?= $controller::FORMULA ?>">
                         <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
                             <option value="<?= $formulaValue ?>"
                                     <?php if ($formulaValue === $selectedFormulaCode->getValue()){ ?>selected<?php } ?>>

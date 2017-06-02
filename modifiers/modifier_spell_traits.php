@@ -11,6 +11,7 @@ namespace DrdPlus\Theurgist\Configurator;
 
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
+use DrdPlus\Theurgist\Spells\SpellParameters\Trap;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
 $modifierSpellTraitCodes = $modifiersTable->getSpellTraitCodes($possibleModifier);
@@ -25,7 +26,7 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
             <div class="spell-trait">
                 <label>
                     <input type="checkbox" value="<?= $spellTraitCodeValue ?>"
-                           name="modifierSpellTraits[<?= $spellTraitsInputIndex ?>][]"
+                           name="<?= $controller::MODIFIER_SPELL_TRAITS ?>[<?= $spellTraitsInputIndex ?>][]"
                            <?php
                            if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
                            if (!$modifierIsSelected) { ?>disabled<?php } ?>
@@ -35,10 +36,11 @@ if (count($modifierSpellTraitCodes) > 0) { ?>
                     echo '[' . ($spellTraitDifficulty->getValue() >= 0 ? '+' : '') . $spellTraitDifficulty->getValue() . ']';
                     $trap = $spellTraitsTable->getTrap($modifierSpellTraitCode);
                     if ($trap !== null) {
+                        /** @var Trap $trap */
                         $trapSelectIndex = "$spellTraitsInputIndex-{$spellTraitCodeValue}";
                         ?>
                         <span class="trap">
-                        <select name="modifierSpellTraitTraps[<?= $trapSelectIndex ?>]"
+                        <select name="<?= $controller::MODIFIER_SPELL_TRAIT_TRAPS ?>[<?= $trapSelectIndex ?>]"
                                 <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
                             <?php
                             $trapAddition = $trap->getAdditionByDifficulty();
