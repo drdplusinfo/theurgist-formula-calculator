@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Theurgist\Configurator;
 
-/** @var IndexController $controller */
+/** @var Controller $controller */
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;

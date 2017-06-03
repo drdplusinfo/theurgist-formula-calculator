@@ -14,7 +14,7 @@ ini_set('display_errors', '1');
 $modifiersTable = new ModifiersTable(Tables::getIt());
 $spellTraitsTable = new SpellTraitsTable();
 $formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
-$controller = new IndexController($formulasTable, $modifiersTable, $spellTraitsTable, Tables::getIt()->getDistanceTable());
+$controller = new Controller($formulasTable, $modifiersTable, $spellTraitsTable, Tables::getIt()->getDistanceTable());
 $selectedFormula = $controller->getSelectedFormula();
 $selectedFormulaCode = $selectedFormula->getFormulaCode();
 ?>
@@ -34,18 +34,27 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <body>
 <div id="fb-root"></div>
 <div>
-    <form class="block" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
-        <input type="submit" value="Smazat" name="<?= $controller::DELETE_THEURGIST_CONFIGURATOR_HISTORY ?>">
-        <span class="hint">(včetně paměti uložené v cookies)</span>
+    <form class="block delete" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
+        <label>
+            <input type="submit" value="Smazat" name="<?= $controller::DELETE_THEURGIST_CONFIGURATOR_HISTORY ?>">
+            <span class="hint">(včetně paměti uložené v cookies)</span>
+        </label>
     </form>
-    <form id="configurator" class="body" action="" method="get">
-        <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>"
-               value="<?= $selectedFormulaCode->getValue() ?>">
-        <?php require __DIR__ . '/formula/formula.php'; ?>
-        <hr class="clear">
-        <?php require __DIR__ . '/modifiers/modifiers.php' ?>
-        <hr class="clear">
-        <button type="submit">Vybrat</button>
+    <form id="configurator" class="block" action="" method="get">
+        <div class="block remember">
+            <label><input type="checkbox" name="<?= $controller::REMEMBER ?>" value="1"
+                          <?php if ($controller->shouldRemember()) { ?>checked="checked"<?php } ?>>
+                Pamatovat <span class="hint">(i při zavření prohlížeče)</span></label>
+        </div>
+        <div class="block">
+            <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>"
+                   value="<?= $selectedFormulaCode->getValue() ?>">
+            <?php require __DIR__ . '/formula/formula.php'; ?>
+            <hr class="clear">
+            <?php require __DIR__ . '/modifiers/modifiers.php' ?>
+            <hr class="clear">
+            <button type="submit">Vybrat</button>
+        </div>
     </form>
 </div>
 <div id="result" class="result">

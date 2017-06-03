@@ -6,7 +6,7 @@ namespace DrdPlus\Theurgist\Configurator;
 /** @var ModifiersTable $modifiersTable */
 /** @var SpellTraitsTable $spellTraitsTable */
 /** @var array $selectedModifiersSpellTraitValues */
-/** @var IndexController $controller */
+/** @var Controller $controller */
 /** @var bool $modifierIsSelected */
 
 use DrdPlus\Theurgist\Codes\ModifierCode;

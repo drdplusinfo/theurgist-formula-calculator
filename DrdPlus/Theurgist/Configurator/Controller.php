@@ -15,12 +15,14 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
 use Granam\Strict\Object\StrictObject;
 
-class IndexController extends StrictObject
+class Controller extends StrictObject
 {
 
     const DELETE_THEURGIST_CONFIGURATOR_HISTORY = 'delete_theurgist_configurator_history';
     const THEURGIST_CONFIGURATOR_HISTORY = 'theurgist_configurator_history';
     const THEURGIST_CONFIGURATOR_HISTORY_TOKEN = 'theurgist_configurator_history_token';
+    const REMEMBER = 'remember';
+    const FORGOT_FIGHT = 'forgot_fight';
     const FORMULA = 'formula';
     const MODIFIERS = 'modifiers';
     const PREVIOUS_FORMULA = 'previous_formula';
@@ -76,8 +78,14 @@ class IndexController extends StrictObject
         }
         $afterYear = (new \DateTime('+ 1 year'))->getTimestamp();
         if (!empty($_GET)) {
-            $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, serialize($_GET), $afterYear);
-            $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, md5_file(__FILE__), $afterYear);
+            if (!empty($_GET[self::REMEMBER])) {
+                $this->setCookie(self::FORGOT_FIGHT, null, $afterYear);
+                $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, serialize($_GET), $afterYear);
+                $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, md5_file(__FILE__), $afterYear);
+            } else {
+                $this->deleteHistory();
+                $this->setCookie(self::FORGOT_FIGHT, 1, $afterYear);
+            }
         } elseif (!$this->cookieHistoryIsValid()) {
             $this->deleteHistory();
         }
@@ -113,6 +121,11 @@ class IndexController extends StrictObject
     {
         return !empty($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN])
             && $_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN] === md5_file(__FILE__);
+    }
+
+    public function shouldRemember(): bool
+    {
+        return empty($_COOKIE[self::FORGOT_FIGHT]);
     }
 
     /**

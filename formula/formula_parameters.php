@@ -6,7 +6,7 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
-/** @var IndexController $controller */
+/** @var Controller $controller */
 
 ?>
 <div class="block">

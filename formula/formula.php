@@ -6,7 +6,7 @@ use DrdPlus\Theurgist\Spells\FormulasTable;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
 /** @var FormulaCode $selectedFormulaCode */
-/** @var IndexController $controller */
+/** @var Controller $controller */
 /** @var FormulasTable $formulasTable */
 /** @var SpellTraitsTable $spellTraitsTable */
 ?>

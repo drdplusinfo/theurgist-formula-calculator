@@ -110,3 +110,11 @@ input[disabled], select[disabled] {
 .hint {
     font-size: small;
 }
+
+.delete {
+    margin-bottom: 0.3em;
+}
+
+.remember {
+    margin-bottom: 0.2em;
+}

@@ -9,7 +9,7 @@ use Granam\String\StringTools;
 
 /** @var FormulaCode $selectedFormulaCode */
 /** @var FormulasTable $formulasTable */
-/** @var IndexController $controller */
+/** @var Controller $controller */
 
 $formulaParametersWithoutUnit = [
     FormulaMutableSpellParameterCode::ATTACK,
