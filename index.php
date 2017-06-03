@@ -62,7 +62,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 </div>
 <div class="block issues">
     <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">Máš nápad 😀? Vidíš chybu 😱?️ Sem s
-        tím !</a>
+        tím!</a>
 </div>
 <div class="block">
     <div class="fb-like facebook"
