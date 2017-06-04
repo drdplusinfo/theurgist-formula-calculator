@@ -35,7 +35,6 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <body>
 <div id="fb-root"></div>
 <div class="background"></div>
-<script type="text/javascript" src="js/graphics.js"></script>
 <div>
     <form class="block delete" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
         <label>
