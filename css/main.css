@@ -1,10 +1,3 @@
-body {
-    background-image: url(/images/circle-10.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-}
-
 #formula {
     margin-right: 0.5em;
 }
