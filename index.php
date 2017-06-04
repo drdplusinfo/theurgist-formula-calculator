@@ -24,6 +24,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <title>Formule pro DrD+ theurga</title>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/graphics.css">
     <link rel="stylesheet" type="text/css" href="css/socials.css">
