@@ -1,0 +1,47 @@
+.trap {
+    font-size: small;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.result {
+    float: left;
+    clear: left;
+    margin-top: 1em;
+}
+
+.obsolete {
+    text-decoration: line-through;
+}
+
+button[type="submit"] {
+    display: none;
+}
+
+.block {
+    clear: left;
+    float: left;
+    margin-bottom: 0.3em;
+}
+
+.panel {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.hint {
+    font-size: small;
+}
+
+.delete {
+    margin-bottom: 0.3em;
+}
+
+.remember {
+    margin-bottom: 0.2em;
+}

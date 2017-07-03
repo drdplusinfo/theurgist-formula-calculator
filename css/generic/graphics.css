@@ -1,6 +1,5 @@
 .background {
-    background-image: url(/images/circle-10.png);
-    background-repeat: no-repeat;
+    background: url(/images/background.png) no-repeat;
     background-position-x: center;
     position: fixed;
     width: 100%;

@@ -25,11 +25,12 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/generic/main.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/graphics.css">
-    <link rel="stylesheet" type="text/css" href="css/socials.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/graphics.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/socials.css">
     <noscript>
-        <link rel="stylesheet" type="text/css" href="css/no_script.css">
+        <link rel="stylesheet" type="text/css" href="css/generic/no_script.css">
     </noscript>
     <script type="text/javascript" src="js/facebook.js" async></script>
 </head>
@@ -73,7 +74,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
          data-layout="button" data-action="recommend"
          data-size="small" data-show-faces="false" data-share="true"></div>
     <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
-       title="Fork me on GitHub"><img class="github" src="/images/GitHub-Mark-64px.png"></a>
+       title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
 </div>
 <script src="js/main.js"></script>
 </body>

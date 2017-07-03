@@ -12,7 +12,8 @@
     "php": ">=7.0",
     "roave/security-advisories": "dev-master",
     "granam/strict-object": "dev-master",
-    "drd-plus/theurgist-spells": "dev-master"
+    "drd-plus/theurgist-spells": "dev-master",
+    "drd-plus/configurator-skeleton": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
@@ -20,5 +21,15 @@
     "granam/exceptions-hierarchy": "~4.0"
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "scripts": {
+    "pre-autoload-dump": [
+      "mkdir -p $PWD/css/generic",
+      "cp -r --no-clobber $PWD/vendor/drd-plus/configurator-skeleton/css/generic/* $PWD/css/generic",
+      "mkdir -p $PWD/js/generic",
+      "cp -r --no-clobber $PWD/vendor/drd-plus/configurator-skeleton/js/generic/* $PWD/js/generic",
+      "mkdir -p $PWD/images/generic",
+      "cp -r --no-clobber $PWD/vendor/drd-plus/configurator-skeleton/images/generic/* $PWD/images/generic"
+    ]
+  }
 }

@@ -29,42 +29,6 @@
     left: 0.3em;
 }
 
-.trap {
-    font-size: small;
-}
-
-.hidden {
-    visibility: hidden;
-}
-
-.result {
-    float: left;
-    clear: left;
-    margin-top: 1em;
-}
-
-.obsolete {
-    text-decoration: line-through;
-}
-
-button[type="submit"] {
-    display: none;
-}
-
-.block {
-    clear: left;
-    float: left;
-    margin-bottom: 0.3em;
-}
-
-.panel {
-    float: left;
-}
-
-.clear {
-    clear: both;
-}
-
 .forms {
     font-size: smaller;
     font-style: normal;
@@ -98,16 +62,4 @@ input[disabled], select[disabled] {
 
 .modifier.panel > .modifier.panel {
     margin-left: 1em;
-}
-
-.hint {
-    font-size: small;
-}
-
-.delete {
-    margin-bottom: 0.3em;
-}
-
-.remember {
-    margin-bottom: 0.2em;
 }
