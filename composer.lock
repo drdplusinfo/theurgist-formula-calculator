@@ -767,12 +767,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "8dc6baab34769630ed67d684a414f235a41b7497"
+                "reference": "f536215bec72f8d25659f19834e692b3de4fa33e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/8dc6baab34769630ed67d684a414f235a41b7497",
-                "reference": "8dc6baab34769630ed67d684a414f235a41b7497",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/f536215bec72f8d25659f19834e692b3de4fa33e",
+                "reference": "f536215bec72f8d25659f19834e692b3de4fa33e",
                 "shasum": ""
             },
             "require": {
@@ -798,7 +798,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2017-06-05 06:25:52"
+            "time": "2017-07-04 08:18:11"
         },
         {
             "name": "drd-plus/configurator-skeleton",
@@ -806,17 +806,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-configurator-skeleton.git",
-                "reference": "2ea7d3ba05e35cc04bb59839f1586a8fcca19e04"
+                "reference": "6cb8a6009880f3b23d3c3af932b4f819d6fe86a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-configurator-skeleton/zipball/2ea7d3ba05e35cc04bb59839f1586a8fcca19e04",
-                "reference": "2ea7d3ba05e35cc04bb59839f1586a8fcca19e04",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-configurator-skeleton/zipball/6cb8a6009880f3b23d3c3af932b4f819d6fe86a7",
+                "reference": "6cb8a6009880f3b23d3c3af932b4f819d6fe86a7",
                 "shasum": ""
             },
             "require": {
                 "granam/strict-object": "dev-master",
-                "php": ">=7.0",
+                "php": ">=7.1",
                 "roave/security-advisories": "dev-master"
             },
             "type": "project",
@@ -830,7 +830,7 @@
                 "MIT"
             ],
             "description": "Style and functionality helper of a configurator Drd+",
-            "time": "2017-07-04 05:13:44"
+            "time": "2017-07-04 06:47:46"
         },
         {
             "name": "drd-plus/properties",
@@ -1413,12 +1413,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/granam-tools.git",
-                "reference": "717fe931ac6625384ffcf12dc3a2bc552097a33b"
+                "reference": "697cf8867b1e6c9c78eca8eaaa719e3805e6f3d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/granam-tools/zipball/717fe931ac6625384ffcf12dc3a2bc552097a33b",
-                "reference": "717fe931ac6625384ffcf12dc3a2bc552097a33b",
+                "url": "https://api.github.com/repos/jaroslavtyc/granam-tools/zipball/697cf8867b1e6c9c78eca8eaaa719e3805e6f3d2",
+                "reference": "697cf8867b1e6c9c78eca8eaaa719e3805e6f3d2",
                 "shasum": ""
             },
             "require": {
@@ -1455,7 +1455,7 @@
                 "php",
                 "string"
             ],
-            "time": "2017-02-22 12:18:47"
+            "time": "2017-07-04 14:50:24"
         },
         {
             "name": "roave/security-advisories",
