@@ -40,13 +40,13 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
 <div>
     <form class="block delete" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
         <label>
-            <input type="submit" value="Smazat" name="<?= $controller::DELETE_THEURGIST_CONFIGURATOR_HISTORY ?>">
+            <input type="submit" value="Smazat" name="<?= $controller->getDeleteHistoryInputName() ?>">
             <span class="hint">(včetně paměti uložené v cookies)</span>
         </label>
     </form>
     <form id="configurator" class="block" action="" method="get">
         <div class="block remember">
-            <label><input type="checkbox" name="<?= $controller::REMEMBER ?>" value="1"
+            <label><input type="checkbox" name="<?= $controller->getRememberHistoryInputName() ?>" value="1"
                           <?php if ($controller->shouldRemember()) { ?>checked="checked"<?php } ?>>
                 Pamatovat <span class="hint">(i při zavření prohlížeče)</span></label>
         </div>

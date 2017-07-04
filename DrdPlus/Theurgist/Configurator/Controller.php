@@ -13,16 +13,10 @@ use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTrait;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
-use Granam\Strict\Object\StrictObject;
 
-class Controller extends StrictObject
+class Controller extends \DrdPlus\Configurator\Skeleton\Controller
 {
 
-    const DELETE_THEURGIST_CONFIGURATOR_HISTORY = 'delete_theurgist_configurator_history';
-    const THEURGIST_CONFIGURATOR_HISTORY = 'theurgist_configurator_history';
-    const THEURGIST_CONFIGURATOR_HISTORY_TOKEN = 'theurgist_configurator_history_token';
-    const REMEMBER = 'remember';
-    const FORGOT_FIGHT = 'forgot_fight';
     const FORMULA = 'formula';
     const MODIFIERS = 'modifiers';
     const PREVIOUS_FORMULA = 'previous_formula';
@@ -32,8 +26,6 @@ class Controller extends StrictObject
     const MODIFIER_SPELL_TRAIT_TRAPS = 'modifier_spell_trait_traps';
     const MODIFIER_PARAMETERS = 'modifier_parameters';
 
-    /** @var array */
-    private $history = [];
     /** @var FormulasTable */
     private $formulasTable;
     /** @var ModifiersTable */
@@ -71,61 +63,7 @@ class Controller extends StrictObject
         $this->spellTraitsTable = $spellTraitsTable;
         $this->distanceTable = $distanceTable;
 
-        if (!empty($_POST[self::DELETE_THEURGIST_CONFIGURATOR_HISTORY])) {
-            $this->deleteHistory();
-            header('Location: /', true, 301);
-            exit;
-        }
-        $afterYear = (new \DateTime('+ 1 year'))->getTimestamp();
-        if (!empty($_GET)) {
-            if (!empty($_GET[self::REMEMBER])) {
-                $this->setCookie(self::FORGOT_FIGHT, null, $afterYear);
-                $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, serialize($_GET), $afterYear);
-                $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, md5_file(__FILE__), $afterYear);
-            } else {
-                $this->deleteHistory();
-                $this->setCookie(self::FORGOT_FIGHT, 1, $afterYear);
-            }
-        } elseif (!$this->cookieHistoryIsValid()) {
-            $this->deleteHistory();
-        }
-        if (!empty($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY])) {
-            $this->history = unserialize($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY], ['allowed_classes' => []]);
-            if (!is_array($this->history)) {
-                $this->history = [];
-            }
-        }
-    }
-
-    private function deleteHistory()
-    {
-        $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN, null);
-        $this->setCookie(self::THEURGIST_CONFIGURATOR_HISTORY, null);
-    }
-
-    private function setCookie(string $name, $value, int $expire = 0)
-    {
-        setcookie(
-            $name,
-            $value,
-            $expire,
-            '/',
-            '',
-            !empty($_SERVER['HTTPS']), // secure only ?
-            true // http only
-        );
-        $_COOKIE[$name] = $value;
-    }
-
-    private function cookieHistoryIsValid(): bool
-    {
-        return !empty($_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN])
-            && $_COOKIE[self::THEURGIST_CONFIGURATOR_HISTORY_TOKEN] === md5_file(__FILE__);
-    }
-
-    public function shouldRemember(): bool
-    {
-        return empty($_COOKIE[self::FORGOT_FIGHT]);
+        parent::__construct('theurgist' /* cookies postfix */);
     }
 
     /**
@@ -135,27 +73,11 @@ class Controller extends StrictObject
     {
         if ($this->selectedFormulaCode === null) {
             $this->selectedFormulaCode = FormulaCode::getIt(
-                $this->getValueFromRequest(self::FORMULA) ?? current(FormulaCode::getPossibleValues())
+                $this->getValueFromRequest(self::FORMULA) ?? FormulaCode::getPossibleValues()[0]
             );
         }
 
         return $this->selectedFormulaCode;
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    private function getValueFromRequest(string $name)
-    {
-        if (array_key_exists($name, $_GET)) {
-            return $_GET[$name];
-        }
-        if (array_key_exists($name, $this->history) && $this->cookieHistoryIsValid()) {
-            return $this->history[$name];
-        }
-
-        return null;
     }
 
     /**
@@ -215,6 +137,7 @@ class Controller extends StrictObject
         return $selectedModifierValues;
     }
 
+    /** @var array|null */
     private $selectedModifiersTree;
 
     /**
@@ -273,7 +196,7 @@ class Controller extends StrictObject
          * @var array|string[] $levelModifiers
          */
         foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
-            list($level, $parentModifier) = explode('-', $levelToParentModifier);
+            [$level, $parentModifier] = explode('-', $levelToParentModifier);
             if ($level > 1
                 && (!array_key_exists($level - 1, $modifiers) || !in_array($parentModifier, $modifiers[$level - 1], true))
             ) {
@@ -290,7 +213,7 @@ class Controller extends StrictObject
     /**
      * @return string|null
      */
-    private function getPreviouslySelectedFormulaValue()
+    private function getPreviouslySelectedFormulaValue():? string
     {
         return $this->getValueFromRequest(self::PREVIOUS_FORMULA);
     }
@@ -476,39 +399,6 @@ class Controller extends StrictObject
         return (array)$formulaSpellTraits;
     }
 
-    private function toFlatArray(array $values): array
-    {
-        $flat = [];
-        foreach ($values as $index => $value) {
-            if (is_array($value)) {
-                $flat[] = $index;
-                foreach ($this->toFlatArray($value) as $subItem) {
-                    $flat[] = $subItem;
-                }
-            } else {
-                $flat[] = $value;
-            }
-        }
-
-        return $flat;
-    }
-
-    private function getBagEnds(array $values): array
-    {
-        $bagEnds = [];
-        foreach ($values as $value) {
-            if (is_array($value)) {
-                foreach ($this->getBagEnds($value) as $subItem) {
-                    $bagEnds[] = $subItem;
-                }
-            } else {
-                $bagEnds[] = $value;
-            }
-        }
-
-        return $bagEnds;
-    }
-
     /**
      * @return array|string[][][]
      */
@@ -538,7 +428,7 @@ class Controller extends StrictObject
         $traitsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitValues as $levelAndModifier => $levelTraitValues) {
-            list($level, $modifier) = explode('-', $levelAndModifier);
+            [$level, $modifier] = explode('-', $levelAndModifier);
             if (empty($selectedModifiersTree[$level][$modifier])) {
                 continue; // skip still selected traits but without selected parent modifier
             }
@@ -576,7 +466,7 @@ class Controller extends StrictObject
         $traitsTrapsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitTrapValues as $levelModifierAndTrait => $levelTraitValue) {
-            list($level, $modifier, $trait) = explode('-', $levelModifierAndTrait);
+            [$level, $modifier, $trait] = explode('-', $levelModifierAndTrait);
             if (!in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
                 continue; // skip still selected trait trap but without selected parent trait
             }
@@ -608,6 +498,7 @@ class Controller extends StrictObject
                 if (!array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
                     continue;
                 }
+                /** @var int[] $modifierParameters */
                 foreach ($modifierParameters as $parameterName => $value) {
                     $this->selectedModifiersSpellParameters[$treeLevel][$modifierName][$parameterName] = ToInteger::toInteger($value);
                 }
