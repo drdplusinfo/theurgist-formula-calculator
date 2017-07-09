@@ -3,7 +3,7 @@ namespace DrdPlus\Theurgist\Configurator;
 
 /** @var Formula $selectedFormula */
 /** @var Controller $controller */
-use DrdPlus\Codes\TimeUnitCode;
+use DrdPlus\Codes\Units\TimeUnitCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\Formula;
