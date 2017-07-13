@@ -32,7 +32,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <noscript>
         <link rel="stylesheet" type="text/css" href="css/generic/no_script.css">
     </noscript>
-    <script type="text/javascript" src="js/facebook.js" async></script>
+    <script type="text/javascript" src="js/generic/facebook.js" async></script>
 </head>
 <body>
 <div id="fb-root"></div>
