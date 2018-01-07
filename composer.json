@@ -11,7 +11,7 @@
   "require": {
     "php": ">=7.0",
     "roave/security-advisories": "dev-master",
-    "granam/strict-object": "~3,0",
+    "granam/strict-object": "dev-master",
     "drd-plus/theurgist-spells": "dev-master",
     "drd-plus/configurator-skeleton": "dev-master"
   },
