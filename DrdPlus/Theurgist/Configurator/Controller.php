@@ -17,14 +17,14 @@ use Granam\Integer\Tools\ToInteger;
 class Controller extends \DrdPlus\Configurator\Skeleton\Controller
 {
 
-    const FORMULA = 'formula';
-    const MODIFIERS = 'modifiers';
-    const PREVIOUS_FORMULA = 'previous_formula';
-    const FORMULA_PARAMETERS = 'formula_parameters';
-    const FORMULA_SPELL_TRAITS = 'formula_spell_traits';
-    const MODIFIER_SPELL_TRAITS = 'modifier_spell_traits';
-    const MODIFIER_SPELL_TRAIT_TRAPS = 'modifier_spell_trait_traps';
-    const MODIFIER_PARAMETERS = 'modifier_parameters';
+    public const FORMULA = 'formula';
+    public const MODIFIERS = 'modifiers';
+    public const PREVIOUS_FORMULA = 'previous_formula';
+    public const FORMULA_PARAMETERS = 'formula_parameters';
+    public const FORMULA_SPELL_TRAITS = 'formula_spell_traits';
+    public const MODIFIER_SPELL_TRAITS = 'modifier_spell_traits';
+    public const MODIFIER_SPELL_TRAIT_TRAPS = 'modifier_spell_trait_traps';
+    public const MODIFIER_PARAMETERS = 'modifier_parameters';
 
     /** @var FormulasTable */
     private $formulasTable;
@@ -167,7 +167,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $modifiers = [];
         $childModifierValues = [];
         foreach ($modifierValues as $modifierValue) {
-            if (!array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
+            if (!\array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
                 /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
                 foreach ($this->modifiersTable->getChildModifiers($modifierCode) as $childModifier) {
@@ -177,8 +177,8 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
                 }
             }
         }
-        $childModifiersToAdd = array_diff($childModifierValues, $modifierValues); // not yet processed in current loop
-        if (count($childModifiersToAdd) > 0) {
+        $childModifiersToAdd = \array_diff($childModifierValues, $modifierValues); // not yet processed in current loop
+        if (\count($childModifiersToAdd) > 0) {
             // flat array
             foreach ($this->buildPossibleModifiersTree($childModifiersToAdd, $modifiers) as $modifierValueToAdd => $modifierToAdd) {
                 $modifiers[$modifierValueToAdd] = $modifierToAdd;
@@ -196,9 +196,9 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
          * @var array|string[] $levelModifiers
          */
         foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
-            [$level, $parentModifier] = explode('-', $levelToParentModifier);
+            [$level, $parentModifier] = \explode('-', $levelToParentModifier);
             if ($level > 1
-                && (!array_key_exists($level - 1, $modifiers) || !in_array($parentModifier, $modifiers[$level - 1], true))
+                && (!\array_key_exists($level - 1, $modifiers) || !\in_array($parentModifier, $modifiers[$level - 1], true))
             ) {
                 continue; // skip branch without selected parent modifier (early bag end)
             }
@@ -284,7 +284,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     {
         $spellTraitsTree = [];
         foreach ($spellTraitsBranch as $index => $spellTraitsLeaf) {
-            if (is_array($spellTraitsLeaf)) {
+            if (\is_array($spellTraitsLeaf)) {
                 $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf, $spellTraitsTrapsBranch[$index] ?? []);
                 continue;
             }
@@ -307,7 +307,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     {
         $modifierValuesWithSpellTraits = [];
         foreach ($selectedModifierValues as $index => $selectedModifiersBranch) {
-            if (is_array($selectedModifiersBranch)) {
+            if (\is_array($selectedModifiersBranch)) {
                 $modifierValuesWithSpellTraits[$index] = $this->buildSelectedModifiersTree(
                     $selectedModifiersBranch,
                     $selectedModifierParameterValues[$index] ?? [],
@@ -343,14 +343,14 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      */
     public function createModifierInputIndex(array $modifiersChain): string
     {
-        $wrapped = array_map(
+        $wrapped = \array_map(
             function (string $chainPart) {
                 return "[$chainPart]";
             },
             $modifiersChain
         );
 
-        return implode($wrapped);
+        return \implode($wrapped);
     }
 
     /**
@@ -360,7 +360,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      */
     public function createSpellTraitInputIndex(array $modifiersChain, string $spellTraitName): string
     {
-        $wrapped = array_map(
+        $wrapped = \array_map(
             function (string $chainPart) {
                 return "[!$chainPart!]"; // wrapped by ! to avoid conflict with same named spell trait on long chain
             },
@@ -368,7 +368,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         );
         $wrapped[] = "[{$spellTraitName}]";
 
-        return implode($wrapped);
+        return \implode($wrapped);
     }
 
     /**
@@ -428,7 +428,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $traitsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitValues as $levelAndModifier => $levelTraitValues) {
-            [$level, $modifier] = explode('-', $levelAndModifier);
+            [$level, $modifier] = \explode('-', $levelAndModifier);
             if (empty($selectedModifiersTree[$level][$modifier])) {
                 continue; // skip still selected traits but without selected parent modifier
             }
@@ -466,8 +466,8 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $traitsTrapsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitTrapValues as $levelModifierAndTrait => $levelTraitValue) {
-            [$level, $modifier, $trait] = explode('-', $levelModifierAndTrait);
-            if (!in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
+            [$level, $modifier, $trait] = \explode('-', $levelModifierAndTrait);
+            if (!\in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
                 continue; // skip still selected trait trap but without selected parent trait
             }
             /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
@@ -491,11 +491,11 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $selectedModifiers = $this->getSelectedModifiersTree();
         /** @var array|int[][][] $sameLevelParameters */
         foreach ((array)$selectedModifierParameterValues as $treeLevel => $sameLevelParameters) {
-            if (!array_key_exists($treeLevel, $selectedModifiers)) {
+            if (!\array_key_exists($treeLevel, $selectedModifiers)) {
                 continue;
             }
             foreach ($sameLevelParameters as $modifierName => $modifierParameters) {
-                if (!array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
+                if (!\array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
                     continue;
                 }
                 /** @var int[] $modifierParameters */
@@ -519,6 +519,6 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
             return false;
         }
 
-        return $selection === $modifierValue /* bag end */ || is_array($selection); /* still traversing on the tree */
+        return $selection === $modifierValue /* bag end */ || \is_array($selection); /* still traversing on the tree */
     }
 }
