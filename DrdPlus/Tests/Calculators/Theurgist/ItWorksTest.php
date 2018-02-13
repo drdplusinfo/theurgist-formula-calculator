@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Tests;
+namespace DrdPlus\Tests\Calculators\Theurgist;
 
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ class ItWorksTest extends TestCase
     {
         $_SERVER['QUERY_STRING'] = '';
         ob_start();
-        require __DIR__ . '/../../index.php';
+        require __DIR__ . '/../../../../index.php';
         $content = ob_get_clean();
         self::assertRegExp('~^<!DOCTYPE html>\n.+</html>$~s', $content);
     }

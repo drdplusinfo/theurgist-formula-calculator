@@ -24,9 +24,9 @@
   "prefer-stable": true,
   "scripts": {
     "pre-autoload-dump": [
-      "rm -fr $PWD/css/generic && ln -s $PWD/vendor/drd-plus/configurator-skeleton/css/generic $PWD/css/generic",
-      "rm -fr $PWD/js/generic && ln -s $PWD/vendor/drd-plus/configurator-skeleton/js/generic $PWD/js/generic",
-      "rm -fr $PWD/images/generic && ln -s $PWD/vendor/drd-plus/configurator-skeleton/images/generic $PWD/images/generic"
+      "rm -fr ./css/generic && ln -s ../vendor/drd-plus/configurator-skeleton/css/generic ./css/generic",
+      "rm -fr ./js/generic && ln -s ../vendor/drd-plus/configurator-skeleton/js/generic ./js/generic",
+      "rm -fr ./images/generic && ln -s ../vendor/drd-plus/configurator-skeleton/images/generic ./images/generic"
     ]
   }
 }

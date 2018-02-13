@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculators\Theurgist\Formulas;
 
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Tables\Measurements\Distance\DistanceTable;

@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculators\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Spells\FormulasTable;
@@ -11,9 +11,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 error_reporting(-1);
 ini_set('display_errors', '1');
 
-$modifiersTable = new ModifiersTable(Tables::getIt());
+$formulasTable = new FormulasTable();
+$modifiersTable = new ModifiersTable();
 $spellTraitsTable = new SpellTraitsTable();
-$formulasTable = new FormulasTable(Tables::getIt(), $modifiersTable, $spellTraitsTable);
 $controller = new Controller($formulasTable, $modifiersTable, $spellTraitsTable, Tables::getIt()->getDistanceTable());
 $selectedFormula = $controller->getSelectedFormula();
 $selectedFormulaCode = $selectedFormula->getFormulaCode();
@@ -28,11 +28,10 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <link rel="stylesheet" type="text/css" href="css/generic/main.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/generic/graphics.css">
-    <link rel="stylesheet" type="text/css" href="css/generic/socials.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/issues.css">
     <noscript>
         <link rel="stylesheet" type="text/css" href="css/generic/no_script.css">
     </noscript>
-    <script type="text/javascript" src="js/generic/facebook.js" async></script>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -65,15 +64,11 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <?php require __DIR__ . '/result.php'; ?>
 </div>
 <div class="block issues">
-    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">Máš nápad 😀? Vidíš chybu 😱?️ Sem s
-        tím!</a>
-</div>
-<div class="block">
-    <div class="fb-like facebook"
-         data-href="https://formule.theurg.drdplus.info/<?= $_SERVER['QUERY_STRING'] ? ('?' . $_SERVER['QUERY_STRING']) : '' ?>"
-         data-layout="button" data-action="recommend"
-         data-size="small" data-show-faces="false" data-share="true"></div>
-    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
+    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">
+        <img src="images/generic/rpgforum-ico.png">
+        Máš nápad 😀? Vidíš chybu 😱?️ Sem s tím!
+    </a>
+    <a class="float-right" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
        title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
 </div>
 <script src="js/main.js"></script>
