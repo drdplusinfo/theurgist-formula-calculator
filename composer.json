@@ -12,8 +12,8 @@
     "php": ">=7.1",
     "roave/security-advisories": "dev-master",
     "granam/strict-object": "dev-master",
-    "drd-plus/theurgist-spells": "dev-master",
-    "drd-plus/configurator-skeleton": "dev-master"
+    "drd-plus/calculator-skeleton": "dev-master",
+    "drd-plus/theurgist-spells": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",
@@ -24,9 +24,9 @@
   "prefer-stable": true,
   "scripts": {
     "pre-autoload-dump": [
-      "rm -fr ./css/generic && ln -s ../vendor/drd-plus/configurator-skeleton/css/generic ./css/generic",
-      "rm -fr ./js/generic && ln -s ../vendor/drd-plus/configurator-skeleton/js/generic ./js/generic",
-      "rm -fr ./images/generic && ln -s ../vendor/drd-plus/configurator-skeleton/images/generic ./images/generic"
+      "rm -fr ./css/generic && ln -s ../vendor/drd-plus/calculator-skeleton/css/generic ./css/generic",
+      "rm -fr ./js/generic && ln -s ../vendor/drd-plus/calculator-skeleton/js/generic ./js/generic",
+      "rm -fr ./images/generic && ln -s ../vendor/drd-plus/calculator-skeleton/images/generic ./images/generic"
     ]
   }
 }

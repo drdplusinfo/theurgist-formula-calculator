@@ -30,7 +30,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <link rel="stylesheet" type="text/css" href="css/generic/graphics.css">
     <link rel="stylesheet" type="text/css" href="css/generic/issues.css">
     <noscript>
-        <link rel="stylesheet" type="text/css" href="css/generic/no_script.css">
+        <link href="css/generic/no_script.css" rel="stylesheet" type="text/css">
     </noscript>
 </head>
 <body>
@@ -45,7 +45,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     </form>
     <form id="configurator" class="block" action="" method="get">
         <div class="block remember">
-            <label><input type="checkbox" name="<?= $controller::REMEMBER_HISTORY ?>" value="1"
+            <label><input type="checkbox" name="<?= $controller::REMEMBER_CURRENT ?>" value="1"
                           <?php if ($controller->shouldRemember()) { ?>checked="checked"<?php } ?>>
                 Pamatovat <span class="hint">(i při zavření prohlížeče)</span></label>
         </div>
@@ -59,18 +59,17 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
             <button type="submit">Vybrat</button>
         </div>
     </form>
-</div>
-<div id="result" class="result">
-    <?php require __DIR__ . '/result.php'; ?>
-</div>
-<div class="block issues">
-    <a href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/issues">
-        <img src="images/generic/rpgforum-ico.png">
-        Máš nápad 😀? Vidíš chybu 😱?️ Sem s tím!
-    </a>
-    <a class="float-right" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator/"
-       title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
-</div>
-<script src="js/main.js"></script>
+    <div id="result" class="result">
+        <?php require __DIR__ . '/result.php'; ?>
+    </div>
+    <div class="block issues">
+        <a href="https://rpgforum.cz/forum/viewtopic.php?f=238&t=14870">
+            <img src="images/generic/rpgforum-ico.png">
+            Máš nápad 😀? Vidíš chybu 😱?️ Sem s tím!
+        </a>
+        <a class="float-right" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator"
+           title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
+    </div>
+    <script src="js/main.js"></script>
 </body>
 </html>
