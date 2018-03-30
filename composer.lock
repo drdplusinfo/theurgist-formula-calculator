@@ -811,12 +811,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-codes.git",
-                "reference": "8e1cf68545f995e7b1b29499c8d5316211dd650a"
+                "reference": "80029ec10a9819ba0b9772d2717123ef42fd9223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/8e1cf68545f995e7b1b29499c8d5316211dd650a",
-                "reference": "8e1cf68545f995e7b1b29499c8d5316211dd650a",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-codes/zipball/80029ec10a9819ba0b9772d2717123ef42fd9223",
+                "reference": "80029ec10a9819ba0b9772d2717123ef42fd9223",
                 "shasum": ""
             },
             "require": {
@@ -842,7 +842,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2018-02-18 08:26:19"
+            "time": "2018-03-29 13:45:31"
         },
         {
             "name": "drd-plus/dice-rolls",
@@ -1512,18 +1512,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "664836e89c7ecad3dbaabc1572ea752c0d532d80"
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/664836e89c7ecad3dbaabc1572ea752c0d532d80",
-                "reference": "664836e89c7ecad3dbaabc1572ea752c0d532d80",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
                 "shasum": ""
             },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.6",
                 "amphp/artax": "<1.0.6|>=2,<2.0.6",
+                "amphp/http": "<1.0.1",
                 "asymmetricrypt/asymmetricrypt": ">=0,<9.9.99",
                 "aws/aws-sdk-php": ">=3,<3.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
@@ -1589,7 +1590,7 @@
                 "simplesamlphp/simplesamlphp": "<1.15.2",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
-                "squizlabs/php_codesniffer": ">=1,<2.8.1",
+                "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "stormpath/sdk": ">=0,<9.9.99",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "symfony/dependency-injection": ">=2,<2.0.17",
@@ -1610,7 +1611,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
@@ -1618,11 +1619,13 @@
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
-                "yiisoft/yii2": "<2.0.14",
+                "yiisoft/yii2": "<2.0.15",
                 "yiisoft/yii2-bootstrap": "<2.0.4",
-                "yiisoft/yii2-dev": "<2.0.14",
+                "yiisoft/yii2-dev": "<2.0.15",
+                "yiisoft/yii2-elasticsearch": "<2.0.5",
                 "yiisoft/yii2-gii": "<2.0.4",
                 "yiisoft/yii2-jui": "<2.0.4",
+                "yiisoft/yii2-redis": "<2.0.8",
                 "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
                 "zendframework/zend-captcha": ">=2,<2.4.9|>=2.5,<2.5.2",
                 "zendframework/zend-crypt": ">=2,<2.4.9|>=2.5,<2.5.2",
@@ -1660,7 +1663,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-07 15:45:44"
+            "time": "2018-03-22 21:16:54"
         }
     ],
     "packages-dev": [
