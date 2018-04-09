@@ -25,8 +25,8 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" type="text/css" href="css/generic/main.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="css/theurgist.css">
     <link rel="stylesheet" type="text/css" href="css/generic/graphics.css">
     <link rel="stylesheet" type="text/css" href="css/generic/issues.css">
     <noscript>
@@ -70,6 +70,6 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
         <a class="float-right" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator"
            title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/theurgist.js"></script>
 </body>
 </html>
