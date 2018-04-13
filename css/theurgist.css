@@ -63,3 +63,7 @@ input[disabled], select[disabled] {
 .modifier.panel > .modifier.panel {
     margin-left: 1em;
 }
+
+.trap {
+    font-size: small;
+}
