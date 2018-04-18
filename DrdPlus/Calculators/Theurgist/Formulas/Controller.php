@@ -73,7 +73,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     {
         if ($this->selectedFormulaCode === null) {
             $this->selectedFormulaCode = FormulaCode::getIt(
-                $this->getHistory()->getValue(self::FORMULA) ?? FormulaCode::getPossibleValues()[0]
+                $this->getValueFromRequest(self::FORMULA) ?? FormulaCode::getPossibleValues()[0]
             );
         }
 
@@ -148,12 +148,12 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         if ($this->selectedModifiersTree !== null) {
             return $this->selectedModifiersTree;
         }
-        if ($this->isFormulaChanged() || $this->getHistory()->getValue(self::MODIFIERS) === null) {
+        if ($this->isFormulaChanged() || $this->getValueFromRequest(self::MODIFIERS) === null) {
             return $this->selectedModifiersTree = [];
         }
 
         return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree(
-            (array)$this->getHistory()->getValue(self::MODIFIERS)
+            (array)$this->getValueFromRequest(self::MODIFIERS)
         );
     }
 
@@ -215,7 +215,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      */
     private function getPreviouslySelectedFormulaValue():? string
     {
-        return $this->getHistory()->getValue(self::PREVIOUS_FORMULA);
+        return $this->getValueFromRequest(self::PREVIOUS_FORMULA);
     }
 
     public function getSelectedFormula(): Formula
@@ -238,7 +238,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         if ($this->selectedFormulaSpellParameters !== null) {
             return $this->selectedFormulaSpellParameters;
         }
-        $selectedFormulaParameterValues = $this->getHistory()->getValue(self::FORMULA_PARAMETERS);
+        $selectedFormulaParameterValues = $this->getValueFromRequest(self::FORMULA_PARAMETERS);
         if ($selectedFormulaParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedFormulaSpellParameters = [];
         }
@@ -391,7 +391,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      */
     public function getSelectedFormulaSpellTraitValues(): array
     {
-        $formulaSpellTraits = $this->getHistory()->getValue(self::FORMULA_SPELL_TRAITS);
+        $formulaSpellTraits = $this->getValueFromRequest(self::FORMULA_SPELL_TRAITS);
         if ($formulaSpellTraits === null || $this->isFormulaChanged()) {
             return [];
         }
@@ -407,7 +407,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
         }
-        $selectedModifierSpellTraitValues = $this->getHistory()->getValue(self::MODIFIER_SPELL_TRAITS);
+        $selectedModifierSpellTraitValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAITS);
         if ($selectedModifierSpellTraitValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraits = [];
         }
@@ -445,7 +445,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         if ($this->selectedModifiersSpellTraitsTrapValues !== null) {
             return $this->selectedModifiersSpellTraitsTrapValues;
         }
-        $selectedModifierSpellTraitTrapValues = $this->getHistory()->getValue(self::MODIFIER_SPELL_TRAIT_TRAPS);
+        $selectedModifierSpellTraitTrapValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAIT_TRAPS);
         if ($selectedModifierSpellTraitTrapValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraitsTrapValues = [];
         }
@@ -482,7 +482,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         if ($this->selectedModifiersSpellParameters !== null) {
             return $this->selectedModifiersSpellParameters;
         }
-        $selectedModifierParameterValues = $this->getHistory()->getValue(self::MODIFIER_PARAMETERS);
+        $selectedModifierParameterValues = $this->getValueFromRequest(self::MODIFIER_PARAMETERS);
         if ($selectedModifierParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellParameters = [];
         }
