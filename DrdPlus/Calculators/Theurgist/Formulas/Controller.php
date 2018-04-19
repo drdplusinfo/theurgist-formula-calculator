@@ -62,7 +62,6 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
         $this->distanceTable = $distanceTable;
-
         parent::__construct('theurgist' /* cookies postfix */);
     }
 
@@ -213,11 +212,21 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return string|null
      */
-    private function getPreviouslySelectedFormulaValue():? string
+    private function getPreviouslySelectedFormulaValue(): ?string
     {
         return $this->getValueFromRequest(self::PREVIOUS_FORMULA);
     }
 
+    /**
+     * @return Formula
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UnknownFormulaParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidModifier
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidSpellTrait
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UnknownModifierParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
+     */
     public function getSelectedFormula(): Formula
     {
         return new Formula(
@@ -254,6 +263,10 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
 
     /**
      * @return array|Modifier[]|Modifier[][] ...
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UnknownModifierParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidSpellTrait
      */
     private function getSelectedModifiers(): array
     {
@@ -299,6 +312,16 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         return $spellTraitsTree;
     }
 
+    /**
+     * @param array $selectedModifierValues
+     * @param array $selectedModifierParameterValues
+     * @param array $selectedModifierSpellTraits
+     * @return array
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\UnknownModifierParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
+     * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidSpellTrait
+     */
     private function buildSelectedModifiersTree(
         array $selectedModifierValues,
         array $selectedModifierParameterValues,
