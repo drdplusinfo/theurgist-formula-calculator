@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Properties\Derived\Speed;
 use DrdPlus\Tables\Measurements\Distance\Distance;
@@ -48,7 +48,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
             $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();
             /** @var Measurement $previousOptionParameterValueWithUnit */
             $previousOptionParameterValueWithUnit = null;
-            $selectedParameterValue = $controller->getSelectedFormulaSpellParameters()[$parameterName] ?? false;
+            $selectedParameterValue = $controller->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
             ?>
             <select name="<?= $controller::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
                 <?php
@@ -70,6 +70,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
                     <?php }
                     $previousOptionParameterValueWithUnit = $optionValueWithUnit;
                     $optionParameterChange++;
+                    /** @noinspection PhpUnhandledExceptionInspection */
                     $parameter = $parameter->getWithAddition($optionParameterChange);
                     $parameterAdditionByDifficulty = $parameter->getAdditionByDifficulty();
                     $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();

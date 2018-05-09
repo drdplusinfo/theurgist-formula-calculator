@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 /** @var Controller $controller */
 use DrdPlus\Theurgist\Codes\FormulaCode;
@@ -7,9 +7,9 @@ use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 
-$selectedModifiersTree = $controller->getSelectedModifiersTree();
+$selectedModifiersTree = $controller->getCurrentModifiersTree();
 $possibleModifierCombinations = $controller->getPossibleModifierCombinations();
-$selectedModifiersSpellTraitValues = $controller->getSelectedModifiersSpellTraitValues();
+$selectedModifiersSpellTraitValues = $controller->getCurrentModifiersSpellTraitValues();
 
 /** @var ModifiersTable $modifiersTable */
 /** @var FormulaCode $selectedFormulaCode */

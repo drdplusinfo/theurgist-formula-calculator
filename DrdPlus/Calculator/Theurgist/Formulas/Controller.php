@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculators\Theurgist\Formulas;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Tables\Measurements\Distance\DistanceTable;
@@ -14,7 +14,7 @@ use DrdPlus\Theurgist\Spells\SpellTrait;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
 
-class Controller extends \DrdPlus\Configurator\Skeleton\Controller
+class Controller extends \DrdPlus\Calculator\Skeleton\Controller
 {
 
     public const FORMULA = 'formula';
@@ -68,11 +68,11 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return FormulaCode
      */
-    private function getSelectedFormulaCode(): FormulaCode
+    private function getCurrentFormulaCode(): FormulaCode
     {
         if ($this->selectedFormulaCode === null) {
             $this->selectedFormulaCode = FormulaCode::getIt(
-                $this->getValueFromRequest(self::FORMULA) ?? FormulaCode::getPossibleValues()[0]
+                $this->getCurrentValues()->getCurrentValue(self::FORMULA) ?? FormulaCode::getPossibleValues()[0]
             );
         }
 
@@ -102,7 +102,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     public function getPossibleModifierCombinations(): array
     {
         $formulaModifiersTree = $this->getFormulaDirectModifierCombinations();
-        $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getSelectedModifiersFlatArrayValues());
+        $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getCurrentModifiersFlatArrayValues());
         $possibleModifiersTree[''] = $formulaModifiersTree;
 
         return $possibleModifiersTree;
@@ -116,17 +116,17 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $formulaModifierCodesTree = [];
         /** @var array|ModifierCode[] $childModifiers */
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        foreach ($this->formulasTable->getModifierCodes($this->getSelectedFormulaCode()) as $modifierCode) {
+        foreach ($this->formulasTable->getModifierCodes($this->getCurrentFormulaCode()) as $modifierCode) {
             $formulaModifierCodesTree[$modifierCode->getValue()] = $modifierCode; // as a child modifier
         }
 
         return $formulaModifierCodesTree;
     }
 
-    private function getSelectedModifiersFlatArrayValues(): array
+    private function getCurrentModifiersFlatArrayValues(): array
     {
         $selectedModifierValues = [];
-        foreach ($this->getSelectedModifiersTree() as $level => $selectedLevelModifiers) {
+        foreach ($this->getCurrentModifiersTree() as $level => $selectedLevelModifiers) {
             /** @var array|string[] $selectedLevelModifiers */
             foreach ($selectedLevelModifiers as $selectedLevelModifier) {
                 $selectedModifierValues[] = $selectedLevelModifier;
@@ -142,23 +142,23 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return array|string[][][]
      */
-    public function getSelectedModifiersTree(): array
+    public function getCurrentModifiersTree(): array
     {
         if ($this->selectedModifiersTree !== null) {
             return $this->selectedModifiersTree;
         }
-        if ($this->isFormulaChanged() || $this->getValueFromRequest(self::MODIFIERS) === null) {
+        if ($this->isFormulaChanged() || $this->getCurrentValues()->getCurrentValue(self::MODIFIERS) === null) {
             return $this->selectedModifiersTree = [];
         }
 
-        return $this->selectedModifiersTree = $this->buildSelectedModifierValuesTree(
-            (array)$this->getValueFromRequest(self::MODIFIERS)
+        return $this->selectedModifiersTree = $this->buildCurrentModifierValuesTree(
+            (array)$this->getCurrentValues()->getCurrentValue(self::MODIFIERS)
         );
     }
 
     private function isFormulaChanged(): bool
     {
-        return $this->getSelectedFormulaCode()->getValue() !== $this->getPreviouslySelectedFormulaValue();
+        return $this->getCurrentFormulaCode()->getValue() !== $this->getPreviousFormulaValue();
     }
 
     private function buildPossibleModifiersTree(array $modifierValues, array $processedModifiers = []): array
@@ -187,7 +187,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         return $modifiers;
     }
 
-    private function buildSelectedModifierValuesTree(array $modifierValues): array
+    private function buildCurrentModifierValuesTree(array $modifierValues): array
     {
         $modifiers = [];
         /**
@@ -212,9 +212,9 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return string|null
      */
-    private function getPreviouslySelectedFormulaValue(): ?string
+    private function getPreviousFormulaValue(): ?string
     {
-        return $this->getValueFromRequest(self::PREVIOUS_FORMULA);
+        return $this->getCurrentValues()->getCurrentValue(self::PREVIOUS_FORMULA);
     }
 
     /**
@@ -227,27 +227,27 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\UnknownModifierParameter
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
      */
-    public function getSelectedFormula(): Formula
+    public function getCurrentFormula(): Formula
     {
         return new Formula(
-            $this->getSelectedFormulaCode(),
+            $this->getCurrentFormulaCode(),
             $this->formulasTable,
             $this->distanceTable,
-            $this->getSelectedFormulaSpellParameters(), // formula spell parameter changes
-            $this->getSelectedModifiers(),
-            $this->getSelectedFormulaSpellTraits()
+            $this->getCurrentFormulaSpellParameters(), // formula spell parameter changes
+            $this->getCurrentModifiers(),
+            $this->getCurrentFormulaSpellTraits()
         );
     }
 
     /**
      * @return array|int[]
      */
-    public function getSelectedFormulaSpellParameters(): array
+    public function getCurrentFormulaSpellParameters(): array
     {
         if ($this->selectedFormulaSpellParameters !== null) {
             return $this->selectedFormulaSpellParameters;
         }
-        $selectedFormulaParameterValues = $this->getValueFromRequest(self::FORMULA_PARAMETERS);
+        $selectedFormulaParameterValues = $this->getCurrentValues()->getCurrentValue(self::FORMULA_PARAMETERS);
         if ($selectedFormulaParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedFormulaSpellParameters = [];
         }
@@ -268,23 +268,23 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidSpellTrait
      */
-    private function getSelectedModifiers(): array
+    private function getCurrentModifiers(): array
     {
-        return $this->buildSelectedModifiersTree(
-            $this->getSelectedModifiersTree(),
-            $this->getSelectedModifiersSpellParametersTree(),
-            $this->getSelectedModifiersSpellTraitsTree()
+        return $this->buildCurrentModifiersTree(
+            $this->getCurrentModifiersTree(),
+            $this->getCurrentModifiersSpellParametersTree(),
+            $this->getCurrentModifiersSpellTraitsTree()
         );
     }
 
     /**
      * @return array|SpellTrait[]
      */
-    private function getSelectedModifiersSpellTraitsTree(): array
+    private function getCurrentModifiersSpellTraitsTree(): array
     {
         return $this->buildSpellTraitsTree(
-            $this->getSelectedModifiersSpellTraitValues(),
-            $this->getSelectedModifiersSpellTraitsTrapValues()
+            $this->getCurrentModifiersSpellTraitValues(),
+            $this->getCurrentModifiersSpellTraitsTrapValues()
         );
     }
 
@@ -322,7 +322,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
      * @throws \DrdPlus\Theurgist\Spells\Exceptions\InvalidSpellTrait
      */
-    private function buildSelectedModifiersTree(
+    private function buildCurrentModifiersTree(
         array $selectedModifierValues,
         array $selectedModifierParameterValues,
         array $selectedModifierSpellTraits
@@ -331,7 +331,7 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         $modifierValuesWithSpellTraits = [];
         foreach ($selectedModifierValues as $index => $selectedModifiersBranch) {
             if (\is_array($selectedModifiersBranch)) {
-                $modifierValuesWithSpellTraits[$index] = $this->buildSelectedModifiersTree(
+                $modifierValuesWithSpellTraits[$index] = $this->buildCurrentModifiersTree(
                     $selectedModifiersBranch,
                     $selectedModifierParameterValues[$index] ?? [],
                     $selectedModifierSpellTraits[$index] ?? []
@@ -352,10 +352,10 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return array|SpellTrait[]
      */
-    public function getSelectedFormulaSpellTraits(): array
+    public function getCurrentFormulaSpellTraits(): array
     {
         return $this->buildSpellTraitsTree(
-            $this->getSelectedFormulaSpellTraitValues(),
+            $this->getCurrentFormulaSpellTraitValues(),
             [] /* no traps for formula spell traits */
         );
     }
@@ -412,9 +412,9 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return array|string[]
      */
-    public function getSelectedFormulaSpellTraitValues(): array
+    public function getCurrentFormulaSpellTraitValues(): array
     {
-        $formulaSpellTraits = $this->getValueFromRequest(self::FORMULA_SPELL_TRAITS);
+        $formulaSpellTraits = $this->getCurrentValues()->getCurrentValue(self::FORMULA_SPELL_TRAITS);
         if ($formulaSpellTraits === null || $this->isFormulaChanged()) {
             return [];
         }
@@ -425,19 +425,19 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
     /**
      * @return array|string[][][]
      */
-    public function getSelectedModifiersSpellTraitValues(): array
+    public function getCurrentModifiersSpellTraitValues(): array
     {
         if ($this->selectedModifiersSpellTraits !== null) {
             return $this->selectedModifiersSpellTraits;
         }
-        $selectedModifierSpellTraitValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAITS);
+        $selectedModifierSpellTraitValues = $this->getCurrentValues()->getCurrentValue(self::MODIFIER_SPELL_TRAITS);
         if ($selectedModifierSpellTraitValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraits = [];
         }
 
         return $this->selectedModifiersSpellTraits = $this->buildSelectedModifierTraitsTree(
             (array)$selectedModifierSpellTraitValues,
-            $this->getSelectedModifiersTree()
+            $this->getCurrentModifiersTree()
         );
     }
 
@@ -463,19 +463,19 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         return $traitsTree;
     }
 
-    public function getSelectedModifiersSpellTraitsTrapValues(): array
+    public function getCurrentModifiersSpellTraitsTrapValues(): array
     {
         if ($this->selectedModifiersSpellTraitsTrapValues !== null) {
             return $this->selectedModifiersSpellTraitsTrapValues;
         }
-        $selectedModifierSpellTraitTrapValues = $this->getValueFromRequest(self::MODIFIER_SPELL_TRAIT_TRAPS);
+        $selectedModifierSpellTraitTrapValues = $this->getCurrentValues()->getCurrentValue(self::MODIFIER_SPELL_TRAIT_TRAPS);
         if ($selectedModifierSpellTraitTrapValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraitsTrapValues = [];
         }
 
         return $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
             (array)$selectedModifierSpellTraitTrapValues,
-            $this->getSelectedModifiersSpellTraitValues()
+            $this->getCurrentModifiersSpellTraitValues()
         );
     }
 
@@ -500,18 +500,18 @@ class Controller extends \DrdPlus\Configurator\Skeleton\Controller
         return $traitsTrapsTree;
     }
 
-    public function getSelectedModifiersSpellParametersTree(): array
+    public function getCurrentModifiersSpellParametersTree(): array
     {
         if ($this->selectedModifiersSpellParameters !== null) {
             return $this->selectedModifiersSpellParameters;
         }
-        $selectedModifierParameterValues = $this->getValueFromRequest(self::MODIFIER_PARAMETERS);
+        $selectedModifierParameterValues = $this->getCurrentValues()->getCurrentValue(self::MODIFIER_PARAMETERS);
         if ($selectedModifierParameterValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellParameters = [];
         }
 
         $this->selectedModifiersSpellParameters = [];
-        $selectedModifiers = $this->getSelectedModifiersTree();
+        $selectedModifiers = $this->getCurrentModifiersTree();
         /** @var array|int[][][] $sameLevelParameters */
         foreach ((array)$selectedModifierParameterValues as $treeLevel => $sameLevelParameters) {
             if (!\array_key_exists($treeLevel, $selectedModifiers)) {

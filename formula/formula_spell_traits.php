@@ -1,7 +1,7 @@
 <?php
 $formulaSpellTraitCodes = $formulasTable->getSpellTraitCodes($selectedFormulaCode);
 if (count($formulaSpellTraitCodes) > 0) {
-    $selectedFormulaSpellTraitValues = $controller->getSelectedFormulaSpellTraitValues(); ?>
+    $selectedFormulaSpellTraitValues = $controller->getCurrentFormulaSpellTraitValues(); ?>
     <div class="block">
         <div class="panel">
             <span class="panel"><strong>Rysy</strong>:</span>

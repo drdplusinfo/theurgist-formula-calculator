@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;

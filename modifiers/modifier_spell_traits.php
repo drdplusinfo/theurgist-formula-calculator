@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 /** @var ModifierCode $possibleModifier */
 /** @var int $treeLevel */
@@ -9,7 +9,6 @@ namespace DrdPlus\Theurgist\Configurator;
 /** @var Controller $controller */
 /** @var bool $modifierIsSelected */
 
-use DrdPlus\Calculators\Theurgist\Formulas\Controller;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellParameters\Trap;
@@ -50,7 +49,7 @@ if (\count($modifierSpellTraitCodes) > 0) { ?>
                             $difficultyChange = $trapAddition->getCurrentDifficultyIncrement();
                             $optionTrapChange = 0;
                             $previousOptionTrapValue = null;
-                            $selectedTrapValue = $controller->getSelectedModifiersSpellTraitsTrapValues()[$treeLevel][$possibleModifierValue][$spellTraitCodeValue] ?? false;
+                            $selectedTrapValue = $controller->getCurrentModifiersSpellTraitsTrapValues()[$treeLevel][$possibleModifierValue][$spellTraitCodeValue] ?? false;
                             do {
                                 if ($previousOptionTrapValue === null || $previousOptionTrapValue < $optionTrapValue) { ?>
                                     <option value="<?= $optionTrapValue ?>"

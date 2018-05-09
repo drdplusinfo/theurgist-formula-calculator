@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Tests\Calculators\Theurgist;
+namespace DrdPlus\Tests\Calculator\Theurgist;
 
 use PHPUnit\Framework\TestCase;
 

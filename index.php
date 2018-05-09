@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculators\Theurgist\Formulas;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Spells\FormulasTable;
@@ -15,7 +15,7 @@ $formulasTable = new FormulasTable();
 $modifiersTable = new ModifiersTable();
 $spellTraitsTable = new SpellTraitsTable();
 $controller = new Controller($formulasTable, $modifiersTable, $spellTraitsTable, Tables::getIt()->getDistanceTable());
-$selectedFormula = $controller->getSelectedFormula();
+$selectedFormula = $controller->getCurrentFormula();
 $selectedFormulaCode = $selectedFormula->getFormulaCode();
 ?>
 <!DOCTYPE html>
@@ -25,31 +25,30 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/generic/vendor/bootstrap.4.0.0/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/vendor/bootstrap.4.0.0/bootstrap-reboot.min.css">
+    <link rel="stylesheet" type="text/css" href="css/generic/vendor/bootstrap.4.0.0/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="css/generic/skeleton.css">
-    <link rel="stylesheet" type="text/css" href="css/theurgist.css">
     <link rel="stylesheet" type="text/css" href="css/generic/graphics.css">
     <link rel="stylesheet" type="text/css" href="css/generic/issues.css">
+    <link rel="stylesheet" type="text/css" href="css/theurgist.css">
     <noscript>
       <link href="css/generic/no_script.css" rel="stylesheet" type="text/css">
     </noscript>
   </head>
-  <body>
+  <body class="container">
     <div id="fb-root"></div>
     <div class="background"></div>
     <div>
-      <form class="block delete" action="" method="post" onsubmit="return window.confirm('Opravdu smazat?')">
-        <label>
-          <input type="submit" value="Smazat" name="<?= $controller::DELETE_HISTORY ?>">
-          <span class="hint">(včetně paměti uložené v cookies)</span>
-        </label>
-      </form>
-      <form id="configurator" class="block" action="" method="get">
-        <div class="block remember">
-          <label><input type="checkbox" name="<?= $controller::REMEMBER_CURRENT ?>" value="1"
-                        <?php if ($controller->shouldRemember()) { ?>checked="checked"<?php } ?>>
-            Pamatovat <span class="hint">(i při zavření prohlížeče)</span></label>
-        </div>
-        <div class="block">
+        <?php include __DIR__ . '/vendor/drd-plus/calculator-skeleton/history_deletion.php'; ?>
+      <div class="row">
+        <div class="message info col text-center">čísla jsou ve formátu +-bonus (hodnota) [náročnost]</div>
+      </div>
+      <div class="row">
+        <hr class="col">
+      </div>
+      <div class="row">
+        <form id="configurator" action="" method="get">
           <input type="hidden" name="<?= $controller::PREVIOUS_FORMULA ?>"
                  value="<?= $selectedFormulaCode->getValue() ?>">
             <?php require __DIR__ . '/formula/formula.php'; ?>
@@ -57,19 +56,21 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
             <?php require __DIR__ . '/modifiers/modifiers.php' ?>
           <hr class="clear">
           <button type="submit">Vybrat</button>
+        </form>
+      </div>
+        <?php require __DIR__ . '/result.php'; ?>
+      <div class="row">
+        <hr class="col">
+      </div>
+      <div class="row">
+        <div class="col">
+          <a href="https://theurg.drdplus.info/#tabulka_formuli">Pravidla pro Theurga</a>
         </div>
-      </form>
-      <div id="result" class="result">
-          <?php require __DIR__ . '/result.php'; ?>
       </div>
-      <div class="block issues">
-        <a href="https://rpgforum.cz/forum/viewtopic.php?f=238&t=14870">
-          <img src="images/generic/rpgforum-ico.png">
-          Máš nápad 😀? Vidíš chybu 😱?️ Sem s tím!
-        </a>
-        <a class="float-right" href="https://github.com/jaroslavtyc/drd-plus-theurgist-configurator"
-           title="Fork me on GitHub"><img class="github" src="/images/generic/GitHub-Mark-64px.png"></a>
-      </div>
+        <?php
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        $sourceCodeUrl = 'https://github.com/jaroslavtyc/drd-plus-theurgist-configurator';
+        include __DIR__ . '/vendor/drd-plus/calculator-skeleton/issues.php'; ?>
       <script src="js/generic/skeleton.js"></script>
   </body>
 </html>

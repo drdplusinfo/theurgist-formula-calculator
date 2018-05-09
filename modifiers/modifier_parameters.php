@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Theurgist\Configurator;
+namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\ModifierCode;
@@ -54,7 +54,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
             $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
             $optionParameterChange = 0;
             $previousOptionParameterValue = null;
-            $selectedParameterValue = $controller->getSelectedModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
+            $selectedParameterValue = $controller->getCurrentModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
             ?>
             <select name="<?= $controller::MODIFIER_PARAMETERS ?>[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
                     <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
@@ -74,6 +74,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
                     <?php }
                     $previousOptionParameterValue = $optionParameterValue;
                     $optionParameterChange++;
+                    /** @noinspection PhpUnhandledExceptionInspection */
                     $parameter = $parameter->getWithAddition($optionParameterChange);
                     $parameterAddition = $parameter->getAdditionByDifficulty();
                     $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
