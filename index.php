@@ -42,7 +42,7 @@ $selectedFormulaCode = $selectedFormula->getFormulaCode();
     <div>
         <?php include __DIR__ . '/vendor/drd-plus/calculator-skeleton/history_deletion.php'; ?>
       <div class="row">
-        <div class="message info col text-center">čísla jsou ve formátu +-bonus (hodnota) [náročnost]</div>
+        <div class="message info col text-center">čísla jsou ve formátu ± bonus (hodnota) [náročnost]</div>
       </div>
       <div class="row">
         <hr class="col">

@@ -13,6 +13,7 @@ use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTrait;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
+use Granam\Number\NumberInterface;
 
 class Controller extends \DrdPlus\Calculator\Skeleton\Controller
 {
@@ -543,5 +544,12 @@ class Controller extends \DrdPlus\Calculator\Skeleton\Controller
         }
 
         return $selection === $modifierValue /* bag end */ || \is_array($selection); /* still traversing on the tree */
+    }
+
+    public function formatNumber(NumberInterface $number): string
+    {
+        return $number->getValue() >= 0
+            ? '+' . $number->getValue()
+            : (string)$number->getValue();
     }
 }
