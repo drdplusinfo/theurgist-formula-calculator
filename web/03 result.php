@@ -1,25 +1,25 @@
 <?php
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
-/** @var Formula $selectedFormula */
-/** @var Controller $controller */
 use DrdPlus\Codes\Units\TimeUnitCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
-use DrdPlus\Theurgist\Spells\Formula;
 use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
+
+/** @var Controller $controller */
+$currentFormula = $controller->getCurrentFormula();
 
 $resultParts = [];
 // Roman numerals are created by browser using ordered list with upper Roman list style type
 $resultParts[] = <<<HTML
-sféra: <ol class="realm font-weight-bold" start="{$selectedFormula->getRequiredRealm()}">
+sféra: <ol class="realm font-weight-bold" start="{$currentFormula->getRequiredRealm()}">
         <li></li>
       </ol>
 HTML;
 $resultParts[] = <<<HTML
-náročnost: [<strong>{$selectedFormula->getCurrentDifficulty()->getValue()}</strong>]
+náročnost: [<strong>{$currentFormula->getCurrentDifficulty()->getValue()}</strong>]
 HTML;
-$realmsAffections = $selectedFormula->getCurrentRealmsAffections();
+$realmsAffections = $currentFormula->getCurrentRealmsAffections();
 $realmsAffectionsInCzech = [];
 /** @var RealmsAffection $realmsAffection */
 foreach ($realmsAffections as $realmsAffection) {
@@ -32,7 +32,7 @@ $realmsAffectionsResult = \implode(', ', $realmsAffectionsInCzech);
 $resultParts[] = <<<HTML
 {$realmAffectionName}: <strong>{$realmsAffectionsResult}</strong>
 HTML;
-$evocation = $selectedFormula->getCurrentEvocation();
+$evocation = $currentFormula->getCurrentEvocation();
 $evocationTime = $evocation->getEvocationTime(Tables::getIt()->getTimeTable());
 $evocationUnitInCzech = $evocationTime->getUnitCode()->translateTo('cs', $evocationTime->getValue());
 $evocationTimeResult = ($evocation->getValue() >= 0 ? '+' : '') . $evocation->getValue();
@@ -45,7 +45,7 @@ $evocationTimeResult .= ')';
 $resultParts[] = <<<HTML
 vyvolání (příprava formule): <strong>{$evocationTimeResult}</strong>
 HTML;
-$castingRounds = $selectedFormula->getCurrentCastingRounds();
+$castingRounds = $currentFormula->getCurrentCastingRounds();
 $castingBonus = $castingRounds->getTime(Tables::getIt()->getTimeTable())->getBonus();
 $casting = $castingBonus->getTime();
 $castingUnitInCzech = $casting->getUnitCode()->translateTo('cs', $casting->getValue());
@@ -53,14 +53,14 @@ $castingText = ($castingBonus->getValue() >= 0 ? '+' : '') . "{$castingBonus->ge
 $resultParts[] = <<<HTML
 seslání (vypuštění kouzla): <strong>{$castingText}</strong>
 HTML;
-$duration = $selectedFormula->getCurrentDuration();
+$duration = $currentFormula->getCurrentDuration();
 $durationTime = $duration->getDurationTime(Tables::getIt()->getTimeTable());
 $durationUnitInCzech = $durationTime->getUnitCode()->translateTo('cs', $durationTime->getValue());
 $durationResult = ($duration->getValue() >= 0 ? '+' : '') . "{$duration->getValue()} ({$durationTime->getValue()} {$durationUnitInCzech})";
 $resultParts[] = <<<HTML
     doba trvání: <strong>{$durationResult}</strong>
 HTML;
-$radius = $selectedFormula->getCurrentRadius();
+$radius = $currentFormula->getCurrentRadius();
 if ($radius !== null) {
     $radiusNameInCzech = FormulaMutableSpellParameterCode::getIt(FormulaMutableSpellParameterCode::RADIUS)->translateTo('cs');
     $radiusDistance = $radius->getDistance(Tables::getIt()->getDistanceTable());
@@ -71,14 +71,14 @@ if ($radius !== null) {
           {$radiusNameInCzech}: <strong>{$radiusResult}</strong>
 HTML;
 }
-$power = $selectedFormula->getCurrentPower();
+$power = $currentFormula->getCurrentPower();
 $powerResult = ($power->getValue() >= 0 ? '+' : '') . $power->getValue();
 if ($power !== null) {
     $resultParts[] = <<<HTML
 síla: <strong>{$powerResult}</strong>
 HTML;
 }
-$epicenterShiftOfModified = $selectedFormula->getCurrentEpicenterShift();
+$epicenterShiftOfModified = $currentFormula->getCurrentEpicenterShift();
 if ($epicenterShiftOfModified !== null) {
     $epicenterShiftDistance = $epicenterShiftOfModified->getDistance(Tables::getIt()->getDistanceTable());
     $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
@@ -88,25 +88,25 @@ if ($epicenterShiftOfModified !== null) {
 posun transpozicí: <strong>{$epicenterShiftResult}</strong>
 HTML;
 }
-$detailLevel = $selectedFormula->getCurrentDetailLevel();
+$detailLevel = $currentFormula->getCurrentDetailLevel();
 if ($detailLevel !== null) {
     $resultParts[] = <<<HTML
 detailnost: <strong>{$controller->formatNumber($detailLevel)}</strong>
 HTML;
 }
-$sizeChange = $selectedFormula->getCurrentSizeChange();
+$sizeChange = $currentFormula->getCurrentSizeChange();
 if ($sizeChange !== null) {
     $resultParts[] = <<<HTML
 změna velikosti: <strong>{$controller->formatNumber($sizeChange)}</strong>
 HTML;
 }
-$brightness = $selectedFormula->getCurrentBrightness();
+$brightness = $currentFormula->getCurrentBrightness();
 if ($brightness !== null) {
     $resultParts[] = <<<HTML
 jas: {$controller->formatNumber($brightness)}
 HTML;
 }
-$spellSpeed = $selectedFormula->getCurrentSpellSpeed();
+$spellSpeed = $currentFormula->getCurrentSpellSpeed();
 if ($spellSpeed !== null) {
     $speed = $spellSpeed->getSpeed(Tables::getIt()->getSpeedTable());
     $spellSpeedUnitInCzech = $speed->getUnitCode()->translateTo('cs', $speed->getValue());
@@ -114,7 +114,7 @@ if ($spellSpeed !== null) {
 rychlost: {$controller->formatNumber($spellSpeed)} ({$speed->getValue()} {$spellSpeedUnitInCzech})
 HTML;
 }
-$attack = $selectedFormula->getCurrentAttack();
+$attack = $currentFormula->getCurrentAttack();
 if ($attack !== null) {
     $resultParts[] = <<<HTML
 útočnost: {$controller->formatNumber($attack)}

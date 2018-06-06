@@ -2,13 +2,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.0/phpunit.xsd"
         bootstrap="./DrdPlus/Tests/tests_bootstrap.php"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        stopOnFailure="false"
-        processIsolation="false"
-        backupGlobals="false"
         colors="true"
+        processIsolation="true"
 >
     <testsuites>
         <testsuite name="all">
@@ -16,7 +11,7 @@
         </testsuite>
     </testsuites>
     <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
+        <whitelist>
             <directory>./DrdPlus</directory>
             <exclude>
                 <directory>./DrdPlus/Tests</directory>

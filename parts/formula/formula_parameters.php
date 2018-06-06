@@ -1,11 +1,6 @@
 <?php
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
-use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Spells\FormulasTable;
-
-/** @var FormulaCode $selectedFormulaCode */
-/** @var FormulasTable $formulasTable */
 /** @var Controller $controller */
 
 ?>

@@ -2,7 +2,7 @@
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
-use DrdPlus\Tables\Measurements\Distance\DistanceTable;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
 use DrdPlus\Theurgist\Codes\ModifierCode;
 use DrdPlus\Theurgist\Codes\SpellTraitCode;
@@ -15,7 +15,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
 use Granam\Number\NumberInterface;
 
-class Controller extends \DrdPlus\Calculator\Skeleton\Controller
+class Controller extends \DrdPlus\CalculatorSkeleton\Controller
 {
 
     public const FORMULA = 'formula';
@@ -50,20 +50,66 @@ class Controller extends \DrdPlus\Calculator\Skeleton\Controller
      * @param FormulasTable $formulasTable
      * @param ModifiersTable $modifiersTable
      * @param SpellTraitsTable $spellTraitsTable
-     * @param DistanceTable $distanceTable
+     * @param Tables $tables
+     * @param string $sourceCodeUrl
+     * @param string $documentRoot
+     * @param string $vendorRoot
+     * @param string $partsRoot
+     * @param string $genericPartsRoot
+     * @param int $cookiesTtl
+     * @param array $selectedValues
      */
     public function __construct(
         FormulasTable $formulasTable,
         ModifiersTable $modifiersTable,
         SpellTraitsTable $spellTraitsTable,
-        DistanceTable $distanceTable
+        Tables $tables,
+        string $sourceCodeUrl,
+        string $documentRoot,
+        string $vendorRoot,
+        string $partsRoot = null,
+        string $genericPartsRoot = null,
+        int $cookiesTtl = null,
+        array $selectedValues = null
     )
     {
         $this->formulasTable = $formulasTable;
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
-        $this->distanceTable = $distanceTable;
-        parent::__construct('theurgist' /* cookies postfix */);
+        $this->distanceTable = $tables->getDistanceTable();
+        parent::__construct($sourceCodeUrl, 'theurgist' /* cookies postfix */, $documentRoot, $vendorRoot);
+    }
+
+    /**
+     * @return BaseOfWoundsTable
+     */
+    public function getDistanceTable(): BaseOfWoundsTable
+    {
+        return $this->distanceTable;
+    }
+
+    /**
+     * @return FormulasTable
+     */
+    public function getFormulasTable(): FormulasTable
+    {
+        return $this->formulasTable;
+    }
+
+    /**
+     * @return ModifiersTable
+     */
+    public function getModifiersTable(): ModifiersTable
+    {
+        return $this->modifiersTable;
+    }
+
+    /**
+     * @return SpellTraitsTable
+     */
+    public function getSpellTraitsTable(): SpellTraitsTable
+    {
+        return $this->spellTraitsTable;
     }
 
     /**

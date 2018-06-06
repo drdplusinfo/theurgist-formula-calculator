@@ -1,6 +1,6 @@
-/vendor/
-/.idea/
-/phpunit_log
 /css/generic
 /js/generic
 /images/generic
+/vendor/
+/.idea/
+/phpunit_log

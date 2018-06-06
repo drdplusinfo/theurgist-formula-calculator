@@ -2,13 +2,10 @@
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
-use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Spells\FormulasTable;
 
-/** @var FormulaCode $selectedFormulaCode */
-/** @var FormulasTable $formulasTable */
+/** @var Controller $controller */
 
-$epicenterShift = $formulasTable->getEpicenterShift($selectedFormulaCode);
+$epicenterShift = $controller->getFormulasTable()->getEpicenterShift($controller->getCurrentFormula()->getFormulaCode());
 if ($epicenterShift === null) {
     return;
 }

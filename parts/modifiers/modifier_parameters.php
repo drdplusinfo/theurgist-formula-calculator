@@ -65,7 +65,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
                         <option value="<?= $optionParameterValue ?>"
                                 <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
                             <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
-                            if (array_key_exists($possibleParameterName, $measurementSizes)) {
+                            if (\array_key_exists($possibleParameterName, $measurementSizes)) {
                                 $measurementSize = $measurementSizes[$possibleParameterName];
                                 $parameterValueDescription .= ' (' . $measurementSize($parameter) . ')';
                             }

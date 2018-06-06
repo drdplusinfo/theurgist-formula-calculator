@@ -16,17 +16,31 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "phpunit/phpunit": "~6.0",
+    "phpunit/phpunit": "~7.0",
     "mockery/mockery": "~1.0",
-    "granam/exceptions-hierarchy": "~4.0"
+    "granam/exceptions-hierarchy": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
+    "pre-update-cmd": [
+      "if [ -d ./css/generic ]; then cd ./css/generic && git checkout *.css; fi"
+    ],
+    "pre-install-cmd": [
+      "if [ -d ./css/generic ]; then cd ./css/generic && git checkout *.css; fi"
+    ],
     "pre-autoload-dump": [
-      "rm -fr ./css/generic && ln -s ../vendor/drd-plus/calculator-skeleton/css/generic ./css/generic",
-      "rm -fr ./js/generic && ln -s ../vendor/drd-plus/calculator-skeleton/js/generic ./js/generic",
-      "rm -fr ./images/generic && ln -s ../vendor/drd-plus/calculator-skeleton/images/generic ./images/generic"
+      "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drd-plus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/",
+      "rm -f ./css/generic && ln -s ../vendor/drd-plus/calculator-skeleton/css/generic ./css/",
+      "rm -f ./js/generic && ln -s ../vendor/drd-plus/calculator-skeleton/js/generic ./js/",
+      "rm -f ./images/generic && ln -s ../vendor/drd-plus/calculator-skeleton/images/generic ./images/",
+      "find ./cache -mindepth 2 -type f -exec rm {} +"
+    ],
+    "post-update-cmd": [
+      "php ./vendor/bin/assets --dir=css"
+    ],
+    "post-install-cmd": [
+      "php ./vendor/bin/assets --dir=css"
     ]
   }
 }
