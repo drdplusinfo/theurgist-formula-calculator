@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 
 $formulaSpellTraitCodes = $controller->getFormulasTable()->getSpellTraitCodes($controller->getCurrentFormula()->getFormulaCode());
 if (\count($formulaSpellTraitCodes) > 0) {

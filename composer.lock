@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75dfc39b758ffe4b1af3bebf95d7ee3c",
+    "hash": "dec849c57f318d078fdc5dea14a395f1",
     "content-hash": "f8412f230a0b57bcfe4cc11be0b461a8",
     "packages": [
         {
@@ -777,12 +777,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-calculator-skeleton.git",
-                "reference": "565098fb42b4d2d1d6f29a1ad9d248d1506c6396"
+                "reference": "555301c0883f0de22a3d2df7031fb3f685e8a95c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-calculator-skeleton/zipball/565098fb42b4d2d1d6f29a1ad9d248d1506c6396",
-                "reference": "565098fb42b4d2d1d6f29a1ad9d248d1506c6396",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-calculator-skeleton/zipball/555301c0883f0de22a3d2df7031fb3f685e8a95c",
+                "reference": "555301c0883f0de22a3d2df7031fb3f685e8a95c",
                 "shasum": ""
             },
             "require": {
@@ -810,7 +810,7 @@
                 "MIT"
             ],
             "description": "Style and functionality helper of a DrD+ calculator",
-            "time": "2018-06-06 03:56:22"
+            "time": "2018-06-13 14:56:49"
         },
         {
             "name": "drd-plus/codes",
@@ -915,12 +915,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-frontend-skeleton.git",
-                "reference": "fa2b9b56e6064c3ba64be22c69d2a00d45fffaeb"
+                "reference": "3badfa61814a34177362d6c97f278f3e4210fe7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-frontend-skeleton/zipball/fa2b9b56e6064c3ba64be22c69d2a00d45fffaeb",
-                "reference": "fa2b9b56e6064c3ba64be22c69d2a00d45fffaeb",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-frontend-skeleton/zipball/3badfa61814a34177362d6c97f278f3e4210fe7a",
+                "reference": "3badfa61814a34177362d6c97f278f3e4210fe7a",
                 "shasum": ""
             },
             "require": {
@@ -934,6 +934,7 @@
                 "tracy/tracy": "^2.4"
             },
             "require-dev": {
+                "mockery/mockery": "~1.0",
                 "phpunit/phpunit": "~7.0",
                 "roave/security-advisories": "dev-master"
             },
@@ -960,7 +961,7 @@
                 "pages",
                 "view"
             ],
-            "time": "2018-06-04 11:47:31"
+            "time": "2018-06-13 14:20:25"
         },
         {
             "name": "drd-plus/properties",
@@ -1861,12 +1862,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4d93302eb93402083f5abe72002fe8dc35e12dae"
+                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4d93302eb93402083f5abe72002fe8dc35e12dae",
-                "reference": "4d93302eb93402083f5abe72002fe8dc35e12dae",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
+                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
                 "shasum": ""
             },
             "conflict": {
@@ -1934,6 +1935,7 @@
                 "propel/propel1": ">=1,<=1.7.1",
                 "pusher/pusher-php-server": "<2.2.1",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
+                "sensiolabs/connect": "<4.2.3",
                 "shopware/shopware": "<5.3.7",
                 "silverstripe/cms": ">=3,<=3.0.11|>=3.1,<3.1.11",
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
@@ -1956,7 +1958,7 @@
                 "symfony/routing": ">=2,<2.0.19",
                 "symfony/security": ">=2,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-bundle": ">=2,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
-                "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
+                "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8,<2.8.37|>=3,<3.3.17|>=3.4,<3.4.7|>=4,<4.0.7",
                 "symfony/security-csrf": ">=2.4,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-guard": ">=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
@@ -2019,7 +2021,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-05-30 02:58:56"
+            "time": "2018-06-08 09:55:50"
         },
         {
             "name": "symfony/css-selector",
@@ -2311,16 +2313,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
                 "shasum": ""
             },
             "require": {
@@ -2355,7 +2357,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-05-29 17:25:09"
+            "time": "2018-06-11 23:09:50"
         },
         {
             "name": "phar-io/manifest",
@@ -2739,16 +2741,16 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "e20525b0c2945c7c317fff95660698cb3d2a53bc"
+                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/e20525b0c2945c7c317fff95660698cb3d2a53bc",
-                "reference": "e20525b0c2945c7c317fff95660698cb3d2a53bc",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/cecbc684605bb0cc288828eb5d65d93d5c676d3c",
+                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c",
                 "shasum": ""
             },
             "require": {
@@ -2782,7 +2784,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2018-05-28 12:13:49"
+            "time": "2018-06-11 11:44:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -3118,16 +3120,16 @@
         },
         {
             "name": "sebastian/diff",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/diff.git",
-                "reference": "e09160918c66281713f1c324c1f4c4c3037ba1e8"
+                "reference": "366541b989927187c4ca70490a35615d3fef2dce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/e09160918c66281713f1c324c1f4c4c3037ba1e8",
-                "reference": "e09160918c66281713f1c324c1f4c4c3037ba1e8",
+                "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/366541b989927187c4ca70490a35615d3fef2dce",
+                "reference": "366541b989927187c4ca70490a35615d3fef2dce",
                 "shasum": ""
             },
             "require": {
@@ -3170,7 +3172,7 @@
                 "unidiff",
                 "unified diff"
             ],
-            "time": "2018-02-01 13:45:15"
+            "time": "2018-06-10 07:54:39"
         },
         {
             "name": "sebastian/environment",

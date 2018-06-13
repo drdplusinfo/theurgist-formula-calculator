@@ -3,7 +3,6 @@
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.0/phpunit.xsd"
         bootstrap="./DrdPlus/Tests/tests_bootstrap.php"
         colors="true"
-        processIsolation="true"
 >
     <testsuites>
         <testsuite name="all">

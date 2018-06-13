@@ -6,7 +6,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\SpellParameters\RealmsAffection;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 $currentFormula = $controller->getCurrentFormula();
 
 $resultParts = [];

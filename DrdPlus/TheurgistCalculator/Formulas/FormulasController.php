@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Tables\Tables;
@@ -15,7 +15,7 @@ use DrdPlus\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
 use Granam\Number\NumberInterface;
 
-class Controller extends \DrdPlus\CalculatorSkeleton\Controller
+class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorController
 {
 
     public const FORMULA = 'formula';

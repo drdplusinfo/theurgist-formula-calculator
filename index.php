@@ -21,7 +21,7 @@ $formulasTable = new FormulasTable();
 $modifiersTable = new ModifiersTable();
 $spellTraitsTable = new SpellTraitsTable();
 /** @noinspection PhpUnusedLocalVariableInspection */
-$controller = $controller ?? new Controller(
+$controller = $controller ?? new FormulasController(
         $formulasTable,
         $modifiersTable,
         $spellTraitsTable,

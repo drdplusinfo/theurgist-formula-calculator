@@ -3,7 +3,7 @@ namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Theurgist\Codes\ModifierCode;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 $selectedModifiersTree = $controller->getCurrentModifiersTree();
 $possibleModifierCombinations = $controller->getPossibleModifierCombinations();
 $selectedModifiersSpellTraitValues = $controller->getCurrentModifiersSpellTraitValues();

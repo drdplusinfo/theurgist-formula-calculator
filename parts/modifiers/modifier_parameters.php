@@ -13,7 +13,7 @@ use Granam\String\StringTools;
 
 /** @var ModifierCode $possibleModifier */
 /** @var ModifiersTable $modifiersTable */
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 /** @var int $treeLevel */
 /** @var string $possibleModifierValue */
 /** @var string $modifiersIndex */

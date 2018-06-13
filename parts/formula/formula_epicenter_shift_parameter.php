@@ -3,7 +3,7 @@ namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Tables\Tables;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 
 $epicenterShift = $controller->getFormulasTable()->getEpicenterShift($controller->getCurrentFormula()->getFormulaCode());
 if ($epicenterShift === null) {

@@ -5,7 +5,7 @@ use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 
 $formulasTable = $controller->getFormulasTable();
 $currentFormula = $controller->getCurrentFormula();

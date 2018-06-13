@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Calculator\Theurgist\Formulas;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 
 ?>
 <div class="block">

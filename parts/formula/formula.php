@@ -3,7 +3,7 @@ namespace DrdPlus\Calculator\Theurgist\Formulas;
 
 use DrdPlus\Theurgist\Codes\FormulaCode;
 
-/** @var Controller $controller */
+/** @var FormulasController $controller */
 $currentFormula = $controller->getCurrentFormula();
 $currentFormulaCode = $currentFormula->getFormulaCode();
 ?>
