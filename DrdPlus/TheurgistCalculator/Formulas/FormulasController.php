@@ -1,6 +1,7 @@
 <?php
 namespace DrdPlus\TheurgistCalculator\Formulas;
 
+use DrdPlus\FrontendSkeleton\HtmlHelper;
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\FormulaCode;
@@ -77,7 +78,13 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
         $this->distanceTable = $tables->getDistanceTable();
-        parent::__construct($sourceCodeUrl, 'theurgist' /* cookies postfix */, $documentRoot, $vendorRoot);
+        parent::__construct(
+            HtmlHelper::createFromGlobals($documentRoot),
+            $sourceCodeUrl,
+            'theurgist' /* cookies postfix */,
+            $documentRoot,
+            $vendorRoot
+        );
     }
 
     /**

@@ -5,4 +5,5 @@ $testsConfiguration->disableHasCustomBodyContent();
 $testsConfiguration->disableHasTables();
 $testsConfiguration->disableHasNotes();
 $testsConfiguration->disableHasLinksToAltar();
-$testsConfiguration->setExpectedPageTitle('Formule pro DrD+ theurga');
+$testsConfiguration->setExpectedWebName('DrD+ formule pro theurga');
+$testsConfiguration->setExpectedPageTitle('DrD+ formule pro theurga');
