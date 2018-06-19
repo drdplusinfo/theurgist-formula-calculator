@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Theurgist\Codes\FormulaMutableSpellParameterCode;
 use DrdPlus\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
@@ -38,7 +38,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName) {
         $previousOptionParameterValue = null;
         $selectedParameterValue = $controller->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
         ?>
-      <select name="<?= $controller::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
+      <select name="<?= FormulasController::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
           <?php
           do {
               if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>

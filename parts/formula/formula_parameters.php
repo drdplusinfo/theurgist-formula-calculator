@@ -1,11 +1,11 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 /** @var FormulasController $controller */
 
 ?>
 <div class="block">
-    <span class="panel"><strong>Parametry</strong>:</span>
+  <span class="panel"><strong>Parametry</strong>:</span>
     <?php
     include __DIR__ . '/formula_parameters_without_unit.php';
     include __DIR__ . '/formula_parameters_with_unit.php';

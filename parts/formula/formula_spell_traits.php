@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 /** @var FormulasController $controller */
 
@@ -14,7 +14,7 @@ if (\count($formulaSpellTraitCodes) > 0) {
         <?php foreach ($formulaSpellTraitCodes as $formulaSpellTraitCode) { ?>
           <div class="spell-trait panel">
             <label>
-              <input type="checkbox" name="<?= $controller::FORMULA_SPELL_TRAITS ?>[]"
+              <input type="checkbox" name="<?= FormulasController::FORMULA_SPELL_TRAITS ?>[]"
                      value="<?= $formulaSpellTraitCode ?>"
                      <?php if (\in_array($formulaSpellTraitCode->getValue(), $selectedFormulaSpellTraitValues, true)) : ?>checked<?php endif ?>>
                 <?= $formulaSpellTraitCode->translateTo('cs') ?>

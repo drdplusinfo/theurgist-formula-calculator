@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Codes\Units\TimeUnitCode;
 use DrdPlus\Tables\Tables;

@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Theurgist\Codes\ModifierCode;
@@ -46,40 +46,40 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
     /** @var CastingParameter $parameter */
     $parameterCode = ModifierMutableSpellParameterCode::getIt($possibleParameterName);
     ?>
-    <div class="parameter">
-        <label><?= $parameterCode->translateTo('cs') ?>:
-            <?php
-            $parameterAddition = $parameter->getAdditionByDifficulty();
-            $additionStep = $parameterAddition->getAdditionStep();
-            $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
-            $optionParameterChange = 0;
-            $previousOptionParameterValue = null;
-            $selectedParameterValue = $controller->getCurrentModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
-            ?>
-            <select name="<?= $controller::MODIFIER_PARAMETERS ?>[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
-                    <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
-                <?php
-                do {
-                    $optionParameterValue = $parameter->getValue();
-                    if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>
-                        <option value="<?= $optionParameterValue ?>"
-                                <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
-                            <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
-                            if (\array_key_exists($possibleParameterName, $measurementSizes)) {
-                                $measurementSize = $measurementSizes[$possibleParameterName];
-                                $parameterValueDescription .= ' (' . $measurementSize($parameter) . ')';
-                            }
-                            echo "$parameterValueDescription [{$parameterDifficultyChange}]"; ?>
-                        </option>
-                    <?php }
-                    $previousOptionParameterValue = $optionParameterValue;
-                    $optionParameterChange++;
-                    /** @noinspection PhpUnhandledExceptionInspection */
-                    $parameter = $parameter->getWithAddition($optionParameterChange);
-                    $parameterAddition = $parameter->getAdditionByDifficulty();
-                    $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
-                } while ($additionStep > 0 /* at least once even on no addition possible */ && $parameterDifficultyChange < 21) ?>
-            </select>
-        </label>
-    </div>
+  <div class="parameter">
+    <label><?= $parameterCode->translateTo('cs') ?>:
+        <?php
+        $parameterAddition = $parameter->getAdditionByDifficulty();
+        $additionStep = $parameterAddition->getAdditionStep();
+        $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
+        $optionParameterChange = 0;
+        $previousOptionParameterValue = null;
+        $selectedParameterValue = $controller->getCurrentModifiersSpellParametersTree()[$treeLevel][$possibleModifierValue][$possibleParameterName] ?? false;
+        ?>
+      <select name="<?= FormulasController::MODIFIER_PARAMETERS ?>[<?= $treeLevel ?>][<?= $possibleModifierValue ?>][<?= $possibleParameterName ?>]"
+              <?php if (!$modifierIsSelected) { ?>disabled<?php } ?>>
+          <?php
+          do {
+              $optionParameterValue = $parameter->getValue();
+              if ($previousOptionParameterValue === null || $previousOptionParameterValue < $optionParameterValue) { ?>
+                <option value="<?= $optionParameterValue ?>"
+                        <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
+                    <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
+                    if (\array_key_exists($possibleParameterName, $measurementSizes)) {
+                        $measurementSize = $measurementSizes[$possibleParameterName];
+                        $parameterValueDescription .= ' (' . $measurementSize($parameter) . ')';
+                    }
+                    echo "$parameterValueDescription [{$parameterDifficultyChange}]"; ?>
+                </option>
+              <?php }
+              $previousOptionParameterValue = $optionParameterValue;
+              $optionParameterChange++;
+              /** @noinspection PhpUnhandledExceptionInspection */
+              $parameter = $parameter->getWithAddition($optionParameterChange);
+              $parameterAddition = $parameter->getAdditionByDifficulty();
+              $parameterDifficultyChange = $parameterAddition->getCurrentDifficultyIncrement();
+          } while ($additionStep > 0 /* at least once even on no addition possible */ && $parameterDifficultyChange < 21) ?>
+      </select>
+    </label>
+  </div>
 <?php } ?>

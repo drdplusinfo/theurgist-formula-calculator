@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Tables\Tables;
 
@@ -14,7 +14,7 @@ $epicenterShiftDistance = $epicenterShift->getDistance(Tables::getIt()->getDista
 $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
 ?>
 <div class="parameter panel">
-    posun transpozicí:
+  posun transpozicí:
     <?= ($epicenterShift->getValue() >= 0 ? '+' : '') .
     "{$epicenterShift->getValue()} ({$epicenterShiftDistance->getValue()} {$epicenterShiftUnitInCzech})" ?>
 </div>

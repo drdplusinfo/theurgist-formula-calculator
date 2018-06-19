@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Theurgist\Codes\ModifierCode;
 
@@ -43,12 +43,12 @@ $spellTraitsTable = $controller->getSpellTraitsTable();
                   <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>
                     ]</span>
                   <span class="forms" title="Forma">
-                                <?php
-                                $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
-                                if (\count($forms) > 0) {
-                                    echo '(' . \implode(', ', $forms) . ')';
-                                } ?>
-                            </span>
+                      <?php
+                      $forms = $controller->getModifierFormNames($possibleModifier, 'cs');
+                      if (\count($forms) > 0) {
+                          echo '(' . \implode(', ', $forms) . ')';
+                      } ?>
+                  </span>
                 </label>
               </div>
                 <?php

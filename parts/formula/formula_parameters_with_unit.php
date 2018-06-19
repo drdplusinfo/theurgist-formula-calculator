@@ -1,5 +1,5 @@
 <?php
-namespace DrdPlus\Calculator\Theurgist\Formulas;
+namespace DrdPlus\TheurgistCalculator\Formulas;
 
 use DrdPlus\Properties\Derived\Speed;
 use DrdPlus\Tables\Measurements\Distance\Distance;
@@ -49,7 +49,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
         $previousOptionParameterValueWithUnit = null;
         $selectedParameterValue = $controller->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
         ?>
-      <select name="<?= $controller::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
+      <select name="<?= FormulasController::FORMULA_PARAMETERS ?>[<?= $parameterName ?>]">
           <?php
           do {
               $optionParameterValue = $parameter->getValue(); // from the lowest
