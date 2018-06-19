@@ -1,5 +1,6 @@
-.background {
+.background-image {
     background-position: center;
+    background-size: contain;
 }
 
 #formula {
