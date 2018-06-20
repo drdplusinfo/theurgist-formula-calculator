@@ -38,7 +38,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
     }
     $parameterCode = FormulaMutableSpellParameterCode::getIt($parameterName);
     ?>
-  <div class="parameter panel">
+  <div class="col">
     <label><?= $parameterCode->translateTo('cs') ?>:
         <?php
         $parameterAdditionByDifficulty = $parameter->getAdditionByDifficulty();

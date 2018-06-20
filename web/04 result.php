@@ -72,8 +72,8 @@ if ($radius !== null) {
 HTML;
 }
 $power = $currentFormula->getCurrentPower();
-$powerResult = ($power->getValue() >= 0 ? '+' : '') . $power->getValue();
 if ($power !== null) {
+    $powerResult = ($power->getValue() >= 0 ? '+' : '') . $power->getValue();
     $resultParts[] = <<<HTML
 síla: <strong>{$powerResult}</strong>
 HTML;
@@ -120,21 +120,19 @@ if ($attack !== null) {
 útočnost: {$controller->formatNumber($attack)}
 HTML;
 } ?>
-<div id="result">
-  <div class="row">
-      <?php
-      $columnCount = 0;
-      foreach ($resultParts as $resultPart) {
-          if ($columnCount > 0 && $columnCount % 3 === 0) { ?>
-            <div class="row">
-          <?php } ?>
-        <div class="col-sm-4"><?= $resultPart ?></div>
-          <?php if (($columnCount + 1) % 3 === 0) { ?>
-          </div>
-          <?php }
-          $columnCount++;
-      }
-      unset($columnCount);
-      ?>
-  </div>
+<div id="result" class="row">
+    <?php
+    $columnCount = 0;
+    foreach ($resultParts as $resultPart) {
+        if ($columnCount > 0 && $columnCount % 3 === 0) { ?>
+          <div class="row">
+        <?php } ?>
+      <div class="col-sm-4"><?= $resultPart ?></div>
+        <?php if (($columnCount + 1) % 3 === 0) { ?>
+        </div>
+        <?php }
+        $columnCount++;
+    }
+    unset($columnCount);
+    ?>
 </div>

@@ -8,11 +8,11 @@ if (\count($formulaSpellTraitCodes) > 0) {
     $selectedFormulaSpellTraitValues = $controller->getCurrentFormulaSpellTraitValues();
     $spellTraitsTable = $controller->getSpellTraitsTable();
     ?>
-  <div class="block">
-    <div class="panel">
-      <span class="panel"><strong>Rysy</strong>:</span>
+  <div class="row">
+    <div class="col">
+      <strong>Rysy</strong>:
         <?php foreach ($formulaSpellTraitCodes as $formulaSpellTraitCode) { ?>
-          <div class="spell-trait panel">
+          <div class="spell-trait">
             <label>
               <input type="checkbox" name="<?= FormulasController::FORMULA_SPELL_TRAITS ?>[]"
                      value="<?= $formulaSpellTraitCode ?>"

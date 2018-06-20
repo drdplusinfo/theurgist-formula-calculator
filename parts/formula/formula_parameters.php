@@ -4,8 +4,10 @@ namespace DrdPlus\TheurgistCalculator\Formulas;
 /** @var FormulasController $controller */
 
 ?>
-<div class="block">
-  <span class="panel"><strong>Parametry</strong>:</span>
+<div class="row">
+  <span class="col"><strong>Parametry</strong>:</span>
+</div>
+<div class="row">
     <?php
     include __DIR__ . '/formula_parameters_without_unit.php';
     include __DIR__ . '/formula_parameters_with_unit.php';

@@ -7,28 +7,30 @@ use DrdPlus\Theurgist\Codes\FormulaCode;
 $currentFormula = $controller->getCurrentFormula();
 $currentFormulaCode = $currentFormula->getFormulaCode();
 ?>
-  <div class="block">
-    <div class="panel">
-            <span class="panel">
-                <label><strong>Formule</strong>:
-                    <select id="formula" name="<?= $controller::FORMULA ?>">
-                        <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
-                          <option value="<?= $formulaValue ?>"
-                                  <?php if ($formulaValue === $currentFormulaCode->getValue()){ ?>selected<?php } ?>>
-                                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                </label>
-                <button type="submit">Vybrat</button>
-                <?php $formulaDifficulty = $controller->getFormulasTable()->getFormulaDifficulty($currentFormulaCode); ?>
-            </span>
-      <span class="panel">[<?= $formulaDifficulty->getValue() ?>]</span>
+  <div class="row">
+    <div class="col">
+      <label for="formula"><strong>Formule</strong>:
+      </label>
     </div>
-    <span class="panel forms" title="Forma">
+  </div>
+  <div class="row">
+    <div class="col">
+      <select id="formula" name="<?= $controller::FORMULA ?>">
+          <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
+            <option value="<?= $formulaValue ?>"
+                    <?php if ($formulaValue === $currentFormulaCode->getValue()){ ?>selected<?php } ?>>
+                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
+            </option>
+          <?php } ?>
+      </select>
+      <button type="submit">Vybrat</button>
+        <?php $formulaDifficulty = $controller->getFormulasTable()->getFormulaDifficulty($currentFormulaCode); ?>
+      <span>[<?= $formulaDifficulty->getValue() ?>]</span>
+      <span class="forms" title="Forma">
             <?php $formulaForms = implode(', ', $controller->getFormulaFormNames($currentFormulaCode, 'cs')); ?>
-      (<?= $formulaForms ?>)
-        </span>
+        (<?= $formulaForms ?>)
+    </span>
+    </div>
   </div>
     <?php
 require __DIR__ . '/formula_parameters.php';

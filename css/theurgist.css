@@ -3,6 +3,14 @@
     background-size: contain;
 }
 
+.row {
+    padding-bottom: 0.3rem;
+}
+
+.row label {
+    margin-bottom: 0;
+}
+
 #formula {
     margin-right: 0.5em;
 }
@@ -22,8 +30,6 @@
 }
 
 .spell-trait {
-    margin-left: 1em;
-    min-width: 8em;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     font-style: normal;
 }
