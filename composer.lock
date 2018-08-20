@@ -491,12 +491,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/doctrineum-boolean.git",
-                "reference": "6473dd57d8d58e99bccddb5a820540778a959e8f"
+                "reference": "0a94ff04cfa58d620609f09075d6f88fc54a72d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-boolean/zipball/6473dd57d8d58e99bccddb5a820540778a959e8f",
-                "reference": "6473dd57d8d58e99bccddb5a820540778a959e8f",
+                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-boolean/zipball/0a94ff04cfa58d620609f09075d6f88fc54a72d0",
+                "reference": "0a94ff04cfa58d620609f09075d6f88fc54a72d0",
                 "shasum": ""
             },
             "require": {
@@ -507,8 +507,9 @@
             },
             "require-dev": {
                 "granam/exceptions-hierarchy": "~4.0",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~6.0"
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~7.0",
+                "roave/security-advisories": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -529,7 +530,7 @@
                 }
             ],
             "description": "Enumeration type for Doctrine - booleans only",
-            "time": "2017-09-24 14:55:40"
+            "time": "2018-06-20 17:21:40"
         },
         {
             "name": "doctrineum/float",
@@ -582,12 +583,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/doctrineum-integer.git",
-                "reference": "2d5fa0892d8eb0a3de8811eae8b2b01e8c9916c6"
+                "reference": "08e866ba7881e63017a57cdf360cc5284d3f7b7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-integer/zipball/2d5fa0892d8eb0a3de8811eae8b2b01e8c9916c6",
-                "reference": "2d5fa0892d8eb0a3de8811eae8b2b01e8c9916c6",
+                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-integer/zipball/08e866ba7881e63017a57cdf360cc5284d3f7b7f",
+                "reference": "08e866ba7881e63017a57cdf360cc5284d3f7b7f",
                 "shasum": ""
             },
             "require": {
@@ -598,8 +599,9 @@
             },
             "require-dev": {
                 "granam/exceptions-hierarchy": "~4.0",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~6.0"
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~7.0",
+                "roave/security-advisories": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -620,7 +622,7 @@
                 }
             ],
             "description": "Enumeration type for Doctrine - integers only",
-            "time": "2017-09-24 14:52:56"
+            "time": "2018-06-20 15:24:41"
         },
         {
             "name": "doctrineum/scalar",
@@ -628,12 +630,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/doctrineum-scalar.git",
-                "reference": "1158384533165b092fa5f91e7e691d24f90ab999"
+                "reference": "bc04364afee367e6dc7712eedba6e0e6a989260e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-scalar/zipball/1158384533165b092fa5f91e7e691d24f90ab999",
-                "reference": "1158384533165b092fa5f91e7e691d24f90ab999",
+                "url": "https://api.github.com/repos/jaroslavtyc/doctrineum-scalar/zipball/bc04364afee367e6dc7712eedba6e0e6a989260e",
+                "reference": "bc04364afee367e6dc7712eedba6e0e6a989260e",
                 "shasum": ""
             },
             "require": {
@@ -646,8 +648,8 @@
             },
             "require-dev": {
                 "granam/exceptions-hierarchy": "~4.0",
-                "mockery/mockery": "1.0.x-dev",
-                "phpunit/phpunit": "~6.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~7.0",
                 "roave/security-advisories": "dev-master"
             },
             "type": "library",
@@ -676,7 +678,7 @@
                 "sub-type",
                 "value-dependent enum"
             ],
-            "time": "2018-04-25 13:30:36"
+            "time": "2018-06-20 15:29:04"
         },
         {
             "name": "doctrineum/self-registering-type",
@@ -915,12 +917,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-frontend-skeleton.git",
-                "reference": "770e275785cb10bcb78b72cc11564155cb53d315"
+                "reference": "f3c6904c581861bc78740de77a0ec36905d74912"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-frontend-skeleton/zipball/770e275785cb10bcb78b72cc11564155cb53d315",
-                "reference": "770e275785cb10bcb78b72cc11564155cb53d315",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-frontend-skeleton/zipball/f3c6904c581861bc78740de77a0ec36905d74912",
+                "reference": "f3c6904c581861bc78740de77a0ec36905d74912",
                 "shasum": ""
             },
             "require": {
@@ -961,7 +963,7 @@
                 "pages",
                 "view"
             ],
-            "time": "2018-06-19 14:52:29"
+            "time": "2018-06-29 03:46:48"
         },
         {
             "name": "drd-plus/properties",
@@ -1013,12 +1015,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jaroslavtyc/drd-plus-tables.git",
-                "reference": "293d9bfb01fdfc5d2f777f8560a3013c9910d3e5"
+                "reference": "2633f981d705e0c83d11d124be261b2c46bcb8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/293d9bfb01fdfc5d2f777f8560a3013c9910d3e5",
-                "reference": "293d9bfb01fdfc5d2f777f8560a3013c9910d3e5",
+                "url": "https://api.github.com/repos/jaroslavtyc/drd-plus-tables/zipball/2633f981d705e0c83d11d124be261b2c46bcb8f4",
+                "reference": "2633f981d705e0c83d11d124be261b2c46bcb8f4",
                 "shasum": ""
             },
             "require": {
@@ -1050,7 +1052,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2018-04-28 16:57:24"
+            "time": "2018-06-26 05:32:05"
         },
         {
             "name": "drd-plus/theurgist-codes",
@@ -2927,16 +2929,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.2.4",
+            "version": "7.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "00bc0b93f0ff4f557e9ea766557fde96da9a03dd"
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/00bc0b93f0ff4f557e9ea766557fde96da9a03dd",
-                "reference": "00bc0b93f0ff4f557e9ea766557fde96da9a03dd",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/400a3836ee549ae6f665323ac3f21e27eac7155f",
+                "reference": "400a3836ee549ae6f665323ac3f21e27eac7155f",
                 "shasum": ""
             },
             "require": {
@@ -2952,7 +2954,7 @@
                 "php": "^7.1",
                 "phpspec/prophecy": "^1.7",
                 "phpunit/php-code-coverage": "^6.0.7",
-                "phpunit/php-file-iterator": "^2.0",
+                "phpunit/php-file-iterator": "^2.0.1",
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^2.0",
                 "sebastian/comparator": "^3.0",
@@ -3007,7 +3009,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-06-05 03:40:05"
+            "time": "2018-06-21 13:13:39"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

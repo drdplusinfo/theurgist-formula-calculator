@@ -1,5 +1,5 @@
 {
-  "name": "drd-plus/theurgist-calculator",
+  "name": "drdplus/theurgist-calculator",
   "license": "MIT",
   "type": "project",
   "description": "Configurator of formulas for Drd+ theurgist",
@@ -11,8 +11,8 @@
   "require": {
     "php": ">=7.1",
     "granam/strict-object": "dev-master",
-    "drd-plus/calculator-skeleton": "dev-master",
-    "drd-plus/theurgist-spells": "dev-master"
+    "drdplus/calculator-skeleton": "dev-master",
+    "drdplus/theurgist-spells": "dev-master"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
@@ -24,10 +24,10 @@
   "prefer-stable": true,
   "scripts": {
     "pre-autoload-dump": [
-      "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drd-plus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/",
-      "rm -fr ./css/generic && cp -r ./vendor/drd-plus/calculator-skeleton/css/generic ./css/",
-      "rm -f ./js/generic && ln -s ../vendor/drd-plus/calculator-skeleton/js/generic ./js/",
-      "rm -f ./images/generic && ln -s ../vendor/drd-plus/calculator-skeleton/images/generic ./images/",
+      "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drdplus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/",
+      "rm -fr ./css/generic && cp -r ./vendor/drdplus/calculator-skeleton/css/generic ./css/",
+      "rm -f ./js/generic && ln -s ../vendor/drdplus/calculator-skeleton/js/generic ./js/",
+      "rm -f ./images/generic && ln -s ../vendor/drdplus/calculator-skeleton/images/generic ./images/",
       "find ./cache -mindepth 2 -type f -exec rm {} +"
     ],
     "post-update-cmd": [
