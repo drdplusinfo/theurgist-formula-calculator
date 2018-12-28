@@ -1,0 +1,12 @@
+web:
+  last_stable_version: 'master'
+  protected_access: false
+  cookies_postfix: 'theurgist-calculator'
+  eshop_url: https://obchod.altar.cz/draci-doupe-a-jine-rpg-hry-draci-doupe-plus-c-1_7.html
+  menu_position_fixed: false
+  show_home_button: true
+  name: DrD+ formule pro theurga
+  title_smiley: ''
+  repository_url: web
+google:
+  analytics_id: UA-121206931-1

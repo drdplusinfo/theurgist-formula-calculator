@@ -1,9 +1,9 @@
 <?php
-namespace DrdPlus\Tests\Formulas\TheurgistCalculator;
+namespace DrdPlus\Tests\TheurgistCalculator\Formulas;
 
+use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tests\FrontendSkeleton\AbstractContentTest;
-use DrdPlus\Theurgist\Codes\ModifierCode;
+use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 use DrdPlus\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Theurgist\Spells\SpellTraitsTable;
@@ -52,13 +52,11 @@ class FormulasControllerTest extends AbstractContentTest
     private function createFormulasController(): FormulasController
     {
         return new FormulasController(
+            $this->getConfiguration(),
             new FormulasTable(),
             new ModifiersTable(),
             new SpellTraitsTable(),
-            Tables::getIt(),
-            'https://example.com',
-            $this->getDocumentRoot(),
-            $this->getVendorRoot()
+            Tables::getIt()
         );
     }
 }

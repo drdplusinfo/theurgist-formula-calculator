@@ -10,31 +10,19 @@
   },
   "require": {
     "php": ">=7.1",
-    "granam/strict-object": "dev-master",
-    "drdplus/calculator-skeleton": "dev-master",
-    "drdplus/theurgist-spells": "dev-master"
+    "drdplus/calculator-skeleton": "~1.0",
+    "drdplus/theurgist-spells": "~1.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
     "phpunit/phpunit": "~7.0",
-    "mockery/mockery": "~1.0",
-    "granam/exceptions-hierarchy": "dev-master"
+    "mockery/mockery": "~1.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
     "pre-autoload-dump": [
-      "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drdplus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/",
-      "rm -fr ./css/generic && cp -r ./vendor/drdplus/calculator-skeleton/css/generic ./css/",
-      "rm -f ./js/generic && ln -s ../vendor/drdplus/calculator-skeleton/js/generic ./js/",
-      "rm -f ./images/generic && ln -s ../vendor/drdplus/calculator-skeleton/images/generic ./images/",
-      "find ./cache -mindepth 2 -type f -exec rm {} +"
-    ],
-    "post-update-cmd": [
-      "php ./vendor/bin/assets --dir=css"
-    ],
-    "post-install-cmd": [
-      "php ./vendor/bin/assets --dir=css"
+      "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drdplus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/"
     ]
   }
 }

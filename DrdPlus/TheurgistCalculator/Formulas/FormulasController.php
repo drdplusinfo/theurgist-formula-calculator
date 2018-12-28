@@ -1,12 +1,12 @@
 <?php
 namespace DrdPlus\TheurgistCalculator\Formulas;
 
-use DrdPlus\FrontendSkeleton\HtmlHelper;
+use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
+use DrdPlus\Codes\Theurgist\FormulaCode;
+use DrdPlus\Codes\Theurgist\ModifierCode;
+use DrdPlus\Codes\Theurgist\SpellTraitCode;
 use DrdPlus\Tables\Measurements\BaseOfWounds\BaseOfWoundsTable;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Theurgist\Codes\FormulaCode;
-use DrdPlus\Theurgist\Codes\ModifierCode;
-use DrdPlus\Theurgist\Codes\SpellTraitCode;
 use DrdPlus\Theurgist\Spells\Formula;
 use DrdPlus\Theurgist\Spells\FormulasTable;
 use DrdPlus\Theurgist\Spells\Modifier;
@@ -47,81 +47,41 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
     /** @var array */
     private $selectedModifiersSpellParameters;
 
-    /**
-     * @param FormulasTable $formulasTable
-     * @param ModifiersTable $modifiersTable
-     * @param SpellTraitsTable $spellTraitsTable
-     * @param Tables $tables
-     * @param string $sourceCodeUrl
-     * @param string $documentRoot
-     * @param string $vendorRoot
-     * @param string $partsRoot
-     * @param string $genericPartsRoot
-     * @param int $cookiesTtl
-     * @param array $selectedValues
-     */
     public function __construct(
+        CalculatorServicesContainer $calculatorServicesContainer,
         FormulasTable $formulasTable,
         ModifiersTable $modifiersTable,
         SpellTraitsTable $spellTraitsTable,
-        Tables $tables,
-        string $sourceCodeUrl,
-        string $documentRoot,
-        string $vendorRoot,
-        string $partsRoot = null,
-        string $genericPartsRoot = null,
-        int $cookiesTtl = null,
-        array $selectedValues = null
+        Tables $tables
     )
     {
+        parent::__construct($calculatorServicesContainer);
         $this->formulasTable = $formulasTable;
         $this->modifiersTable = $modifiersTable;
         $this->spellTraitsTable = $spellTraitsTable;
         $this->distanceTable = $tables->getDistanceTable();
-        parent::__construct(
-            HtmlHelper::createFromGlobals($documentRoot),
-            $sourceCodeUrl,
-            'theurgist' /* cookies postfix */,
-            $documentRoot,
-            $vendorRoot
-        );
     }
 
-    /**
-     * @return BaseOfWoundsTable
-     */
     public function getDistanceTable(): BaseOfWoundsTable
     {
         return $this->distanceTable;
     }
 
-    /**
-     * @return FormulasTable
-     */
     public function getFormulasTable(): FormulasTable
     {
         return $this->formulasTable;
     }
 
-    /**
-     * @return ModifiersTable
-     */
     public function getModifiersTable(): ModifiersTable
     {
         return $this->modifiersTable;
     }
 
-    /**
-     * @return SpellTraitsTable
-     */
     public function getSpellTraitsTable(): SpellTraitsTable
     {
         return $this->spellTraitsTable;
     }
 
-    /**
-     * @return FormulaCode
-     */
     private function getCurrentFormulaCode(): FormulaCode
     {
         if ($this->selectedFormulaCode === null) {
@@ -169,7 +129,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
     {
         $formulaModifierCodesTree = [];
         /** @var array|ModifierCode[] $childModifiers */
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         foreach ($this->formulasTable->getModifierCodes($this->getCurrentFormulaCode()) as $modifierCode) {
             $formulaModifierCodesTree[$modifierCode->getValue()] = $modifierCode; // as a child modifier
         }
@@ -222,7 +181,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         foreach ($modifierValues as $modifierValue) {
             if (!\array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
-                /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
                 foreach ($this->modifiersTable->getChildModifiers($modifierCode) as $childModifier) {
                     // by-related-modifier-indexed flat array
                     $modifiers[$modifierValue][$childModifier->getValue()] = $childModifier;
@@ -263,9 +221,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         return $modifiers;
     }
 
-    /**
-     * @return string|null
-     */
     private function getPreviousFormulaValue(): ?string
     {
         return $this->getCurrentValues()->getCurrentValue(self::PREVIOUS_FORMULA);
@@ -308,7 +263,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         $this->selectedFormulaSpellParameters = [];
         /** @var array|int[] $selectedFormulaParameterValues */
         foreach ($selectedFormulaParameterValues as $formulaParameterName => $value) {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
         }
 
@@ -355,7 +309,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
                 $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf, $spellTraitsTrapsBranch[$index] ?? []);
                 continue;
             }
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $spellTraitsTree[$index] = new SpellTrait(
                 SpellTraitCode::getIt($spellTraitsLeaf),
                 $this->spellTraitsTable,
@@ -414,10 +367,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         );
     }
 
-    /**
-     * @param array $modifiersChain
-     * @return string
-     */
     public function createModifierInputIndex(array $modifiersChain): string
     {
         $wrapped = \array_map(
@@ -430,11 +379,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         return \implode($wrapped);
     }
 
-    /**
-     * @param array $modifiersChain
-     * @param string $spellTraitName
-     * @return string
-     */
     public function createSpellTraitInputIndex(array $modifiersChain, string $spellTraitName): string
     {
         $wrapped = \array_map(
@@ -526,11 +470,12 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
         if ($selectedModifierSpellTraitTrapValues === null || $this->isFormulaChanged()) {
             return $this->selectedModifiersSpellTraitsTrapValues = [];
         }
-
-        return $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
+        $this->selectedModifiersSpellTraitsTrapValues = $this->buildSelectedModifiersSpellTraitsTrapValuesTree(
             (array)$selectedModifierSpellTraitTrapValues,
             $this->getCurrentModifiersSpellTraitValues()
         );
+
+        return $this->selectedModifiersSpellTraitsTrapValues;
     }
 
     /**
@@ -547,7 +492,6 @@ class FormulasController extends \DrdPlus\CalculatorSkeleton\CalculatorControlle
             if (!\in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
                 continue; // skip still selected trait trap but without selected parent trait
             }
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             $traitsTrapsTree[$level][$modifier][$trait] = ToInteger::toInteger($levelTraitValue);
         }
 

@@ -6,7 +6,7 @@
 >
     <testsuites>
         <testsuite name="all">
-            <directory>./DrdPlus</directory>
+            <directory>./DrdPlus/Tests</directory>
         </testsuite>
     </testsuites>
     <filter>

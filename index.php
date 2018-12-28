@@ -13,22 +13,31 @@ if ((!empty($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] === '127.0.0.1')
     \ini_set('display_errors', '0');
 }
 $documentRoot = $documentRoot ?? (PHP_SAPI !== 'cli' ? \rtrim(\dirname($_SERVER['SCRIPT_FILENAME']), '\/') : \getcwd());
-$vendorRoot = $vendorRoot ?? $documentRoot . '/vendor';
+
 /** @noinspection PhpIncludeInspection */
-require_once $vendorRoot . '/autoload.php';
+require_once $documentRoot . '/vendor/autoload.php';
+
+$dirs = $dirs ?? new \DrdPlus\RulesSkeleton\Dirs($documentRoot);
+$htmlHelper = $htmlHelper ?? \DrdPlus\RulesSkeleton\HtmlHelper::createFromGlobals($dirs);
+if (PHP_SAPI !== 'cli') {
+    \DrdPlus\RulesSkeleton\TracyDebugger::enable($htmlHelper->isInProduction());
+}
+
+$configuration = $configuration ?? \DrdPlus\CalculatorSkeleton\CalculatorConfiguration::createFromYml($dirs);
+$servicesContainer = $servicesContainer ?? new \DrdPlus\CalculatorSkeleton\CalculatorServicesContainer($configuration, $htmlHelper);
+$controller = $controller ?? new \DrdPlus\CalculatorSkeleton\CalculatorController($servicesContainer);
 
 $formulasTable = new FormulasTable();
 $modifiersTable = new ModifiersTable();
 $spellTraitsTable = new SpellTraitsTable();
 /** @noinspection PhpUnusedLocalVariableInspection */
 $controller = $controller ?? new FormulasController(
+        $servicesContainer,
         $formulasTable,
         $modifiersTable,
         $spellTraitsTable,
-        Tables::getIt(),
-        'https://github.com/jaroslavtyc/drd-plus-theurgist-configurator',
-        $documentRoot,
-        $vendorRoot
+        Tables::getIt()
     );
+
 /** @noinspection PhpIncludeInspection */
-require $vendorRoot . '/drd-plus/calculator-skeleton/index.php';
+require $dirs->getVendorRoot() . '/drdplus/calculator-skeleton/index.php';

@@ -1,6 +1,6 @@
 <?php
 global $testsConfiguration;
-$testsConfiguration = new \DrdPlus\Tests\FrontendSkeleton\TestsConfiguration();
+$testsConfiguration = new \DrdPlus\Tests\CalculatorSkeleton\TestsConfiguration();
 $testsConfiguration->disableHasCustomBodyContent();
 $testsConfiguration->disableHasTables();
 $testsConfiguration->disableHasNotes();
