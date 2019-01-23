@@ -1,0 +1,8 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+pitchfork,0,3,2,2,stab,3,1.5,1
+light_voulge,2,4,4,4,cut,3,2,1
+light_trident,5,4,3,6,stab,4,2.5,1
+halberd,6,4,3,7,cut,3,3.5,1
+heavy_voulge,7,4,4,9,cut,3,4,1
+heavy_trident,9,4,3,10,stab,4,4,1
+heavy_halberd,10,4,3,12,cut,3,6,1

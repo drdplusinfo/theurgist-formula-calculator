@@ -1,0 +1,25 @@
+{
+  "name": "granam/exceptions-hierarchy",
+  "type": "library",
+  "description": "The hierarchy skeleton of exceptions in a project",
+  "keywords": [
+    "php",
+    "exception",
+    "logic",
+    "runtime",
+    "hierarchy"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jaroslavtyc/granam-exceptions-hierarchy",
+  "autoload": {
+    "psr-4": {
+      "Granam\\": "Granam/"
+    }
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  }
+}

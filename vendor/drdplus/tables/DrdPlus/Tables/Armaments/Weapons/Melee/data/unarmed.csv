@@ -1,0 +1,5 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+hand,,0,0,-2,crush,0,0,0
+hobnailed_glove,-4,0,0,0,crush,0,0.2,0
+leg,-5,0,-1,1,crush,0,0,0
+hobnailed_boot,-4,0,-2,4,crush,0,0.4,0

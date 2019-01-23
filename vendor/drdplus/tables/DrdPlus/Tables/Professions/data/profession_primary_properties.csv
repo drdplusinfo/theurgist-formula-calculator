@@ -1,0 +1,8 @@
+profession,first_primary_property,second_primary_property
+commoner,,
+fighter,strength,agility
+thief,agility,knack
+ranger,knack,strength
+wizard,will,intelligence
+theurgist,intelligence,charisma
+priest,charisma,will

@@ -8,18 +8,26 @@
       "DrdPlus\\": "DrdPlus/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "/var/www/kalkulator.skeleton"
+    }
+  ],
   "require": {
     "php": ">=7.1",
     "drdplus/calculator-skeleton": "~1.0",
-    "drdplus/theurgist-spells": "~1.0"
+    "drdplus/tables": "~1.0"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
+    "composer/composer": "^1.8",
+    "mockery/mockery": "~1.0",
     "phpunit/phpunit": "~7.0",
-    "mockery/mockery": "~1.0"
+    "roave/security-advisories": "dev-master"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  },
   "scripts": {
     "pre-autoload-dump": [
       "rm -f DrdPlus/Tests/CalculatorSkeleton && ln -s ../../vendor/drdplus/calculator-skeleton/DrdPlus/Tests/CalculatorSkeleton DrdPlus/Tests/"

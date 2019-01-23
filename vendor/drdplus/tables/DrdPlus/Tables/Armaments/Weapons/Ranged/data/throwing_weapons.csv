@@ -1,0 +1,11 @@
+weapon,required_strength,offensiveness,wounds,wounds_type,range,cover,weight,two_handed_only
+sand,,0,-20,stab,1,0,0.0,0
+rock,-2,2,-2,crush,20,2,0.3,0
+throwing_dagger,0,0,1,stab,14,2,0.2,0
+light_throwing_axe,2,1,2,cut,12,2,0.7,0
+war_throwing_axe,2,1,5,cut,10,2,1,0
+throwing_hammer,5,2,7,crush,9,2,1.5,0
+shuriken,-1,0,1,cut,14,2,0.1,0
+spear,3,2,3,stab,20,2,1.2,1
+javelin,2,2,2,stab,22,2,1,0
+sling,-1,1,1,crush,27,2,0.1,0

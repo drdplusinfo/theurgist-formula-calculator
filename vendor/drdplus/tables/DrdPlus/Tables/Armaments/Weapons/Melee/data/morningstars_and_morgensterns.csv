@@ -1,0 +1,8 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+light_morgenstern,3,2,2,3,crush,2,2,0
+morgenstern,7,3,2,6,crush,3,2.5,0
+heavy_morgenstern,11,3,3,9,crush,3,3,0
+flail,2,4,2,4,crush,2,2,1
+morningstar,6,4,3,8,crush,2,3,1
+hobnailed_flail,7,4,2,10,crush,2,4,1
+heavy_morningstar,11,4,3,13,crush,2,5,1

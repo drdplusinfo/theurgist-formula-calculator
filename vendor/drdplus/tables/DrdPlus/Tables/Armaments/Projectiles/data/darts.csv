@@ -1,0 +1,6 @@
+projectile,offensiveness,wounds,wounds_type,range,weight
+basic_dart,0,0,stab,0,0.05
+war_dart,0,2,stab,-2,0.1
+piercing_dart,0,-1,stab,0,0.05
+hollow_dart,0,-1,stab,0,0.05
+silver_dart,0,0,stab,0,0.05

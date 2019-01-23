@@ -1,0 +1,5 @@
+weapon,required_strength,offensiveness,wounds,wounds_type,range,cover,weight,two_handed_only
+minicrossbow,-3,-1,1,stab,19,2,1,0
+light_crossbow,6,3,5,stab,36,2,1.5,1
+military_crossbow,9,3,7,stab,40,2,2,1
+heavy_crossbow,11,2,10,stab,38,2,3,1

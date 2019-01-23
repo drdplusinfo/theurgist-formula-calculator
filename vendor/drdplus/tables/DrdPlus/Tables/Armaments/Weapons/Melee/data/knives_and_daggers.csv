@@ -1,0 +1,6 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+knife,-3,0,0,-2,stab,1,0.2,0
+dagger,-1,0,1,1,stab,2,0.2,0
+stabbing_dagger,-1,0,2,0,stab,1,0.2,0
+long_knife,-2,1,1,-1,stab,1,0.2,0
+long_dagger,1,1,1,2,stab,2,0.3,0

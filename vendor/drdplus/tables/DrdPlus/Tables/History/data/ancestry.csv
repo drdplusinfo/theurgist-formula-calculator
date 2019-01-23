@@ -1,0 +1,10 @@
+background_points,ancestry
+0,foundling
+1,orphan
+2,from_incomplete_family
+3,from_doubtfully_family
+4,from_modest_family
+5,from_wealthy_family
+6,from_wealthy_and_influential_family
+7,noble
+8,noble_from_powerful_family

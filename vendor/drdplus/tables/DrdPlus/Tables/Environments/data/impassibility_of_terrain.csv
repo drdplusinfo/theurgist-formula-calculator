@@ -1,0 +1,9 @@
+terrain,impassibility_of_terrain_from,impassibility_of_terrain_to
+road,0,-2
+meadow,-1,-4
+forest,-1,-8
+jungle,-6,-12
+swamp,-10,-18
+mountains,-10,-20
+desert,-5,-20
+icy_plains,-5,-20

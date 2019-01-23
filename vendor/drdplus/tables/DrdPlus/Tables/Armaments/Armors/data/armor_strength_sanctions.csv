@@ -1,0 +1,7 @@
+missing_strength,sanction_description,agility_sanction,can_move
+0,light,0,1
+3,medium,-2,1
+6,heavy,-4,1
+8,very_heavy,-8,1
+10,extreme,-12,1
+11,unbearable,,0

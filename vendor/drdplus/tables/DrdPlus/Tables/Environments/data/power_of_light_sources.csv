@@ -1,0 +1,9 @@
+light_source,power
+embers_in_fire,-100
+candle,-40
+triple_candelabra_or_worse_torch,-30
+better_torch_or_seven_candelabra,-23
+lantern,-15
+camp_fire,-5
+balefire,10
+light_house,20

@@ -1,0 +1,8 @@
+contrast,possible_activities_example,fight_type_by_contrast
+0,all,common
+1,"reading, sewing",fight_in_reduced_visibility
+2,"very problematic reading, can not recognize a color",fight_in_reduced_visibility
+3,work without needs to see details,fight_in_reduced_visibility
+4,fast march in hills,fight_in_reduced_visibility
+5,"walk in hills, run on road",fight_in_reduced_visibility
+6,walk on road,blindfold_fight

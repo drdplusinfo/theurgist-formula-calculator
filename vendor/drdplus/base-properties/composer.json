@@ -1,0 +1,25 @@
+{
+  "name": "drdplus/base-properties",
+  "license": "MIT",
+  "type": "library",
+  "description": "DrD+ base properties",
+  "autoload": {
+    "psr-4": {
+      "DrdPlus\\": "DrdPlus/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "granam/string": "^3.0",
+    "granam/strict-object": "^3.0",
+    "doctrineum/scalar": "^3.1",
+    "doctrineum/integer": "^3.1",
+    "drdplus/codes": "^1.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "~7.0",
+    "mockery/mockery": "~1.0",
+    "granam/exceptions-hierarchy": "~4.0"
+  }
+}

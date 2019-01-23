@@ -1,0 +1,41 @@
+{
+  "name": "granam/dice-rolls",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Jaroslav Týc",
+      "homepage": "https://www.jaroslavtyc.com",
+      "role": "Original author"
+    }
+  ],
+  "description": "Configurable roll of a dice",
+  "keywords": [
+    "php",
+    "dice",
+    "roll",
+    "configurable",
+    "drd",
+    "drd plus",
+    "drd 2",
+    "D and D",
+    "Dungeon and dragons"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Granam\\": "Granam/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "granam/strict-object": "^3.0",
+    "granam/integer": "^6.1",
+    "granam/tools": "^3.0"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "~7.0",
+    "mockery/mockery": "~1.0",
+    "granam/exceptions-hierarchy": "~4.0"
+  }
+}

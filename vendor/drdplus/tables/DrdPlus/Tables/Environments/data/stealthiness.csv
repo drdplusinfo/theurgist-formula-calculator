@@ -1,0 +1,9 @@
+situation,stealthiness
+clearly_visible_item,0
+item_in_alignment,3
+covered_item,6
+hidden_item,9
+well_hidden_item,12
+very_well_hidden_item,15
+perfectly_hidden_item,18
+totally_hidden_item,21

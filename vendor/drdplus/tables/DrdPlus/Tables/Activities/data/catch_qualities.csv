@@ -1,0 +1,8 @@
+food_type,catch_quality,healing_and_rest
+crop_collection,7,-4
+insects_or_worms,9,-3
+slugs,11,-2
+reptiles,13,-1
+rodents_or_birds_eggs,15,0
+average_meat,17,0
+quality_meat,19,1

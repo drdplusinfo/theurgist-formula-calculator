@@ -1,0 +1,7 @@
+movement_type,ride,additional
+still,-2,0
+gait,0,0
+trot,2,0
+canter,4,0
+gallop,6,0
+jumping,2,1

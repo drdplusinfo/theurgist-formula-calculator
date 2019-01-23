@@ -1,0 +1,7 @@
+code           ,language,one               ,few                ,many
+liter          ,cs      ,litr              ,litry              ,litrů
+cubic_meter    ,cs      ,metr krychlový    ,metry krychlové    ,metrů krychlových
+cubic_kilometer,cs      ,kilometr krychlový,kilometry krychlové,kilometrů krychlových
+liter          ,en      ,liter             ,liters             ,liters
+cubic_meter    ,en      ,cubic meter       ,cubic meters       ,cubic meters
+cubic_kilometer,en      ,cubic kilometer   ,cubic kilometers   ,cubic kilometers

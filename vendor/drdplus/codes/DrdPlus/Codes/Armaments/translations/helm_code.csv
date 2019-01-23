@@ -1,0 +1,15 @@
+code,language,one,few,many
+without_helm,cs,bez helmy,bez helem,bez helem
+leather_cap,cs,kožená čapka,kožené čapky,kožených čapek
+chainmail_hood,cs,kroužková kukla,kroužkové kukly,kroužkových kukel
+conical_helm,cs,konická helma,konické helmy,konických helem
+full_helm,cs,plná přilba,plné přilby,plných přileb
+barrel_helm,cs,hrncová přilba,hrncové přilby,hrncových přileb
+great_helm,cs,kbelcová přilba,kbelcové přilby,kbelcových přileb
+without_helm,en,without helm,without helms,without helms
+leather_cap,en,leather cap,leather caps,leather caps
+chainmail_hood,en,chainmail hood,chainmail hoods,chainmail hoods
+conical_helm,en,conical helm,conical helms,conical helms
+full_helm,en,full helm,full helms,full helms
+barrel_helm,en,barrel helm,barrel helms,barrel helms
+great_helm,en,great helm,great helms,great helms

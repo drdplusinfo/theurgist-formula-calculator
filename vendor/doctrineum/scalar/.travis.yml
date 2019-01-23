@@ -1,0 +1,21 @@
+language: php
+php:
+  - nightly
+  - 7.2
+  - 7.1
+matrix:
+  allow_failures:
+    - php: nightly
+
+sudo: false
+
+before_script:
+  - composer selfupdate
+  - composer update --no-interaction
+  - composer require codeclimate/php-test-reporter:@dev --dev
+
+script:
+  - ./vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
+
+after_script:
+  - CODECLIMATE_REPO_TOKEN="dfce625ca3b78411d655bdba735dfa13b0760d322ca9325f70e2884cf06e9016" ./vendor/bin/test-reporter

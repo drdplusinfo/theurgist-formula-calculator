@@ -1,0 +1,7 @@
+race,strength,agility,knack,will,intelligence,charisma,body_weight,size
+human,−1,0,0,0,0,1,−1,−1
+elf,−1,0,1,0,−1,1,−1,−1
+dwarf,0,0,−1,0,1,0,0,0
+hobbit,−1,1,−1,0,0,1,−1,−1
+kroll,−1,1,0,−1,0,1,−1,−1
+orc,−1,0,0,1,0,0,−1,−1

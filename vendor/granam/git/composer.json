@@ -1,0 +1,30 @@
+{
+  "name": "granam/git",
+  "license": "MIT",
+  "type": "library",
+  "description": "Basic workflow with GIT",
+  "keywords": [
+    "git",
+    "versions",
+    "branch",
+    "tag",
+    "checkout",
+    "clone"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Granam\\": "Granam/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "granam/strict-object": "^3.0"
+  },
+  "require-dev": {
+    "granam/exceptions-hierarchy": "^4.0",
+    "phpunit/phpunit": "^7.3"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

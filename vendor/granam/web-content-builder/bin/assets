@@ -1,0 +1,100 @@
+#!/usr/bin/env php
+<?php
+
+$dirToScanForAutoloader = __DIR__ . '/..';
+$currentDir = str_replace('\\', '/', __DIR__);
+if (strpos($currentDir, '/vendor/') !== false) {
+    $dirToScanForAutoloader = substr($currentDir, 0, strpos($currentDir, '/vendor/'));
+}
+do {
+    foreach (scandir($dirToScanForAutoloader, SCANDIR_SORT_NONE) as $folder) {
+        if ($folder === 'vendor') {
+            $autoloadFile = $dirToScanForAutoloader . '/vendor/autoload.php';
+            if (file_exists($autoloadFile)) {
+                /** @noinspection PhpIncludeInspection */
+                require_once $autoloadFile;
+                break 2; // break whole do-while
+            }
+            unset($autoloadFile);
+        }
+    }
+    $dirToScanForAutoloader .= '/..';
+} while (is_readable($dirToScanForAutoloader));
+unset($dirToScanForAutoloader);
+
+$options = getopt('d::x::cwf::r::n::', ['dir::', 'exclude-dir::', 'css', 'html', 'file::', 'root-dir::', 'dry-run::']);
+
+if (empty($options['dir']) && empty($options['d']) && empty($options['file']) && empty($options['f'])) {
+    echo <<<TEXT
+Options are (at least one of dir or file are required):
+--dir=foo (-d=foo) directory to scan for files (all supported types if not limited) recursively
+--exclude-dir=foo/bar (-x=foo/bar) directory to skip for scan (use relative or absolute path annotation as used for --dir)
+--css (-c) for CSS files "only" (can be combined with other types), identified by *.css name
+--html (-w) for HTML files "only" (can be combined with other types), identified by *.html and *.htm name
+--md (-m) for Markdown files "only" (can be combined with other types), identified by *.md name
+--file=bar (-f=bar) file to transpile to scan for files (all supported types if not limited) recursively, ignores file-type filters and accepts any file, regardless on file suffix
+--root-dir=baz (-r=baz) document root dir to search linked assets against, if not set, then current working dir is used as default
+--dry-run (-n) just test count of files to change, without changing them
+
+For example
+`assets --css --dir=. --file=index.php`
+will scan current directory (that is the dot meaning) recursively for *.css files, will add index.php field to that list and then edits all linked assets (css, js, images, ico) in those files by adding version=md5 to their names
+
+TEXT;
+
+    exit;
+}
+
+$scanForHtml = null;
+if (isset($options['w']) || isset($options['html'])) {
+    $scanForHtml = true;
+}
+$scanForCss = null;
+if (isset($options['c']) || isset($options['css'])) {
+    $scanForCss = true;
+}
+$scanForMd = null;
+if (isset($options['md']) || isset($options['m'])) {
+    $scanForMd = true;
+}
+$assetsVersion = new \DrdPlus\RulesSkeleton\AssetsVersion($scanForCss, $scanForHtml, $scanForMd);
+$assetsRootDir = $options['root-dir'] ?? $options['r'] ?? null;
+if ((string)$assetsRootDir === '') {
+    $assetsRootDir = getcwd();
+}
+$dirsToScan = [];
+if (!empty($options['dir'])) {
+    $dirsToScan = array_merge((array)$options['dir'], $dirsToScan);
+}
+if (!empty($options['d'])) {
+    $dirsToScan = array_merge((array)$options['d'], $dirsToScan);
+}
+$dirsToExclude = [];
+if (!empty($options['exclude-dir'])) {
+    $dirsToExclude = array_merge((array)$options['exclude-dir'], $dirsToExclude);
+}
+if (!empty($options['x'])) {
+    $dirsToExclude = array_merge((array)$options['x'], $dirsToExclude);
+}
+$filesToTranspile = [];
+if (!empty($options['file'])) {
+    $filesToTranspile = array_merge((array)$options['file'], $filesToTranspile);
+}
+if (!empty($options['f'])) {
+    $filesToTranspile = array_merge((array)$options['f'], $filesToTranspile);
+}
+$dryRun = !empty($options['dry-run']) || !empty($dryRun['n']);
+$changedFiles = $assetsVersion->addVersionsToAssetLinks($assetsRootDir, array_unique($dirsToScan), array_unique($dirsToExclude), array_unique($filesToTranspile), $dryRun);
+if (count($changedFiles) === 0) {
+    echo 'No files changed at all' . PHP_EOL;
+} else {
+    echo 'Changed ' . count($changedFiles) . ' files' . PHP_EOL
+        . implode(
+            array_map(
+                function (string $changedFile) {
+                    return '- ' . $changedFile . PHP_EOL;
+                },
+                $changedFiles
+            )
+        );
+}

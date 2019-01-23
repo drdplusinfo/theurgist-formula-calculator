@@ -1,0 +1,7 @@
+situation,bonus
+sleeping_or_rest_in_bed,0
+lounging_and_resting,-2
+light_activity,-4
+normal_activity,-6
+toilsome_activity,-8
+very_hard_activity,-10
