@@ -8,7 +8,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\Formula;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 
-/** @var Formula $currentFormula*/
+/** @var Formula $currentFormula */
 /** @var CurrentFormulaValues $currentFormulaValues */
 
 $resultParts = [];
@@ -16,7 +16,7 @@ $resultParts = [];
 /** @noinspection PhpUnhandledExceptionInspection */
 $resultParts[] = <<<HTML
 sféra: <ol class="realm font-weight-bold" start="{$currentFormula->getRequiredRealm()}">
-        <li></li>
+        <li>
       </ol>
 HTML;
 /** @noinspection PhpUnhandledExceptionInspection */
