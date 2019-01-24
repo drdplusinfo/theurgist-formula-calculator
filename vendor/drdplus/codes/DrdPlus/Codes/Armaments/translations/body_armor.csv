@@ -1,0 +1,17 @@
+code,language,one,few,many
+without_armor,cs,beze zbroje,beze zbrojí,beze zbrojí
+padded_armor,cs,prošívaná zbroj,prošívané zbroje,prošívaných zbrojí
+leather_armor,cs,kožená zbroj,kožené zbroje,kožených zbrojí
+hobnailed_armor,cs,pobíjená zbroj,pobíjené zbroje,pobíjených zbrojí
+chainmail_armor,cs,kroužková zbroj,kroužkové zbroje,kroužkových zbrojí
+scale_armor,cs,šupinová zbroj,šupinové zbroje,šupinových zbrojí
+plate_armor,cs,plátová zbroj,plátové zbroje,plátových zbrojí
+full_plate_armor,cs,plná plátová zbroj,plné plátové zbroje,plných plátových zbrojí
+without_armor,en,without armor,without armors,without armors
+padded_armor,en,padded armor,padded armors,padded armors
+leather_armor,en,leather armor,leather armors,leather armors
+hobnailed_armor,en,hobnailed armor,hobnailed armors,hobnailed armors
+chainmail_armor,en,chainmail armor,chainmail armors,chainmail armors
+scale_armor,en,scale armor,scale armors,scale armors
+plate_armor,en,plate armor,plate armors,plate armors
+full_plate_armor,en,full plate armor,full plate armors,full plate armors

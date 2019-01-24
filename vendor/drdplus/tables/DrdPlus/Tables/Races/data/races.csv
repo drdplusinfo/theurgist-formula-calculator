@@ -1,0 +1,15 @@
+race,subrace,strength,agility,knack,will,intelligence,charisma,toughness,height_in_cm,body_weight_in_kg,size,senses,remarkable_sense,infravision,native_regeneration,requires_dm_agreement,age
+human,common,0,0,0,0,0,0,0,180,80,0,0,,,,,15
+human,highlander,1,0,0,1,−1,−1,0,180,80,0,0,,,,,14
+elf,common,−1,1,1,−2,1,1,-1,160,50,-1,0,sight,,,,32
+elf,green,−1,1,0,−1,1,1,-1,160,50,-1,0,sight,,,,30
+elf,dark,0,0,0,0,1,0,-1,160,50,-1,0,sight,1,,1,30
+dwarf,common,1,−1,0,2,−1,−2,1,140,70,0,-1,touch,1,,,22
+dwarf,wood,1,−1,0,1,−1,−1,1,140,70,0,-1,touch,1,,,20
+dwarf,mountain,2,−1,0,2,−2,−2,1,140,70,0,-1,touch,1,,,18
+hobbit,common,−3,1,1,0,−1,2,0,110,40,-2,0,taste,,,,25
+kroll,common,3,−2,−1,1,−3,−1,0,220,120,3,0,hearing,,1,,12
+kroll,wild,3,−1,−2,2,−3,−2,0,220,120,3,0,hearing,,1,1,11
+orc,common,0,2,0,−1,0,−2,0,160,60,-1,1,smell,1,,1,10
+orc,skurut,1,1,−1,0,0,−2,0,180,90,1,1,smell,1,,1,13
+orc,goblin,−1,2,1,−2,0,−1,0,150,55,-1,1,smell,1,,1,9

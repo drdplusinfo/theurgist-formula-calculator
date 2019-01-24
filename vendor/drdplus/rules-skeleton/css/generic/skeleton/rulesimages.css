@@ -1,0 +1,30 @@
+img {
+    max-width: 100%;
+}
+
+img.float-left {
+    max-width: 48%;
+    min-width: 10em;
+    padding: 1em 1em 1em 0;
+}
+
+img.float-right {
+    max-width: 48%;
+    min-width: 10em;
+    padding: 1em 0 1em 1em;
+}
+
+img.centered {
+    margin: 1em auto;
+    display: block;
+    max-height: 60em;
+}
+
+.long-image {
+    max-width: 30%;
+    max-height: 50em;
+}
+
+a.lightbox {
+    border-bottom: none;
+}

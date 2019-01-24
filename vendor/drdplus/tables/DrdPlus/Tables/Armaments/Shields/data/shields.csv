@@ -1,0 +1,7 @@
+shield,required_strength,length,restriction,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+without_shield,,0,0,0,-2,crush,0,0,0
+buckler,-3,0,-1,0,0,crush,2,0.8,0
+small_shield,1,0,-2,0,1,crush,4,1.5,0
+medium_shield,5,0,-3,0,2,crush,5,2.5,0
+heavy_shield,9,0,-4,0,3,crush,6,4,0
+pavise,13,0,-5,0,4,crush,7,6,0

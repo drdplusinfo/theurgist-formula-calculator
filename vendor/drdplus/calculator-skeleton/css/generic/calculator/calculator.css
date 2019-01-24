@@ -1,0 +1,104 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+}
+
+.note, .example {
+    font-style: italic;
+    font-size: smaller;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.result {
+    float: left;
+    clear: left;
+    margin-top: 1em;
+}
+
+.obsolete {
+    text-decoration: line-through;
+}
+
+button[type="submit"]:not(.manual), input[type="submit"]:not(.manual) {
+    display: none;
+}
+
+.block {
+    clear: left;
+    float: left;
+    max-width: 100%;
+    margin-bottom: 0.3em;
+}
+
+.panel {
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+.hint {
+    font-size: small;
+}
+
+.delete {
+    margin-bottom: 0.3em;
+}
+
+.remember {
+    margin-bottom: 0.2em;
+}
+
+.keyword {
+    font-style: italic;
+}
+
+.float-right {
+    float: right;
+}
+
+.upper-index {
+    position: relative;
+    top: -0.5em;
+    font-size: 80%;
+}
+
+.keyword {
+    font-style: italic;
+}
+
+.messages {
+    margin: auto;
+    display: block;
+}
+
+.message {
+    margin: 1px;
+    font-size: smaller;
+    font-style: italic;
+    display: inline-block;
+    padding: 1px 1em;
+    border-radius: 2px;
+}
+
+.message.info {
+    background-color: rgba(255, 197, 130, 0.4);
+    color: #7a5000;
+}
+
+.message.warning {
+    background-color: rgba(255, 165, 0, 0.4);
+    color: darkred;
+}
+
+input[type=submit] {
+    cursor: pointer;
+}

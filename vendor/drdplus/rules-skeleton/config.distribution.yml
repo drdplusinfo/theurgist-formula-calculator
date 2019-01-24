@@ -1,0 +1,9 @@
+web:
+  protected_access: true
+  eshop_url: 'https://obchod.altar.cz/draci-doupe-a-jine-rpg-hry-draci-doupe-plus-c-1_7.html'
+  menu_position_fixed: false
+  show_home_button: true
+  name: 'HTML kostra pro DrDPlus, jakoby pravidla čaroděje'
+  title_smiley: '☠️'
+google:
+  analytics_id: 'UA-121206931-1'

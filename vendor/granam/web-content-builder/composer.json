@@ -1,0 +1,44 @@
+{
+  "name": "granam/web-content-builder",
+  "license": "MIT",
+  "type": "composer-plugin",
+  "description": "Builds HTML from HTML files, markdown or PHP script",
+  "keywords": [
+    "web",
+    "content",
+    "html",
+    "builder"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Granam\\": "Granam/"
+    }
+  },
+  "bin": [
+    "bin/assets"
+  ],
+  "require": {
+    "php": ">=7.1",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "composer-plugin-api": "^1.1",
+    "erusev/parsedown": "^1.7",
+    "granam/strict-object": "^3.0",
+    "granam/string": "^3.2",
+    "phpgt/dom": "^1.1",
+    "piwik/device-detector": "^3.11"
+  },
+  "require-dev": {
+    "composer/composer": "^1.7",
+    "granam/exceptions-hierarchy": "^4.0",
+    "mockery/mockery": "^1.2",
+    "phpunit/phpunit": "~7.0",
+    "roave/security-advisories": "dev-master"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "class": "Granam\\WebContentBuilder\\WebContentBuilderInjectorComposerPlugin"
+  }
+}

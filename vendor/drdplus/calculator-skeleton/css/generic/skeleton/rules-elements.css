@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    padding: 1em;
+}
+
+p {
+    text-indent: 15px;
+    margin: 0;
+}
+
+caption {
+    caption-side: top;
+}
+
+h1 {
+    font-weight: 600;
+    text-align: center;
+    font-size: 3.75em;
+    word-wrap: break-word;
+    clear: both;
+    margin: 1em 0 10px;
+}
+
+h2 {
+    font-weight: 400;
+    font-size: 2em;
+    margin: 1em 0 10px;
+    clear: both;
+}
+
+h3 {
+    font-weight: 600;
+    font-size: 1.55em;
+    margin: 1em 0 .4em 0;
+}
+
+h4 {
+    font-weight: 600;
+    margin: 1em 0 .3em 0;
+    font-style: italic;
+    font-size: 1.25em;
+    text-indent: 0;
+}
+
+h5 {
+    font-size: 1em;
+    margin: 1em 0 .2em 0;
+}
+
+h5 + .paragraph {
+    margin-top: 0;
+}
+
+h5.title {
+    font-style: italic;
+}
+
+h6 {
+    font-style: italic;
+    text-indent: 0;
+    margin: 1em 0 .1em 0;
+    font-weight: normal;
+    font-size: 100%;
+}
+
+ul {
+    padding-left: 1em;
+}
+
+ol {
+    margin: 0;
+    padding-left: 1em;
+}
+
+ol ul {
+    list-style-type: disc;
+}

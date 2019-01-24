@@ -1,0 +1,142 @@
+.formula {
+    font-style: italic;
+}
+
+p.result {
+    font-style: italic;
+}
+
+h1#obsah {
+    margin-top: 0;
+}
+
+.example {
+    margin: 0.5em 0 0.3em;
+    background: url('/images/generic/skeleton/rules-example-left-upper-corner.png?version=46f9b5a2f9748b74d77e235abd70269a') left top no-repeat, url('/images/generic/skeleton/rules-example-right-bottom-corner.png?version=cb51f4af301e14ee81477ce675fbde3f') right bottom no-repeat;
+    background-size: 6em 3em;
+    padding: 0.8em 1.3em;
+    font-family: sans-serif;
+    overflow: auto;
+}
+
+div.item-combination {
+    margin-top: 6px;
+    background: url('/images/generic/skeleton/rules-items-combination.png?version=b86bb5ffdbb33e25dfd21f1dc13d44a4') no-repeat;
+    background-size: 100%;
+    width: 192px;
+    height: 124px;
+    font-family: normal, serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+div.item-combination .title {
+    font-family: Georgia, serif;
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+div.item-combination .content {
+    font-style: italic;
+    vertical-align: bottom;
+}
+
+div.item-combination-name {
+    font-family: Georgia, serif;
+    padding: 10px 10px 5px 20px;
+    font-weight: normal;
+    font-style: italic;
+    text-align: left;
+    font-size: 14px;
+}
+
+div.item-combination-left-part {
+    position: relative;
+    float: left;
+    width: 30%;
+    text-align: center;
+    top: 26px;
+    left: 0;
+}
+
+div.item-combination-left-part .content {
+    margin-top: 10px;
+    text-align: right;
+    padding-right: 7px;
+}
+
+div.item-combination-middle-right-part {
+    position: relative;
+    float: right;
+    width: 70%;
+    top: 4px;
+    height: 35%;
+    margin-top: 4px;
+}
+
+div.item-combination-middle-right-part .title {
+    padding-right: 20px;
+    text-align: right;
+}
+
+div.item-combination-middle-right-part .content {
+    text-align: left;
+    padding-left: 5px;
+    margin-top: 3px;
+}
+
+div.item-combination-bottom-right-part {
+    position: relative;
+    float: right;
+    width: 70%;
+    height: 30%;
+    padding-top: 2px;
+}
+
+div.item-combination-bottom-right-part .title {
+    padding-right: 5px;
+    text-align: right;
+}
+
+div.item-combination-bottom-right-part .content {
+    text-align: left;
+    padding-left: 5px;
+    margin-top: 6px;
+}
+
+div.intermezzo {
+    margin: 15px 0;
+    text-align: center;
+    letter-spacing: 1em;
+}
+
+div.intermezzo::after {
+    content: '***';
+}
+
+.bonus-to-value-title {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    font-family: Helvetica, serif;
+    border: solid black 3px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    margin-top: 10px;
+    padding: 3px 0;
+}
+
+.rules-origin .title {
+    font-style: italic;
+    opacity: .7;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.rules-authors {
+    font-weight: bold;
+}
+
+.rules-authors .altar {
+    margin-top: 1em;
+}

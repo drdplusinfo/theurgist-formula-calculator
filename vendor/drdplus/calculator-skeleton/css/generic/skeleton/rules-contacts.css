@@ -1,0 +1,165 @@
+.contacts {
+    text-align: right;
+    font-size: 90%;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.contacts .desktop {
+    display: inherit;
+}
+
+.contacts .tablet {
+    display: none;
+}
+
+.contacts .mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .contacts .desktop {
+        display: none;
+    }
+
+    .contacts .tablet {
+        display: inherit;
+    }
+
+    .contacts .mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .contacts .desktop {
+        display: none;
+    }
+
+    .contacts .tablet {
+        display: none;
+    }
+
+    .contacts .mobile {
+        display: inherit;
+    }
+}
+
+.contacts.fixed {
+    position: fixed;
+}
+
+.contacts:not(.fixed) {
+    position: absolute;
+}
+
+.contacts.top {
+    top: 0;
+}
+
+.contacts.bottom {
+    bottom: 0;
+}
+
+.contacts a.external-url {
+    text-decoration: none;
+}
+
+.contacts:hover {
+    background-color: rgba(32, 30, 28, 0.47);
+}
+
+.contacts.visible {
+    background-color: rgba(32, 30, 28, 0.47);
+}
+
+.contact {
+    margin-right: 1em;
+    padding: 3px;
+    color: rgba(255, 255, 255, 0);
+}
+
+.contact:last-child {
+    margin-right: 0;
+}
+
+.contact a {
+    color: whitesmoke;
+    border-bottom: none;
+    line-height: initial;
+    height: initial;
+    display: inline;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+.contact a.external-url {
+    border-bottom: none;
+}
+
+.contact a.external-url:visited {
+    color: whitesmoke;
+}
+
+.menu a.internal-url {
+    border-bottom: none;
+}
+
+.contact a.rpgforum-contact {
+    color: rgb(255, 202, 228);
+}
+
+.contact a.rpgforum-contact:visited {
+    color: rgb(255, 202, 228);
+}
+
+.contact a.facebook-contact {
+    color: rgb(221, 222, 255);
+}
+
+.contact a.facebook-contact:visited {
+    color: rgb(221, 222, 255);
+}
+
+.contacts .contact a:hover {
+    text-shadow: 0 1px 1px #c5c5c5, 2px 2px 7px #dddddd;
+}
+
+.contacts-placeholder {
+    display: block;
+    height: 0.5em; /* to match bottom of static contacts even if placeholder is moved by Bootstrap */
+}
+
+.menu {
+    float: left;
+    height: 22px; /* single line and some margin */
+    overflow: hidden;
+    margin: 1px 0;
+}
+
+.menu .home {
+    position: relative;
+    vertical-align: top;
+}
+
+.menu .home:hover {
+    bottom: 22px;
+}
+
+.version {
+    float: left;
+    padding: 0 1em;
+    position: relative;
+    display: inline-block;
+}
+
+.current-version {
+    font-style: italic;
+    cursor: pointer;
+}
+
+.contacts .fa-dice-six {
+    transform: rotate(45deg);
+    font-size: smaller;
+}

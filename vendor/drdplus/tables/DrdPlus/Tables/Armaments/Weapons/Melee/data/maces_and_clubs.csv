@@ -1,0 +1,10 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+cudgel,1,1,1,2,crush,1,0.4,0
+club,3,1,2,3,crush,2,1,0
+hobnailed_club,5,1,2,5,crush,2,2,0
+light_mace,5,2,3,4,crush,2,2.5,0
+mace,8,2,4,6,crush,3,4,0
+heavy_club,8,2,3,7,crush,2,3.5,0
+war_hammer,10,3,5,7,crush,3,4.5,0
+two_handed_club,11,2,3,10,crush,2,5,0
+heavy_sledgehammer,13,3,4,11,crush,2,5,0

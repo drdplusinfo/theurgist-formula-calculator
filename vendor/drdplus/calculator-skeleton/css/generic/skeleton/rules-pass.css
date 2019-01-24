@@ -1,0 +1,95 @@
+.pass {
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    text-shadow: 1px 1px 1px #c5c5c5, 0 0 7px #dddddd;
+}
+
+.pass .background-image {
+    background-image: url(/images/licence-background.png?version=2fd913d0038ab4034e4ea1ac32dfa44d);
+}
+
+.pass input[type=submit] {
+    font-size: inherit;
+}
+
+.pass h1 {
+    font-style: italic;
+    text-shadow: 2px 2px 2px #c5c5c5;
+    font-weight: normal;
+    text-align: left;
+    font-size: 2em;
+    word-wrap: break-word;
+    clear: both;
+    margin: 0.5em;
+}
+
+.pass h2, .pass h3 {
+    margin: 0 0 0.1em;
+}
+
+.pass .manifest {
+    padding-bottom: 1em;
+}
+
+.pass .manifest a {
+    color: black;
+}
+
+.pass .manifest.trial {
+    font-size: 18px;
+}
+
+.pass .manifest.buy {
+    font-size: 22px;
+}
+
+.pass .manifest.owning {
+    font-size: 18px;
+}
+
+.pass .note {
+    font-size: 15px;
+}
+
+.pass button[type=submit], label {
+    cursor: pointer;
+    text-wrap: normal;
+    display: inline;
+}
+
+.pass label {
+    display: block; /* to get everything click-able including space between words and rows */
+    margin: 0;
+}
+
+.pass label:hover {
+    text-shadow: 1px 1px 3px #424242;
+}
+
+.pass label:hover input[type=submit] {
+    text-shadow: 1px 1px 3px #424242;
+}
+
+.pass .contacts {
+    font-size: initial;
+}
+
+.pass a:not(.external-url) {
+    border: none;
+}
+
+.pass a:hover {
+    text-shadow: none;
+}
+
+.pass .footer {
+    font-size: 18px;
+    margin-top: 2em;
+    font-style: italic;
+    text-shadow: 2px 2px 2px #c5c5c5;
+    background-color: rgba(238, 238, 238, 0.34);
+}
+
+.pass .footer p {
+    padding: 0.5em 1em;
+}

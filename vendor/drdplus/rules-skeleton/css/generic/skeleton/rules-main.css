@@ -1,0 +1,187 @@
+input[type=button], button {
+    cursor: pointer;
+}
+
+.float-left {
+    float: left;
+    margin-right: 1em;
+}
+
+.float-right {
+    float: right;
+    margin-left: 1em;
+}
+
+.keyword {
+    font-style: italic;
+}
+
+span.introduction, div.introduction {
+    font-style: italic;
+    font-size: 0.9em;
+    text-indent: 1em;
+    margin: 1em 0;
+}
+
+h1 + .introduction, h2 + .introduction, h3 + .introduction, h4 + .introduction, h5 + .introduction, h6 + .introduction {
+    margin-top: 0;
+}
+
+.quote {
+    margin-top: 1em;
+    display: table;
+}
+
+h1 + .quote, h2 + .quote, h3 + .quote, h4 + .quote, h5 + .quote, h6 + .quote {
+    margin-top: 0;
+}
+
+.quote .title {
+    font-style: italic;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.quote .content, .quote.content {
+    border: 1px solid black;
+    padding: 0.4em;
+    font-style: italic;
+    text-indent: 1em;
+    margin-bottom: 0.5em;
+}
+
+.quote .author {
+    display: block;
+    text-align: right;
+}
+
+.calculation, .calculation-like {
+    margin: 1em 0 1em 0;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.calculation .result {
+    margin-left: 2em;
+}
+
+.example .calculation {
+    margin: 0;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.text-to-left {
+    text-align: left;
+}
+
+.text-centered {
+    text-align: center;
+}
+
+.text-to-right {
+    text-align: right;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.list {
+    margin: 1em 0;
+}
+
+.upper-index {
+    position: relative;
+    top: -0.5em;
+    font-size: 80%;
+}
+
+.item {
+    font-weight: bold;
+}
+
+.kind {
+    text-indent: 1em;
+}
+
+.no-border {
+    border: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.note {
+    font-size: 13px;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible-id, .buried {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+}
+
+.out-of-flow {
+    position: absolute;
+}
+
+.paragraph-intended {
+    margin-left: 1em;
+}
+
+.tab-intended {
+    padding-left: 2em;
+}
+
+.preview {
+    position: absolute;
+    background-color: #c8cd86;
+    z-index: 2;
+    padding: 0.4em;
+}
+
+.reversed-paragraph {
+    text-indent: -1em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.reversed-paragraph div {
+    text-indent: 0;
+}
+
+.reversed-paragraph div.calculation {
+    margin-left: -1em;
+}
+
+.reversed-paragraph table {
+    text-indent: 0;
+    margin-left: 0;
+}
+
+.reversed-paragraph table.basic {
+    margin-left: -1em;
+}
+
+.reversed-paragraph .preview table {
+    margin: 0;
+    padding: 0;
+}
+
+.rpgforum-ico:before {
+    content: '';
+    display: inline-block;
+    background: url(/images/generic/skeleton/rules-rpgforum-ico.png?version=a5f512b5198945e44017bacfaf63b1ef) left no-repeat;
+    background-size: contain;
+    width: 1em;
+    height: 1em;
+    vertical-align: text-top;
+}

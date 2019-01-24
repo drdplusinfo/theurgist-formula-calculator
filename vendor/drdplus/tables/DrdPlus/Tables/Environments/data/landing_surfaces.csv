@@ -1,0 +1,10 @@
+surface,power_of_wound_modifier,agility_multiplier,armor_max_protection
+deep_powder,-15,,0
+water,-15,3,0
+heavy_wet_snow,-5,,0
+freshly_plowed_field_or_pile_of_leaves,-3,,0
+meadow,0,,0
+solid_ice_or_icy_snow_or_tamped_earth,2,,1
+flat_stone_tiles,5,,3
+bumpy_rock,7,,4
+sharp_rocks_or_pointed_pales,15,,8

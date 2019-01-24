@@ -1,0 +1,5 @@
+weapon,required_strength,length,offensiveness,wounds,wounds_type,cover,weight,two_handed_only
+light_axe,3,1,3,3,cut,2,1,0
+axe,6,2,3,5,cut,2,2,0
+war_axe,9,3,3,7,cut,3,2.5,0
+two_handed_axe,12,3,4,10,cut,3,3,0

@@ -1,0 +1,9 @@
+body_armor,required_strength,restriction,protection,weight,rounds_to_put_on
+without_armor,,0,0,0,0
+padded_armor,-2,0,2,4,1
+leather_armor,1,0,3,6,1
+hobnailed_armor,3,0,4,8,2
+chainmail_armor,5,-1,6,15,2
+scale_armor,7,-2,7,20,3
+plate_armor,10,-3,9,30,3
+full_plate_armor,12,-4,10,35,4

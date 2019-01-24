@@ -1,0 +1,5 @@
+situation,bonus_from,bonus_to,can_be_more
+foul_conditions,-12,-6,1
+bad_conditions,-5,-3,0
+impaired_conditions,-2,-1,0
+good_conditions,0,0,0

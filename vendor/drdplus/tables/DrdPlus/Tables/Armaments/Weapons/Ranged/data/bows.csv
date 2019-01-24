@@ -1,0 +1,6 @@
+weapon,required_strength,maximal_applicable_strength,offensiveness,wounds,wounds_type,range,cover,weight,two_handed_only
+short_bow,-1,3,2,1,stab,24,2,1,1
+long_bow,5,7,3,4,stab,27,2,1.2,1
+short_composite_bow,1,6,3,2,stab,26,2,1,1
+long_composite_bow,5,9,4,5,stab,29,2,1.5,1
+power_bow,7,12,5,6,stab,31,2,2,1

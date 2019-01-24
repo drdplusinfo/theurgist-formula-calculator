@@ -1,0 +1,21 @@
+public_url: 'https://kalkulator.skeleton.drdplus.info'
+expected_web_name: 'HTML kostra pro DrD+ kalkulátory'
+expected_page_title: 'HTML kostra pro DrD+ kalkulátory'
+expected_licence: 'MIT'
+expected_google_analytics_id: 'UA-121206931-1'
+has_tables: false
+has_notes: false
+has_external_anchors_with_hashes: false
+has_links_to_altar: false
+has_authors: false
+has_protected_access: false
+can_be_bought_on_eshop: false
+has_character_sheet: false
+has_links_to_journals: false
+has_link_to_single_journal: false
+has_table_of_contents: false
+has_headings: false
+has_local_links: false
+too_short_failure_names: []
+too_short_success_names: []
+too_short_result_names: []

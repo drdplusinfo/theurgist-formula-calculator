@@ -1,0 +1,22 @@
+language: php
+
+php:
+  - nightly
+  - 7.2
+  - 7.1
+
+before_script:
+  - composer selfupdate
+  - COMPOSER_ROOT_VERSION=dev-master composer update --no-interaction --prefer-dist
+  - COMPOSER_ROOT_VERSION=dev-master composer require --dev codeclimate/php-test-reporter:dev-master
+  - if [[ $TRAVIS_PHP_VERSION == *hhvm* ]]; then
+      sudo printf "zend.assertions = 1;\n" >> /etc/hhvm/php.ini;
+    else
+      phpenv config-add .travis.php.ini;
+    fi
+
+script:
+  - ./vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
+
+after_script:
+  - CODECLIMATE_REPO_TOKEN=1786358179f1e810a68cd507c40f7f8fac0f8ec76b675396ddddd412d0293379 ./vendor/bin/test-reporter

@@ -1,0 +1,10 @@
+.message {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.warning {
+    background-color: rgba(205, 170, 160, 0.37);
+    color: darkred;
+}

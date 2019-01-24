@@ -1,0 +1,31 @@
+.generic { /* this content can be deleted without ANY harm to rules itself */
+    background-color: #dbdbdb;
+}
+
+.source-code { /* meaning of those rules part if programmed and can be computed */
+    background-color: #bbdeff;
+    font-family: monospace;
+    font-size: medium;
+}
+
+.source-code:hover {
+    background-color: #a4d1ff;
+}
+
+a.source-code:hover {
+    text-decoration: none;
+}
+
+.covered-by-code {
+    background-color: #e3e8cc;
+}
+
+.source-code-title {
+    background-color: #dfe9ff;
+    font-family: monospace;
+    font-size: medium;
+}
+
+.excluded { /* that rule is intentionally ignored - will NOT be covered by code */
+    background-color: #ffeacb;
+}

@@ -1,0 +1,4 @@
+fate,primary_property_on_1,secondary_property_on_1,primary_property_on_2,secondary_property_on_2,primary_property_on_3,secondary_property_on_3,primary_property_on_4,secondary_property_on_4,primary_property_on_5,secondary_property_on_5,primary_property_on_6,secondary_property_on_6
+exceptional_properties,1,0,1,1,1,1,2,2,2,2,2,3
+combination_of_properties_and_background,0,0,0,0,1,1,1,1,2,2,2,2
+good_background,0,0,0,0,0,0,1,1,1,1,1,1

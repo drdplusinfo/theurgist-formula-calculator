@@ -1,0 +1,15 @@
+animal,speed,endurance,maximal_load,maximal_load_in_kg,defiance
+horse,4,4,12,160,3
+draft_horse,0,7,15,220,4
+riding_horse,6,3,11,140,4
+war_horse,3,5,13,160,3
+camel,0,10,14,200,2
+elephant,2,14,21,450,8
+yak,−2,9,16,240,5
+lame,−3,8,12,160,2
+donkey,−2,4,9,110,4
+pony,−2,4,9,110,4
+hinny,−2,6,11,140,6
+cow,−4,4,14,200,4
+bull,−2,8,16,250,7
+unicorn,8,3,9,110,12

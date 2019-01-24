@@ -1,0 +1,13 @@
+web:
+  last_stable_version: '1.0'
+  protected_access: false
+  name: 'HTML kostra pro DrD+ kalkulátory'
+  title_smiley: ''
+  repository_url: 'git@github.com:jaroslavtyc/drd-plus-frontend-skeleton-web.git'
+  menu_position_fixed: false
+  show_home_button: true
+  cookies_postfix: 'kalkulator.skeleton'
+  cookies_ttl: null
+  eshop_url: 'https://obchod.altar.cz/draci-doupe-a-jine-rpg-hry-draci-doupe-plus-c-1_7.html'
+google:
+  analytics_id: 'UA-121206931-1'

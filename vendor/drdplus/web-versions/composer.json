@@ -1,0 +1,17 @@
+{
+  "name": "drdplus/web-versions",
+  "description": "Reads available minor and patch versions of a web files repository",
+  "autoload": {
+    "psr-4": {
+      "DrdPlus\\": "DrdPlus/"
+    }
+  },
+  "require": {
+    "php": ">= 7.1",
+    "granam/git": "^1.1"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "phpunit/phpunit": "^7.5"
+  }
+}

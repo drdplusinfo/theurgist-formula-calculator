@@ -1,0 +1,34 @@
+{
+  "name": "granam/strict-object",
+  "description": "Base object, checking access to undefined properties and methods",
+  "keywords": [
+    "php",
+    "object",
+    "strict",
+    "access",
+    "read",
+    "write",
+    "permissions"
+  ],
+  "homepage": "https://github.com/jaroslavtyc/granam-strict-object",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jaroslav Týc",
+      "homepage": "https://www.jaroslavtyc.com",
+      "role": "Original author"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Granam\\": "Granam/"
+    }
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0",
+    "granam/exceptions-hierarchy": "~4.0"
+  }
+}

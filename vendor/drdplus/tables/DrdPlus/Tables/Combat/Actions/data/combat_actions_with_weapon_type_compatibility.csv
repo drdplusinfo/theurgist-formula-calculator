@@ -1,0 +1,4 @@
+attack_with_weapon_type,move,run,swap_weapons,concentration_on_defense,put_out_easily_accessible_item,put_out_hardly_accessible_item,laying,sitting_or_on_kneels,getting_up,putting_on_armor,putting_on_armor_with_help,helping_to_put_on_armor,attacked_from_behind,blindfold_fight,fight_in_reduced_visibility,attack_on_disabled_opponent,handover_item,headless_attack,cover_of_ally,flat_attack,pressure,retreat,aimed_shot
+melee,1,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,1,0,1,1,0,0
+throwing,1,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0
+shooting,1,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1

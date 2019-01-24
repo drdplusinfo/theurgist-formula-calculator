@@ -1,0 +1,29 @@
+body {
+    background: url(/images/generic/skeleton/rules-background.png?version=40fd24846865c459e4f38300e2ae9377) repeat-y #FFEDD5 left fixed;
+    background-size: 100%;
+    color: #011126;
+}
+
+.background-image {
+    background: url(/images/main-background.png?version=5c955ad6290eaa184f6ba756de169796) no-repeat top;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+.delimiter {
+    margin: 1em auto;
+    display: block;
+    width: 30em;
+    max-width: 100%;
+}
+
+.sand-glass {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+}

@@ -1,0 +1,6 @@
+movement_type,bonus_to_movement_speed,fatigue_like
+still,0,waiting
+gait,23,walk
+trot,27,rush
+canter,34,run
+gallop,39,sprint

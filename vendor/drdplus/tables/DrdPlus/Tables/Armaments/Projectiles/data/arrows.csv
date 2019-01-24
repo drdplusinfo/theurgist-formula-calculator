@@ -1,0 +1,9 @@
+projectile,offensiveness,wounds,wounds_type,range,weight
+basic_arrow,0,0,stab,0,0.05
+long_range_arrow,0,-1,stab,2,0.05
+war_arrow,0,2,stab,-2,0.1
+piercing_arrow,0,-1,stab,0,0.05
+hollow_arrow,0,-1,stab,0,0.05
+crippling_arrow,-1,-2,stab,-1,0.05
+incendiary_arrow,-3,-3,crush,-2,0.05
+silver_arrow,0,0,stab,0,0.05

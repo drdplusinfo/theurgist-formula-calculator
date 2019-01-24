@@ -1,0 +1,3 @@
+projectile,offensiveness,wounds,wounds_type,range,weight
+sling_stone_light,0,0,crush,0,0.1
+sling_stone_heavier,0,2,crush,-2,0.2
