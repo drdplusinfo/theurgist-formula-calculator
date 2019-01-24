@@ -856,8 +856,14 @@
         "version_normalized": "1.0.20.0",
         "source": {
             "type": "git",
-            "url": "/var/www/kalkulator.skeleton",
+            "url": "https://github.com/drdplusinfo/drdplus-calculator-skeleton.git",
             "reference": "e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/drdplusinfo/drdplus-calculator-skeleton/zipball/e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7",
+            "reference": "e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7",
+            "shasum": ""
         },
         "require": {
             "composer-plugin-api": "^1.1",
@@ -876,17 +882,18 @@
             "phpunit/phpunit": "~7.0",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-01-24T07:36:51+00:00",
+        "time": "2019-01-24T07:37:01+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "DrdPlus\\CalculatorSkeleton\\CalculatorInjectorComposerPlugin"
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "DrdPlus\\": "DrdPlus/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
@@ -939,8 +946,14 @@
         "version_normalized": "1.1.20.0",
         "source": {
             "type": "git",
-            "url": "/var/www/rules.skeleton",
+            "url": "https://github.com/drdplusinfo/rules-skeleton.git",
             "reference": "bab6f8c5567ea7c5a12cf1490e225b5b96c2d218"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/bab6f8c5567ea7c5a12cf1490e225b5b96c2d218",
+            "reference": "bab6f8c5567ea7c5a12cf1490e225b5b96c2d218",
+            "shasum": ""
         },
         "require": {
             "composer-plugin-api": "^1.0",
@@ -977,29 +990,22 @@
         "extra": {
             "class": "DrdPlus\\RulesSkeleton\\SkeletonInjectorComposerPlugin"
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "DrdPlus\\": "DrdPlus/"
             }
         },
-        "scripts": {
-            "post-update-cmd": [
-                "php vendor/bin/assets --css --dir=css"
-            ],
-            "post-install-cmd": [
-                "php vendor/bin/assets --css --dir=css"
-            ]
-        },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
         "description": "Skeleton for DrD+ rules as HTML",
         "keywords": [
+            "Skeleton",
             "drd plus",
             "helper",
-            "rules",
-            "skeleton"
+            "rules"
         ]
     },
     {
@@ -1740,12 +1746,18 @@
     },
     {
         "name": "granam/web-content-builder",
-        "version": "1.0.8",
-        "version_normalized": "1.0.8.0",
+        "version": "1.0.7",
+        "version_normalized": "1.0.7.0",
         "source": {
             "type": "git",
-            "url": "/home/jaroslav/projects/granam/web-content-builder",
-            "reference": "ccc24921270265bcdbfb04768a413272c9bdf0ab"
+            "url": "https://github.com/granam/web-content-builder.git",
+            "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/granam/web-content-builder/zipball/04b480c704ab5bc1943e0e77727ce2c647a76f6f",
+            "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f",
+            "shasum": ""
         },
         "require": {
             "composer-plugin-api": "^1.1",
@@ -1765,7 +1777,7 @@
             "phpunit/phpunit": "~7.0",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-01-24T07:27:00+00:00",
+        "time": "2019-01-23T13:47:44+00:00",
         "bin": [
             "bin/assets"
         ],
@@ -1773,12 +1785,13 @@
         "extra": {
             "class": "Granam\\WebContentBuilder\\WebContentBuilderInjectorComposerPlugin"
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "Granam\\": "Granam/"
             }
         },
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],

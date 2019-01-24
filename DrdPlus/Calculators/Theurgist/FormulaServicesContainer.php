@@ -19,7 +19,7 @@ class FormulaServicesContainer extends CalculatorServicesContainer
             'currentFormulaCode' => $this->getCurrentFormulaValues()->getCurrentFormulaCode(),
             'currentFormula' => $this->getCurrentFormulaValues()->getCurrentFormula(),
             'tables' => $this->getTables(),
-            'calculatorDebugContacts' => $this->getCalculatorDebugContactsBody(),
+            'calculatorDebugContacts' => $this->getDebugContactsBody(),
         ];
     }
 
