@@ -114,7 +114,7 @@ class RulesController extends StrictObject
             $servicesContainer->getRulesMainContent(),
             $servicesContainer->getMenu(),
             $servicesContainer->getCurrentWebVersion(),
-            $servicesContainer->getWebCache(),
+            $servicesContainer->getPassedWebCache(),
             RulesContent::FULL,
             $this->getRedirect()
         );

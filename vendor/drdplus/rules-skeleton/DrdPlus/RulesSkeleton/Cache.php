@@ -9,6 +9,9 @@ use Granam\Strict\Object\StrictObject;
 class Cache extends StrictObject
 {
     public const TABLES = 'tables';
+    public const PAGES = 'pages';
+    public const PASS = 'pass';
+    public const PASSED = 'passed';
 
     /** @var string */
     protected $projectRootDir;

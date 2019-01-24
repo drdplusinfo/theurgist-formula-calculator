@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ae3256a2006a6413b3e0c8e178a9f02",
+    "content-hash": "706fa443334b581f07cccc94f2600497",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -474,17 +474,11 @@
         },
         {
             "name": "drdplus/calculator-skeleton",
-            "version": "1.0.20",
+            "version": "1.0.21",
             "source": {
                 "type": "git",
-                "url": "https://github.com/drdplusinfo/drdplus-calculator-skeleton.git",
-                "reference": "e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/drdplus-calculator-skeleton/zipball/e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7",
-                "reference": "e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7",
-                "shasum": ""
+                "url": "/var/www/kalkulator.skeleton",
+                "reference": "7578a5e7ea50efa56b040635215b9c2ccc17d5a7"
             },
             "require": {
                 "composer-plugin-api": "^1.1",
@@ -512,12 +506,11 @@
                     "DrdPlus\\": "DrdPlus/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Style and functionality helper of a DrD+ calculator",
-            "time": "2019-01-24T07:37:01+00:00"
+            "time": "2019-01-24T13:25:46+00:00"
         },
         {
             "name": "drdplus/codes",
@@ -560,16 +553,16 @@
         },
         {
             "name": "drdplus/rules-skeleton",
-            "version": "1.1.20",
+            "version": "1.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-                "reference": "bab6f8c5567ea7c5a12cf1490e225b5b96c2d218"
+                "reference": "082cc5cc5b4287db27a199af0fea0aa3e3085c00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/bab6f8c5567ea7c5a12cf1490e225b5b96c2d218",
-                "reference": "bab6f8c5567ea7c5a12cf1490e225b5b96c2d218",
+                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/082cc5cc5b4287db27a199af0fea0aa3e3085c00",
+                "reference": "082cc5cc5b4287db27a199af0fea0aa3e3085c00",
                 "shasum": ""
             },
             "require": {
@@ -622,7 +615,7 @@
                 "helper",
                 "rules"
             ],
-            "time": "2019-01-24T07:31:24+00:00"
+            "time": "2019-01-24T12:55:55+00:00"
         },
         {
             "name": "drdplus/tables",

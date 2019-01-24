@@ -340,7 +340,7 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
     {
         $this->replaceDiacriticsFromAnchorHashes(
             $htmlDocument,
-            '~drdplus[.](?:loc|info)~',
+            '~(^$|drdplus[.](?:loc|info))~',
             '~blog[.]drdplus[.](?:loc|info)~'
         );
 

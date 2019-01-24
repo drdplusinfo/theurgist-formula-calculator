@@ -39,7 +39,7 @@ class ServicesContainer extends StrictObject
     protected $configuration;
     /** @var HtmlHelper */
     protected $htmlHelper;
-    /** @var WebCache */
+    /** @var Cache */
     protected $webCache;
     /** @var Head */
     protected $head;
@@ -73,9 +73,9 @@ class ServicesContainer extends StrictObject
     private $cookiesService;
     /** @var \DateTimeImmutable */
     private $now;
-    /** @var WebCache */
+    /** @var Cache */
     private $passWebCache;
-    /** @var WebCache */
+    /** @var Cache */
     private $passedWebCache;
     /** @var UsagePolicy */
     private $usagePolicy;
@@ -201,21 +201,6 @@ class ServicesContainer extends StrictObject
         return $this->htmlHelper;
     }
 
-    public function getWebCache(): WebCache
-    {
-        if ($this->webCache === null) {
-            $this->webCache = new WebCache(
-                $this->getCurrentWebVersion(),
-                $this->getConfiguration()->getDirs(),
-                $this->getRequest(),
-                $this->getGit(),
-                $this->getHtmlHelper()->isInProduction()
-            );
-        }
-
-        return $this->webCache;
-    }
-
     public function getMenu(): Menu
     {
         if ($this->menu === null) {
@@ -335,32 +320,32 @@ class ServicesContainer extends StrictObject
         return $this->now;
     }
 
-    public function getPassWebCache(): WebCache
+    public function getPassWebCache(): Cache
     {
         if ($this->passWebCache === null) {
-            $this->passWebCache = new WebCache(
+            $this->passWebCache = new Cache(
                 $this->getCurrentWebVersion(),
                 $this->getDirs(),
                 $this->getRequest(),
                 $this->getGit(),
                 $this->getHtmlHelper()->isInProduction(),
-                'pass'
+                Cache::PASS
             );
         }
 
         return $this->passWebCache;
     }
 
-    public function getPassedWebCache(): WebCache
+    public function getPassedWebCache(): Cache
     {
         if ($this->passedWebCache === null) {
-            $this->passedWebCache = new WebCache(
+            $this->passedWebCache = new Cache(
                 $this->getCurrentWebVersion(),
                 $this->getDirs(),
                 $this->getRequest(),
                 $this->getGit(),
                 $this->getHtmlHelper()->isInProduction(),
-                'passed'
+                Cache::PASSED
             );
         }
 

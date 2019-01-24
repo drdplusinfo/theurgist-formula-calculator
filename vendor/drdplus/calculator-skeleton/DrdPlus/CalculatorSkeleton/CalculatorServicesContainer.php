@@ -134,7 +134,7 @@ class CalculatorServicesContainer extends ServicesContainer
                 $this->getRulesMainContent(),
                 $this->getMenu(),
                 $this->getCurrentWebVersion(),
-                $this->getWebCache()
+                $this->getPassedWebCache()
             );
         }
 
