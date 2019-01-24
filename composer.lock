@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "706fa443334b581f07cccc94f2600497",
+    "content-hash": "512cd315a6f03604ffeca743c6868ac7",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -474,11 +474,11 @@
         },
         {
             "name": "drdplus/calculator-skeleton",
-            "version": "1.0.19",
+            "version": "1.0.20",
             "source": {
                 "type": "git",
                 "url": "/var/www/kalkulator.skeleton",
-                "reference": "f5fa530dab923adf4c6df90e54fa90c43d80acd1"
+                "reference": "e1d74fe18b1741e6223b10f85b6d1c1bf4c9e1c7"
             },
             "require": {
                 "composer-plugin-api": "^1.1",
@@ -510,7 +510,7 @@
                 "MIT"
             ],
             "description": "Style and functionality helper of a DrD+ calculator",
-            "time": "2019-01-23T17:31:38+00:00"
+            "time": "2019-01-24T07:36:51+00:00"
         },
         {
             "name": "drdplus/codes",
@@ -553,17 +553,11 @@
         },
         {
             "name": "drdplus/rules-skeleton",
-            "version": "1.1.17",
+            "version": "1.1.20",
             "source": {
                 "type": "git",
-                "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-                "reference": "5f981dee35d6a0d46379d3066db237bcd917ba0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/5f981dee35d6a0d46379d3066db237bcd917ba0e",
-                "reference": "5f981dee35d6a0d46379d3066db237bcd917ba0e",
-                "shasum": ""
+                "url": "/var/www/rules.skeleton",
+                "reference": "bab6f8c5567ea7c5a12cf1490e225b5b96c2d218"
             },
             "require": {
                 "composer-plugin-api": "^1.0",
@@ -577,6 +571,7 @@
                 "ext-yaml": "*",
                 "ext-zlib": "*",
                 "granam/exceptions-hierarchy": "^4.0",
+                "granam/git": "^1.2",
                 "granam/strict-object": "^3.0",
                 "granam/string": "^3.2",
                 "granam/tools": "^3.0",
@@ -585,7 +580,7 @@
                 "php": ">=7.1",
                 "phpgt/dom": "~1.1",
                 "phpmailer/phpmailer": "^6.0",
-                "piwik/device-detector": "^3.9",
+                "piwik/device-detector": "^3.11",
                 "tracy/tracy": "^2.4"
             },
             "require-dev": {
@@ -603,18 +598,25 @@
                     "DrdPlus\\": "DrdPlus/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "post-update-cmd": [
+                    "php vendor/bin/assets --css --dir=css"
+                ],
+                "post-install-cmd": [
+                    "php vendor/bin/assets --css --dir=css"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "description": "Skeleton for DrD+ rules as HTML",
             "keywords": [
-                "Skeleton",
                 "drd plus",
                 "helper",
-                "rules"
+                "rules",
+                "skeleton"
             ],
-            "time": "2019-01-23T15:28:49+00:00"
+            "time": "2019-01-24T07:31:24+00:00"
         },
         {
             "name": "drdplus/tables",
@@ -936,16 +938,16 @@
         },
         {
             "name": "granam/git",
-            "version": "1.1.4",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/granam/git.git",
-                "reference": "5de5573b3920bdcfc7a5ff9bbb77d970bad8a610"
+                "reference": "b9b55b2f6e0515f8a148b23257c205ca069d1c9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/granam/git/zipball/5de5573b3920bdcfc7a5ff9bbb77d970bad8a610",
-                "reference": "5de5573b3920bdcfc7a5ff9bbb77d970bad8a610",
+                "url": "https://api.github.com/repos/granam/git/zipball/b9b55b2f6e0515f8a148b23257c205ca069d1c9d",
+                "reference": "b9b55b2f6e0515f8a148b23257c205ca069d1c9d",
                 "shasum": ""
             },
             "require": {
@@ -975,7 +977,7 @@
                 "tag",
                 "versions"
             ],
-            "time": "2019-01-17T14:48:34+00:00"
+            "time": "2019-01-23T22:07:32+00:00"
         },
         {
             "name": "granam/integer",
@@ -1324,17 +1326,11 @@
         },
         {
             "name": "granam/web-content-builder",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/granam/web-content-builder.git",
-                "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/granam/web-content-builder/zipball/04b480c704ab5bc1943e0e77727ce2c647a76f6f",
-                "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f",
-                "shasum": ""
+                "url": "/home/jaroslav/projects/granam/web-content-builder",
+                "reference": "ccc24921270265bcdbfb04768a413272c9bdf0ab"
             },
             "require": {
                 "composer-plugin-api": "^1.1",
@@ -1366,7 +1362,6 @@
                     "Granam\\": "Granam/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1377,7 +1372,7 @@
                 "html",
                 "web"
             ],
-            "time": "2019-01-23T13:47:44+00:00"
+            "time": "2019-01-24T07:27:00+00:00"
         },
         {
             "name": "granam/yaml-reader",

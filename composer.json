@@ -8,12 +8,6 @@
       "DrdPlus\\": "DrdPlus/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "/var/www/kalkulator.skeleton"
-    }
-  ],
   "require": {
     "php": ">=7.1",
     "drdplus/calculator-skeleton": "~1.0",

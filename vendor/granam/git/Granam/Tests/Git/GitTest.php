@@ -26,7 +26,7 @@ class GitTest extends TestCase
      */
     public function I_can_get_diff_against_origin(): void
     {
-        self::assertIsArray($this->getGit()->getDiffAgainstOriginMaster(__DIR__));
+        self::assertIsArray($this->getGit()->getDiffAgainstOrigin(__DIR__));
     }
 
     /**
@@ -144,6 +144,6 @@ class GitTest extends TestCase
      */
     public function I_can_get_current_branch_name(): void
     {
-        self::assertRegExp('~^(master|v?(\d+[.]){2}\d+)$~', $this->getGit()->getCurrentBranchName(__DIR__));
+        self::assertRegExp('~^(master|v?\d+[.]\d+)$~', $this->getGit()->getCurrentBranchName(__DIR__));
     }
 }

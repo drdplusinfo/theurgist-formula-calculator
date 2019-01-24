@@ -39,12 +39,13 @@ class Git extends StrictObject
      * @return array|string[] Rows with differences
      * @throws \Granam\Git\Exceptions\CanNotGetGitDiff
      */
-    public function getDiffAgainstOriginMaster(string $repositoryDir): array
+    public function getDiffAgainstOrigin(string $repositoryDir): array
     {
         try {
             $escapedDir = \escapeshellarg($repositoryDir);
+            $escapedCurrentBranchName = \escapeshellarg($this->getCurrentBranchName($repositoryDir));
 
-            return $this->executeArray("git -C $escapedDir diff origin/master");
+            return $this->executeArray("git -C $escapedDir diff origin/$escapedCurrentBranchName");
         } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
             throw new Exceptions\CanNotGetGitDiff(
                 "Can not get diff:\n"
