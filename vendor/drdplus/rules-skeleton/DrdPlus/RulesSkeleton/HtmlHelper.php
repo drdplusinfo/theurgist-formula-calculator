@@ -88,17 +88,9 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
         $tablesWithIds = [];
         /** @var Element $table */
         foreach ($htmlDocument->getElementsByTagName('table') as $table) {
-            $tableId = $table->getAttribute('id');
-            if (!$tableId) {
-                foreach ($table->getElementsByTagName('th') as $th) {
-                    $tableId = $th->getAttribute('id');
-                    if ($tableId) {
-                        break;
-                    }
-                }
-                if (!$tableId) {
-                    continue;
-                }
+            $tableId = $this->getFirstIdFrom($table);
+            if ($tableId === null) {
+                continue;
             }
             $unifiedTableId = static::toId($tableId);
             $tablesWithIds[$unifiedTableId] = $table;
@@ -188,24 +180,29 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
             ) {
                 continue;
             }
-            if (!\preg_match('~(?:https?:)?//(?<host>[[:alpha:]]+\.drdplus\.info)/[^#]*#(?<tableId>tabulka_\w+)~', $anchor->getAttribute('href'), $matches)) {
+            if (!\preg_match(
+                '~(?<protocol>(?:https?:)?//)(?<host>[[:alpha:]]+[.]drdplus[.](?:info|loc))/[^#]*#(?<tableId>tabulka_\w+)~',
+                $anchor->getAttribute('href'), $matches)
+            ) {
                 continue;
             }
-            $remoteDrdPlusLinks[$matches['host']][] = $matches['tableId'];
+            $remoteDrdPlusLinks[$matches['host']][$matches['protocol']][] = $matches['tableId'];
         }
         if (\count($remoteDrdPlusLinks) === 0) {
             return $htmlDocument;
         }
         $body = $htmlDocument->body;
-        foreach ($remoteDrdPlusLinks as $remoteDrdPlusHost => $tableIds) {
-            $iFrame = $htmlDocument->createElement('iframe');
-            $body->appendChild($iFrame);
-            $iFrame->setAttribute('id', $remoteDrdPlusHost); // we will target that iframe via JS by remote host name
-            $iFrame->setAttribute(
-                'src',
-                "https://{$remoteDrdPlusHost}/?tables=" . \htmlspecialchars(\implode(',', \array_unique($tableIds)))
-            );
-            $iFrame->setAttribute('class', static::CLASS_HIDDEN);
+        foreach ($remoteDrdPlusLinks as $remoteDrdPlusHost => $protocolToTableIds) {
+            foreach ($protocolToTableIds as $protocol => $tableIds) {
+                $iFrame = $htmlDocument->createElement('iframe');
+                $body->appendChild($iFrame);
+                $iFrame->setAttribute('id', $remoteDrdPlusHost); // we will target that iframe via JS by remote host name
+                $iFrame->setAttribute(
+                    'src',
+                    "{$protocol}{$remoteDrdPlusHost}/?tables=" . \htmlspecialchars(\implode(',', \array_unique($tableIds)))
+                );
+                $iFrame->setAttribute('class', static::CLASS_HIDDEN);
+            }
         }
 
         return $htmlDocument;

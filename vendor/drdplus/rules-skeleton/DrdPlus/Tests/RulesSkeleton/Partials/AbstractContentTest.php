@@ -187,6 +187,16 @@ abstract class AbstractContentTest extends TestWithMockery
         return $titles->current()->nodeValue;
     }
 
+    protected function getHtmlHelper(): HtmlHelper
+    {
+        static $htmlHelper;
+        if ($htmlHelper === null) {
+            $htmlHelper = $this->createHtmlHelper();
+        }
+
+        return $htmlHelper;
+    }
+
     /**
      * @param Dirs $dirs
      * @param bool $inDevMode
@@ -677,5 +687,21 @@ abstract class AbstractContentTest extends TestWithMockery
         }
 
         return $composerConfig;
+    }
+
+    /**
+     * @param HtmlDocument $htmlDocument
+     * @return array|string[]
+     */
+    protected function parseTableIds(HtmlDocument $htmlDocument): array
+    {
+        $tableIds = [];
+        foreach ($htmlDocument->getElementsByTagName('table') as $table) {
+            if (\preg_match('~\sid\s*=\s*"(?<id>[^"]+)~', $table->prop_get_outerHTML(), $idMatch)) {
+                $tableIds[] = \html_entity_decode($idMatch['id']);
+            }
+        }
+
+        return $tableIds;
     }
 }

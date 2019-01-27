@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "706fa443334b581f07cccc94f2600497",
+    "content-hash": "8ae3256a2006a6413b3e0c8e178a9f02",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -477,7 +477,7 @@
             "version": "1.0.21",
             "source": {
                 "type": "git",
-                "url": "/var/www/kalkulator.skeleton",
+                "url": "https://github.com/drdplusinfo/drdplus-calculator-skeleton.git",
                 "reference": "7578a5e7ea50efa56b040635215b9c2ccc17d5a7"
             },
             "require": {
@@ -553,16 +553,16 @@
         },
         {
             "name": "drdplus/rules-skeleton",
-            "version": "1.1.21",
+            "version": "1.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-                "reference": "082cc5cc5b4287db27a199af0fea0aa3e3085c00"
+                "reference": "3e0bbd57456b81907ab1c9207536b9a1ccc79695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/082cc5cc5b4287db27a199af0fea0aa3e3085c00",
-                "reference": "082cc5cc5b4287db27a199af0fea0aa3e3085c00",
+                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/3e0bbd57456b81907ab1c9207536b9a1ccc79695",
+                "reference": "3e0bbd57456b81907ab1c9207536b9a1ccc79695",
                 "shasum": ""
             },
             "require": {
@@ -590,7 +590,7 @@
                 "tracy/tracy": "^2.4"
             },
             "require-dev": {
-                "composer/composer": "^1.7",
+                "composer/composer": "^1.8",
                 "mockery/mockery": "^1.2",
                 "phpunit/phpunit": "^7.5",
                 "roave/security-advisories": "dev-master"
@@ -615,7 +615,7 @@
                 "helper",
                 "rules"
             ],
-            "time": "2019-01-24T12:55:55+00:00"
+            "time": "2019-01-25T15:00:28+00:00"
         },
         {
             "name": "drdplus/tables",
@@ -1325,16 +1325,16 @@
         },
         {
             "name": "granam/web-content-builder",
-            "version": "1.0.7",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/granam/web-content-builder.git",
-                "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f"
+                "reference": "4cebb306c2d271475f266affb77c94de76357cac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/granam/web-content-builder/zipball/04b480c704ab5bc1943e0e77727ce2c647a76f6f",
-                "reference": "04b480c704ab5bc1943e0e77727ce2c647a76f6f",
+                "url": "https://api.github.com/repos/granam/web-content-builder/zipball/4cebb306c2d271475f266affb77c94de76357cac",
+                "reference": "4cebb306c2d271475f266affb77c94de76357cac",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
                 "html",
                 "web"
             ],
-            "time": "2019-01-23T13:47:44+00:00"
+            "time": "2019-01-25T10:16:07+00:00"
         },
         {
             "name": "granam/yaml-reader",

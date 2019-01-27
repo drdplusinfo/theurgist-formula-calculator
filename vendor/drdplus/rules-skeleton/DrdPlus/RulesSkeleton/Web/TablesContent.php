@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
-use Granam\WebContentBuilder\HtmlHelper;
+use DrdPlus\RulesSkeleton\HtmlHelper;
 use Granam\WebContentBuilder\Web\HeadInterface;
 
 class TablesContent extends MainContent

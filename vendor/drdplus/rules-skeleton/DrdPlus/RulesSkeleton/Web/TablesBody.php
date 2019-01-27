@@ -7,9 +7,8 @@ use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use Granam\Strict\Object\StrictObject;
 use Granam\WebContentBuilder\HtmlDocument;
-use Granam\WebContentBuilder\Web\BodyInterface;
 
-class TablesBody extends StrictObject implements BodyInterface
+class TablesBody extends StrictObject implements RulesBodyInterface
 {
 
     /** @var RulesMainBody */
@@ -35,12 +34,29 @@ class TablesBody extends StrictObject implements BodyInterface
     {
         $rawContent = $this->rulesMainBody->getValue();
         $rawContentDocument = new HtmlDocument($rawContent);
-        $tables = $this->htmlHelper->findTablesWithIds($rawContentDocument, $this->request->getRequestedTablesIds());
+        $tables = $rawContentDocument->getElementsByTagName('table');
         $tablesContent = '';
         foreach ($tables as $table) {
             $tablesContent .= $table->outerHTML . "\n";
         }
 
-        return $tablesContent;
+        return <<<HTML
+<div id="tables_only">
+  $tablesContent
+</div>
+HTML;
+    }
+
+    public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        $tablesWithIds = $this->htmlHelper->findTablesWithIds($htmlDocument, $this->request->getRequestedTablesIds());
+        foreach ($htmlDocument->body->children as $child) {
+            $child->remove();
+        }
+        foreach ($tablesWithIds as $table) {
+            $htmlDocument->body->appendChild($table);
+        }
+
+        return $htmlDocument;
     }
 }

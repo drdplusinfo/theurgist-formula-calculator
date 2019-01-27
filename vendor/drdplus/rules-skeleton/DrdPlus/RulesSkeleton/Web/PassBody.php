@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace DrdPlus\RulesSkeleton\Web;
 
 use Granam\Strict\Object\StrictObject;
+use Granam\WebContentBuilder\HtmlDocument;
 use Granam\WebContentBuilder\Web\BodyInterface;
 
-class PassBody extends StrictObject implements BodyInterface
+class PassBody extends StrictObject implements RulesBodyInterface
 {
     /** @var Pass */
     private $pass;
@@ -29,5 +30,10 @@ class PassBody extends StrictObject implements BodyInterface
   {$this->pass->getValue()}
 </div>
 HTML;
+    }
+
+    public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        return $htmlDocument;
     }
 }

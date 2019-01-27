@@ -33,7 +33,7 @@ Options are (at least one of dir or file are required):
 --html (-w) for HTML files "only" (can be combined with other types), identified by *.html and *.htm name
 --md (-m) for Markdown files "only" (can be combined with other types), identified by *.md name
 --file=bar (-f=bar) file to transpile to scan for files (all supported types if not limited) recursively, ignores file-type filters and accepts any file, regardless on file suffix
---root-dir=baz (-r=baz) document root dir to search linked assets against, if not set, then current working dir is used as default
+--root-dir=baz (-r=baz) document root dir to search linked assets against, or if not set, then current working dir is used as default
 --dry-run (-n) just test count of files to change, without changing them
 
 For example
@@ -57,7 +57,7 @@ $scanForMd = null;
 if (isset($options['md']) || isset($options['m'])) {
     $scanForMd = true;
 }
-$assetsVersion = new \DrdPlus\RulesSkeleton\AssetsVersion($scanForCss, $scanForHtml, $scanForMd);
+$assetsVersion = new \Granam\WebContentBuilder\AssetsVersion($scanForCss, $scanForHtml, $scanForMd);
 $assetsRootDir = $options['root-dir'] ?? $options['r'] ?? null;
 if ((string)$assetsRootDir === '') {
     $assetsRootDir = getcwd();

@@ -7,6 +7,8 @@ use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\WebContentBuilder\HtmlDocument;
+use Gt\Dom\Element;
+use Gt\Dom\NodeList;
 
 class TablesTest extends AbstractContentTest
 {
@@ -15,14 +17,60 @@ class TablesTest extends AbstractContentTest
      */
     public function I_can_get_tables_only(): void
     {
-        $htmlDocument = $this->getHtmlDocument([Request::TABLES => '' /* all of them */]);
-        $tables = $htmlDocument->body->getElementsByTagName('table');
+        $htmlDocumentWithTablesOnly = $this->getHtmlDocument([Request::TABLES => '' /* all of them */]);
+        /** @var NodeList|Element[] $tables */
+        $tables = $htmlDocumentWithTablesOnly->getElementsByTagName('table');
         if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(0, $tables, 'No tables expected due to tests configuration');
-        } else {
-            self::assertGreaterThan(0, \count($tables), 'Expected some tables');
+            self::assertCount(0, $this->getTableIds(), 'No tables expected due to tests configuration');
+
+            return;
         }
-        $this->There_is_no_other_content_than_tables($htmlDocument);
+        $expectedTableIds = $this->getTableIds();
+        $fetchedTableIds = $this->getElementsIds($tables);
+        $missingIds = \array_diff($expectedTableIds, $fetchedTableIds);
+        self::assertEmpty($missingIds, 'Some tables with IDs are missing: ' . \implode(',', $missingIds));
+        $this->There_is_no_other_content_than_tables($htmlDocumentWithTablesOnly);
+        $this->Expected_table_ids_are_present($fetchedTableIds);
+    }
+
+    protected function getTableIds(): array
+    {
+        static $tableIds;
+        if ($tableIds === null) {
+            $tableIds = $this->parseTableIds($this->getHtmlDocument());
+            \sort($tableIds);
+            $this->Expected_table_ids_are_present($tableIds);
+        }
+
+        return $tableIds;
+    }
+
+    private function getElementsIds(\Traversable $elements): array
+    {
+        return \array_map(
+            function (Element $element): string {
+                return $this->getHtmlHelper()->getFirstIdFrom($element);
+            },
+            $this->traversableToArray($elements)
+        );
+    }
+
+    private function traversableToArray(\Traversable $iterable): array
+    {
+        $array = [];
+        foreach ($iterable as $key => $value) {
+            $array[$key] = $value;
+        }
+
+        return $array;
+    }
+
+    protected function Expected_table_ids_are_present(array $tableIds): void
+    {
+        $someExpectedTableIds = $this->getTestsConfiguration()->getSomeExpectedTableIds();
+        $missingIds = \array_diff($someExpectedTableIds, $tableIds);
+        self::assertEmpty($missingIds, 'Some expected table IDs are missing: ' . \implode(',', $missingIds));
     }
 
     protected function There_is_no_other_content_than_tables(HtmlDocument $htmlDocument): void
@@ -44,7 +92,7 @@ class TablesTest extends AbstractContentTest
         }
     }
 
-    /**
+    /**<
      * @test
      */
     public function I_can_get_wanted_tables_from_content(): void
@@ -54,22 +102,26 @@ class TablesTest extends AbstractContentTest
 
             return;
         }
-        $implodedTables = \implode(',', $this->getTestsConfiguration()->getSomeExpectedTableIds());
+        $tableIds = $this->getTableIds();
+        $implodedTables = \implode(',', $tableIds);
         $htmlDocument = $this->getHtmlDocument([Request::TABLES => $implodedTables]);
         $tables = $htmlDocument->body->getElementsByTagName('table');
-        self::assertNotEmpty(
-            $tables,
+        self::assertGreaterThan(
+            0,
+            $tables->count(),
             \sprintf(
                 'No tables have been fetched from %s, when required IDs %s',
                 $this->getTestsConfiguration()->getLocalUrl() . '?' . Request::TABLES . '=' . \urlencode($implodedTables),
                 $implodedTables
             )
         );
-        foreach ($this->getTestsConfiguration()->getSomeExpectedTableIds() as $tableId) {
-            self::assertNotNull(
-                $htmlDocument->getElementById(HtmlHelper::toId($tableId)), 'Missing table of ID ' . $tableId
-            );
-        }
+        self::assertCount(count($tableIds), $tableIds, 'Expected same amount of tables as requested');
+        self::assertArraySubset(
+            $this->getTestsConfiguration()->getSomeExpectedTableIds(),
+            $tableIds,
+            false,
+            'Some expected table IDs are missing'
+        );
         $this->There_is_no_other_content_than_tables($htmlDocument);
     }
 }

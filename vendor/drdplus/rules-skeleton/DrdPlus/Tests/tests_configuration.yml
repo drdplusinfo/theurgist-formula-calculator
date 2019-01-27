@@ -1,7 +1,9 @@
 public_url: 'https://rules.skeleton.drdplus.info'
 some_expected_table_ids:
-  - 'IAmSoAlone'
-  - 'JustSomeTable'
+  - 'i_am_so_alone'
+  - 'just_some_table'
+  - 'tabulka_osvetleni' # from th
+  - 'tabulka_pro_vypocet_zz' # from caption -> h3
 expected_web_name: 'HTML kostra pro DrDPlus, jakoby pravidla čaroděje'
 expected_page_title: '☠️ HTML kostra pro DrDPlus, jakoby pravidla čaroděje'
 expected_licence: 'MIT'

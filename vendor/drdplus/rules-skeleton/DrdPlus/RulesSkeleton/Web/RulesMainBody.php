@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
+use Granam\WebContentBuilder\HtmlDocument;
 use Granam\WebContentBuilder\Web\Body;
 use Granam\WebContentBuilder\Web\WebFiles;
 
-class RulesMainBody extends Body
+class RulesMainBody extends Body implements RulesBodyInterface
 {
     /** @var array */
     private $contentValues;
@@ -44,6 +45,11 @@ class RulesMainBody extends Body
         };
 
         return $content->fetchContent();
+    }
+
+    public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        return $htmlDocument;
     }
 
 }

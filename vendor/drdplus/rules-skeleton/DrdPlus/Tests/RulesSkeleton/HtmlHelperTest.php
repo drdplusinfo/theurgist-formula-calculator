@@ -62,13 +62,13 @@ class HtmlHelperTest extends AbstractContentTest
         $htmlHelperClass = static::getSutClass();
         $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
 
-        $allTables = $htmlHelper->findTablesWithIds($this->getHtmlDocument());
+        $tablesWithIds = $htmlHelper->findTablesWithIds($this->getHtmlDocument());
         if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
-            self::assertCount(0, $allTables);
+            self::assertCount(0, $tablesWithIds);
 
             return;
         }
-        self::assertGreaterThan(0, \count($allTables));
+        self::assertGreaterThan(0, \count($tablesWithIds));
         self::assertEmpty($htmlHelper->findTablesWithIds($this->getHtmlDocument(), ['nonExistingTableId']));
         $someExpectedTableIds = $this->getTestsConfiguration()->getSomeExpectedTableIds();
         if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
@@ -78,16 +78,16 @@ class HtmlHelperTest extends AbstractContentTest
         }
         self::assertGreaterThan(0, \count($someExpectedTableIds), 'Some tables expected');
         foreach ($someExpectedTableIds as $someExpectedTableId) {
-            $lowerExpectedTableId = StringTools::toSnakeCaseId($someExpectedTableId);
-            self::assertArrayHasKey($lowerExpectedTableId, $allTables);
-            $expectedTable = $allTables[$lowerExpectedTableId];
+            $lowerExpectedTableId = HtmlHelper::toId($someExpectedTableId);
+            self::assertArrayHasKey($lowerExpectedTableId, $tablesWithIds, 'A table ID is missing');
+            $expectedTable = $tablesWithIds[$lowerExpectedTableId];
             self::assertInstanceOf(Element::class, $expectedTable);
             self::assertNotEmpty($expectedTable->innerHTML, "Table of ID $someExpectedTableId is empty");
             // intentionally to snake case to test proper ID case conversion
-            $someCasedExpectedTableId = StringTools::toCamelCaseId($someExpectedTableId);
+            $someCasedExpectedTableId = HtmlHelper::toId($someExpectedTableId);
             $singleTable = $htmlHelper->findTablesWithIds($this->getHtmlDocument(), [$someCasedExpectedTableId]);
             self::assertCount(1, $singleTable, 'No table has been found by ID ' . $someCasedExpectedTableId);
-            self::assertArrayHasKey($lowerExpectedTableId, $allTables, 'ID is expected to be lower-cased');
+            self::assertArrayHasKey($lowerExpectedTableId, $tablesWithIds, 'ID is expected to be lower-cased');
         }
     }
 
@@ -242,12 +242,17 @@ HTML
 
     /**
      * @test
+     * @dataProvider provideLinksToRemoteTables
+     * @param array|string[] $links
+     * @param string $expectedIframe
+     * @param string $expectedIframeId
      */
-    public function I_can_inject_iframes_with_remote_tables(): void
+    public function I_can_inject_iframes_with_remote_tables(array $links, string $expectedIframe, string $expectedIframeId): void
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
         $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $implodedLinks = \implode("\n", $links);
         $htmlDocument = new HtmlDocument(<<<HTML
         <!DOCTYPE html>
 <html lang="cs">
@@ -256,10 +261,7 @@ HTML
   <meta charset="utf-8">
 </head>
 <body>
-  <a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Odkaz na tabulku vzdálenosti</a>
-  <a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Druhý odkaz na tabulku vzdálenosti</a>
-  <a href="https://pph.drdplus.info/#tabulka_casu">Odkaz na tabulku času</a>
-  <a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Třetí na tabulku vzdálenosti</a>
+  $implodedLinks
 </body>
 </htm>
 HTML
@@ -270,11 +272,32 @@ HTML
         self::assertCount(1, $iframes, 'Single iframe (with tables preview) expected');
         $iframe = $iframes->current();
         self::assertSame(
-            'https://pph.drdplus.info/?tables=tabulka_vzdalenosti,tabulka_casu',
+            $expectedIframe,
             $iframe->getAttribute('src'),
             "Something is bad with iframe\n" . $iframe->outerHTML
         );
-        self::assertSame('pph.drdplus.info', $iframe->id, 'Expected ID made from iframe target domain');
+        self::assertSame($expectedIframeId, $iframe->id, 'Expected ID made from iframe target domain');
+    }
+
+    public function provideLinksToRemoteTables(): array
+    {
+        return [
+            'pph.drdplus.info' => [
+                [
+                    '<a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Odkaz na tabulku vzdálenosti</a>',
+                    '<a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Druhý odkaz na tabulku vzdálenosti</a>',
+                    '<a href="https://pph.drdplus.info/#tabulka_casu">Odkaz na tabulku času</a>',
+                    '<a href="https://pph.drdplus.info/#tabulka_vzdalenosti">Třetí na tabulku vzdálenosti</a>',
+                ],
+                'https://pph.drdplus.info/?tables=tabulka_vzdalenosti,tabulka_casu',
+                'pph.drdplus.info',
+            ],
+            'theurg.drdplus.loc' => [
+                ['<a href="http://theurg.drdplus.loc/#tabulka_formuli">Odkaz na lokálního theurga a jeho tabulku formulí</a>'],
+                'http://theurg.drdplus.loc/?tables=tabulka_formuli',
+                'theurg.drdplus.loc',
+            ],
+        ];
     }
 
     /**

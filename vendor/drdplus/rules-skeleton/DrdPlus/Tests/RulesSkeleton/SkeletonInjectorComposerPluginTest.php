@@ -3,11 +3,20 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
+use Composer\Plugin\PluginInterface;
 use DrdPlus\RulesSkeleton\SkeletonInjectorComposerPlugin;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 
 class SkeletonInjectorComposerPluginTest extends AbstractContentTest
 {
+    public function Composer_package_is_available(): void
+    {
+        self::assertTrue(
+            \interface_exists(PluginInterface::class),
+            "Composer package is required for this test, include it by\ncomposer require --dev composer/composer"
+        );
+    }
+
     /**
      * @test
      */

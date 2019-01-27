@@ -5,9 +5,10 @@ namespace DrdPlus\RulesSkeleton\Web;
 
 use DrdPlus\RulesSkeleton\Dirs;
 use Granam\Strict\Object\StrictObject;
+use Granam\WebContentBuilder\HtmlDocument;
 use Granam\WebContentBuilder\Web\BodyInterface;
 
-class PdfBody extends StrictObject implements BodyInterface
+class PdfBody extends StrictObject implements RulesBodyInterface
 {
     /** @var Dirs */
     private $dirs;
@@ -56,5 +57,10 @@ class PdfBody extends StrictObject implements BodyInterface
         }
 
         return $this->pdfFile ?: null;
+    }
+
+    public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        return $htmlDocument;
     }
 }

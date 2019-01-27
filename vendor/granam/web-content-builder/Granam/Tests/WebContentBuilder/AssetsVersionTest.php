@@ -68,6 +68,9 @@ class AssetsVersionTest extends AbstractContentTest
             $inOctal,
             "Expected {$this->getBinAssetsFile()} to has executable permissions 0775 as Composer will do that anyway later on this library installation"
         );
+        $command = \escapeshellarg($this->getBinAssetsFile()) . ' --dir=. --css --html --md --dry-run 2>&1';
+        \exec($command, $output, $return);
+        self::assertSame(0, $return, $command . ' failed with output ' . \implode("\n", $output));
     }
 
 }

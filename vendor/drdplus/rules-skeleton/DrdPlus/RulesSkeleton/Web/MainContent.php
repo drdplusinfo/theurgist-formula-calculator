@@ -5,7 +5,6 @@ namespace DrdPlus\RulesSkeleton\Web;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use Granam\WebContentBuilder\HtmlDocument;
-use Granam\WebContentBuilder\Web\BodyInterface;
 use Granam\WebContentBuilder\Web\Content;
 use Granam\WebContentBuilder\Web\HeadInterface;
 
@@ -13,11 +12,14 @@ abstract class MainContent extends Content
 {
     /** @var HtmlHelper */
     protected $htmlHelper;
+    /** @var RulesBodyInterface */
+    protected $body;
 
-    public function __construct(HtmlHelper $htmlHelper, HeadInterface $head, BodyInterface $body)
+    public function __construct(HtmlHelper $htmlHelper, HeadInterface $head, RulesBodyInterface $body)
     {
         parent::__construct($htmlHelper, $head, $body);
         $this->htmlHelper = $htmlHelper;
+        $this->body = $body;
     }
 
     protected function buildHtmlDocument(string $content): HtmlDocument
@@ -29,7 +31,7 @@ abstract class MainContent extends Content
         $this->htmlHelper->injectIframesWithRemoteTables($htmlDocument);
         $this->htmlHelper->resolveDisplayMode($htmlDocument);
 
-        return $htmlDocument;
+        return $this->body->postProcessDocument($htmlDocument);
     }
 
     private function solveIds(HtmlDocument $htmlDocument): void
