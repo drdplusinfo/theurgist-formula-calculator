@@ -18,7 +18,6 @@ if (PHP_SAPI !== 'cli') {
 
 $configuration = $configuration ?? \DrdPlus\CalculatorSkeleton\CalculatorConfiguration::createFromYml($dirs);
 $servicesContainer = $servicesContainer ?? new \DrdPlus\CalculatorSkeleton\CalculatorServicesContainer($configuration, $htmlHelper);
-$controller = $controller ?? new \DrdPlus\CalculatorSkeleton\CalculatorController($servicesContainer);
+$calculatorApplication = $calculatorApplication ?? $controller ?? new \DrdPlus\CalculatorSkeleton\CalculatorApplication($servicesContainer);
 
-/** @noinspection PhpIncludeInspection */
-require $dirs->getVendorRoot() . '/drdplus/rules-skeleton/index.php';
+$calculatorApplication->run();

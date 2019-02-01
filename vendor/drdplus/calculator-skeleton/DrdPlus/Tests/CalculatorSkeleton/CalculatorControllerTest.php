@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CalculatorContent;
-use DrdPlus\CalculatorSkeleton\CalculatorController;
+use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
@@ -36,23 +36,12 @@ class CalculatorControllerTest extends AbstractContentTest
             'fresh_wound_size' => ['1'],
             'serious_wound_origin' => ['mechanical_stab'],
         ];
-        $controller = new CalculatorController($this->createServicesContainer());
+        $controller = new CalculatorApplication($this->createServicesContainer());
         self::assertSame($_SERVER['REQUEST_URI'], $controller->getRequestUrl());
         self::assertSame(
             \str_replace(['remember_current=1', '[]'], ['remember_current=0', \urlencode('[]')], $_SERVER['REQUEST_URI']),
             $controller->getRequestUrl(['remember_current' => '0'])
         );
-    }
-
-    /**
-     * @test
-     */
-    public function I_can_get_content(): void
-    {
-        /** @var CalculatorContent $calculatorContent */
-        $calculatorContent = $this->mockery(CalculatorContent::class);
-        $controller = new CalculatorController($this->createServicesContainerWithContent($calculatorContent));
-        self::assertSame($calculatorContent, $controller->getRulesContent());
     }
 
     /**

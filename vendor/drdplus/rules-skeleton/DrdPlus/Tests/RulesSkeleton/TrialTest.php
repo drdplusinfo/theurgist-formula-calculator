@@ -5,7 +5,8 @@ namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Redirect;
-use DrdPlus\RulesSkeleton\RulesController;
+use DrdPlus\RulesSkeleton\RulesApplication;
+use DrdPlus\RulesSkeleton\Web\RulesContent;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\WebContentBuilder\HtmlDocument;
 use Gt\Dom\Element;
@@ -23,14 +24,14 @@ class TrialTest extends AbstractContentTest
 
             return;
         }
-        $controller = $this->createController();
-        $cacheStamp = $this->There_is_no_meta_redirect_if_licence_owning_has_been_confirmed($controller);
-        $this->There_is_meta_redirect_in_passing_by_trial($controller, $cacheStamp);
+        $rulesApplication = $this->createRulesApplication();
+        $cacheStamp = $this->There_is_no_meta_redirect_if_licence_owning_has_been_confirmed($rulesApplication);
+        $this->There_is_meta_redirect_in_passing_by_trial($rulesApplication, $cacheStamp);
     }
 
-    private function There_is_no_meta_redirect_if_licence_owning_has_been_confirmed(RulesController $controller): string
+    private function There_is_no_meta_redirect_if_licence_owning_has_been_confirmed(RulesApplication $rulesApplication): string
     {
-        $content = $controller->getRulesContent()->getValue();
+        $content = $this->getRulesContent($rulesApplication);
         $firstWithoutRedirect = new HtmlDocument($content);
         self::assertNull($firstWithoutRedirect->getElementById(HtmlHelper::ID_META_REDIRECT));
         $cacheStamp = $firstWithoutRedirect->documentElement->getAttribute(HtmlHelper::DATA_CACHE_STAMP);
@@ -39,18 +40,27 @@ class TrialTest extends AbstractContentTest
         return $cacheStamp;
     }
 
+    private function getRulesContent(RulesApplication $rulesApplication): RulesContent
+    {
+        $applicationReflection = new \ReflectionClass($rulesApplication);
+        $getRulesContent = $applicationReflection->getMethod('getRulesContent');
+        $getRulesContent->setAccessible(true);
+
+        return $getRulesContent->invoke($rulesApplication);
+    }
+
     /**
-     * @param RulesController $controller
+     * @param RulesApplication $rulesApplication
      * @param string $previousCacheStamp
      * @throws \ReflectionException
      */
-    private function There_is_meta_redirect_in_passing_by_trial(RulesController $controller, string $previousCacheStamp): void
+    private function There_is_meta_redirect_in_passing_by_trial(RulesApplication $rulesApplication, string $previousCacheStamp): void
     {
-        $controllerReflection = new \ReflectionClass($controller);
-        $setRedirect = $controllerReflection->getMethod('setRedirect');
+        $applicationReflection = new \ReflectionClass($rulesApplication);
+        $setRedirect = $applicationReflection->getMethod('setRedirect');
         $setRedirect->setAccessible(true);
-        $setRedirect->invoke($controller, new Redirect('/foo', 12345));
-        $content = $controller->getRulesContent()->getValue();
+        $setRedirect->invoke($rulesApplication, new Redirect('/foo', 12345));
+        $content = $this->getRulesContent($rulesApplication);
         $firstWithRedirect = new HtmlDocument($content);
         self::assertSame(
             $previousCacheStamp,

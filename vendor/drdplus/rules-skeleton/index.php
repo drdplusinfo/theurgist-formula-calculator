@@ -18,13 +18,5 @@ if (PHP_SAPI !== 'cli') {
 $configuration = \DrdPlus\RulesSkeleton\Configuration::createFromYml($dirs);
 $servicesContainer = new \DrdPlus\RulesSkeleton\ServicesContainer($configuration, $htmlHelper);
 
-$controller = $controller ?? new \DrdPlus\RulesSkeleton\RulesController($servicesContainer);
-$controller->sendCustomHeaders();
-
-if ($controller->isRequestedWebVersionUpdate()) {
-    echo $controller->updateCode();
-
-    return;
-}
-$controller->persistCurrentVersion();
-echo $controller->getRulesContent()->getValue();
+$rulesApplication = $rulesApplication ?? $controller ?? new \DrdPlus\RulesSkeleton\RulesApplication($servicesContainer);
+$rulesApplication->run();

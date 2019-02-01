@@ -36,7 +36,7 @@ class TestsTest extends AbstractContentTest
      */
     public function Every_test_reflects_test_class_namespace(): void
     {
-        $referenceTestClass = new \ReflectionClass($this->getControllerTestClass());
+        $referenceTestClass = new \ReflectionClass($this->getRulesApplicationTestClass());
         $referenceTestDir = \dirname($referenceTestClass->getFileName());
         $testingClassesWithoutSut = $this->getTestingClassesWithoutSut();
         foreach ($this->getClassesFromDir($referenceTestDir) as $testClass) {
@@ -92,15 +92,15 @@ class TestsTest extends AbstractContentTest
         ];
     }
 
-    private function getControllerTestClass(): string
+    private function getRulesApplicationTestClass(): string
     {
-        $controllerTestClass = \str_replace('DrdPlus\\', 'DrdPlus\\Tests\\', $this->getControllerClass()) . 'Test';
+        $rulesApplicationTestClass = \str_replace('DrdPlus\\', 'DrdPlus\\Tests\\', $this->getRulesApplicationClass()) . 'Test';
         self::assertTrue(
-            \class_exists($controllerTestClass),
-            'Estimated controller test class does not exist: ' . $controllerTestClass
+            \class_exists($rulesApplicationTestClass),
+            'Estimated rules application test class does not exist: ' . $rulesApplicationTestClass
         );
 
-        return $controllerTestClass;
+        return $rulesApplicationTestClass;
     }
 
     private function getClassesFromDir(string $dir): array

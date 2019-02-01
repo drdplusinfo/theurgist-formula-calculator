@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace DrdPlus\CalculatorSkeleton;
 
-use DrdPlus\RulesSkeleton\RulesController;
-use DrdPlus\RulesSkeleton\Web\RulesContent;
+use DrdPlus\RulesSkeleton\RulesApplication;
 
-class CalculatorController extends RulesController
+class CalculatorApplication extends RulesApplication
 {
     /** @var CalculatorServicesContainer */
     private $calculatorServicesContainer;
@@ -19,14 +18,6 @@ class CalculatorController extends RulesController
     {
         parent::__construct($calculationServicesContainer);
         $this->calculatorServicesContainer = $calculationServicesContainer;
-    }
-
-    /**
-     * @return RulesContent|CalculatorContent
-     */
-    public function getRulesContent(): RulesContent
-    {
-        return $this->calculatorServicesContainer->getCalculatorContent();
     }
 
     /**

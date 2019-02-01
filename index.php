@@ -2,7 +2,7 @@
 namespace DrdPlus\Theurgist\Formulas;
 
 use DrdPlus\Calculators\Theurgist\FormulaDirs;
-use DrdPlus\CalculatorSkeleton\CalculatorController;
+use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 
 \error_reporting(-1);
 if ((!empty($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] === '127.0.0.1') || PHP_SAPI === 'cli') {
@@ -23,9 +23,6 @@ if (PHP_SAPI !== 'cli') {
 
 $configuration = $configuration ?? \DrdPlus\CalculatorSkeleton\CalculatorConfiguration::createFromYml($dirs);
 $servicesContainer = $servicesContainer ?? new \DrdPlus\Calculators\Theurgist\FormulaServicesContainer($configuration, $htmlHelper);
+$calculatorApplication = $calculatorApplication ?? $controller ?? new CalculatorApplication($servicesContainer);
 
-/** @noinspection PhpUnusedLocalVariableInspection */
-$controller = $controller ?? new CalculatorController($servicesContainer);
-
-/** @noinspection PhpIncludeInspection */
-require $dirs->getVendorRoot() . '/drdplus/calculator-skeleton/index.php';
+$calculatorApplication->run();

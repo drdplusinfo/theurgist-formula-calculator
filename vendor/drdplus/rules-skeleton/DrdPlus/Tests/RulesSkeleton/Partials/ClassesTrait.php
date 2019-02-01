@@ -6,7 +6,7 @@ namespace DrdPlus\Tests\RulesSkeleton\Partials;
 use DrdPlus\RulesSkeleton\Cache;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\Request;
-use DrdPlus\RulesSkeleton\RulesController;
+use DrdPlus\RulesSkeleton\RulesApplication;
 use DrdPlus\RulesSkeleton\CurrentWebVersion;
 
 trait ClassesTrait
@@ -44,11 +44,11 @@ trait ClassesTrait
     }
 
     /**
-     * @return string|RulesController
+     * @return string|RulesApplication
      */
-    protected function getControllerClass(): string
+    protected function getRulesApplicationClass(): string
     {
-        return RulesController::class;
+        return RulesApplication::class;
     }
 
 }

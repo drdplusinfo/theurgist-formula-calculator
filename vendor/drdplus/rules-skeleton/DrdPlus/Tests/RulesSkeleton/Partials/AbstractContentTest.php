@@ -10,7 +10,7 @@ use DrdPlus\RulesSkeleton\CurrentWebVersion;
 use DrdPlus\RulesSkeleton\Dirs;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
-use DrdPlus\RulesSkeleton\RulesController;
+use DrdPlus\RulesSkeleton\RulesApplication;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\RulesSkeleton\UsagePolicy;
 use DrdPlus\RulesSkeleton\Web\RulesMainBody;
@@ -214,13 +214,13 @@ abstract class AbstractContentTest extends TestWithMockery
         return new HtmlHelper($dirs ?? $this->getDirs(), $inDevMode, $inForcedProductionMode, $shouldHideCovered);
     }
 
-    protected function fetchNonCachedContent(RulesController $controller = null, bool $backupGlobals = true): string
+    protected function fetchNonCachedContent(RulesApplication $rulesApplication = null, bool $backupGlobals = true): string
     {
         $originalGet = $_GET;
         $originalPost = $_POST;
         $originalCookies = $_COOKIE;
         /** @noinspection PhpUnusedLocalVariableInspection */
-        $controller = $controller ?? null;
+        $rulesApplication = $rulesApplication ?? null;
         $_GET[Request::CACHE] = Request::DISABLE;
         \ob_start();
         /** @noinspection PhpIncludeInspection */
@@ -370,14 +370,14 @@ abstract class AbstractContentTest extends TestWithMockery
         return $customConfiguration;
     }
 
-    protected function createController(
+    protected function createRulesApplication(
         Configuration $configuration = null,
         HtmlHelper $htmlHelper = null
-    ): RulesController
+    ): RulesApplication
     {
-        $controllerClass = $this->getControllerClass();
+        $rulesApplicationClass = $this->getRulesApplicationClass();
 
-        return new $controllerClass($this->createServicesContainer($configuration, $htmlHelper));
+        return new $rulesApplicationClass($this->createServicesContainer($configuration, $htmlHelper));
     }
 
     protected function createServicesContainer(
@@ -573,9 +573,9 @@ abstract class AbstractContentTest extends TestWithMockery
         return Configuration::class;
     }
 
-    protected function getControllerClass(): string
+    protected function getRulesApplicationClass(): string
     {
-        return RulesController::class;
+        return RulesApplication::class;
     }
 
     protected function unifyPath(string $path): string

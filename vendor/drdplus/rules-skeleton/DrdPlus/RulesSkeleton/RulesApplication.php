@@ -6,14 +6,12 @@ namespace DrdPlus\RulesSkeleton;
 use DrdPlus\RulesSkeleton\Web\RulesContent;
 use Granam\Strict\Object\StrictObject;
 
-class RulesController extends StrictObject
+class RulesApplication extends StrictObject
 {
     /** @var ServicesContainer */
     private $servicesContainer;
     /** @var Configuration */
     private $configuration;
-    /** @var array */
-    private $bodyClasses;
     /** @var RulesContent */
     private $content;
     /** @var Redirect */
@@ -21,39 +19,30 @@ class RulesController extends StrictObject
     /** @var bool */
     private $canPassIn;
 
-    public function __construct(ServicesContainer $servicesContainer, array $bodyClasses = [])
+    public function __construct(ServicesContainer $servicesContainer)
     {
         $this->servicesContainer = $servicesContainer;
         $this->configuration = $servicesContainer->getConfiguration();
-        $this->bodyClasses = $bodyClasses;
     }
 
-    public function getBodyClasses(): array
+    public function run(): void
     {
-        return $this->bodyClasses;
+        $this->sendCustomHeaders();
+
+        if ($this->isRequestedWebVersionUpdate()) {
+            echo $this->updateCode();
+        } else {
+            $this->persistCurrentVersion();
+            echo $this->getRulesContent()->getValue();
+        }
     }
 
-    public function addBodyClass(string $class): void
-    {
-        $this->bodyClasses[] = $class;
-    }
-
-    public function isMenuPositionFixed(): bool
-    {
-        return $this->configuration->isMenuPositionFixed();
-    }
-
-    public function isShownHomeButton(): bool
-    {
-        return $this->configuration->isShowHomeButton();
-    }
-
-    public function isRequestedWebVersionUpdate(): bool
+    private function isRequestedWebVersionUpdate(): bool
     {
         return $this->servicesContainer->getRequest()->getValue(Request::UPDATE) === 'web';
     }
 
-    public function updateCode(): string
+    private function updateCode(): string
     {
         return \implode(
             "\n",
@@ -61,14 +50,14 @@ class RulesController extends StrictObject
         );
     }
 
-    public function persistCurrentVersion(): bool
+    private function persistCurrentVersion(): bool
     {
         return $this->servicesContainer->getCookiesService()->setMinorVersionCookie(
             $this->servicesContainer->getCurrentWebVersion()->getCurrentMinorVersion()
         );
     }
 
-    public function getRulesContent(): RulesContent
+    private function getRulesContent(): RulesContent
     {
         if ($this->content) {
             return $this->content;
@@ -177,7 +166,7 @@ class RulesController extends StrictObject
         $this->content = null; // unset Content to re-create it with new redirect
     }
 
-    public function sendCustomHeaders(): void
+    private function sendCustomHeaders(): void
     {
         if ($this->getRulesContent()->containsTables()) {
             if (\PHP_SAPI === 'cli') {

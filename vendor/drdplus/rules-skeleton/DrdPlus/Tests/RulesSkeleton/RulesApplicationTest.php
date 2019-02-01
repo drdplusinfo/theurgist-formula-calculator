@@ -5,7 +5,7 @@ use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Redirect;
 use DrdPlus\RulesSkeleton\Request;
-use DrdPlus\RulesSkeleton\RulesController;
+use DrdPlus\RulesSkeleton\RulesApplication;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\RulesSkeleton\UsagePolicy;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
@@ -14,49 +14,36 @@ use Gt\Dom\Element;
 use Gt\Dom\TokenList;
 use Mockery\MockInterface;
 
-class RulesControllerTest extends AbstractContentTest
+class RulesApplicationTest extends AbstractContentTest
 {
-    /**
-     * @test
-     */
-    public function I_can_add_body_class(): void
-    {
-        $controller = $this->createController();
-        self::assertSame([], $controller->getBodyClasses());
-        $controller->addBodyClass('rumbling');
-        $controller->addBodyClass('cracking');
-        self::assertSame(['rumbling', 'cracking'], $controller->getBodyClasses());
-    }
-
     /**
      * @test
      */
     public function I_can_ask_if_menu_is_fixed(): void
     {
-        $configurationWithoutFixedMenu = $this->createCustomConfiguration([Configuration::WEB => [Configuration::MENU_POSITION_FIXED => false]]);
+        $configurationWithoutFixedMenu = $this->createCustomConfiguration(
+            [Configuration::WEB => [Configuration::MENU_POSITION_FIXED => false]]
+        );
         self::assertFalse($configurationWithoutFixedMenu->isMenuPositionFixed(), 'Expected configuration with menu position not fixed');
-        $controller = $this->createController($configurationWithoutFixedMenu);
-        self::assertFalse($controller->isMenuPositionFixed(), 'Contacts are expected to be simply on top by default');
         if ($this->isSkeletonChecked()) {
             /** @var Element $menu */
             $menu = $this->getHtmlDocument()->getElementById(HtmlHelper::ID_MENU);
             self::assertNotEmpty($menu, 'Contacts are missing');
             self::assertTrue($menu->classList->contains('top'), 'Contacts should be positioned on top');
-            self::assertFalse($menu->classList->contains('fixed'), 'Contacts should not be fixed as controller does not say so');
+            self::assertFalse($menu->classList->contains('fixed'), 'Contacts should not be fixed as application does not say so');
         }
         $configurationWithFixedMenu = $this->createCustomConfiguration([Configuration::WEB => [Configuration::MENU_POSITION_FIXED => true]]);
         self::assertTrue($configurationWithFixedMenu->isMenuPositionFixed(), 'Expected configuration with menu position fixed');
-        $controller = $this->createController($configurationWithFixedMenu);
-        self::assertTrue($controller->isMenuPositionFixed(), 'Menu should be fixed');
+        $rulesApplication = $this->createRulesApplication($configurationWithFixedMenu);
         if ($this->isSkeletonChecked()) {
-            $content = $this->fetchNonCachedContent($controller);
+            $content = $this->fetchNonCachedContent($rulesApplication);
             $htmlDocument = new HtmlDocument($content);
             $menu = $htmlDocument->getElementById(HtmlHelper::ID_MENU);
             self::assertNotEmpty($menu, 'Contacts are missing');
             self::assertTrue($menu->classList->contains('top'), 'Contacts should be positioned on top');
             self::assertTrue(
                 $menu->classList->contains('fixed'),
-                'Contacts should be fixed as controller says so;'
+                'Contacts should be fixed as application says so;'
                 . ' current classes are ' . \implode(',', $this->tokenListToArray($menu->classList))
             );
         }
@@ -82,14 +69,14 @@ class RulesControllerTest extends AbstractContentTest
         $now = new \DateTimeImmutable();
         $trialExpectedExpiration = $now->modify('+4 minutes');
         $usagePolicy = $this->createUsagePolicy($trialExpectedExpiration);
-        $controller = new RulesController($this->createServicesContainerWithUsagePolicy($usagePolicy));
-        $controllerReflection = new \ReflectionClass($controller);
-        $activateTrial = $controllerReflection->getMethod('activateTrial');
+        $rulesApplication = new RulesApplication($this->createServicesContainerWithUsagePolicy($usagePolicy));
+        $rulesApplicationReflection = new \ReflectionClass($rulesApplication);
+        $activateTrial = $rulesApplicationReflection->getMethod('activateTrial');
         $activateTrial->setAccessible(true);
-        self::assertTrue($activateTrial->invoke($controller, $now));
-        $getRedirect = $controllerReflection->getMethod('getRedirect');
+        self::assertTrue($activateTrial->invoke($rulesApplication, $now));
+        $getRedirect = $rulesApplicationReflection->getMethod('getRedirect');
         $getRedirect->setAccessible(true);
-        $redirect = $getRedirect->invoke($controller);
+        $redirect = $getRedirect->invoke($rulesApplication);
         self::assertNotNull($redirect);
         $trialExpectedExpirationTimestamp = $trialExpectedExpiration->getTimestamp() + 1; // one second "insurance" overlap
         self::assertSame('/?bar=' . $trialExpectedExpirationTimestamp, $redirect->getTarget());
@@ -152,7 +139,7 @@ class RulesControllerTest extends AbstractContentTest
     {
         self::assertCount(0, $this->getMetaRefreshes($this->getHtmlDocument()), 'No meta tag with refresh meaning expected so far');
         $this->passOut();
-        $controller = null;
+        $rulesApplication = null;
         $now = \time();
         $trialExpiredAt = $now + 240 + 1;
         $trialExpiredAtSecondAfter = $trialExpiredAt++;
@@ -169,13 +156,13 @@ class RulesControllerTest extends AbstractContentTest
                 $_COOKIE[Request::TRIAL] = '1';
             }
         } else { // just a little hack
-            $controller = $this->createController();
-            $controllerReflection = new \ReflectionClass($controller);
-            $setRedirect = $controllerReflection->getMethod('setRedirect');
+            $rulesApplication = $this->createRulesApplication();
+            $rulesApplicationReflection = new \ReflectionClass($rulesApplication);
+            $setRedirect = $rulesApplicationReflection->getMethod('setRedirect');
             $setRedirect->setAccessible(true);
-            $setRedirect->invoke($controller, new Redirect('/?' . UsagePolicy::TRIAL_EXPIRED_AT . '=' . $trialExpiredAt, 241));
+            $setRedirect->invoke($rulesApplication, new Redirect('/?' . UsagePolicy::TRIAL_EXPIRED_AT . '=' . $trialExpiredAt, 241));
         }
-        $trialContent = $this->fetchNonCachedContent($controller);
+        $trialContent = $this->fetchNonCachedContent($rulesApplication);
         $document = new HtmlDocument($trialContent);
         $metaRefreshes = $this->getMetaRefreshes($document);
         self::assertCount(1, $metaRefreshes, 'One meta tag with refresh meaning expected');

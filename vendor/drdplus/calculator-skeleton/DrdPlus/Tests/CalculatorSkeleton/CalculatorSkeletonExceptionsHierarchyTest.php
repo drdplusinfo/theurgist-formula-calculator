@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
-use DrdPlus\CalculatorSkeleton\CalculatorController;
+use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 
 class CalculatorSkeletonExceptionsHierarchyTest extends RulesSkeletonExceptionsHierarchyTest
 {
@@ -15,7 +15,7 @@ class CalculatorSkeletonExceptionsHierarchyTest extends RulesSkeletonExceptionsH
      */
     protected function getTestedNamespace(): string
     {
-        return (new \ReflectionClass(CalculatorController::class))->getNamespaceName();
+        return (new \ReflectionClass(CalculatorApplication::class))->getNamespaceName();
     }
 
     /**

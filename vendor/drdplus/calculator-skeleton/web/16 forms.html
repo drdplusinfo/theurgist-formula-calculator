@@ -1,0 +1,20 @@
+<form action="/" method="get">
+  <label>something required<input type="text" required name="somethingRequired"></label>
+  <button type="button">Do active submit inputs nor buttons</button>
+  <input type="submit" disabled onclick="alert('This should NOT happen')">
+  <button type="submit" value="Stlačit" disabled onclick="alert('This should NOT happen')"></button>
+</form>
+
+<form action="/" method="get">
+  <label>something required<input type="text" required name="somethingRequired"></label>
+  <button type="button">With submit input</button>
+  <input type="submit" value="Stlačit">
+  <button type="submit" value="Stlačit" disabled onclick="alert('This should NOT happen')"></button>
+</form>
+
+<form action="/" method="get">
+  <label>something required<input type="text" required name="somethingRequired"></label>
+  <button type="button">With submit button</button>
+  <input type="submit" disabled onclick="alert('This should NOT happen')">
+  <button type="submit">Stlačit</button>
+</form>
