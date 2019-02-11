@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class ConfigurationTest extends \DrdPlus\Tests\RulesSkeleton\ConfigurationTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

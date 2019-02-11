@@ -116,10 +116,9 @@ class TablesTest extends AbstractContentTest
             )
         );
         self::assertCount(count($tableIds), $tableIds, 'Expected same amount of tables as requested');
-        self::assertArraySubset(
-            $this->getTestsConfiguration()->getSomeExpectedTableIds(),
-            $tableIds,
-            false,
+        self::assertSame(
+            [],
+            \array_diff($this->getTestsConfiguration()->getSomeExpectedTableIds(), $tableIds),
             'Some expected table IDs are missing'
         );
         $this->There_is_no_other_content_than_tables($htmlDocument);

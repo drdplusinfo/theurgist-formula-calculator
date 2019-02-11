@@ -31,7 +31,7 @@ interface TestsConfigurationReader
 
     public function hasHeadings(): bool;
 
-    public function getPublicUrl(): string;
+    public function getExpectedPublicUrl(): string;
 
     public function hasProtectedAccess(): bool;
 

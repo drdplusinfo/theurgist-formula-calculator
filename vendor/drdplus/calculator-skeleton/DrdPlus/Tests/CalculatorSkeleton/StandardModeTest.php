@@ -5,7 +5,7 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class StandardModeTest extends \DrdPlus\Tests\RulesSkeleton\StandardModeTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     /**
      * @test

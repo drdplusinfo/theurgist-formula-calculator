@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class WebContentVersionTest extends \DrdPlus\Tests\RulesSkeleton\WebContentVersionTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

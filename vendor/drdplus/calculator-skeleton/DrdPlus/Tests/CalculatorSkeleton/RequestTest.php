@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class RequestTest extends \DrdPlus\Tests\RulesSkeleton\RequestTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

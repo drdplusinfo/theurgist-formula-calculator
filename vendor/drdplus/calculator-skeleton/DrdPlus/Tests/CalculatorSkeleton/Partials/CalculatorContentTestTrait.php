@@ -20,7 +20,7 @@ use DrdPlus\Tests\CalculatorSkeleton\TestsConfiguration;
  * @method static assertNotEmpty($value, $message = '')
  * @method static fail($message)
  */
-trait AbstractContentTestTrait
+trait CalculatorContentTestTrait
 {
 
     /**

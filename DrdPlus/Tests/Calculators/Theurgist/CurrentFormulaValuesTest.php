@@ -10,15 +10,12 @@ use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractContentTestTrait;
-use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 use Granam\Number\NumberObject;
 use Mockery\MockInterface;
 
-class CurrentFormulaValuesTest extends AbstractContentTest
+class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
 {
-    use AbstractContentTestTrait;
-
     /**
      * @test
      */

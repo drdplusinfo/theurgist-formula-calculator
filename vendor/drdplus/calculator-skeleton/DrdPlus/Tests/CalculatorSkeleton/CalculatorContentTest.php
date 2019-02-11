@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CalculatorRequest;
-use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 
-class CalculatorContentTest extends AbstractContentTest
+class CalculatorContentTest extends AbstractCalculatorContentTest
 {
-    use Partials\AbstractContentTestTrait;
-
     /**
      * @test
      */

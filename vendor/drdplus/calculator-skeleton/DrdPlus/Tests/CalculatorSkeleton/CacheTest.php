@@ -7,7 +7,7 @@ use DrdPlus\RulesSkeleton\Cache;
 
 class CacheTest extends \DrdPlus\Tests\RulesSkeleton\CacheTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     protected static function getSutClass(string $sutTestClass = null, string $regexp = '~\\\Tests(.+)Test$~'): string
     {

@@ -2,7 +2,7 @@
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
-use DrdPlus\RulesSkeleton\UsagePolicy;
+use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Gt\Dom\Element;
 use Gt\Dom\HTMLDocument;
@@ -134,7 +134,7 @@ class PassingTest extends AbstractContentTest
         $this->passOut();
         $warningsOnFirstVisit = $this->getHtmlDocument()->getElementsByClassName('warning');
         self::assertCount(0, $warningsOnFirstVisit, 'No warnings expected so far');
-        $warningsOnTrialExpiration = $this->getHtmlDocument([UsagePolicy::TRIAL_EXPIRED_AT => time() - 1])
+        $warningsOnTrialExpiration = $this->getHtmlDocument([Request::TRIAL_EXPIRED_AT => time() - 1])
             ->getElementsByClassName('warning');
         self::assertCount(1, $warningsOnTrialExpiration, 'Expected single warning about trial expiration');
         /** @var Element $warningAboutTrialExpiration */

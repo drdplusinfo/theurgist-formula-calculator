@@ -59,6 +59,8 @@ class ServicesContainer extends StrictObject
     protected $webFiles;
     /** @var Request */
     protected $request;
+    /** @var ContentIrrelevantParametersFilter */
+    protected $contentIrrelevantParametersFilter;
     /** @var Bot */
     protected $botParser;
     /** @var RulesMainContent */
@@ -260,6 +262,7 @@ class ServicesContainer extends StrictObject
                 $this->getCurrentWebVersion(),
                 $this->getDirs(),
                 $this->getRequest(),
+                $this->getContentIrrelevantParametersFilter(),
                 $this->getGit(),
                 $this->getHtmlHelper()->isInProduction(),
                 Cache::TABLES
@@ -267,6 +270,14 @@ class ServicesContainer extends StrictObject
         }
 
         return $this->tablesWebCache;
+    }
+
+    public function getContentIrrelevantParametersFilter(): ContentIrrelevantParametersFilter
+    {
+        if ($this->contentIrrelevantParametersFilter === null) {
+            $this->contentIrrelevantParametersFilter = new ContentIrrelevantParametersFilter([Request::TRIAL]);
+        }
+        return $this->contentIrrelevantParametersFilter;
     }
 
     public function getCssFiles(): CssFiles
@@ -327,6 +338,7 @@ class ServicesContainer extends StrictObject
                 $this->getCurrentWebVersion(),
                 $this->getDirs(),
                 $this->getRequest(),
+                $this->getContentIrrelevantParametersFilter(),
                 $this->getGit(),
                 $this->getHtmlHelper()->isInProduction(),
                 Cache::PASS
@@ -343,6 +355,7 @@ class ServicesContainer extends StrictObject
                 $this->getCurrentWebVersion(),
                 $this->getDirs(),
                 $this->getRequest(),
+                $this->getContentIrrelevantParametersFilter(),
                 $this->getGit(),
                 $this->getHtmlHelper()->isInProduction(),
                 Cache::PASSED
@@ -417,6 +430,7 @@ class ServicesContainer extends StrictObject
             $this->getCurrentWebVersion(),
             $this->getDirs(),
             $this->getRequest(),
+            $this->getContentIrrelevantParametersFilter(),
             $this->getGit(),
             $this->getHtmlHelper()->isInProduction(),
             'empty'

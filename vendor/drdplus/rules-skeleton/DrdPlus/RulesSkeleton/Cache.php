@@ -12,6 +12,9 @@ class Cache extends StrictObject
     public const PAGES = 'pages';
     public const PASS = 'pass';
     public const PASSED = 'passed';
+    // named parameters
+    public const IN_PRODUCTION = true;
+    public const NOT_IN_PRODUCTION = false;
 
     /** @var string */
     protected $projectRootDir;
@@ -29,22 +32,34 @@ class Cache extends StrictObject
     protected $cachePrefix;
     /** @var bool */
     protected $isInProduction;
+    /** @var ContentIrrelevantParametersFilter */
+    private $contentIrrelevantParametersFilter;
 
     /**
      * @param CurrentWebVersion $currentWebVersion
      * @param Dirs $dirs
      * @param Request $request
+     * @param ContentIrrelevantParametersFilter $contentIrrelevantParametersFilter
      * @param Git $git
      * @param bool $isInProduction
      * @param string $cachePrefix
      * @throws \RuntimeException
      */
-    public function __construct(CurrentWebVersion $currentWebVersion, Dirs $dirs, Request $request, Git $git, bool $isInProduction, string $cachePrefix)
+    public function __construct(
+        CurrentWebVersion $currentWebVersion,
+        Dirs $dirs,
+        Request $request,
+        ContentIrrelevantParametersFilter $contentIrrelevantParametersFilter,
+        Git $git,
+        bool $isInProduction,
+        string $cachePrefix
+    )
     {
         $this->currentWebVersion = $currentWebVersion;
         $this->projectRootDir = $dirs->getProjectRoot();
         $this->cacheRootDir = $dirs->getCacheRoot();
         $this->request = $request;
+        $this->contentIrrelevantParametersFilter = $contentIrrelevantParametersFilter;
         $this->git = $git;
         $this->isInProduction = $isInProduction;
         $this->cachePrefix = $cachePrefix;
@@ -77,7 +92,9 @@ class Cache extends StrictObject
 
     protected function getCurrentRequestHash(): string
     {
-        return \md5(\serialize($this->request->getValuesFromGet()));
+        $filteredGetParameters = $this->contentIrrelevantParametersFilter
+            ->removeContentIrrelevantParameters($this->request->getValuesFromGet());
+        return \md5(\serialize($filteredGetParameters));
     }
 
     /**
@@ -86,7 +103,10 @@ class Cache extends StrictObject
      */
     public function isCacheValid(): bool
     {
-        return ($this->request->getValue(Request::CACHE) ?? '') !== Request::DISABLE && \is_readable($this->getCacheFileName());
+        $cacheParameter = $this->request->getValue(Request::CACHE) ?? '';
+
+        return ($cacheParameter === '' || !\in_array($cacheParameter, [Request::DISABLE, 'disabled', '0'], true))
+            && \is_readable($this->getCacheFileName());
     }
 
     public function getCacheId(): string

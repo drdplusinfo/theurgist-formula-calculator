@@ -152,9 +152,7 @@ class RulesApplication extends StrictObject
         if ($visitorCanAccessContent) {
             $at = $trialExpiration->getTimestamp() + 1; // one second "insurance" overlap
             $afterSeconds = $at - $now->getTimestamp();
-            $this->setRedirect(
-                new Redirect("/?{$this->servicesContainer->getUsagePolicy()->getTrialExpiredAtName()}={$at}", $afterSeconds)
-            );
+            $this->setRedirect(new Redirect(\sprintf('/?%s=%d', Request::TRIAL_EXPIRED_AT, $at), $afterSeconds));
         }
 
         return $visitorCanAccessContent;

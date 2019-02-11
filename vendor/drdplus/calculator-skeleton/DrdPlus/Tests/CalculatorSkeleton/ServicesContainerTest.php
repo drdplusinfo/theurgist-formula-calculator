@@ -7,7 +7,7 @@ use DrdPlus\RulesSkeleton\ServicesContainer;
 
 class ServicesContainerTest extends \DrdPlus\Tests\RulesSkeleton\ServicesContainerTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     protected static function getSutClass(string $sutTestClass = null, string $regexp = '~\\\Tests(.+)Test$~'): string
     {

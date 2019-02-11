@@ -7,10 +7,9 @@ use Granam\Strict\Object\StrictObject;
 
 class UsagePolicy extends StrictObject
 {
-    public const TRIAL_EXPIRED_AT = 'trialExpiredAt';
     public const OWNERSHIP_COOKIE_NAME = 'ownershipCookieName';
     public const TRIAL_COOKIE_NAME = 'trialCookieName';
-    public const TRIAL_EXPIRED_AT_NAME = 'trialExpiredAtName';
+    public const TRIAL_EXPIRED_AT_COOKIE_NAME = 'trialExpiredAtCookieName';
 
     /** @var string */
     private $articleName;
@@ -43,7 +42,7 @@ class UsagePolicy extends StrictObject
         $this->cookiesService = $cookiesService;
         $this->setCookie(static::OWNERSHIP_COOKIE_NAME, $this->getOwnershipName(), null /* expire on session end*/);
         $this->setCookie(static::TRIAL_COOKIE_NAME, $this->getTrialName(), null /* expire on session end*/);
-        $this->setCookie(static::TRIAL_EXPIRED_AT_NAME, $this->getTrialExpiredAtName(), null /* expire on session end*/);
+        $this->setCookie(static::TRIAL_EXPIRED_AT_COOKIE_NAME, Request::TRIAL_EXPIRED_AT, null /* expire on session end*/);
     }
 
     /**
@@ -93,11 +92,6 @@ class UsagePolicy extends StrictObject
         return \str_replace('.', '_', 'trialOf' . \ucfirst($this->articleName));
     }
 
-    public function getTrialExpiredAtName(): string
-    {
-        return static::TRIAL_EXPIRED_AT;
-    }
-
     /**
      * @param \DateTimeImmutable $expiresAt
      * @return bool
@@ -110,6 +104,6 @@ class UsagePolicy extends StrictObject
 
     public function trialJustExpired(): bool
     {
-        return !empty($_GET[static::TRIAL_EXPIRED_AT]) && ((int)$_GET[static::TRIAL_EXPIRED_AT]) <= \time();
+        return $this->request->trialJustExpired();
     }
 }

@@ -5,12 +5,10 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CurrentValues;
 use DrdPlus\CalculatorSkeleton\Memory;
-use Granam\Tests\Tools\TestWithMockery;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 
-class CurrentValuesTest extends TestWithMockery
+class CurrentValuesTest extends AbstractCalculatorContentTest
 {
-    use Partials\AbstractContentTestTrait;
-
     /**
      * @test
      */

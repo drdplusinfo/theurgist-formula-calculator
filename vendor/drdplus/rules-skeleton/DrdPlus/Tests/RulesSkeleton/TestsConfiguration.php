@@ -21,7 +21,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public const HAS_HEADINGS = 'has_headings';
     public const HAS_AUTHORS = 'has_authors';
 
-    public const PUBLIC_URL = 'public_url';
+    public const EXPECTED_PUBLIC_URL = 'expected_public_url';
     public const HAS_EXTERNAL_ANCHORS_WITH_HASHES = 'has_external_anchors_with_hashes';
     public const HAS_CUSTOM_BODY_CONTENT = 'has_custom_body_content';
     public const HAS_NOTES = 'has_notes';
@@ -83,7 +83,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     /** @var array|string[] */
     private $allowedCalculationIdPrefixes = ['Hod proti', 'Hod na', 'Výpočet'];
     /** @var string */
-    private $publicUrl;
+    private $expectedPublicUrl;
     /** @var bool */
     private $hasProtectedAccess = true;
     /** @var bool */
@@ -119,7 +119,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->setHasHeadings($values);
         $this->setHasAuthors($values);
         $this->setPublicUrl($values);
-        $this->setLocalUrl($this->publicUrl);
+        $this->setLocalUrl($this->expectedPublicUrl);
         $this->setHasExternalAnchorsWithHashes($values);
         $this->setHasCustomBodyContent($values);
         $this->setHasNotes($values);
@@ -230,12 +230,12 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
 
     private function setPublicUrl(array $values)
     {
-        $publicUrl = \trim($values[self::PUBLIC_URL] ?? '');
+        $publicUrl = \trim($values[self::EXPECTED_PUBLIC_URL] ?? '');
         try {
             $this->guardValidUrl($publicUrl);
         } catch (InvalidUrl $invalidUrl) {
             throw new Exceptions\InvalidPublicUrl(
-                sprintf("Given public URL under key '%s' is not valid: '%s'", self::PUBLIC_URL, $publicUrl),
+                sprintf("Given public URL under key '%s' is not valid: '%s'", self::EXPECTED_PUBLIC_URL, $publicUrl),
                 $invalidUrl->getCode(),
                 $invalidUrl
             );
@@ -243,7 +243,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         if (\strpos($publicUrl, 'https://') !== 0) {
             throw new Exceptions\PublicUrlShouldUseHttps("Given public URL should use HTTPS: '$publicUrl'");
         }
-        $this->publicUrl = $publicUrl;
+        $this->expectedPublicUrl = $publicUrl;
     }
 
     /**
@@ -423,9 +423,9 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         }
     }
 
-    public function getPublicUrl(): string
+    public function getExpectedPublicUrl(): string
     {
-        return $this->publicUrl;
+        return $this->expectedPublicUrl;
     }
 
     public function getLocalUrl(): string

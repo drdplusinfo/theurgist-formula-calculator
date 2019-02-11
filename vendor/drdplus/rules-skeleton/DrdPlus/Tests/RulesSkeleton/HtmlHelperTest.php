@@ -328,4 +328,67 @@ HTML
         $linkWithoutAnchor = $htmlDocument->getElementById('link_without_anchor');
         self::assertFalse($linkWithoutAnchor->classList->contains(HtmlHelper::CLASS_EXTERNAL_URL));
     }
+
+    /**
+     * @test
+     */
+    public function I_can_add_id_to_table(): void
+    {
+        /** @var HtmlHelper $htmlHelperClass */
+        $htmlHelperClass = static::getSutClass();
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlDocument = new HtmlDocument($content = <<<HTML
+        <!DOCTYPE html>
+<html lang="cs">
+<table>
+  <thead>
+    <tr>
+      <th>Tabulka <strong>noční míry</strong></th>
+      <th>Tabulka denní míry</th>
+    </tr>
+  </thead>
+</table>
+</html>
+HTML
+        );
+        self::assertSame($htmlDocument, $htmlHelper->addIdsToTables($htmlDocument));
+        $firstTableWithId = $htmlDocument->getElementById($firstExpectedId = 'Tabulka noční míry');
+        self::assertNotEmpty(
+            $firstTableWithId,
+            \sprintf('No element found by ID %s in content %s', $firstExpectedId, $htmlDocument->body->prop_get_outerHTML())
+        );
+        self::assertSame('th', $firstTableWithId->nodeName);
+        $secondTableWithId = $htmlDocument->getElementById($secondExpectedId = 'Tabulka denní míry');
+        self::assertNotEmpty(
+            $secondTableWithId,
+            \sprintf('No element found by ID %s in content %s', $secondExpectedId, $htmlDocument->body->prop_get_outerHTML())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function No_ids_are_added_to_table_with_id_in_head_cell(): void
+    {
+        /** @var HtmlHelper $htmlHelperClass */
+        $htmlHelperClass = static::getSutClass();
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlDocument = new HtmlDocument($content = <<<HTML
+        <!DOCTYPE html>
+<html lang="cs">
+<table>
+  <thead>
+    <tr>
+      <th>
+        <span id="Tabulka pohybu">Tabulka pohybu</span> a k tomu <span id="Tabulka únavy z pohybu">Tabulka únavy z pohybu</span>
+      </th>
+    </tr>
+  </thead>
+</table>
+</html>
+HTML
+        );
+        self::assertSame($htmlDocument, $htmlHelper->addIdsToTables($htmlDocument));
+        self::assertSame((new HtmlDocument($content))->saveHTML(), $htmlDocument->saveHTML());
+    }
 }

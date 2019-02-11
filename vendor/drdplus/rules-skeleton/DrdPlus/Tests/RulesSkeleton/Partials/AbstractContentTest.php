@@ -5,6 +5,7 @@ namespace DrdPlus\Tests\RulesSkeleton\Partials;
 
 use DeviceDetector\Parser\Bot;
 use DrdPlus\RulesSkeleton\Configuration;
+use DrdPlus\RulesSkeleton\ContentIrrelevantParametersFilter;
 use DrdPlus\RulesSkeleton\CookiesService;
 use DrdPlus\RulesSkeleton\CurrentWebVersion;
 use DrdPlus\RulesSkeleton\Dirs;
@@ -61,7 +62,7 @@ abstract class AbstractContentTest extends TestWithMockery
     protected function passIn(): bool
     {
         $_COOKIE[$this->getNameForLocalOwnershipConfirmation()] = true; // this cookie simulates confirmation of ownership
-        $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request(new Bot()), new CookiesService());
+        $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request($this->getBot()), new CookiesService());
         self::assertTrue(
             $usagePolicy->hasVisitorConfirmedOwnership(),
             "Ownership has not been confirmed by cookie '{$this->getNameForLocalOwnershipConfirmation()}'"
@@ -72,10 +73,19 @@ abstract class AbstractContentTest extends TestWithMockery
         return true;
     }
 
+    protected function getBot(): Bot
+    {
+        static $bot;
+        if ($bot === null) {
+            $bot = new Bot();
+        }
+        return $bot;
+    }
+
     protected function passOut(): bool
     {
         unset($_COOKIE[$this->getNameForLocalOwnershipConfirmation()]);
-        $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request(new Bot()), new CookiesService());
+        $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request($this->getBot()), new CookiesService());
         self::assertFalse(
             $usagePolicy->hasVisitorConfirmedOwnership(),
             "Ownership is still confirmed by cookie '{$this->getNameForLocalOwnershipConfirmation()}'"
@@ -337,16 +347,30 @@ abstract class AbstractContentTest extends TestWithMockery
         return $this->configuration;
     }
 
-    protected function createRequest(string $requestedVersion = null): Request
+    /**
+     * @param array $values
+     * @return Request|MockInterface
+     */
+    protected function createRequest(array $values = []): Request
     {
         $request = $this->mockery($this->getRequestClass());
-        $request->allows('getValue')
-            ->with(Request::VERSION)
-            ->andReturn($requestedVersion);
+        foreach ($values as $name => $value) {
+            $request->allows('getValue')
+                ->with($name)
+                ->andReturn($value);
+        }
         $request->makePartial();
 
-        /** @var Request $request */
         return $request;
+    }
+
+    protected function getContentIrrelevantParametersFilter(): ContentIrrelevantParametersFilter
+    {
+        static $contentIrrelevantParametersFilter;
+        if ($contentIrrelevantParametersFilter === null) {
+            $contentIrrelevantParametersFilter = $this->createServicesContainer()->getContentIrrelevantParametersFilter();
+        }
+        return $contentIrrelevantParametersFilter;
     }
 
     protected function createGit(): Git
@@ -380,12 +404,17 @@ abstract class AbstractContentTest extends TestWithMockery
         return new $rulesApplicationClass($this->createServicesContainer($configuration, $htmlHelper));
     }
 
-    protected function createServicesContainer(
-        Configuration $configuration = null,
-        HtmlHelper $htmlHelper = null
-    ): ServicesContainer
+    protected function getServicesContainer(): ServicesContainer
     {
+        static $servicesContainer;
+        if ($servicesContainer === null) {
+            $servicesContainer = $this->createServicesContainer();
+        }
+        return $servicesContainer;
+    }
 
+    protected function createServicesContainer(Configuration $configuration = null, HtmlHelper $htmlHelper = null): ServicesContainer
+    {
         return new ServicesContainer(
             $configuration ?? $this->getConfiguration(),
             $htmlHelper ?? $this->createHtmlHelper($this->getDirs())
@@ -497,7 +526,7 @@ abstract class AbstractContentTest extends TestWithMockery
     {
         static $nameOfOwnershipConfirmation;
         if ($nameOfOwnershipConfirmation === null) {
-            $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request(new Bot()), new CookiesService());
+            $usagePolicy = new UsagePolicy($this->getVariablePartOfNameForPass(), new Request($this->getBot()), new CookiesService());
             try {
                 $usagePolicyReflection = new \ReflectionClass(UsagePolicy::class);
             } catch (\ReflectionException $reflectionException) {
@@ -632,6 +661,16 @@ abstract class AbstractContentTest extends TestWithMockery
         );
     }
 
+    protected function getCurrentWebVersion(): CurrentWebVersion
+    {
+        static $currentWebVersion;
+        if ($currentWebVersion === null) {
+            $currentWebVersion = $this->createCurrentWebVersion();
+        }
+
+        return $currentWebVersion;
+    }
+
     protected function getProjectRoot(): string
     {
         static $projectRoot;
@@ -703,5 +742,44 @@ abstract class AbstractContentTest extends TestWithMockery
         }
 
         return $tableIds;
+    }
+
+    protected function parseAllIds(HtmlDocument $htmlDocument): array
+    {
+        if (!\preg_match_all('~\sid\s*=\s*"(?<id>[^"]+)~', $htmlDocument->saveHTML(), $idMatches)) {
+            return [];
+        }
+        $ids = [];
+        foreach ($idMatches['id'] as $id) {
+            $ids[] = \html_entity_decode($id);
+        }
+        return $ids;
+    }
+
+    /**
+     * @test
+     */
+    public function Globals_are_cleaned(): void
+    {
+        self::assertCount(0, $_GET, 'Global $_GET is not empty, have you forgot to set @backupGlobals enabled ?, ' . \var_export($_GET, true));
+        self::assertCount(0, $_POST, 'Global $_POST is not empty, have you forgot to set @backupGlobals enabled ? ' . \var_export($_POST, true));
+        if (!$this->getTestsConfiguration()->hasProtectedAccess()) {
+            self::assertCount(0, $_COOKIE, 'Global $_COOKIE is not empty, have you forgot to set @backupGlobals enabled ? ' . \var_export($_COOKIE, true));
+        } else {
+            $allowedCookieKeys = [
+                UsagePolicy::OWNERSHIP_COOKIE_NAME,
+                UsagePolicy::TRIAL_COOKIE_NAME,
+                UsagePolicy::TRIAL_EXPIRED_AT_COOKIE_NAME,
+            ];
+            if (isset($_COOKIE[UsagePolicy::OWNERSHIP_COOKIE_NAME])) {
+                $allowedCookieKeys[] = $_COOKIE[UsagePolicy::OWNERSHIP_COOKIE_NAME];
+            }
+            $cookieTrash = \array_diff_key($_COOKIE, \array_fill_keys($allowedCookieKeys, 'foo'));
+            self::assertCount(
+                0,
+                $cookieTrash,
+                'Global $_COOKIE after filtering pass-related values is not empty, have you forgot to set @backupGlobals enabled ? ' . \var_export($cookieTrash, true)
+            );
+        }
     }
 }

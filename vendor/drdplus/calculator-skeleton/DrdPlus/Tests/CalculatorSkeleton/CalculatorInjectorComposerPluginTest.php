@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CalculatorInjectorComposerPlugin;
-use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 
-class CalculatorInjectorComposerPluginTest extends AbstractContentTest
+class CalculatorInjectorComposerPluginTest extends AbstractCalculatorContentTest
 {
-    use Partials\AbstractContentTestTrait;
-
     /**
      * @test
      */

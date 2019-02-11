@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class RouterTest extends \DrdPlus\Tests\RulesSkeleton\RouterTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

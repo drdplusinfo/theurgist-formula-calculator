@@ -53,7 +53,7 @@ class TestsConfigurationTest extends AbstractContentTest
     {
         return [
             TestsConfiguration::SOME_EXPECTED_TABLE_IDS => [],
-            TestsConfiguration::PUBLIC_URL => 'https://www.drdplus.info',
+            TestsConfiguration::EXPECTED_PUBLIC_URL => 'https://www.drdplus.info',
             TestsConfiguration::EXPECTED_WEB_NAME => 'foo',
             TestsConfiguration::EXPECTED_PAGE_TITLE => 'foo',
             TestsConfiguration::EXPECTED_GOOGLE_ANALYTICS_ID => 'UA-UB-1',
@@ -163,9 +163,9 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function I_can_set_and_get_local_and_public_url(): void
     {
-        $testsConfiguration = $this->createTestsConfiguration([TestsConfiguration::PUBLIC_URL => 'https://drdplus.info']);
+        $testsConfiguration = $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => 'https://drdplus.info']);
         self::assertSame('http://drdplus.loc', $testsConfiguration->getLocalUrl());
-        self::assertSame('https://drdplus.info', $testsConfiguration->getPublicUrl());
+        self::assertSame('https://drdplus.info', $testsConfiguration->getExpectedPublicUrl());
     }
 
     /**
@@ -175,7 +175,7 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function I_can_not_create_it_with_invalid_public_url(): void
     {
-        $this->createTestsConfiguration([TestsConfiguration::PUBLIC_URL => 'example.com']); // missing protocol
+        $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => 'example.com']); // missing protocol
     }
 
     /**
@@ -185,7 +185,7 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function I_can_not_create_it_with_public_url_without_https(): void
     {
-        $this->createTestsConfiguration([TestsConfiguration::PUBLIC_URL => 'http://example.com']);
+        $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => 'http://example.com']);
     }
 
     /**
@@ -275,6 +275,6 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function I_am_stopped_if_public_url_is_missing(): void
     {
-        $this->createTestsConfiguration([TestsConfiguration::PUBLIC_URL => null]);
+        $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => null]);
     }
 }

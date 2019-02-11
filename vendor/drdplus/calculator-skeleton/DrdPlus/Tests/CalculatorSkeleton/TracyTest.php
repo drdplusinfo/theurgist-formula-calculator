@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class TracyTest extends \DrdPlus\Tests\RulesSkeleton\TracyTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

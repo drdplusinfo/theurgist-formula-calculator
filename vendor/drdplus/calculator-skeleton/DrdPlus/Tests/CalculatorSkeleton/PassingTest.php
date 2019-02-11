@@ -5,7 +5,7 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class PassingTest extends \DrdPlus\Tests\RulesSkeleton\PassingTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     /**
      * @test

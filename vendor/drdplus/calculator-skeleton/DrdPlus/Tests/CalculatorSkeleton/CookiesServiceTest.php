@@ -7,7 +7,7 @@ use DrdPlus\RulesSkeleton\CookiesService;
 
 class CookiesServiceTest extends \DrdPlus\Tests\RulesSkeleton\CookiesServiceTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     protected static function getSutClass(string $sutTestClass = null, string $regexp = '~\\\Tests(.+)Test$~'): string
     {

@@ -442,8 +442,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
-     * @backupGlobals enabled
+     * @test
      */
     public function No_links_point_to_local_hosts(): void
     {
@@ -481,7 +480,7 @@ class AnchorsTest extends AbstractContentTest
                     $externalAnchors[] = $link;
                 }
             }
-            $externalAnchors[] = $this->getTestsConfiguration()->getPublicUrl();
+            $externalAnchors[] = $this->getTestsConfiguration()->getExpectedPublicUrl();
         }
 
         return $externalAnchors;

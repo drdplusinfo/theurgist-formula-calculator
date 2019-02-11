@@ -5,16 +5,17 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\History;
 use DrdPlus\RulesSkeleton\CookiesService;
-use Granam\Tests\Tools\TestWithMockery;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 
-class HistoryTest extends TestWithMockery
+/**
+ * @backupGlobals enabled
+ */
+class HistoryTest extends AbstractCalculatorContentTest
 {
-    use Partials\AbstractContentTestTrait;
-
     /** @var CookiesService */
     private $cookiesService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->cookiesService = new CookiesService();

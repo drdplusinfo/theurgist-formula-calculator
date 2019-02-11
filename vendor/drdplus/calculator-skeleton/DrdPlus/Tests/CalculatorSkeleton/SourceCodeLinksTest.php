@@ -5,5 +5,5 @@ namespace DrdPlus\Tests\CalculatorSkeleton;
 
 class SourceCodeLinksTest extends \DrdPlus\Tests\RulesSkeleton\SourceCodeLinksTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 }

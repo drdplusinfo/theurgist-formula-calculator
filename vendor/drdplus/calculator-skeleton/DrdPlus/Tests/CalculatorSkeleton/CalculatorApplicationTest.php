@@ -8,16 +8,14 @@ use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
-use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 use Mockery\MockInterface;
 
 /**
  * @method CalculatorServicesContainer createServicesContainer(Configuration $configuration = null, HtmlHelper $htmlHelper = null)
  */
-class CalculatorControllerTest extends AbstractContentTest
+class CalculatorApplicationTest extends AbstractCalculatorContentTest
 {
-    use Partials\AbstractContentTestTrait;
-
     /**
      * @test
      * @backupGlobals enabled

@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
+/**
+ * @backupGlobals enabled
+ */
 class AnchorsTest extends \DrdPlus\Tests\RulesSkeleton\AnchorsTest
 {
-    use Partials\AbstractContentTestTrait;
+    use Partials\CalculatorContentTestTrait;
 
     /**
      * @test

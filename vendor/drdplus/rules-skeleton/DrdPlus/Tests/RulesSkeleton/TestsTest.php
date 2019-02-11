@@ -10,7 +10,6 @@ use DrdPlus\Tests\RulesSkeleton\Partials\TestsConfigurationReaderTest;
 
 class TestsTest extends AbstractContentTest
 {
-
     /**
      * @test
      * @throws \ReflectionException
@@ -103,7 +102,7 @@ class TestsTest extends AbstractContentTest
         return $rulesApplicationTestClass;
     }
 
-    private function getClassesFromDir(string $dir): array
+    protected function getClassesFromDir(string $dir): array
     {
         $classes = [];
         foreach (\scandir($dir, SCANDIR_SORT_NONE) as $folder) {

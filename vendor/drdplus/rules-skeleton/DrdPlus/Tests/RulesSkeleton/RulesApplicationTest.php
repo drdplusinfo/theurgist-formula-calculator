@@ -12,8 +12,9 @@ use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\WebContentBuilder\HtmlDocument;
 use Gt\Dom\Element;
 use Gt\Dom\TokenList;
-use Mockery\MockInterface;
-
+use Mockery\MockInterface;/**
+ * @backupGlobals enabled
+ */
 class RulesApplicationTest extends AbstractContentTest
 {
     /**
@@ -79,7 +80,7 @@ class RulesApplicationTest extends AbstractContentTest
         $redirect = $getRedirect->invoke($rulesApplication);
         self::assertNotNull($redirect);
         $trialExpectedExpirationTimestamp = $trialExpectedExpiration->getTimestamp() + 1; // one second "insurance" overlap
-        self::assertSame('/?bar=' . $trialExpectedExpirationTimestamp, $redirect->getTarget());
+        self::assertSame('/?' . Request::TRIAL_EXPIRED_AT . '=' . $trialExpectedExpirationTimestamp, $redirect->getTarget());
         self::assertSame($trialExpectedExpirationTimestamp - $now->getTimestamp(), $redirect->getAfterSeconds());
     }
 
@@ -90,9 +91,6 @@ class RulesApplicationTest extends AbstractContentTest
     private function createUsagePolicy(\DateTimeInterface $trialExpectedExpiration): UsagePolicy
     {
         $usagePolicy = $this->mockery(UsagePolicy::class);
-        $usagePolicy->expects('getTrialExpiredAtName')
-            ->atLeast()->once()
-            ->andReturn('bar');
         $usagePolicy->expects('activateTrial')
             ->with($this->type(\DateTimeInterface::class))
             ->andReturnUsing(function (\DateTimeInterface $expiresAt) use ($trialExpectedExpiration) {
@@ -160,7 +158,7 @@ class RulesApplicationTest extends AbstractContentTest
             $rulesApplicationReflection = new \ReflectionClass($rulesApplication);
             $setRedirect = $rulesApplicationReflection->getMethod('setRedirect');
             $setRedirect->setAccessible(true);
-            $setRedirect->invoke($rulesApplication, new Redirect('/?' . UsagePolicy::TRIAL_EXPIRED_AT . '=' . $trialExpiredAt, 241));
+            $setRedirect->invoke($rulesApplication, new Redirect('/?' . Request::TRIAL_EXPIRED_AT . '=' . $trialExpiredAt, 241));
         }
         $trialContent = $this->fetchNonCachedContent($rulesApplication);
         $document = new HtmlDocument($trialContent);
@@ -168,7 +166,7 @@ class RulesApplicationTest extends AbstractContentTest
         self::assertCount(1, $metaRefreshes, 'One meta tag with refresh meaning expected');
         $metaRefresh = \current($metaRefreshes);
         self::assertRegExp(
-            '~241; url=/[?]' . UsagePolicy::TRIAL_EXPIRED_AT . "=($trialExpiredAt|$trialExpiredAtSecondAfter)~",
+            '~241; url=/[?]' . Request::TRIAL_EXPIRED_AT . "=($trialExpiredAt|$trialExpiredAtSecondAfter)~",
             $metaRefresh->getAttribute('content')
         );
     }
