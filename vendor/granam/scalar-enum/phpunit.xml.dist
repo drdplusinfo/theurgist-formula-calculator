@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+        bootstrap="./Granam/Tests/tests_bootstrap.php"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        stopOnFailure="true"
+        processIsolation="false"
+        backupGlobals="false"
+        colors="true"
+>
+    <testsuite name="all">
+        <directory>./Granam/Tests</directory>
+    </testsuite>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
+            <directory>./Granam/Scalar</directory>
+        </whitelist>
+    </filter>
+</phpunit>

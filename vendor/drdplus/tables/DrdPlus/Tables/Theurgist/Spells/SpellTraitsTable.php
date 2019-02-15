@@ -10,6 +10,9 @@ use DrdPlus\Codes\Theurgist\SpellTraitCode;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 
+/**
+ * @link https://theurg.drdplus.info/#tabulka_formuli
+ */
 class SpellTraitsTable extends AbstractFileTable
 {
     use ToFlatArrayTrait;

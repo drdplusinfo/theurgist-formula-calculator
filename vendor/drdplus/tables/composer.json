@@ -8,14 +8,24 @@
       "DrdPlus\\": "DrdPlus/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "/home/jaroslav/projects/drdplus/codes"
+    },
+    {
+      "type": "vcs",
+      "url": "/home/jaroslav/projects/drdplus/base-properties"
+    }
+  ],
   "require": {
     "php": ">=7.1",
     "granam/float": ">=5.0",
     "granam/integer": ">=6.1",
     "granam/number": ">=4.0",
     "granam/boolean": ">=3.1",
-    "drdplus/codes": "^1.0",
-    "drdplus/base-properties": "^1.0",
+    "drdplus/codes": "~2.0",
+    "drdplus/base-properties": "~2.0",
     "drdplus/calculations": "^1.0",
     "granam/dice-rolls": "^5.0"
   },

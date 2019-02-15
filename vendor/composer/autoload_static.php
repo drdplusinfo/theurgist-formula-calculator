@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
         '7745382c92b7799bf1294b1f43023ba2' => __DIR__ . '/..' . '/tracy/tracy/src/shortcuts.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -53,11 +53,7 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
         'D' => 
         array (
             'DrdPlus\\' => 8,
-            'Doctrineum\\' => 11,
             'Doctrine\\Instantiator\\' => 22,
-            'Doctrine\\DBAL\\' => 14,
-            'Doctrine\\Common\\Cache\\' => 22,
-            'Doctrine\\Common\\' => 16,
             'DeviceDetector\\' => 15,
             'DeepCopy\\' => 9,
         ),
@@ -146,14 +142,16 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
             3 => __DIR__ . '/..' . '/granam/float/Granam',
             4 => __DIR__ . '/..' . '/granam/git/Granam',
             5 => __DIR__ . '/..' . '/granam/integer/Granam',
-            6 => __DIR__ . '/..' . '/granam/number/Granam',
-            7 => __DIR__ . '/..' . '/granam/object-history/Granam',
-            8 => __DIR__ . '/..' . '/granam/scalar/Granam',
-            9 => __DIR__ . '/..' . '/granam/strict-object/Granam',
-            10 => __DIR__ . '/..' . '/granam/string/Granam',
-            11 => __DIR__ . '/..' . '/granam/tools/Granam',
-            12 => __DIR__ . '/..' . '/granam/web-content-builder/Granam',
-            13 => __DIR__ . '/..' . '/granam/yaml-reader/Granam',
+            6 => __DIR__ . '/..' . '/granam/integer-enum/Granam',
+            7 => __DIR__ . '/..' . '/granam/number/Granam',
+            8 => __DIR__ . '/..' . '/granam/object-history/Granam',
+            9 => __DIR__ . '/..' . '/granam/scalar/Granam',
+            10 => __DIR__ . '/..' . '/granam/scalar-enum/Granam',
+            11 => __DIR__ . '/..' . '/granam/strict-object/Granam',
+            12 => __DIR__ . '/..' . '/granam/string/Granam',
+            13 => __DIR__ . '/..' . '/granam/tools/Granam',
+            14 => __DIR__ . '/..' . '/granam/web-content-builder/Granam',
+            15 => __DIR__ . '/..' . '/granam/yaml-reader/Granam',
         ),
         'DrdPlus\\' => 
         array (
@@ -166,27 +164,9 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
             6 => __DIR__ . '/..' . '/drdplus/tables/DrdPlus',
             7 => __DIR__ . '/..' . '/drdplus/web-versions/DrdPlus',
         ),
-        'Doctrineum\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrineum/integer/Doctrineum',
-            1 => __DIR__ . '/..' . '/doctrineum/scalar/Doctrineum',
-            2 => __DIR__ . '/..' . '/doctrineum/self-registering-type/Doctrineum',
-        ),
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
-        ),
-        'Doctrine\\DBAL\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/dbal/lib/Doctrine/DBAL',
-        ),
-        'Doctrine\\Common\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
-        ),
-        'Doctrine\\Common\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/event-manager/lib/Doctrine/Common',
         ),
         'DeviceDetector\\' => 
         array (

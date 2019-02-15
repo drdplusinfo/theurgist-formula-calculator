@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+declare(strict_types=1);
 
 namespace DrdPlus\Tables\Measurements\Partials;
 
@@ -42,9 +42,10 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
             try {
                 $this->loadData();
             } catch (\DrdPlus\Tables\Measurements\Exceptions\Exception $loadingException) {
-                /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
                 throw new Exceptions\LoadingDataFailed(
-                    $loadingException->getMessage(), $loadingException->getCode(), $loadingException
+                    $loadingException->getMessage(),
+                    $loadingException->getCode(),
+                    $loadingException
                 );
             }
         }
@@ -101,8 +102,8 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
     private function loadData(): void
     {
         $rawData = $this->fetchDataFromFile($this->getDataFileName());
-        $indexed = $this->normalizeAndIndex($rawData);
-        $this->indexedValues = $indexed;
+        $indexedValues = $this->normalizeAndIndex($rawData);
+        $this->indexedValues = $indexedValues;
     }
 
     /**
@@ -211,10 +212,6 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
         return ToInteger::toInteger($this->parseNumber($value));
     }
 
-    /**
-     * @param string $value
-     * @return string
-     */
     private function parseNumber(string $value): string
     {
         return \str_replace(
@@ -320,27 +317,17 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
         }
     }
 
-    /**
-     * @param int $bonusValue
-     * @param string $wantedUnit
-     * @return bool
-     */
     private function hasValueByBonusValueAndUnit(int $bonusValue, string $wantedUnit): bool
     {
         return ($this->getIndexedValues()[$bonusValue][$wantedUnit] ?? null) !== null;
     }
 
-    /**
-     * @param $rawValue
-     * @return float
-     */
     private function evaluate($rawValue): float
     {
         if (\is_float($rawValue)) {
             return $rawValue;
         }
 
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return $this->evaluator->evaluate($this->parseMaxRollToGetValue($rawValue));
     }
 
@@ -376,13 +363,8 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
         return $this->hasValueByBonusValueAndUnit($bonusValue, $wantedUnit);
     }
 
-    /**
-     * @param MeasurementWithBonus $measurement
-     * @return AbstractBonus
-     */
     protected function measurementToBonus(MeasurementWithBonus $measurement): AbstractBonus
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return $this->createBonus($this->determineBonusValue($measurement));
     }
 
@@ -408,7 +390,6 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
      */
     private function getBonusMatchingOrClosestTo(MeasurementWithBonus $measurement)
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $searchedValue = ToFloat::toFloat($measurement->getValue());
         $searchedUnit = $measurement->getUnit();
         $closest = ['lower' => [], 'higher' => []]; // value to bonuses
@@ -448,15 +429,8 @@ abstract class AbstractMeasurementFileTable extends AbstractTable
         return $closest;
     }
 
-    /**
-     * @param float $searchedValue
-     * @param array $closestLower
-     * @param array $closestHigher
-     * @return int
-     */
     private function getBonusClosestTo(float $searchedValue, array $closestLower, array $closestHigher): int
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $closerValue = $this->getCloserValue(
             $searchedValue,
             // because float keys are encoded as string (otherwise PHP will cast them silently to int when used as array keys)

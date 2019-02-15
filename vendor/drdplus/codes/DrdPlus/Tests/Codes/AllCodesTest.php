@@ -124,7 +124,7 @@ class AllCodesTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Doctrineum\Scalar\Exceptions\UnexpectedValueToEnum
+     * @expectedException \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
      * @expectedExceptionMessageRegExp ~\DateTime~
      * @dataProvider provideCodeClasses
      * @param string $codeClass

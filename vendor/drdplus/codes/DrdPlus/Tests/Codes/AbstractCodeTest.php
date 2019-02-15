@@ -82,12 +82,13 @@ abstract class AbstractCodeTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Doctrineum\Scalar\Exceptions\UnexpectedValueToEnum
+     * @expectedException \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
      * @expectedExceptionMessageRegExp ~\DateTime~
      */
     public function I_can_not_create_code_from_invalid_value_format(): void
     {
         $sutClass = self::getSutClass();
+        /** @noinspection PhpUnhandledExceptionInspection */
         $sutClass::getIt(new \DateTime());
     }
 
@@ -100,7 +101,6 @@ abstract class AbstractCodeTest extends TestWithMockery
         /** @noinspection PhpUnhandledExceptionInspection */
         $constants = (new \ReflectionClass($sutClass))->getConstants();
         self::assertCount(\count($constants), \array_unique($constants));
-        /** @noinspection PhpUnhandledExceptionInspection */
         $givenValues = $sutClass::getPossibleValues();
         $expectedIndex = 0;
         foreach ($givenValues as $index => $value) {
@@ -161,8 +161,9 @@ abstract class AbstractCodeTest extends TestWithMockery
      */
     public function I_will_get_constant_values_from_reflection_as_fallback(): void
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         self::assertSame([], AbstractCode::getPossibleValues());
+        $sutClass = static::getSutClass();
+        self::assertGreaterThan(0, \count($sutClass::getPossibleValues()));
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables;
 
@@ -9,22 +9,36 @@ abstract class TableTest extends TestWithMockery
 {
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function I_can_get_to_rules_both_by_page_reference_and_direct_link()
+    public function I_can_get_to_rules_by_direct_link(): void
     {
         $reflectionClass = new \ReflectionClass(self::getSutClass());
         $docComment = $reflectionClass->getDocComment();
         self::assertNotEmpty(
             $docComment,
-            'Missing annotation with PPH reference for table ' . self::getSutClass()
-            . " in format \n/**\n * See PPH page ?, @link \n */"
+            \sprintf(
+                'Missing annotation with link to rules for table %s in format %s',
+                self::getSutClass(),
+                "\n/**\n * @link https://...\n */"
+            )
         );
-        self::assertRegExp(<<<'REGEXP'
-~\s+([Ss]ee PPH page \d+(,? ((left|right) column( top| bottom)?|top|bottom)( \(table without name\))?)?, )?@link https://pph\.drdplus\.info/.+~
+        $expectedDomainByNamespace = $this->getExpectedDomainByNamespace($reflectionClass->getNamespaceName());
+        $escapedExpectedDomain = preg_quote($expectedDomainByNamespace, '~');
+        self::assertRegExp(<<<REGEXP
+~\s+([Ss]ee PPH page \d+(,? ((left|right) column( top| bottom)?|top|bottom)( \(table without name\))?)?, )?@link {$escapedExpectedDomain}/#.+~
 REGEXP
             ,
             $docComment,
             'Missing PPH page reference for table ' . self::getSutClass()
         );
+    }
+
+    private function getExpectedDomainByNamespace(string $namespace): string
+    {
+        if (\strpos($namespace, '\Theurgist\\') !== false) {
+            return 'https://theurg.drdplus.info';
+        }
+        return 'https://pph.drdplus.info';
     }
 }

@@ -1,9 +1,8 @@
 <?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Distance;
 
-use DrdPlus\Codes\Units\DistanceUnitCode;
 use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Measurements\Distance\DistanceTable;
@@ -66,22 +65,22 @@ class DistanceTableTest extends MeasurementTableTest
         $distanceTable = new DistanceTable();
 
         // 0.01 matches more bonuses - the lowest is taken
-        $distance = new Distance(0.01, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(0.01, Distance::METER, $distanceTable);
         self::assertSame(-40, $distance->getBonus()->getValue());
 
-        $distance = new Distance(1, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(1, Distance::METER, $distanceTable);
         self::assertSame(0, $distance->getBonus()->getValue());
-        $distance = new Distance(1.5, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(1.5, Distance::METER, $distanceTable);
         self::assertSame(4, $distance->getBonus()->getValue());
 
-        $distance = new Distance(104, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(104, Distance::METER, $distanceTable);
         self::assertSame(40, $distance->getBonus()->getValue()); // 40 is the closest bonus
-        $distance = new Distance(105, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(105, Distance::METER, $distanceTable);
         self::assertSame(41, $distance->getBonus()->getValue()); // 40 and 41 are closest bonuses, 41 is taken because higher
-        $distance = new Distance(106, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(106, Distance::METER, $distanceTable);
         self::assertSame(41, $distance->getBonus()->getValue()); // 41 is the closest bonus (higher in this case)
 
-        $distance = new Distance(900, DistanceUnitCode::KILOMETER, $distanceTable);
+        $distance = new Distance(900, Distance::KILOMETER, $distanceTable);
         self::assertSame(119, $distance->getBonus()->getValue());
     }
 
@@ -92,7 +91,7 @@ class DistanceTableTest extends MeasurementTableTest
     public function I_can_not_convert_too_low_value_to_bonus()
     {
         $distanceTable = new DistanceTable();
-        $distance = new Distance(0.009, DistanceUnitCode::METER, $distanceTable);
+        $distance = new Distance(0.009, Distance::METER, $distanceTable);
         $distance->getBonus();
     }
 
@@ -103,7 +102,7 @@ class DistanceTableTest extends MeasurementTableTest
     public function I_can_not_convert_too_high_value_to_bonus()
     {
         $distanceTable = new DistanceTable();
-        $distance = new Distance(901, DistanceUnitCode::KILOMETER, $distanceTable);
+        $distance = new Distance(901, Distance::KILOMETER, $distanceTable);
         $distance->getBonus();
     }
 
@@ -112,8 +111,29 @@ class DistanceTableTest extends MeasurementTableTest
      */
     public function I_can_convert_size_to_bonus()
     {
-        $weightTable = new DistanceTable();
-        $bonus = $weightTable->sizeToDistanceBonus(new IntegerObject($value = 123));
+        $distanceTable = new DistanceTable();
+        $bonus = $distanceTable->sizeToDistanceBonus(new IntegerObject($value = 123));
         self::assertSame($value + 12, $bonus->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_bonus_for_every_distance_in_decimeters_if_have_bonus_for_same_distance_in_meters()
+    {
+        $distanceTable = new DistanceTable();
+        foreach ($distanceTable->getIndexedValues() as $bonus => $distances) {
+            if ($bonus < 0) {
+                continue; // more than a single bonus can match for low values an we do not want to check them
+            }
+            if (\array_key_exists(Distance::METER, $distances)) {
+                $distanceInDecimeters = new Distance($distances[Distance::METER] * 10, Distance::DECIMETER, $distanceTable);
+                self::assertSame(
+                    $bonus,
+                    $distanceInDecimeters->getBonus()->getValue(),
+                    'Expected different bonus for distance of ' . $distanceInDecimeters
+                );
+            }
+        }
     }
 }

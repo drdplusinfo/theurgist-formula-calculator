@@ -8,13 +8,18 @@
       "DrdPlus\\": "DrdPlus/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "/home/jaroslav/projects/drdplus/codes"
+    }
+  ],
   "require": {
     "php": ">=7.1",
     "granam/string": "^3.0",
     "granam/strict-object": "^3.0",
-    "doctrineum/scalar": "^3.1",
-    "doctrineum/integer": "^3.1",
-    "drdplus/codes": "^1.0"
+    "drdplus/codes": "~2.0",
+    "granam/integer-enum": "^1.0"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",

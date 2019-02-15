@@ -29,6 +29,9 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\EpicenterShift;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Threshold;
 
+/**
+ * @link https://theurg.drdplus.info/#tabulka_modifikatoru
+ */
 class ModifiersTable extends AbstractFileTable
 {
     use ToFlatArrayTrait;

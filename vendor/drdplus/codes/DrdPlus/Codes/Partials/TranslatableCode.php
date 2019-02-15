@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); 
+declare(strict_types=1);
 
 namespace DrdPlus\Codes\Partials;
 
@@ -8,12 +8,15 @@ use Granam\Number\Tools\ToNumber;
 
 abstract class TranslatableCode extends AbstractCode implements Translatable
 {
+    // protected static values are more comfortable then protected constants in children classes
     protected static $ONE = 'one';
     protected static $FEW = 'few';
     protected static $FEW_DECIMAL = 'few_decimal';
     protected static $MANY = 'many';
     protected static $CS = 'cs';
     protected static $EN = 'en';
+
+    protected static $translations = [];
 
     /**
      * @param string $languageCode
@@ -77,8 +80,6 @@ abstract class TranslatableCode extends AbstractCode implements Translatable
 
         return self::$MANY;
     }
-
-    protected static $translations;
 
     /**
      * @param string $requiredLanguageCode

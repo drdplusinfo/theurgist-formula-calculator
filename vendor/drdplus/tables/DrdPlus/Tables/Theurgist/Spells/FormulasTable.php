@@ -25,6 +25,9 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SizeChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
 
+/**
+ * @link https://theurg.drdplus.info/#tabulka_formuli
+ */
 class FormulasTable extends AbstractFileTable
 {
     protected function getDataFileName(): string

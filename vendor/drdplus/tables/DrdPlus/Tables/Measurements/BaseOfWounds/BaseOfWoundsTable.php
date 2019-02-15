@@ -1,10 +1,10 @@
 <?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+declare(strict_types=1);
 
 namespace DrdPlus\Tables\Measurements\BaseOfWounds;
 
 use DrdPlus\Calculations\SumAndRound;
-use DrdPlus\Properties\Base\Strength;
+use DrdPlus\BaseProperties\Strength;
 use DrdPlus\Tables\Table;
 use Granam\Integer\IntegerInterface;
 use Granam\Integer\Tools\ToInteger;

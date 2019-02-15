@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+declare(strict_types=1);
 
 namespace DrdPlus\Tables\Measurements\Distance;
 
@@ -7,6 +7,7 @@ use DrdPlus\Codes\Units\DistanceUnitCode;
 use DrdPlus\Tables\Measurements\MeasurementWithBonus;
 use DrdPlus\Tables\Measurements\Partials\AbstractBonus;
 use DrdPlus\Tables\Measurements\Partials\AbstractMeasurementFileTable;
+use DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange;
 use DrdPlus\Tables\Measurements\Tools\DummyEvaluator;
 use Granam\Integer\IntegerInterface;
 use Granam\Integer\Tools\ToInteger;
@@ -50,7 +51,6 @@ class DistanceTable extends AbstractMeasurementFileTable
      */
     public function toDistance(DistanceBonus $distanceBonus, $wantedUnit = null)
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return $this->toMeasurement($distanceBonus, $wantedUnit);
     }
 
@@ -60,7 +60,14 @@ class DistanceTable extends AbstractMeasurementFileTable
      */
     public function toBonus(Distance $distance)
     {
-        return $this->measurementToBonus($distance);
+        try {
+            return $this->measurementToBonus($distance);
+        } catch (RequestedDataOutOfTableRange $requestedDataOutOfTableRange) {
+            if ($distance->getUnitCode()->getValue() === Distance::METER) {
+                throw $requestedDataOutOfTableRange;
+            }
+            return $this->measurementToBonus($distance->getInUnit(Distance::METER));
+        }
     }
 
     /**
@@ -70,7 +77,6 @@ class DistanceTable extends AbstractMeasurementFileTable
      */
     protected function convertToMeasurement(float $value, string $unit): MeasurementWithBonus
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Distance($value, $unit, $this);
     }
 
@@ -80,7 +86,6 @@ class DistanceTable extends AbstractMeasurementFileTable
      */
     protected function createBonus(int $bonusValue): AbstractBonus
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new DistanceBonus($bonusValue, $this);
     }
 

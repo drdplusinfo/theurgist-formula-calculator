@@ -1,12 +1,12 @@
 <?php
-declare(strict_types=1); 
+declare(strict_types=1);
 
 namespace DrdPlus\Codes\Partials;
 
-use Doctrineum\Scalar\ScalarEnum;
-use Doctrineum\Scalar\ScalarEnumInterface;
 use DrdPlus\Codes\Code;
 use Granam\Scalar\Tools\ToString;
+use Granam\ScalarEnum\ScalarEnum;
+use Granam\ScalarEnum\ScalarEnumInterface;
 use Granam\String\StringInterface;
 use Granam\Tools\ValueDescriber;
 
@@ -23,13 +23,17 @@ abstract class AbstractCode extends ScalarEnum implements Code
     public static function getPossibleValues(): array
     {
         if ((static::$possibleValues[static::class] ?? null) === null) {
+            static::$possibleValues[static::class] = [];
             try {
                 $reflectionClass = new \ReflectionClass(static::class);
             } catch (\ReflectionException $reflectionException) {
-                /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
                 throw new Exceptions\CanNotDeterminePossibleValuesFromClassReflection($reflectionException->getMessage());
             }
-            static::$possibleValues[static::class] = array_values($reflectionClass->getConstants());
+            foreach ($reflectionClass->getReflectionConstants() as $reflectionConstant) {
+                if ($reflectionConstant->isPublic()) {
+                    static::$possibleValues[static::class][] = $reflectionConstant->getValue();
+                }
+            }
         }
 
         return static::$possibleValues[static::class];
@@ -39,8 +43,8 @@ abstract class AbstractCode extends ScalarEnum implements Code
      * @param string|StringInterface $codeValue
      * @return AbstractCode|ScalarEnumInterface
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @throws \Doctrineum\Scalar\Exceptions\CanNotCreateInstanceOfAbstractEnum
-     * @throws \Doctrineum\Scalar\Exceptions\UnexpectedValueToEnum
+     * @throws \Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum
+     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public static function getIt($codeValue): AbstractCode
@@ -52,8 +56,8 @@ abstract class AbstractCode extends ScalarEnum implements Code
      * @param string|StringInterface $codeValue
      * @return AbstractCode|ScalarEnumInterface
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @throws \Doctrineum\Scalar\Exceptions\CanNotCreateInstanceOfAbstractEnum
-     * @throws \Doctrineum\Scalar\Exceptions\UnexpectedValueToEnum
+     * @throws \Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum
+     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public static function findIt($codeValue): AbstractCode
@@ -88,7 +92,7 @@ abstract class AbstractCode extends ScalarEnum implements Code
 
     /**
      * @param string|Code $codeValue
-     * @throws \Doctrineum\Scalar\Exceptions\UnexpectedValueToEnum
+     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
      */
     protected function __construct($codeValue)

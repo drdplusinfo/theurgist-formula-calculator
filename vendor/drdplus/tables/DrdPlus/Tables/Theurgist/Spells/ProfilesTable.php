@@ -9,6 +9,9 @@ use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\ProfileCode;
 
+/**
+ * @link https://theurg.drdplus.info/#tabulka_formuli
+ */
 class ProfilesTable extends AbstractFileTable
 {
     protected function getDataFileName(): string
