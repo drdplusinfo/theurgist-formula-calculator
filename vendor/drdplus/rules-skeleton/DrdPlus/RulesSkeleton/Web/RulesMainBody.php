@@ -9,33 +9,35 @@ use Granam\WebContentBuilder\Web\WebFiles;
 
 class RulesMainBody extends Body implements RulesBodyInterface
 {
-    /** @var array */
-    private $contentValues;
+    /**
+     * @var WebPartsContainer
+     */
+    private $webPartsContainer;
 
-    public function __construct(WebFiles $webFiles, array $contentValues)
+    public function __construct(WebFiles $webFiles, WebPartsContainer $webPartsContainer)
     {
         parent::__construct($webFiles);
-        $this->contentValues = $contentValues;
+        $this->webPartsContainer = $webPartsContainer;
     }
 
     protected function fetchPhpFileContent(string $file): string
     {
-        $content = new class($file, $this->contentValues)
+        $content = new class($file, $this->webPartsContainer)
         {
             /** @var string */
             private $file;
-            /** @var array */
-            private $contentValues;
+            /** @var WebPartsContainer */
+            private $webPartsContainer;
 
-            public function __construct(string $file, array $contentValues)
+            public function __construct(string $file, WebPartsContainer $webPartsContainer)
             {
                 $this->file = $file;
-                $this->contentValues = $contentValues;
+                $this->webPartsContainer = $webPartsContainer;
             }
 
             public function fetchContent(): string
             {
-                \extract($this->contentValues, \EXTR_SKIP);
+                \extract(['webPartsContainer' => $this->webPartsContainer], \EXTR_SKIP);
                 \ob_start();
                 /** @noinspection PhpIncludeInspection */
                 include $this->file;

@@ -8,19 +8,25 @@ use DrdPlus\Tables\Tables;
 
 class FormulaServicesContainer extends CalculatorServicesContainer
 {
+    /** @var FormulaWebPartsContainer */
+    private $formulaWebPartsContainer;
     /** @var CurrentFormulaValues */
     private $currentFormulaValues;
 
-    public function getRulesMainBodyParameters(): array
+    public function getWebPartsContainer(): \DrdPlus\RulesSkeleton\Web\WebPartsContainer
     {
-        return [
-            'historyDeletion' => $this->getHistoryDeletionBody(),
-            'currentFormulaValues' => $this->getCurrentFormulaValues(),
-            'currentFormulaCode' => $this->getCurrentFormulaValues()->getCurrentFormulaCode(),
-            'currentFormula' => $this->getCurrentFormulaValues()->getCurrentFormula(),
-            'tables' => $this->getTables(),
-            'calculatorDebugContacts' => $this->getDebugContactsBody(),
-        ];
+        if ($this->formulaWebPartsContainer === null) {
+            $this->formulaWebPartsContainer = new FormulaWebPartsContainer(
+                $this->getPass(),
+                $this->getWebFiles(),
+                $this->getDirs(),
+                $this->getHtmlHelper(),
+                $this->getRequest(),
+                $this->getCurrentFormulaValues(),
+                $this->getTables()
+            );
+        }
+        return $this->formulaWebPartsContainer;
     }
 
     public function getCurrentFormulaValues(): CurrentFormulaValues

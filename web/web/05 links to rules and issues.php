@@ -6,7 +6,7 @@
     <a href="https://theurg.drdplus.info/#tabulka_formuli">Pravidla pro Theurga</a>
   </div>
   <div class="col">
-      <?= /** @noinspection PhpUndefinedVariableInspection */
-      $calculatorDebugContacts; ?>
+      <?= /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
+      $webPartsContainer->getCalculatorDebugContactsBody(); ?>
   </div>
 </div>

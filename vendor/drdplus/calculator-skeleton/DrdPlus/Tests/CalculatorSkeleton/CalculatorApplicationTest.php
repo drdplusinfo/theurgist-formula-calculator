@@ -3,57 +3,114 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
-use DrdPlus\CalculatorSkeleton\CalculatorContent;
 use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
-use DrdPlus\RulesSkeleton\Configuration;
-use DrdPlus\RulesSkeleton\HtmlHelper;
+use DrdPlus\CalculatorSkeleton\History;
+use DrdPlus\CalculatorSkeleton\Memory;
+use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 use Mockery\MockInterface;
 
 /**
- * @method CalculatorServicesContainer createServicesContainer(Configuration $configuration = null, HtmlHelper $htmlHelper = null)
+ * @backupGlobals enabled
  */
 class CalculatorApplicationTest extends AbstractCalculatorContentTest
 {
     /**
      * @test
-     * @backupGlobals enabled
+     * @dataProvider provideHistoryDeletionRequest
+     * @param bool $historyDeletionRequested
      */
-    public function I_can_get_original_as_well_as_modified_url(): void
+    public function History_and_memory_is_solved_before_run(bool $historyDeletionRequested): void
     {
-        $_SERVER['REQUEST_URI'] = 'http://odpocinek.drdplus.loc/?remember_current=1&strength=0&will=0&race=human&sub_race=common&gender=male&roll_against_malus_from_wounds=9&fresh_wound_size[]=1&serious_wound_origin[]=mechanical_stab';
-        $_GET = [
-            'remember_current' => '1',
-            'strength' => '0',
-            'will' => '0',
-            'race' => 'human',
-            'sub_race' => 'common',
-            'gender' => 'male',
-            'roll_against_malus_from_wounds' => '9',
-            'fresh_wound_size' => ['1'],
-            'serious_wound_origin' => ['mechanical_stab'],
+        $request = $this->createRequestMock($historyDeletionRequested);
+        $request->shouldReceive('getValuesFromGet')
+            ->atLeast()->once()
+            ->andReturn($valuesFromGet = ['foo' => 'bar']);
+        $memory = $this->createMemoryMock();
+        $memory->shouldReceive('saveMemory')
+            ->atLeast()->once()
+            ->with($valuesFromGet);
+        if ($historyDeletionRequested) {
+            $memory->shouldReceive('deleteMemory')
+                ->atLeast()->once();
+        }
+        $history = $this->createHistoryMock();
+        $history->shouldReceive('saveHistory')
+            ->atLeast()->once()
+            ->with($valuesFromGet);
+        if ($historyDeletionRequested) {
+            $history->shouldReceive('deleteHistory')
+                ->atLeast()->once();
+        }
+        $calculatorServicesContainer = $this->createServicesContainerMock($request, $memory, $history);
+        $calculatorApplication = new CalculatorApplication($calculatorServicesContainer);
+        \ob_start();
+        $calculatorApplication->run();
+        \ob_end_clean();
+    }
+
+    public function provideHistoryDeletionRequest(): array
+    {
+        return [
+            'history deletion not requested' => [false],
+            'history deletion requested' => [true],
         ];
-        $controller = new CalculatorApplication($this->createServicesContainer());
-        self::assertSame($_SERVER['REQUEST_URI'], $controller->getRequestUrl());
-        self::assertSame(
-            \str_replace(['remember_current=1', '[]'], ['remember_current=0', \urlencode('[]')], $_SERVER['REQUEST_URI']),
-            $controller->getRequestUrl(['remember_current' => '0'])
-        );
     }
 
     /**
-     * @param CalculatorContent $calculatorContent
+     * @param bool $isRequestedHistoryDeletion
+     * @return Request|MockInterface
+     */
+    private function createRequestMock(bool $isRequestedHistoryDeletion): Request
+    {
+        $request = $this->mockery(Request::class);
+        $request->shouldReceive('isRequestedHistoryDeletion')
+            ->atLeast()->once()
+            ->andReturn($isRequestedHistoryDeletion);
+        $request->makePartial();
+        return $request;
+    }
+
+    /**
+     * @return Memory|MockInterface
+     */
+    private function createMemoryMock(): Memory
+    {
+        return $this->mockery(Memory::class);
+    }
+
+    /**
+     * @return History|MockInterface
+     */
+    private function createHistoryMock(): History
+    {
+        return $this->mockery(History::class);
+    }
+
+    /**
+     * @param Request $request
+     * @param Memory $memory
+     * @param History $history
      * @return CalculatorServicesContainer|MockInterface
      */
-    protected function createServicesContainerWithContent(CalculatorContent $calculatorContent): CalculatorServicesContainer
+    private function createServicesContainerMock(Request $request, Memory $memory, History $history): CalculatorServicesContainer
     {
-        $servicesContainer = $this->mockery(CalculatorServicesContainer::class);
-        $servicesContainer->shouldReceive('getConfiguration')
+        $calculatorServicesContainer = $this->mockery(CalculatorServicesContainer::class);
+        $calculatorServicesContainer->shouldReceive('getRequest')
+            ->atLeast()->once()
+            ->andReturn($request);
+        $calculatorServicesContainer->shouldReceive('getMemory')
+            ->atLeast()->once()
+            ->andReturn($memory);
+        $calculatorServicesContainer->shouldReceive('getHistory')
+            ->atLeast()->once()
+            ->andReturn($history);
+        $calculatorServicesContainer->shouldReceive('getConfiguration')
             ->andReturn($this->getConfiguration());
-        $servicesContainer->shouldReceive('getCalculatorContent')
-            ->andReturn($calculatorContent);
-
-        return $servicesContainer;
+        $calculatorServicesContainer->shouldReceive('getHtmlHelper')
+            ->andReturn($this->getHtmlHelper());
+        $calculatorServicesContainer->makePartial();
+        return $calculatorServicesContainer;
     }
 }

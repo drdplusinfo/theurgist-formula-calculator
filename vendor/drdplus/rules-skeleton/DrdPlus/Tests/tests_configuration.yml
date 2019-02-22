@@ -8,7 +8,7 @@ some_expected_table_ids:
 expected_web_name: 'HTML kostra pro DrDPlus, jakoby pravidla čaroděje'
 expected_page_title: '☠️ HTML kostra pro DrDPlus, jakoby pravidla čaroděje'
 expected_licence: 'MIT'
-expected_google_analytics_id: 'UA-121206931-1'
+expected_google_analytics_id: 'UA-121206931-0'
 too_short_failure_names:
   - 'nevšiml si'
 too_short_success_names:

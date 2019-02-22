@@ -2,11 +2,11 @@
 namespace DrdPlus\Theurgist\Formulas;
 
 use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
-use DrdPlus\Tables\Tables;
 
-/** @var Tables $tables */
-/** @var CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
+$tables = $webPartsContainer->getTables();
+$currentFormulaValues = $webPartsContainer->getCurrentFormulaValues();
 $selectedModifiersTree = $currentFormulaValues->getCurrentModifiersTree();
 $possibleModifierCombinations = $currentFormulaValues->getPossibleModifierCombinations();
 $selectedModifiersSpellTraitValues = $currentFormulaValues->getCurrentModifiersSpellTraitValues();
@@ -44,8 +44,7 @@ $modifiersTable = $tables->getModifiersTable();
                            <?php if ($modifierIsSelected){ ?>checked<?php } ?>>
                       <?= $possibleModifier->translateTo('cs'); ?>
                       <?php $modifierDifficultyChange = $modifiersTable->getDifficultyChange($possibleModifier)->getValue() ?>
-                    <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>
-                      ]</span>
+                    <span>[<?= ($modifierDifficultyChange >= 0 ? '+' : '') . $modifierDifficultyChange ?>]</span>
                     <span class="forms" title="Forma">
                       <?php
                       $forms = $currentFormulaValues->getModifierFormNames($possibleModifier, 'cs');

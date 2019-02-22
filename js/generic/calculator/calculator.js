@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })(selectIndex));
     }
 
-    for (var i = 0, controlsLength = allControls.length; i < controlsLength; i++) {
-        var control = allControls[i];
+    for (var controlIndex = 0, controlsLength = allControls.length; controlIndex < controlsLength; controlIndex++) {
+        var control = allControls[controlIndex];
         if (typeof control.type !== 'undefined' && control.type !== 'submit') {
             if (typeof control.type === 'undefined' || control.type !== 'button') {
                 control.addEventListener('change', function () {
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
             throw 'No form found for an input ' + changedInput.outerHTML
         }
         if (submit(form) && requiredInputsAreFilled(form)) {
-            disableControls(5000);
             invalidateResult();
         }
     }
@@ -96,21 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         return true;
-    }
-
-    function enableControls() {
-        for (var j = 0, length = allControls.length; j < length; j++) {
-            allControls[j].disabled = null;
-        }
-    }
-
-    function disableControls(forMilliSeconds) {
-        for (var j = 0, length = allControls.length; j < length; j++) {
-            allControls[j].disabled = true;
-        }
-        if (forMilliSeconds) {
-            window.setTimeout(enableControls, forMilliSeconds /* unlock after */)
-        }
     }
 
     function invalidateResult() {

@@ -1,7 +1,7 @@
 <h2>Some debug contacts inside</h2>
 <div>
   Cože?
-    <?= /** @noinspection PhpUndefinedVariableInspection */
-    $debugContacts ?>
+    <?= /** @var \DrdPlus\RulesSkeleton\Web\WebPartsContainer $webPartsContainer */
+    $webPartsContainer->getDebugContactsBody()->getValue() ?>
   Aha
 </div>

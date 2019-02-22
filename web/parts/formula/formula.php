@@ -3,11 +3,8 @@ namespace DrdPlus\Calculators\Theurgist\Web;
 
 use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
 use DrdPlus\Codes\Theurgist\FormulaCode;
-use DrdPlus\Tables\Tables;
 
-/** @var FormulaCode $currentFormulaCode */
-/** @var Tables $tables */
-/** @var CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 ?>
   <div class="row">
     <div class="col">
@@ -20,16 +17,16 @@ use DrdPlus\Tables\Tables;
       <select id="formula" name="<?= CurrentFormulaValues::FORMULA ?>">
           <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
             <option value="<?= $formulaValue ?>"
-                    <?php if ($formulaValue === $currentFormulaCode->getValue()){ ?>selected<?php } ?>>
+                    <?php if ($formulaValue === $webPartsContainer->getCurrentFormulaCode()->getValue()){ ?>selected<?php } ?>>
                 <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
             </option>
           <?php } ?>
       </select>
       <button type="submit">Vybrat</button>
-        <?php $formulaDifficulty = $tables->getFormulasTable()->getFormulaDifficulty($currentFormulaCode); ?>
+        <?php $formulaDifficulty = $webPartsContainer->getTables()->getFormulasTable()->getFormulaDifficulty($webPartsContainer->getCurrentFormulaCode()); ?>
       <span>[<?= $formulaDifficulty->getValue() ?>]</span>
       <span class="forms" title="Forma">
-            <?php $formulaForms = implode(', ', $currentFormulaValues->getFormulaFormNames($currentFormulaCode, 'cs')); ?>
+            <?php $formulaForms = implode(', ', $webPartsContainer->getCurrentFormulaValues()->getFormulaFormNames($webPartsContainer->getCurrentFormulaCode(), 'cs')); ?>
         (<?= $formulaForms ?>)
     </span>
     </div>

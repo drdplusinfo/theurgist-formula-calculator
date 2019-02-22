@@ -1,16 +1,15 @@
 <?php
 namespace DrdPlus\TheurgistCalculator\Formulas;
 
-use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
 use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
 use DrdPlus\Codes\Units\TimeUnitCode;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tables\Theurgist\Spells\Formula;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 
-/** @var Formula $currentFormula */
-/** @var CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
+$currentFormula = $webPartsContainer->getCurrentFormula();
+$currentFormulaValues = $webPartsContainer->getCurrentFormulaValues();
 $resultParts = [];
 // Roman numerals are created by browser using ordered list with upper Roman list style type
 /** @noinspection PhpUnhandledExceptionInspection */

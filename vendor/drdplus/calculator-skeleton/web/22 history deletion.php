@@ -1,2 +1,2 @@
-<?= /** @noinspection PhpUndefinedVariableInspection */
-$historyDeletion;
+<?= /** @var \DrdPlus\CalculatorSkeleton\Web\CalculatorWebPartsContainer $webPartsContainer */
+$webPartsContainer->getHistoryDeletionBody()->getValue();

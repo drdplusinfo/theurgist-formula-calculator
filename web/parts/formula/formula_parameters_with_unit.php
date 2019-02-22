@@ -1,8 +1,6 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
-use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
-use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
 use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
@@ -12,13 +10,10 @@ use DrdPlus\Tables\Measurements\Speed\SpeedBonus;
 use DrdPlus\Tables\Measurements\Time\Time;
 use DrdPlus\Tables\Measurements\Time\TimeBonus;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
-/** @var FormulasTable $formulasTable */
-/** @var FormulaCode $currentFormulaCode */
-/** @var CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithoutUnit = [
     FormulaMutableSpellParameterCode::DURATION => function ($optionDurationValue) {
@@ -34,7 +29,7 @@ $formulaParametersWithoutUnit = [
 foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
     $getParameter = StringTools::assembleGetterForName($parameterName);
     /** @var CastingParameter $parameter */
-    $parameter = $formulasTable->$getParameter($currentFormulaCode);
+    $parameter = $webPartsContainer->getTables()->getFormulasTable()->$getParameter($webPartsContainer->getCurrentFormulaCode());
     if ($parameter === null) {
         continue;
     }
@@ -49,7 +44,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
         $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();
         /** @var Measurement $previousOptionParameterValueWithUnit */
         $previousOptionParameterValueWithUnit = null;
-        $selectedParameterValue = $currentFormulaValues->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
+        $selectedParameterValue = $webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
         ?>
       <select name="formula_parameters[<?= $parameterName ?>]">
           <?php

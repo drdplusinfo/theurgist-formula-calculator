@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace DrdPlus\CalculatorSkeleton;
 
-use DrdPlus\CalculatorSkeleton\Web\HistoryDeletionBody;
-use DrdPlus\CalculatorSkeleton\Web\CalculatorDebugContactsBody;
+use DrdPlus\CalculatorSkeleton\Web\CalculatorWebPartsContainer;
+use DrdPlus\RulesSkeleton\Cache;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\RulesSkeleton\Web\RulesMainContent;
 use Granam\Git\Git;
+use Granam\String\StringTools;
 
 /**
  * @method CalculatorConfiguration getConfiguration()
@@ -21,6 +22,9 @@ class CalculatorServicesContainer extends ServicesContainer
 
     /** @var Memory */
     private $memory;
+
+    /** @var DateTimeProvider */
+    private $dateTimeProvider;
 
     /** @var CurrentValues */
     private $currentValues;
@@ -34,44 +38,15 @@ class CalculatorServicesContainer extends ServicesContainer
     /** @var RulesMainContent */
     private $calculatorWebContent;
 
+    /** @var CalculatorWebPartsContainer */
+    private $calculatorWebPartsContainer;
+
     /** @var GitReader */
     private $gitReader;
-
-    /** @var HistoryDeletionBody */
-    private $historyDeletionBody;
-
-    /** @var CalculatorDebugContactsBody */
-    private $calculatorDebugContactsBody;
 
     public function __construct(CalculatorConfiguration $calculatorConfiguration, HtmlHelper $htmlHelper)
     {
         parent::__construct($calculatorConfiguration, $htmlHelper);
-    }
-
-    public function getRulesMainBodyParameters(): array
-    {
-        return [
-            'historyDeletion' => $this->getHistoryDeletionBody(),
-            'calculatorDebugContacts' => $this->getCalculatorDebugContactsBody(),
-        ];
-    }
-
-    public function getHistoryDeletionBody(): HistoryDeletionBody
-    {
-        if ($this->historyDeletionBody === null) {
-            $this->historyDeletionBody = new HistoryDeletionBody();
-        }
-
-        return $this->historyDeletionBody;
-    }
-
-    public function getCalculatorDebugContactsBody(): CalculatorDebugContactsBody
-    {
-        if ($this->calculatorDebugContactsBody === null) {
-            $this->calculatorDebugContactsBody = new CalculatorDebugContactsBody();
-        }
-
-        return $this->calculatorDebugContactsBody;
     }
 
     /**
@@ -82,7 +57,6 @@ class CalculatorServicesContainer extends ServicesContainer
         if ($this->calculatorRequest === null) {
             $this->calculatorRequest = new CalculatorRequest($this->getBotParser());
         }
-
         return $this->calculatorRequest;
     }
 
@@ -90,16 +64,31 @@ class CalculatorServicesContainer extends ServicesContainer
     {
         if ($this->memory === null) {
             $this->memory = new Memory(
-                $this->getCookiesService(),
-                $this->getRequest()->isRequestedHistoryDeletion(),
-                $this->getRequest()->getValuesFromGet(),
-                $this->getRequest()->isRequestedRememberCurrent(),
-                $this->getConfiguration()->getCookiesPostfix(),
+                $this->getMemoryStorage(),
+                $this->getDateTimeProvider(),
                 $this->getConfiguration()->getCookiesTtl()
             );
         }
-
         return $this->memory;
+    }
+
+    protected function getMemoryStorage(): CookiesStorage
+    {
+        return new CookiesStorage($this->getCookiesService(), $this->getCookiesStorageKeyPrefix() . '-memory');
+    }
+
+    public function getDateTimeProvider(): DateTimeProvider
+    {
+        if ($this->dateTimeProvider === null) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $this->dateTimeProvider = new DateTimeProvider(new \DateTimeImmutable());
+        }
+        return $this->dateTimeProvider;
+    }
+
+    protected function getCookiesStorageKeyPrefix(): string
+    {
+        return StringTools::getClassBaseName(static::class) . '-' . $this->getConfiguration()->getCookiesPostfix();
     }
 
     public function getCurrentValues(): CurrentValues
@@ -107,7 +96,6 @@ class CalculatorServicesContainer extends ServicesContainer
         if ($this->currentValues === null) {
             $this->currentValues = new CurrentValues($this->getRequest()->getValuesFromGet(), $this->getMemory());
         }
-
         return $this->currentValues;
     }
 
@@ -115,16 +103,17 @@ class CalculatorServicesContainer extends ServicesContainer
     {
         if ($this->history === null) {
             $this->history = new History(
-                $this->getCookiesService(),
-                $this->getRequest()->isRequestedHistoryDeletion(),
-                $this->getRequest()->getValuesFromGet(),
-                $this->getRequest()->isRequestedRememberCurrent(),
-                $this->getConfiguration()->getCookiesPostfix(),
+                $this->getHistoryStorage(),
+                $this->getDateTimeProvider(),
                 $this->getConfiguration()->getCookiesTtl()
             );
         }
-
         return $this->history;
+    }
+
+    protected function getHistoryStorage(): CookiesStorage
+    {
+        return new CookiesStorage($this->getCookiesService(), $this->getCookiesStorageKeyPrefix() . '-history');
     }
 
     public function getCalculatorContent(): CalculatorContent
@@ -137,7 +126,6 @@ class CalculatorServicesContainer extends ServicesContainer
                 $this->getPassedWebCache()
             );
         }
-
         return $this->calculatorContent;
     }
 
@@ -147,11 +135,24 @@ class CalculatorServicesContainer extends ServicesContainer
             $this->calculatorWebContent = new RulesMainContent(
                 $this->getHtmlHelper(),
                 $this->getHead(),
-                $this->getRulesMainBody()
+                $this->getWebPartsContainer()->getRulesMainBody()
             );
         }
-
         return $this->calculatorWebContent;
+    }
+
+    public function getWebPartsContainer(): \DrdPlus\RulesSkeleton\Web\WebPartsContainer
+    {
+        if ($this->calculatorWebPartsContainer === null) {
+            $this->calculatorWebPartsContainer = new CalculatorWebPartsContainer(
+                $this->getPass(),
+                $this->getWebFiles(),
+                $this->getDirs(),
+                $this->getHtmlHelper(),
+                $this->getRequest()
+            );
+        }
+        return $this->calculatorWebPartsContainer;
     }
 
     public function getGit(): Git
@@ -159,7 +160,22 @@ class CalculatorServicesContainer extends ServicesContainer
         if ($this->gitReader === null) {
             $this->gitReader = new GitReader();
         }
-
         return $this->gitReader;
     }
+
+    public function getTablesWebCache(): Cache
+    {
+        return $this->getDummyWebCache();
+    }
+
+    public function getPassWebCache(): Cache
+    {
+        return $this->getDummyWebCache();
+    }
+
+    public function getPassedWebCache(): Cache
+    {
+        return $this->getDummyWebCache();
+    }
+
 }

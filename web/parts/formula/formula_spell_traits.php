@@ -1,12 +1,10 @@
 <?php
-/** @var \DrdPlus\Tables\Tables $tables */
-/** @var \DrdPlus\Codes\Theurgist\FormulaCode $currentFormulaCode */
-/** @var \DrdPlus\Calculators\Theurgist\CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
-$formulaSpellTraitCodes = $tables->getFormulasTable()->getSpellTraitCodes($currentFormulaCode);
+$formulaSpellTraitCodes = $webPartsContainer->getTables()->getFormulasTable()->getSpellTraitCodes($webPartsContainer->getCurrentFormulaCode());
 if (\count($formulaSpellTraitCodes) > 0) {
-    $selectedFormulaSpellTraitValues = $currentFormulaValues->getCurrentFormulaSpellTraitValues();
-    $spellTraitsTable = $tables->getSpellTraitsTable();
+    $selectedFormulaSpellTraitValues = $webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaSpellTraitValues();
+    $spellTraitsTable = $webPartsContainer->getTables()->getSpellTraitsTable();
     ?>
   <div class="row">
     <div class="col">

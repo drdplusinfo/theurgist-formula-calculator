@@ -8,9 +8,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
-/** @var Tables $tables */
-/** @var FormCode $currentFormulaCode */
-/** @var CurrentFormulaValues $currentFormulaValues */
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithoutUnit = [
     FormulaMutableSpellParameterCode::ATTACK,
@@ -19,11 +17,11 @@ $formulaParametersWithoutUnit = [
     FormulaMutableSpellParameterCode::DETAIL_LEVEL,
     FormulaMutableSpellParameterCode::SIZE_CHANGE,
 ];
-$formulasTable = $tables->getFormulasTable();
+$formulasTable = $webPartsContainer->getTables()->getFormulasTable();
 foreach ($formulaParametersWithoutUnit as $parameterName) {
     $getParameter = StringTools::assembleGetterForName($parameterName);
     /** @var CastingParameter $parameter */
-    $parameter = $formulasTable->$getParameter($currentFormulaCode);
+    $parameter = $formulasTable->$getParameter($webPartsContainer->getCurrentFormulaCode());
     if ($parameter === null) {
         continue;
     }
@@ -38,7 +36,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName) {
         $parameterDifficultyChange = $parameterAdditionByDifficulty->getCurrentDifficultyIncrement();
         $optionParameterChange = 0;
         $previousOptionParameterValue = null;
-        $selectedParameterValue = $currentFormulaValues->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
+        $selectedParameterValue = $webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaSpellParameters()[$parameterName] ?? false;
         ?>
       <select name="formula_parameters[<?= $parameterName ?>]">
           <?php

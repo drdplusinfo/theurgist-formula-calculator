@@ -1,19 +1,12 @@
 <?php
-namespace DrdPlus\Theurgist\Formulas;
+/** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
-use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
-use DrdPlus\Tables\Tables;
-use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
-
-/** @var FormulasTable $formulasTable */
-/** @var CurrentFormulaValues $currentFormulaValues */
-
-$epicenterShift = $formulasTable->getEpicenterShift($currentFormulaValues->getCurrentFormulaCode());
+$epicenterShift = $webPartsContainer->getTables()->getFormulasTable()->getEpicenterShift($webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaCode());
 if ($epicenterShift === null) {
     return;
 }
 // formula itself can not shift epicenter so no options here
-$epicenterShiftDistance = $epicenterShift->getDistance(Tables::getIt()->getDistanceTable());
+$epicenterShiftDistance = $epicenterShift->getDistance($webPartsContainer->getTables()->getDistanceTable());
 $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
 ?>
 <div class="col">

@@ -109,6 +109,19 @@ class ConfigurationTest extends AbstractContentTest
         ];
     }
 
+    public function Google_analytics_id_is_unique(): void
+    {
+        if ($this->isRulesSkeletonChecked()) {
+            self::assertSame('UA-121206931-0', $this->getConfiguration()->getGoogleAnalyticsId());
+        } else {
+            self::assertNotSame(
+                'UA-121206931-1',
+                $this->getConfiguration()->getGoogleAnalyticsId(),
+                'Some valid Google analytics should be used'
+            );
+        }
+    }
+
     /**
      * @test
      * @expectedException \DrdPlus\RulesSkeleton\Exceptions\InvalidGoogleAnalyticsId
