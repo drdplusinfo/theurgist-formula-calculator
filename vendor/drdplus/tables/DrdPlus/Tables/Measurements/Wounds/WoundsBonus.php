@@ -32,7 +32,6 @@ class WoundsBonus extends AbstractBonus
     public function __construct($value, WoundsTable $woundsTable)
     {
         $this->woundsTable = $woundsTable;
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         parent::__construct($value);
     }
 

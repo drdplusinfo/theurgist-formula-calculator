@@ -26,7 +26,6 @@ class Wounds extends AbstractMeasurementWithBonus implements PositiveInteger
     public function __construct($value, WoundsTable $woundsTable)
     {
         try {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             parent::__construct($value, self::WOUNDS);
         } catch (PositiveFloatCanNotBeNegative $exception) {
             throw new Exceptions\WoundsCanNotBeNegative(
@@ -48,13 +47,9 @@ class Wounds extends AbstractMeasurementWithBonus implements PositiveInteger
         return ToInteger::toPositiveInteger($value);
     }
 
-    /**
-     * @return int
-     */
     public function getValue(): int
     {
         // turning float to integer (without value lost)
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return ToInteger::toInteger(parent::getValue());
     }
 
@@ -66,9 +61,6 @@ class Wounds extends AbstractMeasurementWithBonus implements PositiveInteger
         return [self::WOUNDS];
     }
 
-    /**
-     * @return WoundsBonus
-     */
     public function getBonus(): WoundsBonus
     {
         return $this->woundsTable->toBonus($this);

@@ -33,18 +33,20 @@ class WoundsTable extends AbstractMeasurementFileTable
     }
 
     /**
-     * @param WoundsBonus $bonus
+     * @param WoundsBonus $woundsBonus
      * @return Wounds|MeasurementWithBonus
      */
-    public function toWounds(WoundsBonus $bonus): Wounds
+    public function toWounds(WoundsBonus $woundsBonus): Wounds
     {
-        if ($bonus->getValue() < -21) {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
+        if ($woundsBonus->getValue() < -21) {
             return new Wounds(0, $this);
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return $this->toMeasurement($bonus);
+        try {
+            return $this->toMeasurement($woundsBonus);
+        } catch (\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus $unknownBonus) {
+            $woundsValue = \round(10 ** ($woundsBonus->getValue() / 20 + 0.5));
+            return $this->convertToMeasurement($woundsValue, Wounds::WOUNDS);
+        }
     }
 
     /**
@@ -53,13 +55,17 @@ class WoundsTable extends AbstractMeasurementFileTable
      */
     public function toBonus(Wounds $wounds): WoundsBonus
     {
-        return $this->measurementToBonus($wounds);
+        try {
+            return $this->measurementToBonus($wounds);
+        } catch (\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange $requestedDataOutOfTableRange) {
+            if ($wounds->getValue() < 0) {
+                throw $requestedDataOutOfTableRange;
+            }
+            $bonusValue = (int)\round(20 * \log($wounds->getValue(), 10) - 10);
+            return $this->createBonus($bonusValue);
+        }
     }
 
-    /**
-     * @param int $bonusValue
-     * @return AbstractBonus
-     */
     protected function createBonus(int $bonusValue): AbstractBonus
     {
         return new WoundsBonus($bonusValue, $this);
@@ -72,7 +78,6 @@ class WoundsTable extends AbstractMeasurementFileTable
      */
     protected function convertToMeasurement(float $value, string $unit): MeasurementWithBonus
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Wounds($value, $this);
     }
 

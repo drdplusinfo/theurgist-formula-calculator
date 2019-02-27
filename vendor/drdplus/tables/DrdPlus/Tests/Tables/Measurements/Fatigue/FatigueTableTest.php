@@ -102,12 +102,20 @@ class FatigueTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
+     */
+    public function I_can_convert_very_high_bonus_into_value(): void
+    {
+        $fatigueTable = new FatigueTable($this->woundsTable);
+        $fatigue = $fatigueTable->toFatigue(new FatigueBonus(80, $fatigueTable));
+        self::assertSame(31623, $fatigue->getValue());
+    }
+
+    /**
+     * @test
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit(): void
     {
-        $fatigueTable = new FatigueTable($this->woundsTable);
-        $fatigueTable->toFatigue(new FatigueBonus(80, $fatigueTable));
+        self::assertFalse(false, 'Actually I can');
     }
 
     /**
@@ -158,11 +166,19 @@ class FatigueTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
+     */
+    public function I_can_convert_very_high_value_to_bonus(): void
+    {
+        $fatigueTable = new FatigueTable($this->woundsTable);
+        $fatigueBonus = $fatigueTable->toBonus(new Fatigue(28001, $fatigueTable));
+        self::assertSame(79, $fatigueBonus->getValue());
+    }
+
+    /**
+     * @test
      */
     public function I_can_not_convert_too_high_value_to_bonus(): void
     {
-        $fatigueTable = new FatigueTable($this->woundsTable);
-        $fatigueTable->toBonus(new Fatigue(28001, $fatigueTable));
+        self::assertFalse(false, 'Actually I can');
     }
 }

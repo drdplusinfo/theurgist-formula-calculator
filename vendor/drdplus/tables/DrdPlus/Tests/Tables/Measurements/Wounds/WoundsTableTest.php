@@ -83,12 +83,20 @@ class WoundsTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
+     */
+    public function I_can_convert_even_very_high_bonus_into_value(): void
+    {
+        $woundsTable = new WoundsTable();
+        $wounds = $woundsTable->toWounds(new WoundsBonus(80, $woundsTable));
+        self::assertSame(31623, $wounds->getValue());
+    }
+
+    /**
+     * @test
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit(): void
     {
-        $woundsTable = new WoundsTable();
-        $woundsTable->toWounds(new WoundsBonus(80, $woundsTable));
+        self::assertFalse(false, 'Actually I can');
     }
 
     /**
@@ -126,7 +134,8 @@ class WoundsTableTest extends MeasurementTableTest
     public function I_can_not_convert_too_low_value_to_bonus(): void
     {
         $woundsTable = new WoundsTable();
-        $woundsTable->toBonus($this->createWounds(-1));
+        $low = $woundsTable->toBonus($this->createWounds(-1));
+        $low->getValue();
     }
 
     /**
@@ -146,11 +155,20 @@ class WoundsTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
+     */
+    public function I_can_convert_very_high_value_to_bonus(): void
+    {
+        $woundsTable = new WoundsTable();
+        $bonus = $woundsTable->toBonus(new Wounds(28001, $woundsTable));
+        self::assertSame(79, $bonus->getValue());
+    }
+
+    /**
+     * @test
      */
     public function I_can_not_convert_too_high_value_to_bonus(): void
     {
-        $woundsTable = new WoundsTable();
-        $woundsTable->toBonus(new Wounds(28001, $woundsTable));
+        self::assertFalse(false, 'Actually I can');
     }
+
 }

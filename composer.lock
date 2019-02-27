@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29c59553c475c8184ba3a520d8dff048",
+    "content-hash": "1c60d121a7b7f9b2516714ee5437b2a0",
     "packages": [
         {
             "name": "drdplus/base-properties",
@@ -92,7 +92,7 @@
             "version": "1.0.38",
             "source": {
                 "type": "git",
-                "url": "/var/www/kalkulator.skeleton",
+                "url": "https://github.com/drdplusinfo/calculator-skeleton.git",
                 "reference": "9f44f41ffdd5ecbcfb94cf8c554715c9a4140a87"
             },
             "require": {
@@ -172,7 +172,7 @@
             "version": "1.1.39",
             "source": {
                 "type": "git",
-                "url": "/var/www/rules.skeleton",
+                "url": "https://github.com/drdplusinfo/rules-skeleton.git",
                 "reference": "4cdf62f95582b8e82b0bb35443130928fda4ba58"
             },
             "dist": {
@@ -238,16 +238,16 @@
         },
         {
             "name": "drdplus/tables",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/drdplus-tables.git",
-                "reference": "cfdbab5b88a971fb277dd8662950b96ef38b6cf2"
+                "reference": "1eff5124797a1983f4e03643d3e65daabe8742e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/drdplus-tables/zipball/cfdbab5b88a971fb277dd8662950b96ef38b6cf2",
-                "reference": "cfdbab5b88a971fb277dd8662950b96ef38b6cf2",
+                "url": "https://api.github.com/repos/drdplusinfo/drdplus-tables/zipball/1eff5124797a1983f4e03643d3e65daabe8742e2",
+                "reference": "1eff5124797a1983f4e03643d3e65daabe8742e2",
                 "shasum": ""
             },
             "require": {
@@ -278,7 +278,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2019-02-13T07:48:02+00:00"
+            "time": "2019-02-27T13:54:58+00:00"
         },
         {
             "name": "drdplus/web-versions",
@@ -2799,12 +2799,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ae3db2fc312511edf747cf8fd9049089b7b532bb"
+                "reference": "4e04718428742618a4bf24dafca45b8645c9320d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ae3db2fc312511edf747cf8fd9049089b7b532bb",
-                "reference": "ae3db2fc312511edf747cf8fd9049089b7b532bb",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4e04718428742618a4bf24dafca45b8645c9320d",
+                "reference": "4e04718428742618a4bf24dafca45b8645c9320d",
                 "shasum": ""
             },
             "conflict": {
@@ -2995,7 +2995,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-02-21T16:41:26+00:00"
+            "time": "2019-02-26T21:14:50+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
