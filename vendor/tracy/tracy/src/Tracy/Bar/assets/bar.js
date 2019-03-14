@@ -21,7 +21,7 @@
 
 			this.init = function() {};
 			elem.innerHTML = addNonces(elem.dataset.tracyContent);
-			Tracy.Dumper.init(elem);
+			Tracy.Dumper.init(Debug.layer);
 			delete elem.dataset.tracyContent;
 			evalScripts(elem);
 
@@ -69,7 +69,7 @@
 				});
 			});
 
-			if (!this.is('tracy-ajax')) {
+			if (this.is('tracy-panel-persist')) {
 				Tracy.Toggle.persist(elem);
 			}
 		}
@@ -371,16 +371,12 @@
 	class Debug
 	{
 		static init(content) {
-			if (!document.documentElement.dataset) {
-				throw new Error('Tracy requires IE 11+');
-			}
-
 			Debug.layer = document.createElement('div');
 			Debug.layer.setAttribute('id', 'tracy-debug');
 			Debug.layer.innerHTML = addNonces(content);
 			(document.body || document.documentElement).appendChild(Debug.layer);
 			evalScripts(Debug.layer);
-			Tracy.Dumper.init();
+			Tracy.Dumper.init(); // for common dump()
 			Debug.layer.style.display = 'block';
 			Debug.bar.init();
 
@@ -392,12 +388,13 @@
 			Debug.captureWindow();
 			Debug.captureAjax();
 
-			Tracy.TableSort.init(Debug.layer);
+			Tracy.TableSort.init();
 		}
 
 
 		static loadAjax(content) {
 			let rows = Debug.bar.elem.querySelectorAll('.tracy-row[data-tracy-group=ajax]');
+			rows = Array.from(rows).reverse();
 			let max = window.TracyMaxAjaxRows || 3;
 			rows.forEach((row) => {
 				if (--max > 0) {
@@ -420,12 +417,10 @@
 				});
 			}
 
-			Debug.layer.insertAdjacentHTML('beforeend', content);
+			Debug.layer.insertAdjacentHTML('beforeend', content.panels);
 			evalScripts(Debug.layer);
-			let container = document.getElementById('tracy-container');
-			let ajaxBar = container.querySelector('.tracy-row[data-tracy-group=ajax]');
-			Debug.bar.elem.insertBefore(ajaxBar, rows[0]);
-			container.parentNode.removeChild(container);
+			Debug.bar.elem.insertAdjacentHTML('beforeend', content.bar);
+			let ajaxBar = Debug.bar.elem.querySelector('.tracy-row:last-child');
 
 			Debug.layer.querySelectorAll('.tracy-panel').forEach((panel) => {
 				if (!Debug.panels[panel.id]) {
@@ -677,7 +672,7 @@
 		contentId = document.currentScript.dataset.id;
 	}
 
-	Tracy = window.Tracy || {};
+	let Tracy = window.Tracy = window.Tracy || {};
 	Tracy.panelZIndex = Tracy.panelZIndex || 20000;
 	Tracy.DebugPanel = Panel;
 	Tracy.DebugBar = Bar;

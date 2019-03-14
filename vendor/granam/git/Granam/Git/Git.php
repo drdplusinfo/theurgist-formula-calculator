@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Granam\Git;
 
+use Granam\Git\Exceptions\ExecutingCommandFailed;
 use Granam\Strict\Object\StrictObject;
 
 class Git extends StrictObject
@@ -134,8 +135,19 @@ class Git extends StrictObject
         $commands[] = "cd $repositoryDirEscaped";
         $commands[] = 'git pull --ff-only';
         $commands[] = 'git pull --tags';
-
-        return $this->executeCommandsChainArray($commands);
+        $attempt = 1;
+        do {
+            try {
+                return $this->executeCommandsChainArray($commands);
+            } catch (ExecutingCommandFailed $executingCommandFailed) {
+                if (\preg_match("~'fatal: Unable to create '[^']+[.]lock': File exists[.]$~", $executingCommandFailed->getMessage())) {
+                    \sleep($attempt); // some update currently proceeds
+                    $attempt++;
+                    continue;
+                }
+                throw $executingCommandFailed;
+            }
+        } while ($attempt < 3);
     }
 
     /**
