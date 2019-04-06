@@ -143,7 +143,7 @@ class Request extends StrictObject
 
     public function isRequestedPdf(): bool
     {
-        return $this->getQueryString() === self::PDF;
+        return $this->getQueryString() === self::PDF || $this->getValueFromGet(self::PDF) !== null;
     }
 
     public function getPhpSapi(): string

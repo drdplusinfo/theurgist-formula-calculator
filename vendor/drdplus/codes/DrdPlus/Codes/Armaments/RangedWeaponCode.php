@@ -171,49 +171,31 @@ class RangedWeaponCode extends WeaponCode
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isMelee(): bool
     {
-        return $this->getValue() === self::SPEAR; // spear can be used both as a range and melee weapon
+        return false;
     }
 
-    /**
-     * @return bool
-     */
     final public function isRanged(): bool
     {
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function isBow(): bool
     {
         return \in_array($this->getValue(), self::getBowsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isCrossbow(): bool
     {
         return \in_array($this->getValue(), self::getCrossbowsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isThrowingWeapon(): bool
     {
         return \in_array($this->getValue(), self::getThrowingWeaponsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isShootingWeapon(): bool
     {
         return $this->isBow() || $this->isCrossbow();
@@ -225,7 +207,7 @@ class RangedWeaponCode extends WeaponCode
      */
     public function convertToMeleeWeaponCodeEquivalent(): MeleeWeaponCode
     {
-        if (!$this->isMelee()) {
+        if ($this->getValue() !== self::SPEAR) {
             throw new Exceptions\CanNotBeConvertedToMeleeWeaponCode(
                 "Range weapon code {$this} can not be converted to melee weapon code"
             );
@@ -234,9 +216,6 @@ class RangedWeaponCode extends WeaponCode
         return MeleeWeaponCode::getIt($this->getValue());
     }
 
-    /**
-     * @return RangedWeaponCode
-     */
     public function convertToRangedWeaponCodeEquivalent(): RangedWeaponCode
     {
         return $this;

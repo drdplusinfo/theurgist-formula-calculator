@@ -42,10 +42,8 @@ abstract class AbstractCode extends ScalarEnum implements Code
     /**
      * @param string|StringInterface $codeValue
      * @return AbstractCode|ScalarEnumInterface
+     * @throws \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @throws \Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum
-     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
-     * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public static function getIt($codeValue): AbstractCode
     {
@@ -55,10 +53,8 @@ abstract class AbstractCode extends ScalarEnum implements Code
     /**
      * @param string|StringInterface $codeValue
      * @return AbstractCode|ScalarEnumInterface
+     * @throws \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @throws \Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum
-     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
-     * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public static function findIt($codeValue): AbstractCode
     {
@@ -79,7 +75,7 @@ abstract class AbstractCode extends ScalarEnum implements Code
     /**
      * @param string|StringInterface $codeValue
      * @return bool
-     * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
+     * @throws \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      */
     public static function hasIt($codeValue): bool
     {
@@ -92,7 +88,7 @@ abstract class AbstractCode extends ScalarEnum implements Code
 
     /**
      * @param string|Code $codeValue
-     * @throws \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
+     * @throws \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      * @throws \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
      */
     protected function __construct($codeValue)

@@ -6,7 +6,6 @@ namespace DrdPlus\RulesSkeleton\Web;
 use DrdPlus\RulesSkeleton\Dirs;
 use Granam\Strict\Object\StrictObject;
 use Granam\WebContentBuilder\HtmlDocument;
-use Granam\WebContentBuilder\Web\BodyInterface;
 
 class PdfBody extends StrictObject implements RulesBodyInterface
 {

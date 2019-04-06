@@ -375,11 +375,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
         foreach (MeleeWeaponCode::getStaffsAndSpearsValues() as $codeValue) {
             $code = MeleeWeaponCode::getIt($codeValue);
             self::assertTrue($code->isMelee());
-            if ($codeValue !== MeleeWeaponCode::SPEAR) {
-                self::assertFalse($code->isRanged());
-            } else {
-                self::assertTrue($code->isRanged());
-            }
+            self::assertFalse($code->isRanged());
             self::assertTrue($code->isStaffOrSpear());
             foreach ($questions as $question) {
                 if ($question !== 'isStaffOrSpear') {
@@ -460,13 +456,8 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
         foreach (MeleeWeaponCode::getPossibleValues() as $meleeWeaponCode) {
             $meleeWeaponCode = MeleeWeaponCode::getIt($meleeWeaponCode);
             self::assertTrue($meleeWeaponCode->isMelee());
-            if ($meleeWeaponCode->getValue() !== MeleeWeaponCode::SPEAR) {
-                self::assertFalse($meleeWeaponCode->isRanged());
-                self::assertFalse($meleeWeaponCode->isThrowingWeapon());
-            } else {
-                self::assertTrue($meleeWeaponCode->isRanged());
-                self::assertTrue($meleeWeaponCode->isThrowingWeapon());
-            }
+            self::assertFalse($meleeWeaponCode->isRanged());
+            self::assertFalse($meleeWeaponCode->isThrowingWeapon());
             self::assertFalse($meleeWeaponCode->isShootingWeapon());
             self::assertFalse($meleeWeaponCode->isProjectile());
         }

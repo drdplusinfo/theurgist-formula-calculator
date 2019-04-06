@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); 
+declare(strict_types=1);
 
 namespace DrdPlus\Codes\Armaments;
 
@@ -387,89 +387,56 @@ class MeleeWeaponCode extends WeaponCode implements MeleeWeaponlikeCode
         return $this->isShootingWeapon() || $this->isThrowingWeapon();
     }
 
-    /**
-     * @return bool
-     */
     public function isShootingWeapon(): bool
     {
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function isThrowingWeapon(): bool
     {
-        return $this->getValue() === self::SPEAR; // spear can be used both as a throwing and melee weapon
+        return false;
     }
 
-    /**
-     * @return bool
-     */
     public function isAxe(): bool
     {
         return \in_array($this->getValue(), self::getAxesValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isKnifeOrDagger(): bool
     {
         return \in_array($this->getValue(), self::getKnivesAndDaggersValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isMaceOrClub(): bool
     {
         return \in_array($this->getValue(), self::getMacesAndClubsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isMorningstarOrMorgenstern(): bool
     {
         return \in_array($this->getValue(), self::getMorningstarsAndMorgensternsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isSaberOrBowieKnife(): bool
     {
         return \in_array($this->getValue(), self::getSabersAndBowieKnivesValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isStaffOrSpear(): bool
     {
         return \in_array($this->getValue(), self::getStaffsAndSpearsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isSword(): bool
     {
         return \in_array($this->getValue(), self::getSwordsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isVoulgeOrTrident(): bool
     {
         return \in_array($this->getValue(), self::getVoulgesAndTridentsValues(), true);
     }
 
-    /**
-     * @return bool
-     */
     public function isUnarmed(): bool
     {
         return \in_array($this->getValue(), self::getUnarmedValues(), true);
@@ -481,7 +448,7 @@ class MeleeWeaponCode extends WeaponCode implements MeleeWeaponlikeCode
      */
     public function convertToRangedWeaponCodeEquivalent(): RangedWeaponCode
     {
-        if (!$this->isRanged()) {
+        if ($this->getValue() !== self::SPEAR) {
             throw new Exceptions\CanNotBeConvertedToRangeWeaponCode(
                 "Melee weapon code {$this} can not be converted to range weapon code"
             );
@@ -490,9 +457,6 @@ class MeleeWeaponCode extends WeaponCode implements MeleeWeaponlikeCode
         return RangedWeaponCode::getIt($this->getValue());
     }
 
-    /**
-     * @return MeleeWeaponCode
-     */
     public function convertToMeleeWeaponCodeEquivalent(): MeleeWeaponCode
     {
         return $this;

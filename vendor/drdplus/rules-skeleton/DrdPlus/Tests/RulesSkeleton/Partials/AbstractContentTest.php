@@ -390,7 +390,7 @@ abstract class AbstractContentTest extends TestWithMockery
             $originalConfiguration->getDirs(),
             \array_replace_recursive($originalConfiguration->getSettings(), $customSettings)
         );
-
+        /** Configuration */
         return $customConfiguration;
     }
 

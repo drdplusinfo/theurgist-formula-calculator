@@ -75,7 +75,7 @@ class RulesApplication extends StrictObject
 
             return $this->content;
         }
-        if ($servicesContainer->getRequest()->isRequestedPdf() && $servicesContainer->getPdfBody()->getPdfFile()) {
+        if ($servicesContainer->getRequest()->isRequestedPdf() && $servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile()) {
             $this->content = new RulesContent(
                 $servicesContainer->getPdfContent(),
                 $servicesContainer->getEmptyMenu(),
@@ -173,7 +173,7 @@ class RulesApplication extends StrictObject
             // anyone can show content of this page
             \header('Access-Control-Allow-Origin: *');
         } elseif ($this->getRulesContent()->containsPdf()) {
-            $pdfFile = $this->servicesContainer->getPdfBody()->getPdfFile();
+            $pdfFile = $this->servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile();
             $pdfFileBasename = \basename($pdfFile);
             if (\PHP_SAPI === 'cli') {
                 return;

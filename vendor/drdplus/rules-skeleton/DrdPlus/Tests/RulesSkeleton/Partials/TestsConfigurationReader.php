@@ -35,6 +35,8 @@ interface TestsConfigurationReader
 
     public function hasProtectedAccess(): bool;
 
+    public function hasPdf(): bool;
+
     public function canBeBoughtOnEshop(): bool;
 
     public function hasCharacterSheet(): bool;

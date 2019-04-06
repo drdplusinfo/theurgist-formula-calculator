@@ -43,12 +43,8 @@ class RangedWeaponCodeTest extends WeaponCodeTest
      */
     public function I_can_easily_find_out_if_is_melee(): void
     {
-        $sut = $this->mockery(self::getSutClass());
-        $sut->expects('getValue')
-            ->andReturn('What the hell is this?');
-        $sut->makePartial();
-        /** @var RangedWeaponCode $sut */
-        self::assertFalse($sut->isMelee());
+        $rangedWeaponCode = RangedWeaponCode::getIt(RangedWeaponCode::getPossibleValues()[0]);
+        self::assertFalse($rangedWeaponCode->isMelee());
     }
 
     /**
@@ -178,11 +174,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
         foreach (RangedWeaponCode::getThrowingWeaponsValues() as $codeValue) {
             $code = RangedWeaponCode::getIt($codeValue);
             self::assertTrue($code->isRanged());
-            if ($codeValue !== RangedWeaponCode::SPEAR) {
-                self::assertFalse($code->isMelee());
-            } else {
-                self::assertTrue($code->isMelee());
-            }
+            self::assertFalse($code->isMelee());
             foreach ($questions as $question) {
                 if ($question !== 'isThrowingWeapon') {
                     if ($question !== 'isStaffOrSpear' || $codeValue !== RangedWeaponCode::SPEAR) {
@@ -238,14 +230,10 @@ class RangedWeaponCodeTest extends WeaponCodeTest
         self::assertFalse($rangeWeaponCode->isProjectile());
         self::assertSame($isThrowing, $rangeWeaponCode->isThrowingWeapon());
         self::assertSame($isShooting, $rangeWeaponCode->isShootingWeapon());
-        if ($rangeWeaponCode->getValue() !== RangedWeaponCode::SPEAR) {
-            self::assertFalse($rangeWeaponCode->isMelee());
-        } else {
-            self::assertTrue($rangeWeaponCode->isMelee());
-        }
+        self::assertFalse($rangeWeaponCode->isMelee());
     }
 
-    public function provideCodeAndUsage()
+    public function provideCodeAndUsage(): array
     {
         return [
             // throwing weapons

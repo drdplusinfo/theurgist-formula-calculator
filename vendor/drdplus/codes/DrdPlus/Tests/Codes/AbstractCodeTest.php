@@ -82,7 +82,7 @@ abstract class AbstractCodeTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\UnexpectedValueToEnum
+     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      * @expectedExceptionMessageRegExp ~\DateTime~
      */
     public function I_can_not_create_code_from_invalid_value_format(): void

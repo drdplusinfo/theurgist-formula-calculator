@@ -42,6 +42,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public const TOO_SHORT_FAILURE_NAMES = 'too_short_failure_names';
     public const TOO_SHORT_SUCCESS_NAMES = 'too_short_success_names';
     public const TOO_SHORT_RESULT_NAMES = 'too_short_result_names';
+    public const HAS_PDF = 'has_pdf';
 
     public static function createFromYaml(string $yamlConfigFile)
     {
@@ -87,6 +88,8 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     /** @var bool */
     private $hasProtectedAccess = true;
     /** @var bool */
+    private $hasPdf = true;
+    /** @var bool */
     private $canBeBoughtOnEshop = true;
     /** @var bool */
     private $hasCharacterSheet = true;
@@ -131,6 +134,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->setExpectedPageTitle($values);
         $this->setExpectedGoogleAnalyticsId($values);
         $this->setHasProtectedAccess($values);
+        $this->setHasPdf($values);
         $this->setCanBeBoughtOnEshop($values);
         $this->setHasDebugContacts($values);
         $this->setExpectedLicence($values);
@@ -354,6 +358,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->hasProtectedAccess = (bool)($values[self::HAS_PROTECTED_ACCESS] ?? $this->hasProtectedAccess);
     }
 
+    private function setHasPdf(array $values)
+    {
+        $this->hasPdf = (bool)($values[self::HAS_PDF] ?? $this->hasPdf);
+    }
+
     private function setCanBeBoughtOnEshop(array $values)
     {
         $this->canBeBoughtOnEshop = (bool)($values[self::CAN_BE_BOUGHT_ON_ESHOP] ?? $this->canBeBoughtOnEshop);
@@ -487,6 +496,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public function hasProtectedAccess(): bool
     {
         return $this->hasProtectedAccess;
+    }
+
+    public function hasPdf(): bool
+    {
+        return $this->hasPdf;
     }
 
     public function canBeBoughtOnEshop(): bool

@@ -12,7 +12,9 @@ use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\WebContentBuilder\HtmlDocument;
 use Gt\Dom\Element;
 use Gt\Dom\TokenList;
-use Mockery\MockInterface;/**
+use Mockery\MockInterface;
+
+/**
  * @backupGlobals enabled
  */
 class RulesApplicationTest extends AbstractContentTest
@@ -129,7 +131,6 @@ class RulesApplicationTest extends AbstractContentTest
     /**
      * @test
      * @dataProvider provideRequestType
-     * @backupGlobals enabled
      * @param string $requestType
      * @throws \ReflectionException
      */
@@ -182,7 +183,6 @@ class RulesApplicationTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_will_not_be_redirected_as_owner_via_html_meta_even_on_trial(): void
     {
@@ -196,6 +196,22 @@ class RulesApplicationTest extends AbstractContentTest
         $document = new HtmlDocument($content);
         $metaRefreshes = $this->getMetaRefreshes($document);
         self::assertCount(0, $metaRefreshes, 'No meta tag with refresh meaning expected as we are owners');
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_pdf(): void
+    {
+        $_GET[Request::PDF] = '1';
+        $content = $this->fetchNonCachedContent();
+        if (!$this->getTestsConfiguration()->hasPdf()) {
+            self::assertSame(0, strlen($content), 'No PDF expected due to tests configuration');
+        } else {
+            $pdfFile = glob($this->getDirs()->getPdfRoot() . '/*.pdf')[0] ?? null;
+            self::assertNotNull($pdfFile, 'No PDF file found in ' . $this->getDirs()->getPdfRoot() . '/*.pdf');
+            self::assertSame(md5_file($pdfFile), md5($content));
+        }
     }
 
 }

@@ -18,7 +18,7 @@ class AnchorsTest extends AbstractContentTest
     private static $externalHtmlDocuments;
 
     /**
-     * @test1
+     * @test
      */
     public function Local_anchors_with_hashes_point_to_existing_ids(): void
     {
@@ -77,7 +77,7 @@ class AnchorsTest extends AbstractContentTest
     private static $checkedExternalAnchors = [];
 
     /**
-     * @test1
+     * @test
      */
     public function All_external_anchors_can_be_reached(): void
     {
@@ -173,7 +173,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function External_anchors_with_hashes_point_to_existing_ids(): void
     {
@@ -274,7 +274,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function Anchor_to_ID_self_is_not_created_if_contains_anchor_element(): void
     {
@@ -297,7 +297,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function Original_ids_do_not_have_links_to_self(): void
     {
@@ -332,7 +332,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function Only_allowed_elements_are_moved_into_injected_link(): void
     {
@@ -358,7 +358,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function I_can_navigate_to_every_calculation_as_it_has_its_id_with_anchor(): void
     {
@@ -394,7 +394,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function Calculation_does_not_have_another_calculation_inside(): void
     {
@@ -419,7 +419,7 @@ class AnchorsTest extends AbstractContentTest
     }
 
     /**
-     * @test1
+     * @test
      */
     public function Links_to_altar_uses_https(): void
     {
