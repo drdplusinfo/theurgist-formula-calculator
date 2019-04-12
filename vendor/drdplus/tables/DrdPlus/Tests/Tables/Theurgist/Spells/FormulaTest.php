@@ -7,6 +7,7 @@ use DrdPlus\Codes\Theurgist\AffectionPeriodCode;
 use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
+use DrdPlus\Tables\Measurements\Time\Time;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
@@ -78,6 +79,7 @@ class FormulaTest extends TestWithMockery
         $tables = $this->mockery(Tables::class);
         $tables->shouldReceive('getFormulasTable')
             ->andReturn($formulasTable);
+        $tables->makePartial();
         return $tables;
     }
 
@@ -362,6 +364,14 @@ class FormulaTest extends TestWithMockery
         $finalCastingRounds = $formula->getCurrentCastingRounds();
         self::assertInstanceOf(CastingRounds::class, $finalCastingRounds);
         self::assertSame(123 + 1 + 2 + 3 + 4, $finalCastingRounds->getValue());
+        self::assertEquals(
+            new Time(123 + 1 + 2 + 3 + 4, Time::ROUND, Tables::getIt()->getTimeTable()),
+            $finalCastingRounds->getTime()
+        );
+        self::assertEquals(
+            (new Time(123 + 1 + 2 + 3 + 4, Time::ROUND, Tables::getIt()->getTimeTable()))->getBonus(),
+            $finalCastingRounds->getTimeBonus()
+        );
     }
 
     /**
