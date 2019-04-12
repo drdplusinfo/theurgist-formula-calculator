@@ -7,6 +7,7 @@ use DrdPlus\Tables\Partials\AbstractFileTable;
 use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 
@@ -16,6 +17,16 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 class SpellTraitsTable extends AbstractFileTable
 {
     use ToFlatArrayTrait;
+
+    /**
+     * @var Tables
+     */
+    private $tables;
+
+    public function __construct(Tables $tables)
+    {
+        $this->tables = $tables;
+    }
 
     protected function getDataFileName(): string
     {
@@ -106,7 +117,7 @@ class SpellTraitsTable extends AbstractFileTable
             return null;
         }
 
-        return new Trap($trapValues);
+        return new Trap($trapValues, $this->tables);
     }
 
 }

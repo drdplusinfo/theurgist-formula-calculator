@@ -9,7 +9,7 @@ use Granam\Number\NumberInterface;
 use Granam\Strict\Object\StrictObject;
 use Granam\Tools\ValueDescriber;
 
-class FormulaDifficulty extends StrictObject implements PositiveInteger
+class Difficulty extends StrictObject implements PositiveInteger
 {
     /**
      * @var int
@@ -20,9 +20,9 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
      */
     private $maximal;
     /**
-     * @var FormulaDifficultyAddition
+     * @var DifficultyAddition
      */
-    private $formulaDifficultyAddition;
+    private $difficultyAddition;
 
     /**
      * @param array $values [ 0 => minimal, 1 => maximal, 2 => difficulty addition per realm, 3 => current difficulty addition value]
@@ -64,14 +64,14 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
                 . ' for difficulty'
             );
         }
-        $this->formulaDifficultyAddition = new FormulaDifficultyAddition($values[2], $values[3] ?? null /* current addition value */);
+        $this->difficultyAddition = new DifficultyAddition($values[2], $values[3] ?? 0 /* current addition value */);
     }
 
     /**
      * Works as difficulty (some kind of "price") for basic, not changed formula.
-     * Can differs from 'value', @see getValue, which is current difficulty of even modified formula.
+     * Can differs from 'value', @return int
+     * @see getValue, which is current difficulty of even modified formula.
      *
-     * @return int
      */
     public function getMinimal(): int
     {
@@ -80,9 +80,9 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
 
     /**
      * Maximal difficulty a formula from lowest possible realm can handle.
-     * Can be even LESS than 'value', @see getValue, which is current difficulty of even heavily modified formula.
+     * Can be even LESS than 'value', @return int
+     * @see getValue, which is current difficulty of even heavily modified formula.
      *
-     * @return int
      */
     public function getMaximal(): int
     {
@@ -94,15 +94,15 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
      */
     public function getValue(): int
     {
-        return $this->getMinimal() + $this->formulaDifficultyAddition->getCurrentAddition();
+        return $this->getMinimal() + $this->difficultyAddition->getCurrentAddition();
     }
 
     /**
-     * @return FormulaDifficultyAddition
+     * @return DifficultyAddition
      */
-    public function getFormulaDifficultyAddition(): FormulaDifficultyAddition
+    public function getDifficultyAddition(): DifficultyAddition
     {
-        return $this->formulaDifficultyAddition;
+        return $this->difficultyAddition;
     }
 
     /**
@@ -118,18 +118,17 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
             return 0;
         }
         $additionalDifficulty = $currentDifficulty - $maximalDifficulty;
-        $steps = $additionalDifficulty / $this->getFormulaDifficultyAddition()->getDifficultyAdditionPerStep();
-        $realmsIncrement = $steps * $this->getFormulaDifficultyAddition()->getRealmsChangePerAdditionStep();
+        $steps = $additionalDifficulty / $this->getDifficultyAddition()->getDifficultyAdditionPerStep();
+        $realmsIncrement = $steps * $this->getDifficultyAddition()->getRealmsChangePerAdditionStep();
 
         return (int)\ceil($realmsIncrement); // even a tiny piece of a higher realm means the lower realm is not able to create that formula
     }
 
     /**
      * @param int|float|NumberInterface $difficultyChangeValue
-     * @return FormulaDifficulty
-     * @throws \Granam\Integer\Tools\Exceptions\Exception
+     * @return Difficulty
      */
-    public function createWithChange($difficultyChangeValue): FormulaDifficulty
+    public function createWithChange($difficultyChangeValue): Difficulty
     {
         $difficultyChangeValue = ToInteger::toInteger($difficultyChangeValue);
         if ($difficultyChangeValue === 0) {
@@ -140,7 +139,7 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
             [
                 $this->getMinimal(),
                 $this->getMaximal(),
-                $this->getFormulaDifficultyAddition()->getNotation(),
+                $this->getDifficultyAddition()->getNotation(),
                 $difficultyChangeValue,
             ]
         );
@@ -153,7 +152,7 @@ class FormulaDifficulty extends StrictObject implements PositiveInteger
     {
         $asString = (string)$this->getValue();
         $asString .= ' (' . $this->getMinimal() . '...' . $this->getMaximal();
-        $asString .= ' [' . $this->getFormulaDifficultyAddition() . ']';
+        $asString .= ' [' . $this->getDifficultyAddition() . ']';
         $asString .= ')';
 
         return $asString;

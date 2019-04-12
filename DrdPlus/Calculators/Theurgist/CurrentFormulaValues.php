@@ -9,11 +9,8 @@ use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\Formula;
-use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
 use DrdPlus\Tables\Theurgist\Spells\Modifier;
-use DrdPlus\Tables\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Tables\Theurgist\Spells\SpellTrait;
-use DrdPlus\Tables\Theurgist\Spells\SpellTraitsTable;
 use Granam\Integer\Tools\ToInteger;
 use Granam\Number\NumberInterface;
 use Granam\Strict\Object\StrictObject;
@@ -43,22 +40,13 @@ class CurrentFormulaValues extends StrictObject
     private $selectedModifiersSpellTraitsTrapValues;
     /** @var FormulaCode */
     private $currentFormulaCode;
-    /** @var SpellTraitsTable */
-    private $spellTraitsTable;
-    /** @var ModifiersTable */
-    private $modifiersTable;
-    /** @var FormulasTable */
-    private $formulasTable;
-    /** @var \DrdPlus\Tables\Measurements\Distance\DistanceTable */
-    private $distanceTable;
+    /** @var Tables */
+    private $tables;
 
     public function __construct(CurrentValues $currentValues, Tables $tables)
     {
         $this->currentValues = $currentValues;
-        $this->spellTraitsTable = $tables->getSpellTraitsTable();
-        $this->modifiersTable = $tables->getModifiersTable();
-        $this->formulasTable = $tables->getFormulasTable();
-        $this->distanceTable = $tables->getDistanceTable();
+        $this->tables = $tables;
     }
 
     public function getCurrentFormulaCode(): FormulaCode
@@ -66,7 +54,6 @@ class CurrentFormulaValues extends StrictObject
         if ($this->currentFormulaCode === null) {
             $this->currentFormulaCode = FormulaCode::findIt($this->currentValues->getCurrentValue(self::FORMULA));
         }
-
         return $this->currentFormulaCode;
     }
 
@@ -105,9 +92,9 @@ class CurrentFormulaValues extends StrictObject
          * @var array|string[] $levelModifiers
          */
         foreach ($modifierValues as $levelToParentModifier => $levelModifiers) {
-            [$level, $parentModifier] = \explode('-', $levelToParentModifier);
+            [$level, $parentModifier] = explode('-', $levelToParentModifier);
             if ($level > 1
-                && (!\array_key_exists($level - 1, $modifiers) || !\in_array($parentModifier, $modifiers[$level - 1], true))
+                && (!array_key_exists($level - 1, $modifiers) || !in_array($parentModifier, $modifiers[$level - 1], true))
             ) {
                 continue; // skip branch without selected parent modifier (early bag end)
             }
@@ -157,11 +144,11 @@ class CurrentFormulaValues extends StrictObject
         $selectedModifiers = $this->getCurrentModifiersTree();
         /** @var array|int[][][] $sameLevelParameters */
         foreach ((array)$selectedModifierParameterValues as $treeLevel => $sameLevelParameters) {
-            if (!\array_key_exists($treeLevel, $selectedModifiers)) {
+            if (!array_key_exists($treeLevel, $selectedModifiers)) {
                 continue;
             }
             foreach ($sameLevelParameters as $modifierName => $modifierParameters) {
-                if (!\array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
+                if (!array_key_exists($modifierName, $selectedModifiers[$treeLevel])) {
                     continue;
                 }
                 /** @var int[] $modifierParameters */
@@ -203,7 +190,7 @@ class CurrentFormulaValues extends StrictObject
         $traitsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitValues as $levelAndModifier => $levelTraitValues) {
-            [$level, $modifier] = \explode('-', $levelAndModifier);
+            [$level, $modifier] = explode('-', $levelAndModifier);
             if (empty($selectedModifiersTree[$level][$modifier])) {
                 continue; // skip still selected traits but without selected parent modifier
             }
@@ -248,17 +235,16 @@ class CurrentFormulaValues extends StrictObject
     {
         $spellTraitsTree = [];
         foreach ($spellTraitsBranch as $index => $spellTraitsLeaf) {
-            if (\is_array($spellTraitsLeaf)) {
+            if (is_array($spellTraitsLeaf)) {
                 $spellTraitsTree[$index] = $this->buildSpellTraitsTree($spellTraitsLeaf, $spellTraitsTrapsBranch[$index] ?? []);
                 continue;
             }
             $spellTraitsTree[$index] = new SpellTrait(
                 SpellTraitCode::getIt($spellTraitsLeaf),
-                $this->spellTraitsTable,
+                $this->tables,
                 $spellTraitsTrapsBranch[$spellTraitsLeaf] ?? null
             );
         }
-
         return $spellTraitsTree;
     }
 
@@ -272,7 +258,6 @@ class CurrentFormulaValues extends StrictObject
         $formulaModifiersTree = $this->getFormulaDirectModifierCombinations();
         $possibleModifiersTree = $this->buildPossibleModifiersTree($this->getCurrentModifiersFlatArrayValues());
         $possibleModifiersTree[''] = $formulaModifiersTree;
-
         return $possibleModifiersTree;
     }
 
@@ -282,11 +267,9 @@ class CurrentFormulaValues extends StrictObject
     private function getFormulaDirectModifierCombinations(): array
     {
         $formulaModifierCodesTree = [];
-        /** @var array|ModifierCode[] $childModifiers */
-        foreach ($this->formulasTable->getModifierCodes($this->currentFormulaCode) as $modifierCode) {
+        foreach ($this->tables->getFormulasTable()->getModifiers($this->currentFormulaCode) as $modifierCode) {
             $formulaModifierCodesTree[$modifierCode->getValue()] = $modifierCode; // as a child modifier
         }
-
         return $formulaModifierCodesTree;
     }
 
@@ -308,17 +291,17 @@ class CurrentFormulaValues extends StrictObject
         $modifiers = [];
         $childModifierValues = [];
         foreach ($modifierValues as $modifierValue) {
-            if (!\array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
+            if (!array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
-                foreach ($this->modifiersTable->getChildModifiers($modifierCode) as $childModifier) {
+                foreach ($this->tables->getModifiersTable()->getChildModifiers($modifierCode) as $childModifier) {
                     // by-related-modifier-indexed flat array
                     $modifiers[$modifierValue][$childModifier->getValue()] = $childModifier;
                     $childModifierValues[] = $childModifier->getValue();
                 }
             }
         }
-        $childModifiersToAdd = \array_diff($childModifierValues, $modifierValues); // not yet processed in current loop
-        if (\count($childModifiersToAdd) > 0) {
+        $childModifiersToAdd = array_diff($childModifierValues, $modifierValues); // not yet processed in current loop
+        if (count($childModifiersToAdd) > 0) {
             // flat array
             foreach ($this->buildPossibleModifiersTree($childModifiersToAdd, $modifiers) as $modifierValueToAdd => $modifierToAdd) {
                 $modifiers[$modifierValueToAdd] = $modifierToAdd;
@@ -335,8 +318,7 @@ class CurrentFormulaValues extends StrictObject
     {
         return new Formula(
             $this->getCurrentFormulaCode(),
-            $this->formulasTable,
-            $this->distanceTable,
+            $this->tables,
             $this->getCurrentFormulaSpellParameters(), // formula spell parameter changes
             $this->getCurrentModifiers(),
             $this->getCurrentFormulaSpellTraits()
@@ -393,8 +375,8 @@ class CurrentFormulaValues extends StrictObject
         $traitsTrapsTree = [];
         /** @var array|string[] $levelTraitValues */
         foreach ($traitTrapValues as $levelModifierAndTrait => $levelTraitValue) {
-            [$level, $modifier, $trait] = \explode('-', $levelModifierAndTrait);
-            if (!\in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
+            [$level, $modifier, $trait] = explode('-', $levelModifierAndTrait);
+            if (!in_array($trait, $selectedSpellTraitsTree[$level][$modifier] ?? [], true)) {
                 continue; // skip still selected trait trap but without selected parent trait
             }
             $traitsTrapsTree[$level][$modifier][$trait] = ToInteger::toInteger($levelTraitValue);
@@ -417,7 +399,7 @@ class CurrentFormulaValues extends StrictObject
     {
         $modifierValuesWithSpellTraits = [];
         foreach ($selectedModifierValues as $index => $selectedModifiersBranch) {
-            if (\is_array($selectedModifiersBranch)) {
+            if (is_array($selectedModifiersBranch)) {
                 $modifierValuesWithSpellTraits[$index] = $this->buildCurrentModifiersTree(
                     $selectedModifiersBranch,
                     $selectedModifierParameterValues[$index] ?? [],
@@ -427,7 +409,7 @@ class CurrentFormulaValues extends StrictObject
             }
             $modifierValuesWithSpellTraits[$index] = new Modifier(
                 ModifierCode::getIt($selectedModifiersBranch),
-                $this->modifiersTable,
+                $this->tables->getModifiersTable(),
                 $selectedModifierParameterValues[$selectedModifiersBranch] ?? [],
                 $selectedModifierSpellTraits[$selectedModifiersBranch] ?? []
             );
@@ -444,7 +426,7 @@ class CurrentFormulaValues extends StrictObject
     public function getFormulaFormNames(FormulaCode $formulaCode, string $language): array
     {
         $formNames = [];
-        foreach ($this->formulasTable->getForms($formulaCode) as $formCode) {
+        foreach ($this->tables->getFormulasTable()->getForms($formulaCode) as $formCode) {
             $formNames[] = $formCode->translateTo($language);
         }
 
@@ -453,27 +435,25 @@ class CurrentFormulaValues extends StrictObject
 
     public function createModifierInputIndex(array $modifiersChain): string
     {
-        $wrapped = \array_map(
+        $wrapped = array_map(
             function (string $chainPart) {
                 return "[$chainPart]";
             },
             $modifiersChain
         );
-
-        return \implode($wrapped);
+        return implode($wrapped);
     }
 
     public function createSpellTraitInputIndex(array $modifiersChain, string $spellTraitName): string
     {
-        $wrapped = \array_map(
+        $wrapped = array_map(
             function (string $chainPart) {
                 return "[!$chainPart!]"; // wrapped by ! to avoid conflict with same named spell trait on long chain
             },
             $modifiersChain
         );
         $wrapped[] = "[{$spellTraitName}]";
-
-        return \implode($wrapped);
+        return implode($wrapped);
     }
 
     /**
@@ -484,10 +464,9 @@ class CurrentFormulaValues extends StrictObject
     public function getModifierFormNames(ModifierCode $modifierCode, string $language): array
     {
         $formNames = [];
-        foreach ($this->modifiersTable->getForms($modifierCode) as $formCode) {
+        foreach ($this->tables->getModifiersTable()->getForms($modifierCode) as $formCode) {
             $formNames[] = $formCode->translateTo($language);
         }
-
         return $formNames;
     }
 
@@ -501,8 +480,7 @@ class CurrentFormulaValues extends StrictObject
         if ($selection === false) {
             return false;
         }
-
-        return $selection === $modifierValue /* bag end */ || \is_array($selection); /* still traversing on the tree */
+        return $selection === $modifierValue /* bag end */ || is_array($selection); /* still traversing on the tree */
     }
 
     public function formatNumber(NumberInterface $number): string

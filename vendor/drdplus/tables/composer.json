@@ -8,16 +8,6 @@
       "DrdPlus\\": "DrdPlus/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "/home/jaroslav/projects/drdplus/codes"
-    },
-    {
-      "type": "vcs",
-      "url": "/home/jaroslav/projects/drdplus/base-properties"
-    }
-  ],
   "require": {
     "php": ">=7.1",
     "granam/float": ">=5.0",

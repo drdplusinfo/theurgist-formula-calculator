@@ -17,7 +17,7 @@ class RealmsAffectionTest extends TestWithMockery
         $affection = new RealmsAffection(['-213']);
         self::assertSame(-213, $affection->getValue());
         self::assertSame('-213 daily', (string)$affection);
-        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::DAILY), $affection->getAffectionPeriod());
+        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::DAILY), $affection->getAffectionPeriodCode());
     }
 
     /**
@@ -28,7 +28,7 @@ class RealmsAffectionTest extends TestWithMockery
         $affection = new RealmsAffection(['-357', AffectionPeriodCode::MONTHLY]);
         self::assertSame(-357, $affection->getValue());
         self::assertSame('-357 monthly', (string)$affection);
-        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::MONTHLY), $affection->getAffectionPeriod());
+        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::MONTHLY), $affection->getAffectionPeriodCode());
     }
 
     /**
@@ -39,7 +39,7 @@ class RealmsAffectionTest extends TestWithMockery
         $affection = new RealmsAffection(['0']);
         self::assertSame(0, $affection->getValue());
         self::assertSame('0', (string)$affection);
-        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::DAILY), $affection->getAffectionPeriod());
+        self::assertSame(AffectionPeriodCode::getIt(AffectionPeriodCode::DAILY), $affection->getAffectionPeriodCode());
     }
 
     /**

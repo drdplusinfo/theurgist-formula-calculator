@@ -5,6 +5,7 @@ namespace DrdPlus\Tests\Tables\Armaments\Partials;
 
 use DrdPlus\Tables\Armaments\Partials\WoundingArmamentsTable;
 use DrdPlus\Tests\Tables\TableTest;
+use Granam\String\StringTools;
 
 abstract class WoundingArmamentsTableTest extends TableTest
 {
@@ -61,15 +62,8 @@ abstract class WoundingArmamentsTableTest extends TableTest
         self::assertSame($value, $forAttackTable->$getValueOf($shootingArmamentCode));
     }
 
-    protected function assembleValueGetter($valueName)
+    protected function assembleValueGetter($valueName): string
     {
-        return 'get' . implode(
-                array_map(
-                    function ($namePart) {
-                        return ucfirst($namePart);
-                    },
-                    explode('_', $valueName)
-                )
-            ) . 'Of';
+        return 'get' . StringTools::snakeCaseToCamelCase($valueName) . 'Of';
     }
 }

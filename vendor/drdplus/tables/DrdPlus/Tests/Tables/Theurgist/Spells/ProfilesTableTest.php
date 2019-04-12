@@ -1,16 +1,16 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
 
+use DrdPlus\Codes\Theurgist\FormCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\ProfileCode;
-use DrdPlus\Tables\Theurgist\Spells\SpellTraitsTable;
 use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
-use DrdPlus\Tables\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Tables\Theurgist\Spells\ProfilesTable;
+use DrdPlus\Tests\Tables\Theurgist\AbstractTheurgistTableTest;
 
 class ProfilesTableTest extends AbstractTheurgistTableTest
 {
@@ -21,11 +21,38 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
 
     protected function setUp()
     {
-        $this->formulasTable = new FormulasTable(
-            Tables::getIt(),
-            new ModifiersTable(Tables::getIt()),
-            new SpellTraitsTable()
-        );
+        $this->formulasTable = new FormulasTable(Tables::getIt());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_every_mandatory_parameter(): void
+    {
+        self::assertFalse(false, 'Is tested in another way');
+    }
+
+    protected function getMandatoryParameters(): array
+    {
+        return [];
+    }
+
+    protected function getMainCodeClass(): string
+    {
+        return FormCode::class;
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_every_optional_parameter(): void
+    {
+        self::assertFalse(false, 'Is tested in another way');
+    }
+
+    protected function getOptionalParameters(): array
+    {
+        return [ProfilesTable::FORMULAS, ProfilesTable::MODIFIERS];
     }
 
     /**
@@ -35,11 +62,9 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
     {
         $profilesTable = new ProfilesTable();
         foreach (ProfileCode::getPossibleValues() as $profileValue) {
-            $formulaCodes = $profilesTable->getFormulasForProfile(ProfileCode::getIt($profileValue));
+            $formulaCodes = $profilesTable->getFormulas(ProfileCode::getIt($profileValue));
             self::assertTrue(is_array($formulaCodes));
-            if (strpos($profileValue, 'venus')
-                || in_array($profileValue, ['look_mars', 'time_mars'], true)
-            ) {
+            if (strpos($profileValue, 'venus') || in_array($profileValue, ['look_mars', 'time_mars'], true)) {
                 self::assertCount(0, $formulaCodes);
             } else {
                 self::assertNotEmpty($formulaCodes, 'Expected some formulas for profile ' . $profileValue);
@@ -97,7 +122,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
      */
     public function I_can_not_get_formulas_to_unknown_profile()
     {
-        (new ProfilesTable())->getFormulasForProfile($this->createProfileCode('Sexy texy'));
+        (new ProfilesTable())->getFormulas($this->createProfileCode('Sexy texy'));
     }
 
     /**
@@ -122,7 +147,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
     {
         $profilesTable = new ProfilesTable();
         foreach (ProfileCode::getPossibleValues() as $profileValue) {
-            $modifierCodes = $profilesTable->getModifiersForProfile(ProfileCode::getIt($profileValue));
+            $modifierCodes = $profilesTable->getModifiers(ProfileCode::getIt($profileValue));
             self::assertTrue(is_array($modifierCodes));
             $modifierValues = [];
             foreach ($modifierCodes as $modifierCode) {
@@ -197,7 +222,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
      */
     public function I_can_not_get_modifiers_to_unknown_profile()
     {
-        (new ProfilesTable())->getModifiersForProfile($this->createProfileCode('Lazy lizard'));
+        (new ProfilesTable())->getModifiers($this->createProfileCode('Lazy lizard'));
     }
 
 }

@@ -9,13 +9,13 @@ namespace DrdPlus\Codes\Theurgist;
  */
 class FormulaMutableSpellParameterCode extends AbstractTheurgistCode
 {
-    public const RADIUS = 'radius';
-    public const DURATION = 'duration';
-    public const POWER = 'power';
-    public const ATTACK = 'attack';
+    public const SPELL_RADIUS = 'spell_radius';
+    public const SPELL_DURATION = 'spell_duration';
+    public const SPELL_POWER = 'spell_power';
+    public const SPELL_ATTACK = 'spell_attack';
     public const SIZE_CHANGE = 'size_change';
     public const DETAIL_LEVEL = 'detail_level';
-    public const BRIGHTNESS = 'brightness';
+    public const SPELL_BRIGHTNESS = 'spell_brightness';
     public const SPELL_SPEED = 'spell_speed';
     public const EPICENTER_SHIFT = 'epicenter_shift';
 
@@ -25,27 +25,27 @@ class FormulaMutableSpellParameterCode extends AbstractTheurgistCode
     public static function getPossibleValues(): array
     {
         return [
-            'radius',
-            'duration',
-            'power',
-            'attack',
-            'size_change',
-            'detail_level',
-            'brightness',
-            'spell_speed',
-            'epicenter_shift',
+            self::SPELL_RADIUS,
+            self::SPELL_DURATION,
+            self::SPELL_POWER,
+            self::SPELL_ATTACK,
+            self::SIZE_CHANGE,
+            self::DETAIL_LEVEL,
+            self::SPELL_BRIGHTNESS,
+            self::SPELL_SPEED,
+            self::EPICENTER_SHIFT,
         ];
     }
 
     private static $translations = [
         'cs' => [
-            self::RADIUS => 'poloměr',
-            self::DURATION => 'doba trvání',
-            self::POWER => 'síla',
-            self::ATTACK => 'útočnost',
+            self::SPELL_RADIUS => 'poloměr',
+            self::SPELL_DURATION => 'doba trvání',
+            self::SPELL_POWER => 'síla',
+            self::SPELL_ATTACK => 'útočnost',
             self::SIZE_CHANGE => 'změna velikosti',
             self::DETAIL_LEVEL => 'detailnost',
-            self::BRIGHTNESS => 'jas',
+            self::SPELL_BRIGHTNESS => 'jas',
             self::SPELL_SPEED => 'rychlost',
             self::EPICENTER_SHIFT => 'posun',
         ],

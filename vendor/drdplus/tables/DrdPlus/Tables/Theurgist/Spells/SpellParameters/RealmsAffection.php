@@ -21,7 +21,7 @@ class RealmsAffection extends StrictObject implements NegativeInteger
     /**
      * @var AffectionPeriodCode
      */
-    private $affectionPeriod;
+    private $affectionPeriodCode;
 
     /**
      * @param array $affectionParts
@@ -40,23 +40,17 @@ class RealmsAffection extends StrictObject implements NegativeInteger
                 ) . ' for ' . $this->getParameterName()
             );
         }
-        $this->affectionPeriod = AffectionPeriodCode::getIt($affectionParts[1] ?? AffectionPeriodCode::DAILY);
+        $this->affectionPeriodCode = AffectionPeriodCode::getIt($affectionParts[1] ?? AffectionPeriodCode::DAILY);
     }
 
-    /**
-     * @return int
-     */
     public function getValue(): int
     {
         return $this->value;
     }
 
-    /**
-     * @return AffectionPeriodCode
-     */
-    public function getAffectionPeriod(): AffectionPeriodCode
+    public function getAffectionPeriodCode(): AffectionPeriodCode
     {
-        return $this->affectionPeriod;
+        return $this->affectionPeriodCode;
     }
 
     /**
@@ -66,7 +60,7 @@ class RealmsAffection extends StrictObject implements NegativeInteger
     {
         return (string)$this->getValue()
             . ($this->getValue() !== 0
-                ? " {$this->getAffectionPeriod()}"
+                ? " {$this->getAffectionPeriodCode()}"
                 : ''
             );
     }

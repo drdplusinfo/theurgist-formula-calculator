@@ -16,10 +16,10 @@ use Granam\String\StringTools;
 /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithoutUnit = [
-    FormulaMutableSpellParameterCode::DURATION => function ($optionDurationValue) {
+    FormulaMutableSpellParameterCode::SPELL_DURATION => function ($optionDurationValue) {
         return (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();
     },
-    FormulaMutableSpellParameterCode::RADIUS => function ($optionDurationValue) {
+    FormulaMutableSpellParameterCode::SPELL_RADIUS => function ($optionDurationValue) {
         return (new DistanceBonus($optionDurationValue, Tables::getIt()->getDistanceTable()))->getDistance();
     },
     FormulaMutableSpellParameterCode::SPELL_SPEED => function ($optionDurationValue) {

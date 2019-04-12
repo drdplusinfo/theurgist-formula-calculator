@@ -5,6 +5,7 @@ namespace DrdPlus\Tests\Tables\Armaments\Armors;
 
 use DrdPlus\Tables\Armaments\Armors\AbstractArmorsTable;
 use DrdPlus\Tests\Tables\TableTest;
+use Granam\String\StringTools;
 
 abstract class AbstractArmorsTableTest extends TableTest
 {
@@ -78,12 +79,7 @@ abstract class AbstractArmorsTableTest extends TableTest
         $armorsTable = new $sutClass();
         $value = $armorsTable->getValue([$armorCode], $valueName);
         self::assertSame($expectedValue, $value);
-        $getValueNameOf = 'get' . implode(array_map(
-                function ($namePart) {
-                    return ucfirst($namePart);
-                },
-                explode('_', $valueName)
-            )) . 'Of';
+        $getValueNameOf = 'get' . StringTools::snakeCaseToCamelCase($valueName) . 'Of';
         self::assertSame(
             $value,
             $valueFromSpecificGetter = $armorsTable->$getValueNameOf($armorCode),

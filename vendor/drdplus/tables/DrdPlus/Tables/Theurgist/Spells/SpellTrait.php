@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DrdPlus\Tables\Theurgist\Spells;
 
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 use Granam\Strict\Object\StrictObject;
@@ -13,25 +14,25 @@ class SpellTrait extends StrictObject
 {
     /** @var SpellTraitCode */
     private $spellTraitCode;
-    /** @var SpellTraitsTable */
-    private $spellTraitsTable;
+    /** @var Tables */
+    private $tables;
     /** @var int */
     private $trapPropertyChange;
 
     /**
      * @param SpellTraitCode $spellTraitCode
-     * @param SpellTraitsTable $spellTraitsTable
+     * @param Tables $tables
      * @param int|null $spellTraitTrapPropertyValue current trap value (change will be calculated from that and default trap value)
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\CanNotChangeNotExistingTrap
      */
     public function __construct(
         SpellTraitCode $spellTraitCode,
-        SpellTraitsTable $spellTraitsTable,
+        Tables $tables,
         int $spellTraitTrapPropertyValue = null
     )
     {
         $this->spellTraitCode = $spellTraitCode;
-        $this->spellTraitsTable = $spellTraitsTable;
+        $this->tables = $tables;
         $this->trapPropertyChange = $this->sanitizeSpellTraitTrapPropertyChange($spellTraitTrapPropertyValue);
     }
 
@@ -56,13 +57,9 @@ class SpellTrait extends StrictObject
         return $spellTraitTrapPropertyValue - $baseTrap->getDefaultValue();
     }
 
-    /**
-     * @return DifficultyChange
-     * @throws \Granam\Integer\Tools\Exceptions\Exception
-     */
     public function getDifficultyChange(): DifficultyChange
     {
-        $difficultyChange = $this->spellTraitsTable->getDifficultyChange($this->getSpellTraitCode());
+        $difficultyChange = $this->tables->getSpellTraitsTable()->getDifficultyChange($this->getSpellTraitCode());
         $trap = $this->getCurrentTrap();
         if (!$trap) {
             return $difficultyChange;
@@ -71,26 +68,16 @@ class SpellTrait extends StrictObject
         return $difficultyChange->add($trap->getAdditionByDifficulty()->getCurrentDifficultyIncrement());
     }
 
-    /**
-     * @return SpellTraitCode
-     */
     public function getSpellTraitCode(): SpellTraitCode
     {
         return $this->spellTraitCode;
     }
 
-    /**
-     * @return Trap|null
-     */
     public function getBaseTrap(): ?Trap
     {
-        return $this->spellTraitsTable->getTrap($this->getSpellTraitCode());
+        return $this->tables->getSpellTraitsTable()->getTrap($this->getSpellTraitCode());
     }
 
-    /**
-     * @return Trap|null
-     * @throws \Granam\Integer\Tools\Exceptions\Exception
-     */
     public function getCurrentTrap(): ?Trap
     {
         $trap = $this->getBaseTrap();

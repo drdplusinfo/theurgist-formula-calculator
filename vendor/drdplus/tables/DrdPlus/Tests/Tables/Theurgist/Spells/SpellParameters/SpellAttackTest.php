@@ -5,7 +5,7 @@ namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
 use DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials\PositiveCastingParameterTest;
 
-class AttackTest extends PositiveCastingParameterTest
+class SpellAttackTest extends PositiveCastingParameterTest
 {
 
 }

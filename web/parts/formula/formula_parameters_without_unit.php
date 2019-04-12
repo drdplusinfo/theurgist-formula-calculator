@@ -1,19 +1,16 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
-use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
-use DrdPlus\Codes\Theurgist\FormCode;
 use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
-use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
 /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithoutUnit = [
-    FormulaMutableSpellParameterCode::ATTACK,
-    FormulaMutableSpellParameterCode::BRIGHTNESS,
-    FormulaMutableSpellParameterCode::POWER,
+    FormulaMutableSpellParameterCode::SPELL_ATTACK,
+    FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS,
+    FormulaMutableSpellParameterCode::SPELL_POWER,
     FormulaMutableSpellParameterCode::DETAIL_LEVEL,
     FormulaMutableSpellParameterCode::SIZE_CHANGE,
 ];

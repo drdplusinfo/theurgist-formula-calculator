@@ -6,7 +6,7 @@ if ($epicenterShift === null) {
     return;
 }
 // formula itself can not shift epicenter so no options here
-$epicenterShiftDistance = $epicenterShift->getDistance($webPartsContainer->getTables()->getDistanceTable());
+$epicenterShiftDistance = $epicenterShift->getDistance();
 $epicenterShiftUnitInCzech = $epicenterShiftDistance->getUnitCode()->translateTo('cs', $epicenterShiftDistance->getValue());
 ?>
 <div class="col">

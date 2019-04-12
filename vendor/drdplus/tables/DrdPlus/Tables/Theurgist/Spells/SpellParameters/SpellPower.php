@@ -6,9 +6,9 @@ namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 
 /**
- * @method Power getWithAddition($additionValue)
+ * @method SpellPower getWithAddition($additionValue)
  */
-class Power extends CastingParameter
+class SpellPower extends CastingParameter
 {
 
 }

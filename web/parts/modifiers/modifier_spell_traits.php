@@ -13,9 +13,9 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 /** @var Tables $tables */
 /** @var CurrentFormulaValues $currentFormulaValues */
 
-$modifierSpellTraitCodes = $tables->getModifiersTable()->getSpellTraitCodes($possibleModifier);
+$modifierSpellTraitCodes = $tables->getModifiersTable()->getSpellTraits($possibleModifier);
 $spellTraitsTable = $tables->getSpellTraitsTable();
-if (\count($modifierSpellTraitCodes) > 0) { ?>
+if (count($modifierSpellTraitCodes) > 0) { ?>
   <div>
       <?php
       $possibleModifierValue = $possibleModifier->getValue();
@@ -28,7 +28,7 @@ if (\count($modifierSpellTraitCodes) > 0) { ?>
             <input type="checkbox" value="<?= $spellTraitCodeValue ?>"
                    name="modifier_spell_traits[<?= $spellTraitsInputIndex ?>][]"
                    <?php
-                   if (\in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
+                   if (in_array($spellTraitCodeValue, $selectedModifiersSpellTraitValues[$treeLevel][$possibleModifierValue] ?? [], true)) { ?>checked<?php }
                    if (!$modifierIsSelected) { ?>disabled<?php } ?>
             >
               <?= $modifierSpellTraitCode->translateTo('cs') ?>

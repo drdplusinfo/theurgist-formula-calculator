@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials;
 
+use DrdPlus\Tables\Tables;
+
 abstract class PositiveCastingParameterTest extends CastingParameterTest
 {
     protected function I_can_create_it_negative()
@@ -18,7 +20,7 @@ abstract class PositiveCastingParameterTest extends CastingParameterTest
     public function I_can_not_create_it_non_numeric()
     {
         $sutClass = self::getSutClass();
-        new $sutClass(['infinite', '332211']);
+        new $sutClass(['infinite', '332211'], Tables::getIt());
     }
 
     /**
@@ -29,6 +31,6 @@ abstract class PositiveCastingParameterTest extends CastingParameterTest
     public function I_can_not_create_it_negative()
     {
         $sutClass = self::getSutClass();
-        new $sutClass(['-5']);
+        new $sutClass(['-5'], Tables::getIt());
     }
 }

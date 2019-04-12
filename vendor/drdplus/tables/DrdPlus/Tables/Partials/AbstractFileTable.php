@@ -10,13 +10,13 @@ use Granam\Tools\ValueDescriber;
 
 abstract class AbstractFileTable extends AbstractTable
 {
-    public const INTEGER = 'integer';
-    public const POSITIVE_INTEGER = 'positive_integer';
-    public const NEGATIVE_INTEGER = 'negative_integer';
-    public const FLOAT = 'float';
-    public const BOOLEAN = 'boolean';
-    public const STRING = 'string';
-    public const ARRAY = 'array';
+    protected const INTEGER = 'integer';
+    protected const POSITIVE_INTEGER = 'positive_integer';
+    protected const NEGATIVE_INTEGER = 'negative_integer';
+    protected const FLOAT = 'float';
+    protected const BOOLEAN = 'boolean';
+    protected const STRING = 'string';
+    protected const ARRAY = 'array';
 
     /** @var array|string[][]|string[][][] */
     private $indexedValues;

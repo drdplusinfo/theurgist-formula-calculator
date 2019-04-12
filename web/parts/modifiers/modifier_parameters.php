@@ -7,7 +7,7 @@ use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\EpicenterShift;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Radius;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellRadius;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
 use Granam\String\StringTools;
 
@@ -21,18 +21,15 @@ use Granam\String\StringTools;
 
 $measurementSizes = [
     ModifierMutableSpellParameterCode::SPELL_SPEED => function (SpellSpeed $spellSpeed) {
-        $speed = $spellSpeed->getSpeed(Tables::getIt()->getSpeedTable());
-
+        $speed = $spellSpeed->getSpeedBonus()->getSpeed();
         return $speed->getValue() . ' ' . $speed->getUnitCode()->translateTo('cs', $speed->getValue());
     },
     ModifierMutableSpellParameterCode::EPICENTER_SHIFT => function (EpicenterShift $epicenterShift) {
-        $distance = $epicenterShift->getDistance(Tables::getIt()->getDistanceTable());
-
+        $distance = $epicenterShift->getDistance();
         return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
     },
-    ModifierMutableSpellParameterCode::RADIUS => function (Radius $radius) {
-        $distance = $radius->getDistance(Tables::getIt()->getDistanceTable());
-
+    ModifierMutableSpellParameterCode::SPELL_RADIUS => function (SpellRadius $spellRadius) {
+        $distance = $spellRadius->getDistanceBonus()->getDistance();
         return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
     },
 ];
@@ -66,7 +63,7 @@ foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possiblePara
                 <option value="<?= $optionParameterValue ?>"
                         <?php if ($selectedParameterValue !== false && $selectedParameterValue === $optionParameterValue){ ?>selected<?php } ?>>
                     <?php $parameterValueDescription = ($optionParameterValue >= 0 ? '+' : '') . $optionParameterValue;
-                    if (\array_key_exists($possibleParameterName, $measurementSizes)) {
+                    if (array_key_exists($possibleParameterName, $measurementSizes)) {
                         $measurementSize = $measurementSizes[$possibleParameterName];
                         $parameterValueDescription .= ' (' . $measurementSize($parameter) . ')';
                     }

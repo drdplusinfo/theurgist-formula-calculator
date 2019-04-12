@@ -1,8 +1,9 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Spells;
 
+use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
 use DrdPlus\Tables\Partials\AbstractFileTable;
 use DrdPlus\Tables\Partials\Exceptions\RequiredRowNotFound;
 use DrdPlus\Codes\Theurgist\FormCode;
@@ -10,18 +11,19 @@ use DrdPlus\Codes\Theurgist\FormulaCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\ProfileCode;
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Noise;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Attack;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellAttack;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\NumberOfConditions;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Grafts;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Invisibility;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\NumberOfWaypoints;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Power;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellPower;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Quality;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Radius;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellRadius;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Resistance;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\NumberOfSituations;
@@ -37,6 +39,16 @@ class ModifiersTable extends AbstractFileTable
     use ToFlatArrayTrait;
 
     /**
+     * @var Tables
+     */
+    private $tables;
+
+    public function __construct(Tables $tables)
+    {
+        $this->tables = $tables;
+    }
+
+    /**
      * @return string
      */
     protected function getDataFileName(): string
@@ -44,25 +56,24 @@ class ModifiersTable extends AbstractFileTable
         return __DIR__ . '/data/modifiers.csv';
     }
 
-    public const REALM = 'realm';
-    public const REALMS_AFFECTION = 'realms_affection';
-    public const AFFECTION_TYPE = 'affection_type';
+    public const REALM = FormulasTable::REALM;
+    public const REALMS_AFFECTION = FormulasTable::REALMS_AFFECTION;
     public const CASTING_ROUNDS = 'casting_rounds';
     public const DIFFICULTY_CHANGE = 'difficulty_change';
-    public const RADIUS = 'radius';
-    public const EPICENTER_SHIFT = 'epicenter_shift';
-    public const POWER = 'power';
-    public const NOISE = 'noise';
-    public const ATTACK = 'attack';
-    public const GRAFTS = 'grafts';
-    public const SPELL_SPEED = 'spell_speed';
-    public const NUMBER_OF_WAYPOINTS = 'number_of_waypoints';
-    public const INVISIBILITY = 'invisibility';
-    public const QUALITY = 'quality';
-    public const NUMBER_OF_CONDITIONS = 'number_of_conditions';
-    public const RESISTANCE = 'resistance';
-    public const NUMBER_OF_SITUATIONS = 'number_of_situations';
-    public const THRESHOLD = 'threshold';
+    public const RADIUS = FormulasTable::SPELL_RADIUS;
+    public const EPICENTER_SHIFT = FormulasTable::EPICENTER_SHIFT;
+    public const SPELL_POWER = FormulasTable::SPELL_POWER;
+    public const NOISE = ModifierMutableSpellParameterCode::NOISE;
+    public const SPELL_ATTACK = FormulasTable::SPELL_ATTACK;
+    public const GRAFTS = ModifierMutableSpellParameterCode::GRAFTS;
+    public const SPELL_SPEED = FormulasTable::SPELL_SPEED;
+    public const NUMBER_OF_WAYPOINTS = ModifierMutableSpellParameterCode::NUMBER_OF_WAYPOINTS;
+    public const INVISIBILITY = ModifierMutableSpellParameterCode::INVISIBILITY;
+    public const QUALITY = ModifierMutableSpellParameterCode::QUALITY;
+    public const NUMBER_OF_CONDITIONS = ModifierMutableSpellParameterCode::NUMBER_OF_CONDITIONS;
+    public const RESISTANCE = ModifierMutableSpellParameterCode::RESISTANCE;
+    public const NUMBER_OF_SITUATIONS = ModifierMutableSpellParameterCode::NUMBER_OF_SITUATIONS;
+    public const THRESHOLD = ModifierMutableSpellParameterCode::THRESHOLD;
     public const FORMS = 'forms';
     public const SPELL_TRAITS = 'spell_traits';
     public const PROFILES = 'profiles';
@@ -79,9 +90,9 @@ class ModifiersTable extends AbstractFileTable
             self::DIFFICULTY_CHANGE => self::POSITIVE_INTEGER,
             self::RADIUS => self::ARRAY,
             self::EPICENTER_SHIFT => self::ARRAY,
-            self::POWER => self::ARRAY,
+            self::SPELL_POWER => self::ARRAY,
             self::NOISE => self::ARRAY,
-            self::ATTACK => self::ARRAY,
+            self::SPELL_ATTACK => self::ARRAY,
             self::GRAFTS => self::ARRAY,
             self::SPELL_SPEED => self::ARRAY,
             self::NUMBER_OF_WAYPOINTS => self::ARRAY,
@@ -109,57 +120,36 @@ class ModifiersTable extends AbstractFileTable
         ];
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Realm
-     */
     public function getRealm(ModifierCode $modifierCode): Realm
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Realm($this->getValue($modifierCode, self::REALM));
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return RealmsAffection|null
-     */
-    public function getRealmsAffection(ModifierCode $modifierCode)
+    public function getRealmsAffection(ModifierCode $modifierCode): ?RealmsAffection
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $affectionValues = $this->getValue($modifierCode, self::REALMS_AFFECTION);
         if (count($affectionValues) === 0) {
             return null;
         }
-
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new RealmsAffection($affectionValues);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return CastingRounds
-     */
     public function getCastingRounds(ModifierCode $modifierCode): CastingRounds
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new CastingRounds($this->getValue($modifierCode, self::CASTING_ROUNDS));
+        return new CastingRounds($this->getValue($modifierCode, self::CASTING_ROUNDS), $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return DifficultyChange
-     */
     public function getDifficultyChange(ModifierCode $modifierCode): DifficultyChange
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new DifficultyChange($this->getValue($modifierCode, self::DIFFICULTY_CHANGE));
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Radius|null
-     */
-    public function getRadius(ModifierCode $modifierCode)
+    public function getSpellRadius(ModifierCode $modifierCode): ?SpellRadius
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $radiusValues = $this->getValue($modifierCode, self::RADIUS);
@@ -168,14 +158,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Radius($radiusValues);
+        return new SpellRadius($radiusValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return EpicenterShift|null
-     */
-    public function getEpicenterShift(ModifierCode $modifierCode)
+    public function getEpicenterShift(ModifierCode $modifierCode): ?EpicenterShift
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $shiftValues = $this->getValue($modifierCode, self::EPICENTER_SHIFT);
@@ -184,30 +170,22 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new EpicenterShift($shiftValues);
+        return new EpicenterShift($shiftValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Power|null
-     */
-    public function getPower(ModifierCode $modifierCode)
+    public function getSpellPower(ModifierCode $modifierCode): ?SpellPower
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        $powerValues = $this->getValue($modifierCode, self::POWER);
+        $powerValues = $this->getValue($modifierCode, self::SPELL_POWER);
         if (!$powerValues) {
             return null;
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Power($powerValues);
+        return new SpellPower($powerValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Noise|null
-     */
-    public function getNoise(ModifierCode $modifierCode)
+    public function getNoise(ModifierCode $modifierCode): ?Noise
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $noiseValues = $this->getValue($modifierCode, self::NOISE);
@@ -216,30 +194,22 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Noise($noiseValues);
+        return new Noise($noiseValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Attack|null
-     */
-    public function getAttack(ModifierCode $modifierCode)
+    public function getSpellAttack(ModifierCode $modifierCode): ?SpellAttack
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        $attackValues = $this->getValue($modifierCode, self::ATTACK);
+        $attackValues = $this->getValue($modifierCode, self::SPELL_ATTACK);
         if (!$attackValues) {
             return null;
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Attack($attackValues);
+        return new SpellAttack($attackValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Grafts|null
-     */
-    public function getGrafts(ModifierCode $modifierCode)
+    public function getGrafts(ModifierCode $modifierCode): ?Grafts
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $graftsValues = $this->getValue($modifierCode, self::GRAFTS);
@@ -248,14 +218,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Grafts($graftsValues);
+        return new Grafts($graftsValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return SpellSpeed|null
-     */
-    public function getSpellSpeed(ModifierCode $modifierCode)
+    public function getSpellSpeed(ModifierCode $modifierCode): ?SpellSpeed
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $speedValues = $this->getValue($modifierCode, self::SPELL_SPEED);
@@ -264,14 +230,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new SpellSpeed($speedValues);
+        return new SpellSpeed($speedValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return NumberOfWaypoints|null
-     */
-    public function getNumberOfWaypoints(ModifierCode $modifierCode)
+    public function getNumberOfWaypoints(ModifierCode $modifierCode): ?NumberOfWaypoints
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $numberOfWaypointsValues = $this->getValue($modifierCode, self::NUMBER_OF_WAYPOINTS);
@@ -280,14 +242,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new NumberOfWaypoints($numberOfWaypointsValues);
+        return new NumberOfWaypoints($numberOfWaypointsValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Invisibility|null
-     */
-    public function getInvisibility(ModifierCode $modifierCode)
+    public function getInvisibility(ModifierCode $modifierCode): ?Invisibility
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $invisibilityValues = $this->getValue($modifierCode, self::INVISIBILITY);
@@ -296,14 +254,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Invisibility($invisibilityValues);
+        return new Invisibility($invisibilityValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Quality|null
-     */
-    public function getQuality(ModifierCode $modifierCode)
+    public function getQuality(ModifierCode $modifierCode): ?Quality
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $qualityValues = $this->getValue($modifierCode, self::QUALITY);
@@ -312,14 +266,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Quality($qualityValues);
+        return new Quality($qualityValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return NumberOfConditions|null
-     */
-    public function getNumberOfConditions(ModifierCode $modifierCode)
+    public function getNumberOfConditions(ModifierCode $modifierCode): ?NumberOfConditions
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $conditionsValues = $this->getValue($modifierCode, self::NUMBER_OF_CONDITIONS);
@@ -328,14 +278,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new NumberOfConditions($conditionsValues);
+        return new NumberOfConditions($conditionsValues, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Resistance|null
-     */
-    public function getResistance(ModifierCode $modifierCode)
+    public function getResistance(ModifierCode $modifierCode): ?Resistance
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $resistanceValue = $this->getValue($modifierCode, self::RESISTANCE);
@@ -344,14 +290,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Resistance($resistanceValue);
+        return new Resistance($resistanceValue, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return NumberOfSituations|null
-     */
-    public function getNumberOfSituations(ModifierCode $modifierCode)
+    public function getNumberOfSituations(ModifierCode $modifierCode): ?NumberOfSituations
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $numberOfSituationsValue = $this->getValue($modifierCode, self::NUMBER_OF_SITUATIONS);
@@ -360,14 +302,10 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new NumberOfSituations($numberOfSituationsValue);
+        return new NumberOfSituations($numberOfSituationsValue, $this->tables);
     }
 
-    /**
-     * @param ModifierCode $modifierCode
-     * @return Threshold|null
-     */
-    public function getThreshold(ModifierCode $modifierCode)
+    public function getThreshold(ModifierCode $modifierCode): ?Threshold
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $thresholdValues = $this->getValue($modifierCode, self::THRESHOLD);
@@ -376,7 +314,7 @@ class ModifiersTable extends AbstractFileTable
         }
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        return new Threshold($thresholdValues);
+        return new Threshold($thresholdValues, $this->tables);
     }
 
     /**
@@ -398,7 +336,7 @@ class ModifiersTable extends AbstractFileTable
      * @param ModifierCode $modifierCode
      * @return array|SpellTraitCode[]
      */
-    public function getSpellTraitCodes(ModifierCode $modifierCode): array
+    public function getSpellTraits(ModifierCode $modifierCode): array
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return array_map(
@@ -435,7 +373,7 @@ class ModifiersTable extends AbstractFileTable
      * @return array|FormulaCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetFormulasFor
      */
-    public function getFormulaCodes(ModifierCode $modifierCode): array
+    public function getFormulas(ModifierCode $modifierCode): array
     {
         try {
             /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
@@ -455,7 +393,7 @@ class ModifiersTable extends AbstractFileTable
      * @return array|ModifierCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetParentModifiersFor
      */
-    public function getParentModifierCodes(ModifierCode $modifierCode): array
+    public function getParentModifiers(ModifierCode $modifierCode): array
     {
         try {
             /** @noinspection ExceptionsAnnotatingAndHandlingInspection */

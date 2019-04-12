@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
 use DrdPlus\Codes\Properties\PropertyCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameterTest;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
@@ -13,7 +14,7 @@ class TrapTest extends CastingParameterTest
 
     protected function I_can_create_it_negative(): void
     {
-        $trap = new Trap(['-456', '4=6', PropertyCode::INTELLIGENCE]);
+        $trap = new Trap(['-456', '4=6', PropertyCode::INTELLIGENCE], Tables::getIt());
         self::assertSame(-456, $trap->getValue());
         self::assertSame($trap->getPropertyCode(), PropertyCode::getIt(PropertyCode::INTELLIGENCE));
         self::assertEquals(new AdditionByDifficulty('4=6'), $trap->getAdditionByDifficulty());
@@ -22,7 +23,7 @@ class TrapTest extends CastingParameterTest
 
     protected function I_can_create_it_with_zero(): void
     {
-        $trap = new Trap(['0', '78=321', PropertyCode::CHARISMA]);
+        $trap = new Trap(['0', '78=321', PropertyCode::CHARISMA], Tables::getIt());
         self::assertSame(0, $trap->getValue());
         self::assertSame($trap->getPropertyCode(), PropertyCode::getIt(PropertyCode::CHARISMA));
         self::assertEquals(new AdditionByDifficulty('78=321'), $trap->getAdditionByDifficulty());
@@ -31,7 +32,7 @@ class TrapTest extends CastingParameterTest
 
     protected function I_can_create_it_positive(): void
     {
-        $trap = new Trap(['35689', '332211', PropertyCode::ENDURANCE]);
+        $trap = new Trap(['35689', '332211', PropertyCode::ENDURANCE], Tables::getIt());
         self::assertSame(35689, $trap->getValue());
         self::assertSame($trap->getPropertyCode(), PropertyCode::getIt(PropertyCode::ENDURANCE));
         self::assertEquals(new AdditionByDifficulty('332211'), $trap->getAdditionByDifficulty());
@@ -45,7 +46,7 @@ class TrapTest extends CastingParameterTest
      */
     public function I_can_not_create_it_with_unknown_property(): void
     {
-        new Trap(['35689', '332211', 'goodness']);
+        new Trap(['35689', '332211', 'goodness'], Tables::getIt());
     }
 
     /**
@@ -55,7 +56,7 @@ class TrapTest extends CastingParameterTest
      */
     public function I_can_not_create_it_without_property(): void
     {
-        new Trap(['35689', '332211']);
+        new Trap(['35689', '332211'], Tables::getIt());
     }
 
     /**
@@ -63,9 +64,7 @@ class TrapTest extends CastingParameterTest
      */
     public function I_can_get_its_clone_changed_by_addition(): void
     {
-        $sutClass = self::getSutClass();
-        /** @var Trap $original */
-        $original = new $sutClass(['123', '456=789', PropertyCode::ENDURANCE]);
+        $original = new Trap(['123', '456=789', PropertyCode::ENDURANCE], Tables::getIt());
         self::assertSame($original, $original->getWithAddition(0));
         $increased = $original->getWithAddition(456);
         self::assertSame(579, $increased->getValue());

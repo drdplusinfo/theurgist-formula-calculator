@@ -44,7 +44,7 @@ class ModifierTest extends TestWithMockery
                 /** like instance of @see SpellSpeed */
                 $baseParameter = $this->createExpectedParameter($mutableParameterName);
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, $baseParameter);
-                /** like @see Modifier::getBaseRadius */
+                /** like @see Modifier::getBaseSpellRadius */
                 $getBaseParameter = StringTools::assembleGetterForName('base_' . $mutableParameterName);
                 self::assertSame($baseParameter, $modifier->$getBaseParameter());
 
@@ -53,7 +53,7 @@ class ModifierTest extends TestWithMockery
                 $this->addExpectedAdditionSetter(0, $baseParameter, $baseParameter);
                 self::assertSame($baseParameter, $modifier->$getCurrentParameter());
 
-                /** like @see Modifier::getRadiusAddition */
+                /** like @see Modifier::getSpellRadiusAddition */
                 $getParameterAddition = StringTools::assembleGetterForName($mutableParameterName) . 'Addition';
                 self::assertSame(0, $modifier->$getParameterAddition());
             }
@@ -61,7 +61,7 @@ class ModifierTest extends TestWithMockery
     }
 
     /**
-     * @return \Mockery\MockInterface|ModifiersTable
+     * @return MockInterface|ModifiersTable
      */
     private function createModifiersTable()
     {
@@ -71,7 +71,7 @@ class ModifierTest extends TestWithMockery
     /**
      * @param string $parameterName
      * @param int $defaultValue
-     * @return CastingParameter|\Mockery\MockInterface
+     * @return CastingParameter|MockInterface
      */
     private function createExpectedParameter(string $parameterName, int $defaultValue = null): CastingParameter
     {
@@ -111,7 +111,7 @@ class ModifierTest extends TestWithMockery
 
     private function addExpectedAdditionSetter(
         int $addition,
-        \Mockery\MockInterface $parameter,
+        MockInterface $parameter,
         CastingParameter $modifiedParameter
     )
     {
@@ -135,7 +135,7 @@ class ModifierTest extends TestWithMockery
                     continue; // can not be null, skipping
                 }*/
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, null);
-                /** like @see Modifier::getBaseRadius */
+                /** like @see Modifier::getBaseSpellRadius */
                 $getBaseParameter = StringTools::assembleGetterForName('base_' . $mutableParameterName);
                 self::assertNull($modifier->$getBaseParameter());
 
@@ -143,7 +143,7 @@ class ModifierTest extends TestWithMockery
                 $getCurrentParameter = StringTools::assembleGetterForName($mutableParameterName . '_with_addition');
                 self::assertNull($modifier->$getCurrentParameter());
 
-                /** like @see Modifier::getRadiusAddition */
+                /** like @see Modifier::getSpellRadiusAddition */
                 $getParameterAddition = StringTools::assembleGetterForName($mutableParameterName) . 'Addition';
                 self::assertSame(0, $modifier->$getParameterAddition());
             }
@@ -176,7 +176,7 @@ class ModifierTest extends TestWithMockery
                 $baseParameter = $baseParameters[$parameterName];
                 $change = $parameterChanges[$parameterName] + 1 /* because of difference against default value -1 */
                 ;
-                /** like @see Modifier::getBaseRadius */
+                /** like @see Modifier::getBaseSpellRadius */
                 $getBaseParameter = StringTools::assembleGetterForName('base_' . $parameterName);
                 self::assertSame($baseParameter, $modifier->$getBaseParameter());
                 /** like @see Modifier::getCurrentRadius() */
@@ -193,7 +193,7 @@ class ModifierTest extends TestWithMockery
                     self::fail("Parameter {$parameterName} uses wrong addition (expected change {$change}): " . $expectationException->getMessage());
                 }
 
-                /** like @see Modifier::getRadiusAddition */
+                /** like @see Modifier::getSpellRadiusAddition */
                 $getParameterAddition = StringTools::assembleGetterForName($parameterName) . 'Addition';
                 self::assertNotSame(0, $change);
                 self::assertSame($change, $modifier->$getParameterAddition());
@@ -267,6 +267,7 @@ class ModifierTest extends TestWithMockery
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, $parameter);
                 $changedParameter = $this->createExpectedParameter($mutableParameterName);
                 $this->addExpectedAdditionSetter(0, $parameter, $changedParameter);
+                /** @noinspection PhpUnhandledExceptionInspection */
                 $parameterDifficulties[] = $difficultyChange = random_int(-10, 10);
                 $this->addAdditionByDifficultyGetter($difficultyChange, $changedParameter);
             }
@@ -385,7 +386,7 @@ class ModifierTest extends TestWithMockery
         try {
             $modifiersTable = $this->createModifiersTable();
             $this->addBaseParameterGetter(
-                $parameterName = ModifierMutableSpellParameterCode::RADIUS,
+                $parameterName = ModifierMutableSpellParameterCode::SPELL_RADIUS,
                 $code = ModifierCode::getIt(ModifierCode::GATE),
                 $modifiersTable,
                 $this->createExpectedParameter($parameterName, 432 /* whatever */)
@@ -412,7 +413,7 @@ class ModifierTest extends TestWithMockery
         try {
             $modifiersTable = $this->createModifiersTable();
             $this->addBaseParameterGetter(
-                $parameterName = ModifierMutableSpellParameterCode::ATTACK,
+                $parameterName = ModifierMutableSpellParameterCode::SPELL_ATTACK,
                 $modifierCode = ModifierCode::getIt(ModifierCode::INTERACTIVE_ILLUSION),
                 $modifiersTable,
                 $this->createExpectedParameter($parameterName, 9 /* whatever */)

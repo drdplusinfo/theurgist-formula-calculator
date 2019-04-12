@@ -25,8 +25,7 @@
     "php": ">=7.1",
     "ext-intl": "*",
     "ext-mbstring": "*",
-    "granam/strict-object": "^3.0",
-    "granam/scalar": "^4.0"
+    "granam/scalar": "^4.1"
   },
   "suggest": {
     "ext-intl": "*",
@@ -38,5 +37,7 @@
     "mockery/mockery": "~1.0",
     "granam/exceptions-hierarchy": ">=4.0",
     "ext-mbstring": "*"
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

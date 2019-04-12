@@ -39,10 +39,10 @@ class TablesTest extends TestWithMockery
 {
     /**
      * @test
+     * @throws \ReflectionException
      */
     public function I_can_get_any_table(): void
     {
-        /** @noinspection PhpUnhandledExceptionInspection */
         $reflectionClass = new \ReflectionClass(Tables::class);
         $tablesInstance = $reflectionClass->getProperty('tablesInstance');
         $tablesInstance->setAccessible(true);
@@ -324,6 +324,7 @@ class TablesTest extends TestWithMockery
      * @test
      * @expectedException \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
      * @expectedExceptionMessageRegExp ~wallop~
+     * @throws \ReflectionException
      */
     public function I_do_not_get_range_weapons_table_by_unknown_code(): void
     {
@@ -336,6 +337,7 @@ class TablesTest extends TestWithMockery
      * @param $value
      * @param string $matchingWeaponGroup
      * @return \Mockery\MockInterface|RangedWeaponCode
+     * @throws \ReflectionException
      */
     private function createRangedWeaponCode(string $value, string $matchingWeaponGroup)
     {
@@ -345,7 +347,6 @@ class TablesTest extends TestWithMockery
         $code->shouldReceive('__toString')
             ->andReturn($value);
         $rangeWeaponGroups = ['bow', 'arrow', 'crossbow', 'dart', 'throwingWeapon', 'slingStone'];
-        /** @noinspection PhpUnhandledExceptionInspection */
         $codeReflection = new \ReflectionClass(RangedWeaponCode::class);
         foreach ($rangeWeaponGroups as $weaponGroup) {
             $isType = 'is' . \ucfirst($weaponGroup);

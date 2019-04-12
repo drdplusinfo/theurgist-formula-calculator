@@ -6,9 +6,9 @@ namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\PositiveCastingParameter;
 
 /**
- * @method Attack getWithAddition($additionValue)
+ * @method SpellBrightness getWithAddition($additionValue)
  */
-class Attack extends PositiveCastingParameter
+class SpellBrightness extends PositiveCastingParameter
 {
 
 }

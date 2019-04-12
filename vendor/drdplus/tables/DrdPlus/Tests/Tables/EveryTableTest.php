@@ -10,6 +10,7 @@ class EveryTableTest extends TestCase
 {
     /**
      * @test
+     * @throws \ReflectionException
      */
     public function It_has_table_interface()
     {
@@ -19,13 +20,14 @@ class EveryTableTest extends TestCase
         foreach (self::getTableClasses() as $tableClass) {
             self::assertTrue(
                 is_a($tableClass, Table::class, true),
-                "Table $tableClass does not implements " . Table::class . 'interface'
+                sprintf('Table %s does not implements %s interface', $tableClass, Table::class)
             );
         }
     }
 
     /**
      * @return array|string[]
+     * @throws \ReflectionException
      */
     public static function getTableClasses(): array
     {
@@ -40,6 +42,7 @@ class EveryTableTest extends TestCase
      * @param string $rootDir
      * @param string $rootNamespace
      * @return array
+     * @throws \ReflectionException
      */
     private static function scanForTables(string $rootDir, string $rootNamespace): array
     {

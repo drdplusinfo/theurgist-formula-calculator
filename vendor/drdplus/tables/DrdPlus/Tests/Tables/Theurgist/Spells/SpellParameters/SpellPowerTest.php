@@ -5,7 +5,7 @@ namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
 use DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameterTest;
 
-class PowerTest extends CastingParameterTest
+class SpellPowerTest extends CastingParameterTest
 {
 
 }

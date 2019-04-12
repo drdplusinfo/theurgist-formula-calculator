@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -9,13 +9,13 @@ namespace DrdPlus\Codes\Theurgist;
  */
 class ModifierMutableSpellParameterCode extends AbstractTheurgistCode
 {
-    public const RADIUS = 'radius';
-    public const EPICENTER_SHIFT = 'epicenter_shift';
-    public const POWER = 'power';
+    public const SPELL_RADIUS = FormulaMutableSpellParameterCode::SPELL_RADIUS;
+    public const EPICENTER_SHIFT = FormulaMutableSpellParameterCode::EPICENTER_SHIFT;
+    public const SPELL_POWER = FormulaMutableSpellParameterCode::SPELL_POWER;
     public const NOISE = 'noise';
-    public const ATTACK = 'attack';
+    public const SPELL_ATTACK = FormulaMutableSpellParameterCode::SPELL_ATTACK;
     public const GRAFTS = 'grafts';
-    public const SPELL_SPEED = 'spell_speed';
+    public const SPELL_SPEED = FormulaMutableSpellParameterCode::SPELL_SPEED;
     public const NUMBER_OF_WAYPOINTS = 'number_of_waypoints';
     public const INVISIBILITY = 'invisibility';
     public const QUALITY = 'quality';
@@ -30,11 +30,11 @@ class ModifierMutableSpellParameterCode extends AbstractTheurgistCode
     public static function getPossibleValues(): array
     {
         return [
-            self::RADIUS,
+            self::SPELL_RADIUS,
             self::EPICENTER_SHIFT,
-            self::POWER,
+            self::SPELL_POWER,
             self::NOISE,
-            self::ATTACK,
+            self::SPELL_ATTACK,
             self::GRAFTS,
             self::SPELL_SPEED,
             self::NUMBER_OF_WAYPOINTS,
@@ -49,11 +49,11 @@ class ModifierMutableSpellParameterCode extends AbstractTheurgistCode
 
     private static $translations = [
         'cs' => [
-            self::RADIUS => 'poloměr',
+            self::SPELL_RADIUS => 'poloměr',
             self::EPICENTER_SHIFT => 'posun',
-            self::POWER => 'síla',
+            self::SPELL_POWER => 'síla',
             self::NOISE => 'síla zvuku',
-            self::ATTACK => 'útočnost',
+            self::SPELL_ATTACK => 'útočnost',
             self::GRAFTS => 'štěpy',
             self::SPELL_SPEED => 'rychlost',
             self::NUMBER_OF_WAYPOINTS => 'počet průchodů',

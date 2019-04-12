@@ -1,10 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
 use DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials\IntegerAddAndSubTestTrait;
-use Granam\Integer\IntegerInterface;
 use Granam\Tests\Tools\TestWithMockery;
 
 class RealmTest extends TestWithMockery
@@ -16,28 +16,32 @@ class RealmTest extends TestWithMockery
      */
     public function I_can_use_it()
     {
-        $sutClass = self::getSutClass();
-
-        /** @var IntegerInterface $zero */
-        $zero = new $sutClass(0);
+        $zero = new Realm(0);
         self::assertSame(0, $zero->getValue());
         self::assertSame('0', (string)$zero);
 
-        $positive = new $sutClass(123);
-        /** @var IntegerInterface $positive */
-        self::assertSame(123, $positive->getValue());
-        self::assertSame('123', (string)$positive);
+        $positive = new Realm(20);
+        self::assertSame(20, $positive->getValue());
+        self::assertSame('20', (string)$positive);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Integer\Tools\Exceptions\PositiveIntegerCanNotBeNegative
+     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmCanNotBeNegative
      * @expectedExceptionMessageRegExp ~-456~
      */
     public function I_can_not_create_it_negative()
     {
-        $sutClass = self::getSutClass();
-        new $sutClass(-456);
+        new Realm(-456);
     }
 
+    /**
+     * @test
+     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmIsToHigh
+     * @expectedExceptionMessageRegExp '22'
+     */
+    public function I_can_not_create_realm_higher_than_twenty_one(): void
+    {
+        new Realm(22);
+    }
 }

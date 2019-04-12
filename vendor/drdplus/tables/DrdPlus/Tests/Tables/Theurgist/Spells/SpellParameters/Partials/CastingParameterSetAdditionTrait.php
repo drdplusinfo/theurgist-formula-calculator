@@ -24,7 +24,6 @@ trait CastingParameterSetAdditionTrait
 /**
  * @param int|float|NumberInterface \$additionValue
  * @return {$classBaseName}|CastingParameter
- * @throws \Granam\Integer\Tools\Exceptions\Exception
  */
 PHPDOC
                 , preg_replace('~ {2,}~', ' ', $getWithAddition->getDocComment()),

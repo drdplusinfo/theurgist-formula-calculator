@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials;
 
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use Granam\Integer\IntegerInterface;
 use Granam\Integer\Tools\ToInteger;
@@ -22,16 +23,21 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
      * @var AdditionByDifficulty
      */
     private $additionByDifficulty;
+    /**
+     * @var Tables
+     */
+    private $tables;
 
     /**
      * @param array $values 0 => default value and 1 => addition by difficulty notation, 2 => current addition / null
+     * @param Tables $tables
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForCastingParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfDifficultyIncrement
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyValue
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
      */
-    public function __construct(array $values)
+    public function __construct(array $values, Tables $tables)
     {
         try {
             $this->defaultValue = ToInteger::toInteger($values[0] ?? null);
@@ -48,27 +54,19 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
             );
         }
         $this->additionByDifficulty = new AdditionByDifficulty($values[1], $values[2] ?? null);
+        $this->tables = $tables;
     }
 
-    /**
-     * @return int
-     */
     public function getDefaultValue(): int
     {
         return $this->defaultValue;
     }
 
-    /**
-     * @return int
-     */
     public function getValue(): int
     {
         return $this->getDefaultValue() + $this->getAdditionByDifficulty()->getCurrentAddition();
     }
 
-    /**
-     * @return AdditionByDifficulty
-     */
     public function getAdditionByDifficulty(): AdditionByDifficulty
     {
         return $this->additionByDifficulty;
@@ -85,7 +83,6 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
     /**
      * @param int|float|NumberInterface $additionValue
      * @return CastingParameter
-     * @throws \Granam\Integer\Tools\Exceptions\Exception
      */
     public function getWithAddition($additionValue): CastingParameter
     {
@@ -93,9 +90,13 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
         if ($additionValue === $this->getAdditionByDifficulty()->getCurrentAddition()) {
             return $this;
         }
-
-        return new static(
-            [$this->getDefaultValue(), $this->getAdditionByDifficulty()->getNotation(), $additionValue /* current addition */]
-        );
+        $values = [$this->getDefaultValue(), $this->getAdditionByDifficulty()->getNotation(), $additionValue /* current addition */];
+        return new static($values, $this->tables);
     }
+
+    protected function getTables(): Tables
+    {
+        return $this->tables;
+    }
+
 }

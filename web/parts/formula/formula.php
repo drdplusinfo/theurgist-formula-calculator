@@ -23,7 +23,7 @@ use DrdPlus\Codes\Theurgist\FormulaCode;
           <?php } ?>
       </select>
       <button type="submit">Vybrat</button>
-        <?php $formulaDifficulty = $webPartsContainer->getTables()->getFormulasTable()->getFormulaDifficulty($webPartsContainer->getCurrentFormulaCode()); ?>
+        <?php $formulaDifficulty = $webPartsContainer->getTables()->getFormulasTable()->getDifficulty($webPartsContainer->getCurrentFormulaCode()); ?>
       <span>[<?= $formulaDifficulty->getValue() ?>]</span>
       <span class="forms" title="Forma">
             <?php $formulaForms = implode(', ', $webPartsContainer->getCurrentFormulaValues()->getFormulaFormNames($webPartsContainer->getCurrentFormulaCode(), 'cs')); ?>

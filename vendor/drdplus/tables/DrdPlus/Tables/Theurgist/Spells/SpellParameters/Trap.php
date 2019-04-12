@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters;
 
 use DrdPlus\Codes\Properties\PropertyCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\Integer\Tools\ToInteger;
 use Granam\Number\NumberInterface;
@@ -16,6 +17,7 @@ class Trap extends CastingParameter
 
     /**
      * @param array $values [0 => trap value, 1 => trap change by realms, 2=> used property, 3 => current addition]
+     * @param Tables $tables
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForCastingParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfDifficultyIncrement
@@ -23,7 +25,7 @@ class Trap extends CastingParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfPropertyUsedForTrap
      */
-    public function __construct(array $values)
+    public function __construct(array $values, Tables $tables)
     {
         $trapProperty = [];
         if (\array_key_exists(2, $values)) { // it SHOULD exists
@@ -31,7 +33,7 @@ class Trap extends CastingParameter
             unset($values[2]);
             $values = \array_values($values); // reindexing
         }
-        parent::__construct($values);
+        parent::__construct($values, $tables);
         try {
             $this->propertyCode = PropertyCode::getIt($trapProperty[0] ?? '0');
         } catch (\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode $unknownValueForCode) {
@@ -42,9 +44,6 @@ class Trap extends CastingParameter
         }
     }
 
-    /**
-     * @return PropertyCode
-     */
     public function getPropertyCode(): PropertyCode
     {
         return $this->propertyCode;
@@ -53,7 +52,6 @@ class Trap extends CastingParameter
     /**
      * @param int|float|NumberInterface $additionValue
      * @return Trap|CastingParameter
-     * @throws \Granam\Integer\Tools\Exceptions\Exception
      */
     public function getWithAddition($additionValue): CastingParameter
     {
@@ -62,12 +60,15 @@ class Trap extends CastingParameter
             return $this;
         }
 
-        return new static([
-            $this->getDefaultValue(),
-            $this->getAdditionByDifficulty()->getNotation(),
-            $this->getPropertyCode(),
-            $additionValue,
-        ]);
+        return new static(
+            [
+                $this->getDefaultValue(),
+                $this->getAdditionByDifficulty()->getNotation(),
+                $this->getPropertyCode(),
+                $additionValue,
+            ],
+            $this->getTables()
+        );
     }
 
     /**

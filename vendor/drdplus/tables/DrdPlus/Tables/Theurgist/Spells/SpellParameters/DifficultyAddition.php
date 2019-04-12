@@ -11,7 +11,7 @@ use Granam\Strict\Object\StrictObject;
 use Granam\String\StringInterface;
 use Granam\Tools\ValueDescriber;
 
-class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
+class DifficultyAddition extends StrictObject implements IntegerInterface
 {
     /**
      * @var int
@@ -33,7 +33,7 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfRealmsIncrement
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsValue
      */
-    public function __construct($difficultyAdditionByRealmsNotation, int $currentAddition = null)
+    public function __construct($difficultyAdditionByRealmsNotation, int $currentAddition = 0/* no addition, no realm increment */)
     {
         $parts = $this->parseParts(ToString::toString($difficultyAdditionByRealmsNotation));
         if (\count($parts) === 1 && \array_keys($parts) === [0]) {
@@ -48,7 +48,7 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
                 . ValueDescriber::describe($difficultyAdditionByRealmsNotation)
             );
         }
-        $this->currentAddition = $currentAddition ?? 0;/* no addition, no realm increment */
+        $this->currentAddition = $currentAddition;
     }
 
     /**
@@ -106,9 +106,9 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
     }
 
     /**
-     * How is realms increased on addition step, @see getDifficultyAdditionPerStep.
+     * How is realms increased on addition step, @return int
+     * @see getDifficultyAdditionPerStep.
      *
-     * @return int
      */
     public function getRealmsChangePerAdditionStep(): int
     {
@@ -116,9 +116,9 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
     }
 
     /**
-     * Bonus given by increasing realms, @see getRealmsChangePerAdditionStep
+     * Bonus given by increasing realms, @return int
+     * @see getRealmsChangePerAdditionStep
      *
-     * @return int
      */
     public function getDifficultyAdditionPerStep(): int
     {
@@ -136,9 +136,9 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
     }
 
     /**
-     * Same as @see getCurrentAddition (representing current value of an Integer object)
+     * Same as @return int
+     * @see getCurrentAddition (representing current value of an Integer object)
      *
-     * @return int
      */
     public function getValue(): int
     {
@@ -147,10 +147,10 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
 
     /**
      * @param int|float|NumberInterface $value
-     * @return FormulaDifficultyAddition
+     * @return DifficultyAddition
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsValue
      */
-    public function add($value): FormulaDifficultyAddition
+    public function add($value): DifficultyAddition
     {
         $value = $this->sanitizeAddition($value);
         if ($value === 0) {
@@ -166,10 +166,10 @@ class FormulaDifficultyAddition extends StrictObject implements IntegerInterface
 
     /**
      * @param int|float|NumberInterface $value
-     * @return FormulaDifficultyAddition
+     * @return DifficultyAddition
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsValue
      */
-    public function sub($value): FormulaDifficultyAddition
+    public function sub($value): DifficultyAddition
     {
         $value = $this->sanitizeAddition($value);
         if ($value === 0) {

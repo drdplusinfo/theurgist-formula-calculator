@@ -44,7 +44,7 @@ class ProfilesTable extends AbstractFileTable
      * @return array|ModifierCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetModifiersFor
      */
-    public function getModifiersForProfile(ProfileCode $profileCode): array
+    public function getModifiers(ProfileCode $profileCode): array
     {
         try {
             return \array_map(
@@ -63,7 +63,7 @@ class ProfilesTable extends AbstractFileTable
      * @return array|FormulaCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetFormulasFor
      */
-    public function getFormulasForProfile(ProfileCode $profileCode): array
+    public function getFormulas(ProfileCode $profileCode): array
     {
         try {
             return \array_map(

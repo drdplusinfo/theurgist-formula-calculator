@@ -1,9 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
 
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
@@ -21,18 +22,10 @@ class SpellTraitTest extends TestWithMockery
     {
         $active = new SpellTrait(
             SpellTraitCode::getIt(SpellTraitCode::ACTIVE),
-            $this->createSpellTraitsTableShell()
+            Tables::getIt()
         );
         self::assertSame(SpellTraitCode::getIt(SpellTraitCode::ACTIVE), $active->getSpellTraitCode());
         self::assertSame('active', (string)$active);
-    }
-
-    /**
-     * @return \Mockery\MockInterface|SpellTraitsTable
-     */
-    private function createSpellTraitsTableShell()
-    {
-        return $this->mockery(SpellTraitsTable::class);
     }
 
     /**
@@ -42,16 +35,16 @@ class SpellTraitTest extends TestWithMockery
     {
         foreach (SpellTraitCode::getPossibleValues() as $spellTraitValue) {
             $spellTraitCode = SpellTraitCode::getIt($spellTraitValue);
-            $spellTraitsTable = $this->createSpellTraitsTable($spellTraitCode, $trap = $this->createTrap(0));
-            $spellTraitWithoutTrapChange = new SpellTrait($spellTraitCode, $spellTraitsTable, 0);
+            $tables = $this->createTablesWithSpellTraitsTable($spellTraitCode, $trap = $this->createTrap(0));
+            $spellTraitWithoutTrapChange = new SpellTrait($spellTraitCode, $tables, 0);
             self::assertSame($trap, $spellTraitWithoutTrapChange->getBaseTrap());
             self::assertSame($trap, $spellTraitWithoutTrapChange->getCurrentTrap());
 
-            $spellTraitsTable = $this->createSpellTraitsTable(
+            $tables = $this->createTablesWithSpellTraitsTable(
                 $spellTraitCode,
                 $baseTrap = $this->createTrap(2 /* 10 - 8 */, 8, $changedTrap = $this->createTrapShell())
             );
-            $spellTraitWithTrapChange = new SpellTrait($spellTraitCode, $spellTraitsTable, 10);
+            $spellTraitWithTrapChange = new SpellTrait($spellTraitCode, $tables, 10);
             self::assertSame($baseTrap, $spellTraitWithTrapChange->getBaseTrap());
             self::assertEquals($changedTrap, $spellTraitWithTrapChange->getCurrentTrap());
         }
@@ -60,16 +53,18 @@ class SpellTraitTest extends TestWithMockery
     /**
      * @param SpellTraitCode $spellTraitCode
      * @param Trap $trap
-     * @return \Mockery\MockInterface|SpellTraitsTable
+     * @return \Mockery\MockInterface|Tables
      */
-    private function createSpellTraitsTable(SpellTraitCode $spellTraitCode, Trap $trap = null)
+    private function createTablesWithSpellTraitsTable(SpellTraitCode $spellTraitCode, Trap $trap = null): Tables
     {
-        $spellTraitsTable = $this->mockery(SpellTraitsTable::class);
+        $tables = $this->mockery(Tables::class);
+        $tables->shouldReceive('getSpellTraitsTable')
+            ->andReturn($spellTraitsTable = $this->mockery(SpellTraitsTable::class));
         $spellTraitsTable->shouldReceive('getTrap')
             ->with($spellTraitCode)
             ->andReturn($trap);
 
-        return $spellTraitsTable;
+        return $tables;
     }
 
     /**
@@ -104,20 +99,20 @@ class SpellTraitTest extends TestWithMockery
     public function I_can_get_difficulty_change_with_trap_reflected()
     {
         $spellTraitCode = SpellTraitCode::getIt(SpellTraitCode::INVISIBLE);
-        $spellTraitsTable = $this->createSpellTraitsTable(
-            $spellTraitCode,
-            null // no trap
-        );
-        $spellTraitWithoutTrapChange = new SpellTrait($spellTraitCode, $spellTraitsTable);
-        $this->addDifficultyChangeGetter($spellTraitsTable, $spellTraitCode, $difficultyChange = new DifficultyChange(345));
+        $tables = $this->createTablesWithSpellTraitsTable($spellTraitCode, null /* no trap */);
+        /** @var MockInterface $spellTraitTable */
+        $spellTraitTable = $tables->getSpellTraitsTable();
+        $spellTraitWithoutTrapChange = new SpellTrait($spellTraitCode, $tables);
+        $this->addDifficultyChangeGetter($spellTraitTable, $spellTraitCode, $difficultyChange = new DifficultyChange(345));
         self::assertSame($difficultyChange, $spellTraitWithoutTrapChange->getDifficultyChange());
 
-        $spellTraitsTable = $this->createSpellTraitsTable(
+        $tables = $this->createTablesWithSpellTraitsTable(
             $spellTraitCode,
             $trap = $this->createTrap(111 /* 345 - 234 */, 234, $currentTrap = $this->createTrap(0))
         );
-        $spellTraitWithTrapChange = new SpellTrait($spellTraitCode, $spellTraitsTable, 345);
-        $this->addDifficultyChangeGetter($spellTraitsTable, $spellTraitCode, $difficultyChange = new DifficultyChange(567));
+        $spellTraitTable = $tables->getSpellTraitsTable();
+        $spellTraitWithTrapChange = new SpellTrait($spellTraitCode, $tables, 345);
+        $this->addDifficultyChangeGetter($spellTraitTable, $spellTraitCode, $difficultyChange = new DifficultyChange(567));
         $this->addAdditionByDifficultyGetter($currentTrap, 789);
         self::assertEquals($difficultyChange->add(789), $spellTraitWithTrapChange->getDifficultyChange());
     }
@@ -149,10 +144,7 @@ class SpellTraitTest extends TestWithMockery
     public function I_can_not_create_spell_trait_without_trap_with_trap_change()
     {
         $spellTraitCode = SpellTraitCode::getIt(SpellTraitCode::INVISIBLE);
-        $spellTraitsTable = $this->createSpellTraitsTable(
-            $spellTraitCode,
-            null // no trap
-        );
-        new SpellTrait($spellTraitCode, $spellTraitsTable, 345);
+        $tables = $this->createTablesWithSpellTraitsTable($spellTraitCode, null /* no trap */);
+        new SpellTrait($spellTraitCode, $tables, 345);
     }
 }
