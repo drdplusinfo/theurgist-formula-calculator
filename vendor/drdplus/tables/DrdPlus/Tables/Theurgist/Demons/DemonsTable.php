@@ -119,9 +119,22 @@ class DemonsTable extends AbstractFileTable
     public function getDemonTraits(DemonCode $demonCode): array
     {
         return array_map(
-            function (string $demonTraitValue) {
-                $demonTraitCode = DemonTraitCode::getIt($demonTraitValue);
+            function (DemonTraitCode $demonTraitCode) {
                 return new DemonTrait($demonTraitCode, $this->tables);
+            },
+            $this->getDemonTraitCodes($demonCode)
+        );
+    }
+
+    /**
+     * @param DemonCode $demonCode
+     * @return array|DemonTraitCode[]
+     */
+    public function getDemonTraitCodes(DemonCode $demonCode): array
+    {
+        return array_map(
+            function (string $demonTraitValue) {
+                return DemonTraitCode::getIt($demonTraitValue);
             },
             $this->getValue($demonCode, self::DEMON_TRAITS)
         );

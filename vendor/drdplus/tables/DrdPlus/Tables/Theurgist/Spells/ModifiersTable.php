@@ -151,169 +151,127 @@ class ModifiersTable extends AbstractFileTable
 
     public function getSpellRadius(ModifierCode $modifierCode): ?SpellRadius
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $radiusValues = $this->getValue($modifierCode, self::RADIUS);
         if (!$radiusValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new SpellRadius($radiusValues, $this->tables);
     }
 
     public function getEpicenterShift(ModifierCode $modifierCode): ?EpicenterShift
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $shiftValues = $this->getValue($modifierCode, self::EPICENTER_SHIFT);
         if (!$shiftValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new EpicenterShift($shiftValues, $this->tables);
     }
 
     public function getSpellPower(ModifierCode $modifierCode): ?SpellPower
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $powerValues = $this->getValue($modifierCode, self::SPELL_POWER);
         if (!$powerValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new SpellPower($powerValues, $this->tables);
     }
 
     public function getNoise(ModifierCode $modifierCode): ?Noise
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $noiseValues = $this->getValue($modifierCode, self::NOISE);
         if (!$noiseValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Noise($noiseValues, $this->tables);
     }
 
     public function getSpellAttack(ModifierCode $modifierCode): ?SpellAttack
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $attackValues = $this->getValue($modifierCode, self::SPELL_ATTACK);
         if (!$attackValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new SpellAttack($attackValues, $this->tables);
     }
 
     public function getGrafts(ModifierCode $modifierCode): ?Grafts
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $graftsValues = $this->getValue($modifierCode, self::GRAFTS);
         if (!$graftsValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Grafts($graftsValues, $this->tables);
     }
 
     public function getSpellSpeed(ModifierCode $modifierCode): ?SpellSpeed
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $speedValues = $this->getValue($modifierCode, self::SPELL_SPEED);
         if (!$speedValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new SpellSpeed($speedValues, $this->tables);
     }
 
     public function getNumberOfWaypoints(ModifierCode $modifierCode): ?NumberOfWaypoints
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $numberOfWaypointsValues = $this->getValue($modifierCode, self::NUMBER_OF_WAYPOINTS);
         if (!$numberOfWaypointsValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new NumberOfWaypoints($numberOfWaypointsValues, $this->tables);
     }
 
     public function getInvisibility(ModifierCode $modifierCode): ?Invisibility
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $invisibilityValues = $this->getValue($modifierCode, self::INVISIBILITY);
         if (!$invisibilityValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Invisibility($invisibilityValues, $this->tables);
     }
 
     public function getQuality(ModifierCode $modifierCode): ?Quality
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $qualityValues = $this->getValue($modifierCode, self::QUALITY);
         if (!$qualityValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Quality($qualityValues, $this->tables);
     }
 
     public function getNumberOfConditions(ModifierCode $modifierCode): ?NumberOfConditions
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $conditionsValues = $this->getValue($modifierCode, self::NUMBER_OF_CONDITIONS);
         if (!$conditionsValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new NumberOfConditions($conditionsValues, $this->tables);
     }
 
     public function getResistance(ModifierCode $modifierCode): ?Resistance
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $resistanceValue = $this->getValue($modifierCode, self::RESISTANCE);
         if (!$resistanceValue) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Resistance($resistanceValue, $this->tables);
     }
 
     public function getNumberOfSituations(ModifierCode $modifierCode): ?NumberOfSituations
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $numberOfSituationsValue = $this->getValue($modifierCode, self::NUMBER_OF_SITUATIONS);
         if (!$numberOfSituationsValue) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new NumberOfSituations($numberOfSituationsValue, $this->tables);
     }
 
     public function getThreshold(ModifierCode $modifierCode): ?Threshold
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $thresholdValues = $this->getValue($modifierCode, self::THRESHOLD);
         if (!$thresholdValues) {
             return null;
         }
-
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Threshold($thresholdValues, $this->tables);
     }
 
@@ -321,9 +279,8 @@ class ModifiersTable extends AbstractFileTable
      * @param ModifierCode $modifierCode
      * @return array|FormCode[]
      */
-    public function getForms(ModifierCode $modifierCode): array
+    public function getFormCodes(ModifierCode $modifierCode): array
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return array_map(
             function (string $formValue) {
                 return FormCode::getIt($formValue);
@@ -334,14 +291,26 @@ class ModifiersTable extends AbstractFileTable
 
     /**
      * @param ModifierCode $modifierCode
+     * @return array|SpellTrait[]
+     */
+    public function getSpellTraits(ModifierCode $modifierCode)
+    {
+        return array_map(
+            function (SpellTraitCode $spellTraitCode) {
+                return new SpellTrait($spellTraitCode, $this->tables);
+            },
+            $this->getSpellTraitCodes($modifierCode)
+        );
+    }
+
+    /**
+     * @param ModifierCode $modifierCode
      * @return array|SpellTraitCode[]
      */
-    public function getSpellTraits(ModifierCode $modifierCode): array
+    public function getSpellTraitCodes(ModifierCode $modifierCode): array
     {
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return array_map(
             function (string $spellTraitValue) {
-                /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
                 return SpellTraitCode::getIt($spellTraitValue);
             },
             $this->getValue($modifierCode, self::SPELL_TRAITS)
@@ -353,10 +322,9 @@ class ModifiersTable extends AbstractFileTable
      * @return array|ProfileCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetProfilesFor
      */
-    public function getProfiles(ModifierCode $modifierCode): array
+    public function getProfileCodes(ModifierCode $modifierCode): array
     {
         try {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             return array_map(
                 function (string $profileValue) {
                     return ProfileCode::getIt($profileValue);
@@ -373,10 +341,9 @@ class ModifiersTable extends AbstractFileTable
      * @return array|FormulaCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetFormulasFor
      */
-    public function getFormulas(ModifierCode $modifierCode): array
+    public function getFormulaCodes(ModifierCode $modifierCode): array
     {
         try {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             return array_map(
                 function (string $formulaValue) {
                     return FormulaCode::getIt($formulaValue);
@@ -393,10 +360,9 @@ class ModifiersTable extends AbstractFileTable
      * @return array|ModifierCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetParentModifiersFor
      */
-    public function getParentModifiers(ModifierCode $modifierCode): array
+    public function getParentModifierCodes(ModifierCode $modifierCode): array
     {
         try {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             return array_map(
                 function (string $modifierValue) {
                     return ModifierCode::getIt($modifierValue);
@@ -415,10 +381,9 @@ class ModifiersTable extends AbstractFileTable
      * @return array|ModifierCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetChildModifiersFor
      */
-    public function getChildModifiers(ModifierCode $modifierCode): array
+    public function getChildModifierCodes(ModifierCode $modifierCode): array
     {
         try {
-            /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
             return array_map(
                 function (string $modifierValue) {
                     return ModifierCode::getIt($modifierValue);

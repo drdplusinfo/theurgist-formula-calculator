@@ -130,26 +130,17 @@ class FormulasTable extends AbstractFileTable
         return new CastingRounds([1, 0], $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return Difficulty
-     */
     public function getDifficulty(FormulaCode $formulaCode): Difficulty
     {
         return new Difficulty($this->getValue($formulaCode, self::DIFFICULTY));
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SpellRadius|null
-     */
     public function getSpellRadius(FormulaCode $formulaCode): ?SpellRadius
     {
         $radiusValues = $this->getValue($formulaCode, self::SPELL_RADIUS);
         if (!$radiusValues) {
             return null;
         }
-
         return new SpellRadius($radiusValues, $this->tables);
     }
 
@@ -158,101 +149,66 @@ class FormulasTable extends AbstractFileTable
         return new SpellDuration($this->getValue($formulaCode, self::SPELL_DURATION), $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SpellPower|null
-     */
     public function getSpellPower(FormulaCode $formulaCode): ?SpellPower
     {
         $powerValues = $this->getValue($formulaCode, self::SPELL_POWER);
         if (!$powerValues) {
             return null;
         }
-
         return new SpellPower($powerValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SpellAttack|null
-     */
     public function getSpellAttack(FormulaCode $formulaCode): ?SpellAttack
     {
         $attackValues = $this->getValue($formulaCode, self::SPELL_ATTACK);
         if (!$attackValues) {
             return null;
         }
-
         return new SpellAttack($attackValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SizeChange|null
-     */
     public function getSizeChange(FormulaCode $formulaCode): ?SizeChange
     {
         $sizeChangeValues = $this->getValue($formulaCode, self::SIZE_CHANGE);
         if (!$sizeChangeValues) {
             return null;
         }
-
         return new SizeChange($sizeChangeValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return DetailLevel|null
-     */
     public function getDetailLevel(FormulaCode $formulaCode): ?DetailLevel
     {
         $detailLevelValues = $this->getValue($formulaCode, self::DETAIL_LEVEL);
         if (!$detailLevelValues) {
             return null;
         }
-
         return new DetailLevel($detailLevelValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SpellBrightness|null
-     */
     public function getSpellBrightness(FormulaCode $formulaCode): ?SpellBrightness
     {
         $brightnessValues = $this->getValue($formulaCode, self::SPELL_BRIGHTNESS);
         if (!$brightnessValues) {
             return null;
         }
-
         return new SpellBrightness($brightnessValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return SpellSpeed|null
-     */
     public function getSpellSpeed(FormulaCode $formulaCode): ?SpellSpeed
     {
         $speedValues = $this->getValue($formulaCode, self::SPELL_SPEED);
         if (!$speedValues) {
             return null;
         }
-
         return new SpellSpeed($speedValues, $this->tables);
     }
 
-    /**
-     * @param FormulaCode $formulaCode
-     * @return EpicenterShift|null
-     */
     public function getEpicenterShift(FormulaCode $formulaCode): ?EpicenterShift
     {
         $epicenterShift = $this->getValue($formulaCode, self::EPICENTER_SHIFT);
         if (!$epicenterShift) {
             return null;
         }
-
         return new EpicenterShift($epicenterShift, $this->tables);
     }
 
@@ -260,7 +216,7 @@ class FormulasTable extends AbstractFileTable
      * @param FormulaCode $formulaCode
      * @return array|FormCode[]
      */
-    public function getForms(FormulaCode $formulaCode): array
+    public function getFormCodes(FormulaCode $formulaCode): array
     {
         return array_map(
             function (string $formValue) {
@@ -277,9 +233,22 @@ class FormulasTable extends AbstractFileTable
     public function getSpellTraits(FormulaCode $formulaCode): array
     {
         return array_map(
-            function (string $spellTraitValue) {
-                $spellTraitCode = SpellTraitCode::getIt($spellTraitValue);
+            function (SpellTraitCode $spellTraitCode) {
                 return new SpellTrait($spellTraitCode, $this->tables);
+            },
+            $this->getSpellTraitCodes($formulaCode)
+        );
+    }
+
+    /**
+     * @param FormulaCode $formulaCode
+     * @return array|SpellTraitCode[]
+     */
+    public function getSpellTraitCodes(FormulaCode $formulaCode): array
+    {
+        return array_map(
+            function (string $spellTraitValue) {
+                return SpellTraitCode::getIt($spellTraitValue);
             },
             $this->getValue($formulaCode, self::SPELL_TRAITS)
         );
@@ -290,7 +259,7 @@ class FormulasTable extends AbstractFileTable
      * @return array|ProfileCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetProfilesFor
      */
-    public function getProfiles(FormulaCode $formulaCode): array
+    public function getProfileCodes(FormulaCode $formulaCode): array
     {
         try {
             return array_map(
@@ -309,7 +278,7 @@ class FormulasTable extends AbstractFileTable
      * @return array|ModifierCode[]
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetModifiersFor
      */
-    public function getModifiers(FormulaCode $formulaCode): array
+    public function getModifierCodes(FormulaCode $formulaCode): array
     {
         try {
             return array_map(

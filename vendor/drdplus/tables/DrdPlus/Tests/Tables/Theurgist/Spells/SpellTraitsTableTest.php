@@ -37,7 +37,7 @@ class SpellTraitsTableTest extends AbstractTheurgistTableTest
     {
         $spellTraitsTable = new SpellTraitsTable(Tables::getIt());
         foreach (SpellTraitCode::getPossibleValues() as $spellTraitValue) {
-            $modifierCodes = $spellTraitsTable->getModifiers(SpellTraitCode::getIt($spellTraitValue));
+            $modifierCodes = $spellTraitsTable->getModifierCodes(SpellTraitCode::getIt($spellTraitValue));
             self::assertTrue(is_array($modifierCodes));
             $collectedModifierValues = [];
             foreach ($modifierCodes as $modifierCode) {
@@ -106,7 +106,7 @@ class SpellTraitsTableTest extends AbstractTheurgistTableTest
         $matchingModifierValues = [];
         $modifiersTable = new ModifiersTable(Tables::getIt());
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
-            $spellTraitCodes = $modifiersTable->getSpellTraits(ModifierCode::getIt($modifierValue));
+            $spellTraitCodes = $modifiersTable->getSpellTraitCodes(ModifierCode::getIt($modifierValue));
             foreach ($spellTraitCodes as $spellTraitCode) {
                 if ($spellTraitCode->getValue() === $spellTraitValue) {
                     $matchingModifierValues[] = $modifierValue;
@@ -125,7 +125,7 @@ class SpellTraitsTableTest extends AbstractTheurgistTableTest
     {
         $spellTraitsTable = new SpellTraitsTable(Tables::getIt());
         foreach (SpellTraitCode::getPossibleValues() as $spellTraitValue) {
-            $formulaCodes = $spellTraitsTable->getFormulas(SpellTraitCode::getIt($spellTraitValue));
+            $formulaCodes = $spellTraitsTable->getFormulaCodes(SpellTraitCode::getIt($spellTraitValue));
             self::assertTrue(is_array($formulaCodes));
             $collectedFormulaValues = [];
             foreach ($formulaCodes as $formulaCode) {

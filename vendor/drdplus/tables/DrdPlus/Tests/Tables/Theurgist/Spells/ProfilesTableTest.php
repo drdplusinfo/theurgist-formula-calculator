@@ -62,7 +62,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
     {
         $profilesTable = new ProfilesTable();
         foreach (ProfileCode::getPossibleValues() as $profileValue) {
-            $formulaCodes = $profilesTable->getFormulas(ProfileCode::getIt($profileValue));
+            $formulaCodes = $profilesTable->getFormulaCodes(ProfileCode::getIt($profileValue));
             self::assertTrue(is_array($formulaCodes));
             if (strpos($profileValue, 'venus') || in_array($profileValue, ['look_mars', 'time_mars'], true)) {
                 self::assertCount(0, $formulaCodes);
@@ -102,7 +102,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
         $oppositeProfile = $this->reverseProfileGender($profileValue);
         $expectedFormulaValues = [];
         foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-            $profileCodes = $this->formulasTable->getProfiles(FormulaCode::getIt($formulaValue));
+            $profileCodes = $this->formulasTable->getProfileCodes(FormulaCode::getIt($formulaValue));
             /** @var ProfileCode $profileCode */
             foreach ($profileCodes as $profileCode) {
                 if ($profileCode->getValue() === $oppositeProfile) {
@@ -122,7 +122,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
      */
     public function I_can_not_get_formulas_to_unknown_profile()
     {
-        (new ProfilesTable())->getFormulas($this->createProfileCode('Sexy texy'));
+        (new ProfilesTable())->getFormulaCodes($this->createProfileCode('Sexy texy'));
     }
 
     /**
@@ -147,7 +147,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
     {
         $profilesTable = new ProfilesTable();
         foreach (ProfileCode::getPossibleValues() as $profileValue) {
-            $modifierCodes = $profilesTable->getModifiers(ProfileCode::getIt($profileValue));
+            $modifierCodes = $profilesTable->getModifierCodes(ProfileCode::getIt($profileValue));
             self::assertTrue(is_array($modifierCodes));
             $modifierValues = [];
             foreach ($modifierCodes as $modifierCode) {
@@ -222,7 +222,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
      */
     public function I_can_not_get_modifiers_to_unknown_profile()
     {
-        (new ProfilesTable())->getModifiers($this->createProfileCode('Lazy lizard'));
+        (new ProfilesTable())->getModifierCodes($this->createProfileCode('Lazy lizard'));
     }
 
 }

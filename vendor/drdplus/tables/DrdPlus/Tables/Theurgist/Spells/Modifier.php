@@ -5,6 +5,7 @@ namespace DrdPlus\Tables\Theurgist\Spells;
 
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellAttack;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Noise;
@@ -35,8 +36,8 @@ class Modifier extends StrictObject
 
     /** @var ModifierCode */
     private $modifierCode;
-    /** @var ModifiersTable */
-    private $modifiersTable;
+    /** @var Tables */
+    private $tables;
     /** @var array|int[] */
     private $modifierSpellParameterChanges;
     /** @var array|SpellTrait[] */
@@ -44,7 +45,7 @@ class Modifier extends StrictObject
 
     /**
      * @param ModifierCode $modifierCode
-     * @param ModifiersTable $modifiersTable
+     * @param Tables $tables
      * @param array|int[] $modifierSpellParameterValues spell parameters current values (delta will be calculated from them)
      * by @param array|SpellTrait[] $modifierSpellTraits
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
@@ -55,13 +56,13 @@ class Modifier extends StrictObject
      */
     public function __construct(
         ModifierCode $modifierCode,
-        ModifiersTable $modifiersTable,
+        Tables $tables,
         array $modifierSpellParameterValues,
         array $modifierSpellTraits
     )
     {
         $this->modifierCode = $modifierCode;
-        $this->modifiersTable = $modifiersTable;
+        $this->tables = $tables;
         $this->modifierSpellParameterChanges = $this->sanitizeSpellParameterChanges($modifierSpellParameterValues);
         $this->modifierSpellTraits = $this->getCheckedSpellTraits($this->toFlatArray($modifierSpellTraits));
     }
@@ -174,29 +175,29 @@ class Modifier extends StrictObject
         foreach ($this->modifierSpellTraits as $spellTrait) {
             $spellTraitsDifficultyChangeSum += $spellTrait->getDifficultyChange()->getValue();
         }
-        $difficultyChange = $this->modifiersTable->getDifficultyChange($this->getModifierCode());
+        $difficultyChange = $this->tables->getModifiersTable()->getDifficultyChange($this->getModifierCode());
 
         return $difficultyChange->add($parametersDifficultyChangeSum + $spellTraitsDifficultyChangeSum);
     }
 
     public function getCastingRounds(): CastingRounds
     {
-        return $this->modifiersTable->getCastingRounds($this->getModifierCode());
+        return $this->tables->getModifiersTable()->getCastingRounds($this->getModifierCode());
     }
 
     public function getRequiredRealm(): Realm
     {
-        return $this->modifiersTable->getRealm($this->getModifierCode());
+        return $this->tables->getModifiersTable()->getRealm($this->getModifierCode());
     }
 
     public function getRealmsAffection(): ?RealmsAffection
     {
-        return $this->modifiersTable->getRealmsAffection($this->getModifierCode());
+        return $this->tables->getModifiersTable()->getRealmsAffection($this->getModifierCode());
     }
 
     public function getBaseSpellRadius(): ?SpellRadius
     {
-        return $this->modifiersTable->getSpellRadius($this->modifierCode);
+        return $this->tables->getModifiersTable()->getSpellRadius($this->modifierCode);
     }
 
     public function getSpellRadiusWithAddition(): ?SpellRadius
@@ -216,7 +217,7 @@ class Modifier extends StrictObject
 
     public function getBaseEpicenterShift(): ?EpicenterShift
     {
-        return $this->modifiersTable->getEpicenterShift($this->modifierCode);
+        return $this->tables->getModifiersTable()->getEpicenterShift($this->modifierCode);
     }
 
     public function getEpicenterShiftWithAddition(): ?EpicenterShift
@@ -236,7 +237,7 @@ class Modifier extends StrictObject
 
     public function getBaseSpellPower(): ?SpellPower
     {
-        return $this->modifiersTable->getSpellPower($this->modifierCode);
+        return $this->tables->getModifiersTable()->getSpellPower($this->modifierCode);
     }
 
     public function getSpellPowerWithAddition(): ?SpellPower
@@ -256,7 +257,7 @@ class Modifier extends StrictObject
 
     public function getBaseNoise(): ?Noise
     {
-        return $this->modifiersTable->getNoise($this->modifierCode);
+        return $this->tables->getModifiersTable()->getNoise($this->modifierCode);
     }
 
     public function getNoiseWithAddition(): ?Noise
@@ -276,7 +277,7 @@ class Modifier extends StrictObject
 
     public function getBaseSpellAttack(): ?SpellAttack
     {
-        return $this->modifiersTable->getSpellAttack($this->modifierCode);
+        return $this->tables->getModifiersTable()->getSpellAttack($this->modifierCode);
     }
 
     public function getSpellAttackWithAddition(): ?SpellAttack
@@ -296,7 +297,7 @@ class Modifier extends StrictObject
 
     public function getBaseGrafts(): ?Grafts
     {
-        return $this->modifiersTable->getGrafts($this->modifierCode);
+        return $this->tables->getModifiersTable()->getGrafts($this->modifierCode);
     }
 
     public function getGraftsWithAddition(): ?Grafts
@@ -316,7 +317,7 @@ class Modifier extends StrictObject
 
     public function getBaseSpellSpeed(): ?SpellSpeed
     {
-        return $this->modifiersTable->getSpellSpeed($this->modifierCode);
+        return $this->tables->getModifiersTable()->getSpellSpeed($this->modifierCode);
     }
 
     public function getSpellSpeedWithAddition(): ?SpellSpeed
@@ -336,7 +337,7 @@ class Modifier extends StrictObject
 
     public function getBaseInvisibility(): ?Invisibility
     {
-        return $this->modifiersTable->getInvisibility($this->modifierCode);
+        return $this->tables->getModifiersTable()->getInvisibility($this->modifierCode);
     }
 
     public function getInvisibilityWithAddition(): ?Invisibility
@@ -356,7 +357,7 @@ class Modifier extends StrictObject
 
     public function getBaseQuality(): ?Quality
     {
-        return $this->modifiersTable->getQuality($this->modifierCode);
+        return $this->tables->getModifiersTable()->getQuality($this->modifierCode);
     }
 
     public function getQualityWithAddition(): ?Quality
@@ -376,7 +377,7 @@ class Modifier extends StrictObject
 
     public function getBaseNumberOfConditions(): ?NumberOfConditions
     {
-        return $this->modifiersTable->getNumberOfConditions($this->modifierCode);
+        return $this->tables->getModifiersTable()->getNumberOfConditions($this->modifierCode);
     }
 
     public function getNumberOfConditionsWithAddition(): ?NumberOfConditions
@@ -396,7 +397,7 @@ class Modifier extends StrictObject
 
     public function getBaseResistance(): ?Resistance
     {
-        return $this->modifiersTable->getResistance($this->modifierCode);
+        return $this->tables->getModifiersTable()->getResistance($this->modifierCode);
     }
 
     public function getResistanceWithAddition(): ?Resistance
@@ -416,7 +417,7 @@ class Modifier extends StrictObject
 
     public function getBaseNumberOfSituations(): ?NumberOfSituations
     {
-        return $this->modifiersTable->getNumberOfSituations($this->modifierCode);
+        return $this->tables->getModifiersTable()->getNumberOfSituations($this->modifierCode);
     }
 
     public function getNumberOfSituationsWithAddition(): ?NumberOfSituations
@@ -436,7 +437,7 @@ class Modifier extends StrictObject
 
     public function getBaseThreshold(): ?Threshold
     {
-        return $this->modifiersTable->getThreshold($this->modifierCode);
+        return $this->tables->getModifiersTable()->getThreshold($this->modifierCode);
     }
 
     public function getThresholdWithAddition(): ?Threshold
@@ -456,7 +457,7 @@ class Modifier extends StrictObject
 
     public function getBaseNumberOfWaypoints(): ?NumberOfWaypoints
     {
-        return $this->modifiersTable->getNumberOfWaypoints($this->modifierCode);
+        return $this->tables->getModifiersTable()->getNumberOfWaypoints($this->modifierCode);
     }
 
     public function getNumberOfWaypointsWithAddition(): ?NumberOfWaypoints

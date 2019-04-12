@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
 
@@ -37,7 +37,8 @@ class ModifierTest extends TestWithMockery
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
-            $modifier = new Modifier($modifierCode, $modifiersTable, [], []);
+            $tables = $this->createTables($modifiersTable);
+            $modifier = new Modifier($modifierCode, $tables, [], []);
             self::assertSame($modifierCode, $modifier->getModifierCode());
             self::assertSame($modifierValue, (string)$modifier);
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
@@ -58,6 +59,18 @@ class ModifierTest extends TestWithMockery
                 self::assertSame(0, $modifier->$getParameterAddition());
             }
         }
+    }
+
+    /**
+     * @param ModifiersTable $modifiersTable
+     * @return Tables|MockInterface
+     */
+    private function createTables(ModifiersTable $modifiersTable): Tables
+    {
+        $tables = $this->mockery(Tables::class);
+        $tables->shouldReceive('getModifiersTable')
+            ->andReturn($modifiersTable);
+        return $tables;
     }
 
     /**
@@ -128,7 +141,8 @@ class ModifierTest extends TestWithMockery
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
-            $modifier = new Modifier($modifierCode, $modifiersTable, [], []);
+            $tables = $this->createTables($modifiersTable);
+            $modifier = new Modifier($modifierCode, $tables, [], []);
             self::assertSame($modifierCode, $modifier->getModifierCode());
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
                 /*if ($mutableParameterName === ModifierMutableSpellParameterCode::) {
@@ -163,6 +177,7 @@ class ModifierTest extends TestWithMockery
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
+            $tables = $this->createTables($modifiersTable);
             $baseParameters = [];
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $parameterName) {
                 /** like instance of @see SpellSpeed */
@@ -170,7 +185,7 @@ class ModifierTest extends TestWithMockery
                 $this->addBaseParameterGetter($parameterName, $modifierCode, $modifiersTable, $baseParameter);
                 $baseParameters[$parameterName] = $baseParameter;
             }
-            $modifier = new Modifier($modifierCode, $modifiersTable, $parameterChanges, $spellTraits);
+            $modifier = new Modifier($modifierCode, $tables, $parameterChanges, $spellTraits);
             self::assertSame($modifierCode, $modifier->getModifierCode());
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $parameterName) {
                 $baseParameter = $baseParameters[$parameterName];
@@ -217,12 +232,13 @@ class ModifierTest extends TestWithMockery
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
+            $tables = $this->createTables($modifiersTable);
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, null);
             }
             $difficultyChange = $this->createDifficultyChange(0);
             $this->addDifficultyChangeGetter($difficultyChange, $modifierCode, $modifiersTable);
-            $modifier = new Modifier($modifierCode, $modifiersTable, [], []);
+            $modifier = new Modifier($modifierCode, $tables, [], []);
             self::assertSame($difficultyChange, $modifier->getDifficultyChange());
         }
     }
@@ -261,6 +277,7 @@ class ModifierTest extends TestWithMockery
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
+            $tables = $this->createTables($modifiersTable);
             $parameterDifficulties = [];
             foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
                 $parameter = $this->createExpectedParameter($mutableParameterName);
@@ -275,7 +292,7 @@ class ModifierTest extends TestWithMockery
             $difficultyChangeValue = 123 + 456 + array_sum($parameterDifficulties);
             $difficultyChange = $this->createDifficultyChange($difficultyChangeValue);
             $this->addDifficultyChangeGetter($difficultyChange, $modifierCode, $modifiersTable);
-            $modifier = new Modifier($modifierCode, $modifiersTable, [], $spellTraits);
+            $modifier = new Modifier($modifierCode, $tables, [], $spellTraits);
             try {
                 self::assertSame($difficultyChange, $modifier->getDifficultyChange());
             } catch (NoMatchingExpectationException $expectationException) {
@@ -315,9 +332,11 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_get_casting_rounds()
     {
+        $modifiersTable = $this->createModifiersTable();
+        $tables = $this->createTables($modifiersTable);
         $modifier = new Modifier(
             $modifierCode = ModifierCode::getIt(ModifierCode::COLOR),
-            $modifiersTable = $this->createModifiersTable(),
+            $tables,
             [],
             []
         );
@@ -332,9 +351,11 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_get_required_realm_for_modifier()
     {
+        $modifiersTable = $this->createModifiersTable();
+        $tables = $this->createTables($modifiersTable);
         $modifier = new Modifier(
             $modifierCode = ModifierCode::getIt(ModifierCode::TRANSPOSITION),
-            $modifiersTable = $this->createModifiersTable(),
+            $tables,
             [],
             []
         );
@@ -349,16 +370,15 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_get_realms_affection()
     {
-        $modifiersTable = new ModifiersTable(Tables::getIt());
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
             $modifier = new Modifier(
                 $modifierCode = ModifierCode::getIt($modifierValue),
-                $modifiersTable,
+                Tables::getIt(),
                 [],
                 []
             );
             self::assertEquals(
-                $modifiersTable->getRealmsAffection($modifierCode),
+                Tables::getIt()->getModifiersTable()->getRealmsAffection($modifierCode),
                 $modifier->getRealmsAffection()
             );
         }
@@ -372,6 +392,7 @@ class ModifierTest extends TestWithMockery
     public function I_can_not_create_it_with_non_integer_addition()
     {
         $modifiersTable = $this->createModifiersTable();
+        $tables = $this->createTables($modifiersTable);
         $this->addBaseParameterGetter(
             $parameterName = ModifierMutableSpellParameterCode::EPICENTER_SHIFT,
             $code = ModifierCode::getIt(ModifierCode::INVISIBILITY),
@@ -379,25 +400,26 @@ class ModifierTest extends TestWithMockery
             $this->createExpectedParameter($parameterName, 123 /* whatever */)
         );
         try {
-            new Modifier($code, $modifiersTable, [$parameterName => 0.0], []);
+            new Modifier($code, $tables, [$parameterName => 0.0], []);
         } catch (\Exception $exception) {
             self::fail('No exception expected so far: ' . $exception->getMessage() . '; ' . $exception->getTraceAsString());
         }
         try {
             $modifiersTable = $this->createModifiersTable();
+            $tables = $this->createTables($modifiersTable);
             $this->addBaseParameterGetter(
                 $parameterName = ModifierMutableSpellParameterCode::SPELL_RADIUS,
                 $code = ModifierCode::getIt(ModifierCode::GATE),
                 $modifiersTable,
                 $this->createExpectedParameter($parameterName, 432 /* whatever */)
             );
-            new Modifier($code, $modifiersTable, [$parameterName => '5.000'], []);
+            new Modifier($code, $tables, [$parameterName => '5.000'], []);
         } catch (\Exception $exception) {
             self::fail('No exception expected so far: ' . $exception->getMessage() . '; ' . $exception->getTraceAsString());
         }
         new Modifier(
             ModifierCode::getIt(ModifierCode::TRANSPOSITION),
-            $this->createModifiersTable(),
+            $tables,
             [ModifierMutableSpellParameterCode::GRAFTS => 0.1],
             []
         );
@@ -410,8 +432,9 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_not_add_non_zero_addition_to_unused_parameter()
     {
+        $modifiersTable = $this->createModifiersTable();
+        $tables = $this->createTables($modifiersTable);
         try {
-            $modifiersTable = $this->createModifiersTable();
             $this->addBaseParameterGetter(
                 $parameterName = ModifierMutableSpellParameterCode::SPELL_ATTACK,
                 $modifierCode = ModifierCode::getIt(ModifierCode::INTERACTIVE_ILLUSION),
@@ -420,7 +443,7 @@ class ModifierTest extends TestWithMockery
             );
             new Modifier(
                 $modifierCode,
-                $modifiersTable,
+                $tables,
                 [$parameterName => 4],
                 []
             );
@@ -428,13 +451,14 @@ class ModifierTest extends TestWithMockery
             self::fail('No exception expected so far: ' . $exception->getMessage() . '; ' . $exception->getTraceAsString());
         }
         $modifiersTable = $this->createModifiersTable();
+        $tables = $this->createTables($modifiersTable);
         $this->addBaseParameterGetter(
             $parameterName = ModifierMutableSpellParameterCode::RESISTANCE,
             $modifierCode = ModifierCode::getIt(ModifierCode::COLOR),
             $modifiersTable,
             null // unused
         );
-        new Modifier($modifierCode, $modifiersTable, [$parameterName => 4], []);
+        new Modifier($modifierCode, $tables, [$parameterName => 4], []);
     }
 
     /**
@@ -444,7 +468,7 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_not_create_it_with_addition_of_unknown_parameter()
     {
-        new Modifier(ModifierCode::getIt(ModifierCode::TRANSPOSITION), $this->createModifiersTable(), ['useless' => 0], []);
+        new Modifier(ModifierCode::getIt(ModifierCode::TRANSPOSITION), Tables::getIt(), ['useless' => 0], []);
     }
 
     /**
@@ -454,6 +478,6 @@ class ModifierTest extends TestWithMockery
      */
     public function I_can_create_it_with_non_spell_trait_as_spell_trait()
     {
-        new Modifier(ModifierCode::getIt(ModifierCode::TRANSPOSITION), $this->createModifiersTable(), [], [new \DateTime()]);
+        new Modifier(ModifierCode::getIt(ModifierCode::TRANSPOSITION), Tables::getIt(), [], [new \DateTime()]);
     }
 }

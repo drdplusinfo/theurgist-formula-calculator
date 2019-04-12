@@ -267,7 +267,7 @@ class CurrentFormulaValues extends StrictObject
     private function getFormulaDirectModifierCombinations(): array
     {
         $formulaModifierCodesTree = [];
-        foreach ($this->tables->getFormulasTable()->getModifiers($this->currentFormulaCode) as $modifierCode) {
+        foreach ($this->tables->getFormulasTable()->getModifierCodes($this->currentFormulaCode) as $modifierCode) {
             $formulaModifierCodesTree[$modifierCode->getValue()] = $modifierCode; // as a child modifier
         }
         return $formulaModifierCodesTree;
@@ -293,7 +293,7 @@ class CurrentFormulaValues extends StrictObject
         foreach ($modifierValues as $modifierValue) {
             if (!array_key_exists($modifierValue, $processedModifiers)) { // otherwise skip already processed relating modifiers
                 $modifierCode = ModifierCode::getIt($modifierValue);
-                foreach ($this->tables->getModifiersTable()->getChildModifiers($modifierCode) as $childModifier) {
+                foreach ($this->tables->getModifiersTable()->getChildModifierCodes($modifierCode) as $childModifier) {
                     // by-related-modifier-indexed flat array
                     $modifiers[$modifierValue][$childModifier->getValue()] = $childModifier;
                     $childModifierValues[] = $childModifier->getValue();
@@ -409,7 +409,7 @@ class CurrentFormulaValues extends StrictObject
             }
             $modifierValuesWithSpellTraits[$index] = new Modifier(
                 ModifierCode::getIt($selectedModifiersBranch),
-                $this->tables->getModifiersTable(),
+                $this->tables,
                 $selectedModifierParameterValues[$selectedModifiersBranch] ?? [],
                 $selectedModifierSpellTraits[$selectedModifiersBranch] ?? []
             );
@@ -426,7 +426,7 @@ class CurrentFormulaValues extends StrictObject
     public function getFormulaFormNames(FormulaCode $formulaCode, string $language): array
     {
         $formNames = [];
-        foreach ($this->tables->getFormulasTable()->getForms($formulaCode) as $formCode) {
+        foreach ($this->tables->getFormulasTable()->getFormCodes($formulaCode) as $formCode) {
             $formNames[] = $formCode->translateTo($language);
         }
 
@@ -464,7 +464,7 @@ class CurrentFormulaValues extends StrictObject
     public function getModifierFormNames(ModifierCode $modifierCode, string $language): array
     {
         $formNames = [];
-        foreach ($this->tables->getModifiersTable()->getForms($modifierCode) as $formCode) {
+        foreach ($this->tables->getModifiersTable()->getFormCodes($modifierCode) as $formCode) {
             $formNames[] = $formCode->translateTo($language);
         }
         return $formNames;

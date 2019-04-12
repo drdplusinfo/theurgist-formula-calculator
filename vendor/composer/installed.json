@@ -611,17 +611,17 @@
     },
     {
         "name": "drdplus/tables",
-        "version": "2.1.0",
-        "version_normalized": "2.1.0.0",
+        "version": "2.1.1",
+        "version_normalized": "2.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/tables.git",
-            "reference": "09d1ab1c07b6a4012454c8028d9717e7238a5aee"
+            "reference": "98b6108a15c631a467e34a65c0bc261f0408d00b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/09d1ab1c07b6a4012454c8028d9717e7238a5aee",
-            "reference": "09d1ab1c07b6a4012454c8028d9717e7238a5aee",
+            "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/98b6108a15c631a467e34a65c0bc261f0408d00b",
+            "reference": "98b6108a15c631a467e34a65c0bc261f0408d00b",
             "shasum": ""
         },
         "require": {
@@ -641,7 +641,7 @@
             "phpunit/phpunit": "~7.0",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-04-12T12:02:00+00:00",
+        "time": "2019-04-12T13:04:19+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

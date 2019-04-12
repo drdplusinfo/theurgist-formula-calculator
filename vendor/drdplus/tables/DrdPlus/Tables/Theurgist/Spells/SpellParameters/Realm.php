@@ -17,7 +17,6 @@ class Realm extends PositiveIntegerObject
     /**
      * @param int|IntegerInterface|StringInterface $value
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmCanNotBeNegative
-     * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmIsToHigh
      */
     public function __construct($value)
     {
@@ -25,9 +24,6 @@ class Realm extends PositiveIntegerObject
             parent::__construct($value, true, false);
         } catch (PositiveIntegerCanNotBeNegative $positiveIntegerCanNotBeNegative) {
             throw new Exceptions\RealmCanNotBeNegative(sprintf('Got %d, expected at least 0', $value));
-        }
-        if ($this->getValue() > 21) {
-            throw new Exceptions\RealmIsToHigh(sprintf('Got %d, expected at most 21', $this->getValue()));
         }
     }
 }

@@ -7,8 +7,12 @@ use DrdPlus\Tables\Partials\AbstractTable;
 use DrdPlus\Codes\Theurgist\AbstractTheurgistCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonCapacity;
+use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
+use DrdPlus\Tables\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellAttack;
+use DrdPlus\Tables\Theurgist\Spells\SpellTrait;
+use DrdPlus\Tables\Theurgist\Spells\SpellTraitsTable;
 use DrdPlus\Tests\Tables\TableTest;
 use Granam\String\StringTools;
 
@@ -177,6 +181,19 @@ abstract class AbstractTheurgistTableTest extends TableTest
         foreach ($constants as $constant) {
             if (in_array($constant, $rowsHeader)) {
                 continue;
+            }
+            if ($constant === FormulasTable::PROFILES) {
+                $constant = 'profile_codes';
+            } elseif ($constant === FormulasTable::MODIFIERS) {
+                $constant = 'modifier_codes';
+            } elseif ($constant === SpellTraitsTable::FORMULAS) {
+                $constant = 'formula_codes';
+            } elseif ($constant === ModifiersTable::FORMS) {
+                $constant = 'form_codes';
+            } elseif ($constant === ModifiersTable::PARENT_MODIFIERS) {
+                $constant = 'parent_modifier_codes';
+            } elseif ($constant === ModifiersTable::CHILD_MODIFIERS) {
+                $constant = 'child_modifier_codes';
             }
             $getter = StringTools::assembleGetterForName($constant);
             self::assertTrue(

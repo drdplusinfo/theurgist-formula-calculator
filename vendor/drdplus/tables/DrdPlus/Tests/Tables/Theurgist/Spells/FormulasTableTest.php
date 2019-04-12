@@ -77,7 +77,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
     {
         $formulasTable = new FormulasTable(Tables::getIt());
         foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-            $forms = $formulasTable->getForms(FormulaCode::getIt($formulaValue));
+            $forms = $formulasTable->getFormCodes(FormulaCode::getIt($formulaValue));
             $formValues = [];
             foreach ($forms as $form) {
                 self::assertInstanceOf(FormCode::class, $form);
@@ -173,7 +173,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
     {
         $formulasTable = new FormulasTable(Tables::getIt());
         foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-            $modifierCodes = $formulasTable->getModifiers(FormulaCode::getIt($formulaValue));
+            $modifierCodes = $formulasTable->getModifierCodes(FormulaCode::getIt($formulaValue));
             self::assertIsArray($modifierCodes);
             self::assertNotEmpty($modifierCodes);
             $collectedModifierValues = [];
@@ -240,7 +240,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
     {
         $modifierValues = [];
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
-            $formulaCodes = $this->modifiersTable->getFormulas(ModifierCode::getIt($modifierValue));
+            $formulaCodes = $this->modifiersTable->getFormulaCodes(ModifierCode::getIt($modifierValue));
             foreach ($formulaCodes as $formulaCode) {
                 if ($formulaCode->getValue() === $formulaValue) {
                     $modifierValues[] = $modifierValue;
@@ -262,7 +262,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
         $profilesTable = new ProfilesTable();
         $matchingModifierValues = [];
         foreach ($matchingProfileValues as $matchingProfileValue) {
-            foreach ($profilesTable->getModifiers(ProfileCode::getIt($matchingProfileValue)) as $modifierCode) {
+            foreach ($profilesTable->getModifierCodes(ProfileCode::getIt($matchingProfileValue)) as $modifierCode) {
                 $matchingModifierValues[] = $modifierCode->getValue();
             }
         }
@@ -278,7 +278,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
     public function I_can_not_get_modifiers_to_unknown_formula(): void
     {
         (new FormulasTable(Tables::getIt()))
-            ->getModifiers($this->createFormulaCode('Abraka dabra'));
+            ->getModifierCodes($this->createFormulaCode('Abraka dabra'));
     }
 
     /**
@@ -303,7 +303,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
     {
         $formulasTable = new FormulasTable(Tables::getIt());
         foreach (FormulaCode::getPossibleValues() as $formulaValue) {
-            $profileCodes = $formulasTable->getProfiles(FormulaCode::getIt($formulaValue));
+            $profileCodes = $formulasTable->getProfileCodes(FormulaCode::getIt($formulaValue));
             self::assertIsArray($profileCodes);
             self::assertNotEmpty($profileCodes);
             $profileValues = [];
@@ -380,7 +380,7 @@ class FormulasTableTest extends AbstractTheurgistTableTest
         $profilesTable = new ProfilesTable();
         $matchingProfiles = [];
         foreach (ProfileCode::getPossibleValues() as $profileValue) {
-            foreach ($profilesTable->getFormulas(ProfileCode::getIt($profileValue)) as $formulaCode) {
+            foreach ($profilesTable->getFormulaCodes(ProfileCode::getIt($profileValue)) as $formulaCode) {
                 if ($formulaCode->getValue() === $formulaValue) {
                     $oppositeProfile = $this->reverseProfileGender($profileValue);
                     $matchingProfiles[] = $oppositeProfile;
@@ -399,6 +399,6 @@ class FormulasTableTest extends AbstractTheurgistTableTest
      */
     public function I_can_not_get_profiles_to_unknown_formula(): void
     {
-        (new FormulasTable(Tables::getIt()))->getProfiles($this->createFormulaCode('Charge!'));
+        (new FormulasTable(Tables::getIt()))->getProfileCodes($this->createFormulaCode('Charge!'));
     }
 }

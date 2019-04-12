@@ -13,7 +13,7 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Trap;
 /** @var Tables $tables */
 /** @var CurrentFormulaValues $currentFormulaValues */
 
-$modifierSpellTraitCodes = $tables->getModifiersTable()->getSpellTraits($possibleModifier);
+$modifierSpellTraitCodes = $tables->getModifiersTable()->getSpellTraitCodes($possibleModifier);
 $spellTraitsTable = $tables->getSpellTraitsTable();
 if (count($modifierSpellTraitCodes) > 0) { ?>
   <div>

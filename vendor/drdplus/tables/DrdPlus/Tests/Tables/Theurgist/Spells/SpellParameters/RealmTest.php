@@ -34,14 +34,4 @@ class RealmTest extends TestWithMockery
     {
         new Realm(-456);
     }
-
-    /**
-     * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmIsToHigh
-     * @expectedExceptionMessageRegExp '22'
-     */
-    public function I_can_not_create_realm_higher_than_twenty_one(): void
-    {
-        new Realm(22);
-    }
 }

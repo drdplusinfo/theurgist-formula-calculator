@@ -59,7 +59,7 @@ class SpellTraitsTable extends AbstractFileTable
      * @param SpellTraitCode $traitCode
      * @return array|FormulaCode[]
      */
-    public function getFormulas(SpellTraitCode $traitCode): array
+    public function getFormulaCodes(SpellTraitCode $traitCode): array
     {
         return \array_map(
             function (string $formulaValue) {
@@ -73,7 +73,7 @@ class SpellTraitsTable extends AbstractFileTable
      * @param SpellTraitCode $traitCode
      * @return array|ModifierCode[]
      */
-    public function getModifiers(SpellTraitCode $traitCode): array
+    public function getModifierCodes(SpellTraitCode $traitCode): array
     {
         return \array_map(
             function (string $modifierValue) {
@@ -102,7 +102,6 @@ class SpellTraitsTable extends AbstractFileTable
         foreach ($this->toFlatArray($spellTraitCodes) as $spellTraitCode) {
             $sumOfDifficultyChange += $this->getDifficultyChange($spellTraitCode)->getValue();
         }
-
         return new DifficultyChange($sumOfDifficultyChange);
     }
 
@@ -116,7 +115,6 @@ class SpellTraitsTable extends AbstractFileTable
         if (\count($trapValues) === 0) {
             return null;
         }
-
         return new Trap($trapValues, $this->tables);
     }
 
