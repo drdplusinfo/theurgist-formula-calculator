@@ -5,6 +5,8 @@ use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
 use DrdPlus\Calculators\Theurgist\FormulaServicesContainer;
 use DrdPlus\CalculatorSkeleton\CurrentValues;
 use DrdPlus\CalculatorSkeleton\Memory;
+use DrdPlus\Codes\Theurgist\FormulaCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
@@ -52,9 +54,17 @@ class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
         self::assertSame('+0', $formulaValues->formatNumber(new NumberObject(0)));
     }
 
-    private function createCurrentFormulaValues(): CurrentFormulaValues
+    private function createCurrentFormulaValues(array $values = []): CurrentFormulaValues
     {
-        return new CurrentFormulaValues(new CurrentValues([], $this->createMemory()), Tables::getIt());
+        $values = array_merge(
+            $values,
+            // to keep previous and current formula same
+            [
+                CurrentFormulaValues::PREVIOUS_FORMULA => FormulaCode::BARRIER,
+                CurrentFormulaValues::FORMULA => FormulaCode::BARRIER,
+            ]
+        );
+        return new CurrentFormulaValues(new CurrentValues($values, $this->createMemory()), Tables::getIt());
     }
 
     /**
@@ -62,7 +72,10 @@ class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
      */
     private function createMemory(): Memory
     {
-        return $this->mockery(Memory::class);
+        $memory = $this->mockery(Memory::class);
+        $memory->shouldReceive('getValue')
+            ->andReturnNull();
+        return $memory;
     }
 
     /**
@@ -77,5 +90,28 @@ class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
             $configuration ?? $this->getConfiguration(),
             $htmlHelper ?? $this->createHtmlHelper($this->getDirs())
         );
+    }
+
+    /**
+     * @test
+     * @param string $oldParameterName
+     * @param string $expectedParameterName
+     * @dataProvider provideOldAndNewExpectedParameterName
+     */
+    public function I_will_get_new_mutable_spell_parameter_names(string $oldParameterName, string $expectedParameterName)
+    {
+        $currentFormulaValues = $this->createCurrentFormulaValues([CurrentFormulaValues::FORMULA_PARAMETERS => [$oldParameterName => 123]]);
+        self::assertSame([$expectedParameterName => 123], $currentFormulaValues->getCurrentFormulaSpellParameters());
+    }
+
+    public function provideOldAndNewExpectedParameterName(): array
+    {
+        return [
+            ['power', FormulaMutableSpellParameterCode::SPELL_POWER],
+            ['radius', FormulaMutableSpellParameterCode::SPELL_RADIUS],
+            ['brightness', FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS],
+            ['attack', FormulaMutableSpellParameterCode::SPELL_ATTACK],
+            [FormulaMutableSpellParameterCode::EPICENTER_SHIFT, FormulaMutableSpellParameterCode::EPICENTER_SHIFT],
+        ];
     }
 }

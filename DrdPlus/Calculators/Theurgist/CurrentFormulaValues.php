@@ -5,6 +5,7 @@ namespace DrdPlus\Calculators\Theurgist;
 
 use DrdPlus\CalculatorSkeleton\CurrentValues;
 use DrdPlus\Codes\Theurgist\FormulaCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
 use DrdPlus\Tables\Tables;
@@ -38,7 +39,7 @@ class CurrentFormulaValues extends StrictObject
     private $selectedModifiersSpellTraits;
     /** @var array */
     private $selectedModifiersSpellTraitsTrapValues;
-    /** @var FormulaCode */
+    /** @var FormulaCode|null */
     private $currentFormulaCode;
     /** @var Tables */
     private $tables;
@@ -76,7 +77,7 @@ class CurrentFormulaValues extends StrictObject
 
     private function isFormulaChanged(): bool
     {
-        return $this->currentFormulaCode->getValue() !== $this->getPreviousFormulaValue();
+        return $this->getCurrentFormulaCode()->getValue() !== $this->getPreviousFormulaValue();
     }
 
     private function getPreviousFormulaValue(): ?string
@@ -115,16 +116,30 @@ class CurrentFormulaValues extends StrictObject
             return $this->selectedFormulaSpellParameters;
         }
         $selectedFormulaParameterValues = $this->currentValues->getCurrentValue(self::FORMULA_PARAMETERS);
-        if ($selectedFormulaParameterValues === null || $this->isFormulaChanged()) {
-            return $this->selectedFormulaSpellParameters = [];
-        }
         $this->selectedFormulaSpellParameters = [];
+        if ($selectedFormulaParameterValues === null || $this->isFormulaChanged()) {
+            return $this->selectedFormulaSpellParameters;
+        }
         /** @var array|int[] $selectedFormulaParameterValues */
         foreach ($selectedFormulaParameterValues as $formulaParameterName => $value) {
+            $formulaParameterName = $this->getFormulaNewParameterName($formulaParameterName);
             $this->selectedFormulaSpellParameters[$formulaParameterName] = ToInteger::toInteger($value);
         }
 
         return $this->selectedFormulaSpellParameters;
+    }
+
+    private static $oldToNewMutableSpellParameterName = [
+        'power' => FormulaMutableSpellParameterCode::SPELL_POWER,
+        'radius' => FormulaMutableSpellParameterCode::SPELL_RADIUS,
+        'brightness' => FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS,
+        'attack' => FormulaMutableSpellParameterCode::SPELL_ATTACK,
+        'speed' => FormulaMutableSpellParameterCode::SPELL_SPEED,
+    ];
+
+    private function getFormulaNewParameterName(string $formulaParameterName): string
+    {
+        return self::$oldToNewMutableSpellParameterName[$formulaParameterName] ?? $formulaParameterName;
     }
 
     /**
@@ -136,11 +151,11 @@ class CurrentFormulaValues extends StrictObject
             return $this->selectedModifiersSpellParameters;
         }
         $selectedModifierParameterValues = $this->currentValues->getCurrentValue(self::MODIFIER_PARAMETERS);
+        $this->selectedModifiersSpellParameters = [];
         if ($selectedModifierParameterValues === null || $this->isFormulaChanged()) {
-            return $this->selectedModifiersSpellParameters = [];
+            return $this->selectedModifiersSpellParameters;
         }
 
-        $this->selectedModifiersSpellParameters = [];
         $selectedModifiers = $this->getCurrentModifiersTree();
         /** @var array|int[][][] $sameLevelParameters */
         foreach ((array)$selectedModifierParameterValues as $treeLevel => $sameLevelParameters) {
@@ -267,7 +282,7 @@ class CurrentFormulaValues extends StrictObject
     private function getFormulaDirectModifierCombinations(): array
     {
         $formulaModifierCodesTree = [];
-        foreach ($this->tables->getFormulasTable()->getModifierCodes($this->currentFormulaCode) as $modifierCode) {
+        foreach ($this->tables->getFormulasTable()->getModifierCodes($this->getCurrentFormulaCode()) as $modifierCode) {
             $formulaModifierCodesTree[$modifierCode->getValue()] = $modifierCode; // as a child modifier
         }
         return $formulaModifierCodesTree;
