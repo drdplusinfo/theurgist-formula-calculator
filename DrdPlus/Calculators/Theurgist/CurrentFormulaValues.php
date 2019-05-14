@@ -134,6 +134,7 @@ class CurrentFormulaValues extends StrictObject
         'radius' => FormulaMutableSpellParameterCode::SPELL_RADIUS,
         'brightness' => FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS,
         'attack' => FormulaMutableSpellParameterCode::SPELL_ATTACK,
+        'duration' => FormulaMutableSpellParameterCode::SPELL_DURATION,
         'speed' => FormulaMutableSpellParameterCode::SPELL_SPEED,
     ];
 

@@ -111,6 +111,8 @@ class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
             ['radius', FormulaMutableSpellParameterCode::SPELL_RADIUS],
             ['brightness', FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS],
             ['attack', FormulaMutableSpellParameterCode::SPELL_ATTACK],
+            ['duration', FormulaMutableSpellParameterCode::SPELL_DURATION],
+            ['speed', FormulaMutableSpellParameterCode::SPELL_SPEED],
             [FormulaMutableSpellParameterCode::EPICENTER_SHIFT, FormulaMutableSpellParameterCode::EPICENTER_SHIFT],
         ];
     }
