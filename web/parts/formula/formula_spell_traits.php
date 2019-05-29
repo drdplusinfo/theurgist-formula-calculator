@@ -3,7 +3,7 @@
 
 $spellTraits = $webPartsContainer->getTables()->getFormulasTable()->getSpellTraits($webPartsContainer->getCurrentFormulaCode());
 if (count($spellTraits) > 0) {
-    $selectedFormulaSpellTraitValues = $webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaSpellTraitValues();
+    $currentFormulaSpellTraitValues = $webPartsContainer->getCurrentFormulaValues()->getCurrentFormulaSpellTraitValues();
     $spellTraitsTable = $webPartsContainer->getTables()->getSpellTraitsTable();
     ?>
   <div class="row">
@@ -16,7 +16,7 @@ if (count($spellTraits) > 0) {
             <label>
               <input type="checkbox" name="formula_spell_traits[]"
                      value="<?= $spellTraitCode->getValue() ?>"
-                     <?php if (in_array($spellTraitCode->getValue(), $selectedFormulaSpellTraitValues, true)) : ?>checked<?php endif ?>>
+                     <?php if (in_array($spellTraitCode->getValue(), $currentFormulaSpellTraitValues, true)) : ?>checked<?php endif ?>>
                 <?= $spellTraitCode->translateTo('cs') ?>
                 <?php
                 $spellTraitDifficulty = $spellTraitsTable->getDifficultyChange($spellTraitCode);

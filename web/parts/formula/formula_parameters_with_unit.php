@@ -19,11 +19,11 @@ $formulaParametersWithoutUnit = [
     FormulaMutableSpellParameterCode::SPELL_DURATION => function ($optionDurationValue) {
         return (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();
     },
-    FormulaMutableSpellParameterCode::SPELL_RADIUS => function ($optionDurationValue) {
-        return (new DistanceBonus($optionDurationValue, Tables::getIt()->getDistanceTable()))->getDistance();
+    FormulaMutableSpellParameterCode::SPELL_RADIUS => function ($optionRadiusValue) {
+        return (new DistanceBonus($optionRadiusValue, Tables::getIt()->getDistanceTable()))->getDistance();
     },
-    FormulaMutableSpellParameterCode::SPELL_SPEED => function ($optionDurationValue) {
-        return (new SpeedBonus($optionDurationValue, Tables::getIt()->getSpeedTable()))->getSpeed();
+    FormulaMutableSpellParameterCode::SPELL_SPEED => function ($optionSpeedValue) {
+        return (new SpeedBonus($optionSpeedValue, Tables::getIt()->getSpeedTable()))->getSpeed();
     },
 ];
 foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
