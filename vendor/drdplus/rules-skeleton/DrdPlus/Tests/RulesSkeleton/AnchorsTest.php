@@ -541,7 +541,11 @@ class AnchorsTest extends AbstractContentTest
         self::assertGreaterThan(
             0,
             $rulesAuthorsElements->count(),
-            sprintf('Link to eshop expected as %s configuration says, in %s', TestsConfiguration::CAN_BE_BOUGHT_ON_ESHOP, HtmlHelper::CLASS_RULES_AUTHORS)
+            sprintf(
+                'Link to eshop expected in %s as %s configuration says',
+                HtmlHelper::CLASS_RULES_AUTHORS,
+                TestsConfiguration::CAN_BE_BOUGHT_ON_ESHOP
+            )
         );
         self::assertCount(
             1,

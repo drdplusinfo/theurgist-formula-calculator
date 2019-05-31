@@ -129,7 +129,7 @@ class SkeletonInjectorComposerPlugin extends StrictObject implements PluginInter
 
     private function copyPhpUnitConfig(string $documentRoot): void
     {
-        $this->passThrough(["cp ./vendor/$this->skeletonPackageName/phpunit.xml.dist ."], $documentRoot);
+        $this->passThrough(["cp --no-clobber ./vendor/$this->skeletonPackageName/phpunit.xml.dist ."], $documentRoot);
     }
 
     private function addVersionsToAssets(string $documentRoot)

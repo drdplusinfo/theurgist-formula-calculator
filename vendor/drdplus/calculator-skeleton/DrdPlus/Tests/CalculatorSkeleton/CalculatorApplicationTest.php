@@ -44,7 +44,9 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
                 ->atLeast()->once();
         }
         $calculatorServicesContainer = $this->createServicesContainerMock($request, $memory, $history);
-        $calculatorApplication = new CalculatorApplication($calculatorServicesContainer);
+        $sutClass = static::getSutClass();
+        /** @var CalculatorApplication $calculatorApplication */
+        $calculatorApplication = new $sutClass($calculatorServicesContainer);
         \ob_start();
         $calculatorApplication->run();
         \ob_end_clean();
@@ -96,7 +98,7 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
      */
     private function createServicesContainerMock(Request $request, Memory $memory, History $history): CalculatorServicesContainer
     {
-        $calculatorServicesContainer = $this->mockery(CalculatorServicesContainer::class);
+        $calculatorServicesContainer = $this->mockery($this->getServicesContainerClass());
         $calculatorServicesContainer->shouldReceive('getRequest')
             ->atLeast()->once()
             ->andReturn($request);

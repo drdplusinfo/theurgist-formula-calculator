@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
+use DrdPlus\RulesSkeleton\Environment;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\String\StringTools;
 use Granam\WebContentBuilder\HtmlDocument;
 use Gt\Dom\Element;
+use Mockery\MockInterface;
 
 class HtmlHelperTest extends AbstractContentTest
 {
@@ -44,13 +46,63 @@ class HtmlHelperTest extends AbstractContentTest
 
     /**
      * @test
+     * @backupGlobals enabled
+     * @dataProvider provideEnvironment
+     * @param bool $forcedProduction
+     * @param bool $onDev
+     * @param bool $isCli
+     * @param bool $onLocalhost
+     * @param bool $expectingProduction
      */
-    public function I_can_find_out_if_I_am_in_production(): void
+    public function I_can_find_out_if_I_am_in_production(bool $forcedProduction, bool $onDev, bool $isCli, bool $onLocalhost, bool $expectingProduction): void
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        self::assertFalse($htmlHelperClass::createFromGlobals($this->getDirs())->isInProduction());
-        // there is no way how to change PHP_SAPI constant value
+        /** @var HtmlHelper $htmlHelper */
+        $htmlHelper = new $htmlHelperClass(
+            $this->getDirs(),
+            $this->createEnvironment($onDev, $isCli, $onLocalhost),
+            false,
+            $forcedProduction,
+            false
+        );
+        self::assertSame($expectingProduction, $htmlHelper->isInProduction());
+    }
+
+    public function provideEnvironment()
+    {
+        return [
+            'production' => [false, false, false, false, true],
+            'forced production on production' => [true, false, false, false, true],
+            'dev' => [false, true, false, false, false],
+            'forced production on dev' => [true, true, false, false, true],
+            'cli' => [false, false, true, false, false],
+            'forced production on cli' => [true, false, true, false, true],
+            'localhost' => [false, false, false, true, false],
+            'forced production on localhost' => [true, false, false, true, true],
+            'dev cli' => [false, true, true, false, false],
+            'forced production on dev cli' => [true, true, true, false, true],
+            'dev localhost' => [false, true, true, false, false],
+            'forced production on dev localhost' => [true, true, true, false, true],
+        ];
+    }
+
+    /**
+     * @param bool $onDev
+     * @param bool $isCli
+     * @param bool $onLocalhost
+     * @return Environment|MockInterface
+     */
+    private function createEnvironment(bool $onDev, bool $isCli, bool $onLocalhost): Environment
+    {
+        $environment = $this->mockery(Environment::class);
+        $environment->shouldReceive('isOnDevEnvironment')
+            ->andReturn($onDev);
+        $environment->shouldReceive('isCliRequest')
+            ->andReturn($isCli);
+        $environment->shouldReceive('isOnLocalhost')
+            ->andReturn($onLocalhost);
+        return $environment;
     }
 
     /**
@@ -60,7 +112,7 @@ class HtmlHelperTest extends AbstractContentTest
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
 
         $tablesWithIds = $htmlHelper->findTablesWithIds($this->getHtmlDocument());
         if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
@@ -98,7 +150,7 @@ class HtmlHelperTest extends AbstractContentTest
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
 
         $allTables = $htmlHelper->findTablesWithIds(new HtmlDocument(<<<HTML
 <!DOCTYPE html>
@@ -132,7 +184,7 @@ HTML
         }
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $someExpectedTableIds = $this->getTestsConfiguration()->getSomeExpectedTableIds();
         self::assertGreaterThan(0, \count($someExpectedTableIds), 'Some tables expected according to tests config');
         $tableId = \current($someExpectedTableIds);
@@ -147,7 +199,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $content = '<!DOCTYPE html>
 <html lang="en"><body><a href="" id="someId">Foo</a></body></html>';
         $htmlDocument = new HtmlDocument($content);
@@ -162,7 +214,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $originalId = 'Příliš # žluťoučký # kůň # úpěl # ďábelské # ódy';
         $htmlDocument = new HtmlDocument(<<<HTML
         <!DOCTYPE html>
@@ -213,7 +265,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $htmlDocument = new HtmlDocument(<<<HTML
         <!DOCTYPE html> 
 <html lang="cs">
@@ -251,7 +303,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $implodedLinks = \implode("\n", $links);
         $htmlDocument = new HtmlDocument(<<<HTML
         <!DOCTYPE html>
@@ -307,7 +359,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $htmlDocument = new HtmlDocument(<<<HTML
         <!DOCTYPE html>
 <html lang="cs">
@@ -336,7 +388,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $htmlDocument = new HtmlDocument($content = <<<HTML
         <!DOCTYPE html>
 <html lang="cs">
@@ -372,7 +424,7 @@ HTML
     {
         /** @var HtmlHelper $htmlHelperClass */
         $htmlHelperClass = static::getSutClass();
-        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs());
+        $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $htmlDocument = new HtmlDocument($content = <<<HTML
         <!DOCTYPE html>
 <html lang="cs">

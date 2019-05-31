@@ -11,7 +11,7 @@ $documentRoot = $documentRoot ?? (PHP_SAPI !== 'cli' ? \rtrim(\dirname($_SERVER[
 require_once $documentRoot . '/vendor/autoload.php';
 
 $dirs = $dirs ?? new \DrdPlus\RulesSkeleton\Dirs($documentRoot);
-$htmlHelper = $htmlHelper ?? \DrdPlus\RulesSkeleton\HtmlHelper::createFromGlobals($dirs);
+$htmlHelper = $htmlHelper ?? \DrdPlus\RulesSkeleton\HtmlHelper::createFromGlobals($dirs, new \DrdPlus\RulesSkeleton\Environment());
 if (PHP_SAPI !== 'cli') {
     \DrdPlus\RulesSkeleton\TracyDebugger::enable($htmlHelper->isInProduction());
 }

@@ -9,6 +9,7 @@ use DrdPlus\RulesSkeleton\ContentIrrelevantParametersFilter;
 use DrdPlus\RulesSkeleton\CookiesService;
 use DrdPlus\RulesSkeleton\CurrentWebVersion;
 use DrdPlus\RulesSkeleton\Dirs;
+use DrdPlus\RulesSkeleton\Environment;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\RulesSkeleton\RulesApplication;
@@ -31,6 +32,8 @@ abstract class AbstractContentTest extends TestWithMockery
 
     /** @var Dirs */
     private $dirs;
+    /** @var Environment */
+    private $environment;
     /** @var TestsConfiguration */
     private $testsConfiguration;
     protected $needPassIn = true;
@@ -221,7 +224,7 @@ abstract class AbstractContentTest extends TestWithMockery
         bool $shouldHideCovered = false
     ): HtmlHelper
     {
-        return new HtmlHelper($dirs ?? $this->getDirs(), $inDevMode, $inForcedProductionMode, $shouldHideCovered);
+        return new HtmlHelper($dirs ?? $this->getDirs(), $this->getEnvironment(), $inDevMode, $inForcedProductionMode, $shouldHideCovered);
     }
 
     protected function fetchNonCachedContent(RulesApplication $rulesApplication = null, bool $backupGlobals = true): string
@@ -244,6 +247,9 @@ abstract class AbstractContentTest extends TestWithMockery
 
         return $content;
     }
+
+    protected const WITH_BODY = true;
+    protected const WITHOUT_BODY = true;
 
     protected function fetchContentFromLink(string $link, bool $withBody, array $post = [], array $cookies = [], array $headers = []): array
     {
@@ -429,7 +435,6 @@ abstract class AbstractContentTest extends TestWithMockery
         if ($this->dirs === null) {
             $this->dirs = $this->createDirs($this->getProjectRoot());
         }
-
         return $this->dirs;
     }
 
@@ -443,6 +448,14 @@ abstract class AbstractContentTest extends TestWithMockery
     protected function getDirsClass(): string
     {
         return Dirs::class;
+    }
+
+    protected function getEnvironment(): Environment
+    {
+        if ($this->environment === null) {
+            $this->environment = new Environment();
+        }
+        return $this->environment;
     }
 
     /**

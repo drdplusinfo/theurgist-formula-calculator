@@ -1,28 +1,33 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
+use DrdPlus\Calculators\Theurgist\FormulaCalculatorApplication;
 use DrdPlus\Calculators\Theurgist\FormulaDirs;
-use DrdPlus\CalculatorSkeleton\CalculatorApplication;
+use DrdPlus\Calculators\Theurgist\FormulaServicesContainer;
+use DrdPlus\CalculatorSkeleton\CalculatorConfiguration;
+use DrdPlus\RulesSkeleton\Environment;
+use DrdPlus\RulesSkeleton\HtmlHelper;
+use DrdPlus\RulesSkeleton\TracyDebugger;
 
-\error_reporting(-1);
+error_reporting(-1);
 if ((!empty($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] === '127.0.0.1') || PHP_SAPI === 'cli') {
-    \ini_set('display_errors', '1');
+    ini_set('display_errors', '1');
 } else {
-    \ini_set('display_errors', '0');
+    ini_set('display_errors', '0');
 }
-$documentRoot = $documentRoot ?? (PHP_SAPI !== 'cli' ? \rtrim(\dirname($_SERVER['SCRIPT_FILENAME']), '\/') : \getcwd());
+$documentRoot = $documentRoot ?? (PHP_SAPI !== 'cli' ? rtrim(dirname($_SERVER['SCRIPT_FILENAME']), '\/') : getcwd());
 
 /** @noinspection PhpIncludeInspection */
 require_once $documentRoot . '/vendor/autoload.php';
 
 $dirs = $dirs ?? new FormulaDirs($documentRoot);
-$htmlHelper = $htmlHelper ?? \DrdPlus\RulesSkeleton\HtmlHelper::createFromGlobals($dirs);
+$htmlHelper = $htmlHelper ?? HtmlHelper::createFromGlobals($dirs, new Environment());
 if (PHP_SAPI !== 'cli') {
-    \DrdPlus\RulesSkeleton\TracyDebugger::enable($htmlHelper->isInProduction());
+    TracyDebugger::enable($htmlHelper->isInProduction());
 }
 
-$configuration = $configuration ?? \DrdPlus\CalculatorSkeleton\CalculatorConfiguration::createFromYml($dirs);
-$servicesContainer = $servicesContainer ?? new \DrdPlus\Calculators\Theurgist\FormulaServicesContainer($configuration, $htmlHelper);
-$calculatorApplication = $calculatorApplication ?? $controller ?? new CalculatorApplication($servicesContainer);
+$configuration = $configuration ?? CalculatorConfiguration::createFromYml($dirs);
+$servicesContainer = $servicesContainer ?? new FormulaServicesContainer($configuration, $htmlHelper);
+$formulaCalculatorApplication = new FormulaCalculatorApplication($servicesContainer);
 
-$calculatorApplication->run();
+$formulaCalculatorApplication->run();

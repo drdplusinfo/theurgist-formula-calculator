@@ -193,4 +193,19 @@ PHPDOC
             }
         }
     }
+
+    /**
+     * @test
+     * @throws \ReflectionException
+     */
+    public function Every_code_is_tested()
+    {
+        foreach ($this->getCodeClasses() as $codeClass) {
+            $expectedTestClass = str_replace('DrdPlus\\Codes', 'DrdPlus\\Tests\\Codes', $codeClass) . 'Test';
+            self::assertTrue(
+                class_exists($expectedTestClass),
+                "Expected test $expectedTestClass has not been found"
+            );
+        }
+    }
 }

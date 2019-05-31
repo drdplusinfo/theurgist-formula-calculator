@@ -13,13 +13,14 @@ trait GetCodeClassesTrait
     private static $codeClasses;
 
     /**
-     * @return array|AbstractCode[]
+     * @param string $rootClass
+     * @return array|string[]|AbstractCode[]
      * @throws \ReflectionException
      */
-    protected function getCodeClasses(): array
+    protected function getCodeClasses(string $rootClass = Code::class): array
     {
         if (self::$codeClasses === null) {
-            $codeReflection = new \ReflectionClass(Code::class);
+            $codeReflection = new \ReflectionClass($rootClass);
             $rootDir = \dirname($codeReflection->getFileName());
             $rootNamespace = $codeReflection->getNamespaceName();
 
@@ -32,7 +33,7 @@ trait GetCodeClassesTrait
     /**
      * @param string $rootDir
      * @param string $rootNamespace
-     * @return array
+     * @return array|string[]
      * @throws \ReflectionException
      */
     protected function scanForCodeClasses(string $rootDir, string $rootNamespace): array
@@ -45,7 +46,7 @@ trait GetCodeClassesTrait
                     foreach ($this->scanForCodeClasses($folderFullPath, $rootNamespace . '\\' . $folder) as $foundCode) {
                         $codeClasses[] = $foundCode;
                     }
-                } else if (\is_file($folderFullPath) && \preg_match('~(?<classBasename>\w+(?:Code)?)\.php$~', $folder, $matches)) {
+                } elseif (\is_file($folderFullPath) && \preg_match('~(?<classBasename>\w+(?:Code)?)\.php$~', $folder, $matches)) {
                     $reflectionClass = new \ReflectionClass($rootNamespace . '\\' . $matches['classBasename']);
                     if (!$reflectionClass->isAbstract() && $reflectionClass->implementsInterface(Code::class)) {
                         self::assertRegExp(

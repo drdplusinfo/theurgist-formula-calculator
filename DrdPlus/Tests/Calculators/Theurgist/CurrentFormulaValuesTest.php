@@ -12,11 +12,11 @@ use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
+use DrdPlus\Tests\CalculatorSkeleton\CalculatorContentTest;
 use Granam\Number\NumberObject;
 use Mockery\MockInterface;
 
-class CurrentFormulaValuesTest extends AbstractCalculatorContentTest
+class CurrentFormulaValuesTest extends CalculatorContentTest
 {
     /**
      * @test

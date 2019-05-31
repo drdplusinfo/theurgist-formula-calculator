@@ -50,7 +50,7 @@ class Formula extends StrictObject
      * @param FormulaCode $formulaCode
      * @param Tables $tables
      * @param array $formulaSpellParameterValues Current values of spell parameters (changes will be calculated from them)
-     * by @param array|Modifier[] $modifiers
+     * @param array|Modifier[] $modifiers
      * @param array|SpellTrait[] $formulaSpellTraits
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter

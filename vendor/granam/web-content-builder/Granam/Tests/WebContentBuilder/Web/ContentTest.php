@@ -1,7 +1,13 @@
 <?php
-namespace Granam\WebContentBuilder\Web;
+namespace Granam\Tests\WebContentBuilder\Web;
 
 use Granam\Tests\WebContentBuilder\Partials\AbstractContentTest;
+use Granam\WebContentBuilder\Web\Body;
+use Granam\WebContentBuilder\Web\Content;
+use Granam\WebContentBuilder\Web\CssFiles;
+use Granam\WebContentBuilder\Web\Head;
+use Granam\WebContentBuilder\Web\JsFiles;
+use Granam\WebContentBuilder\Web\WebFiles;
 
 class ContentTest extends AbstractContentTest
 {
@@ -13,9 +19,8 @@ class ContentTest extends AbstractContentTest
     {
         $content = $this->createContent();
         self::assertContains(
-            \preg_replace('~\s~', '', \file_get_contents(__DIR__ . '/files/foo.html')),
-            \preg_replace('~\s~', '', $content->getValue()
-            )
+            preg_replace('~\s~', '', file_get_contents(__DIR__ . '/files/foo.html')),
+            preg_replace('~\s~', '', $content->getValue())
         );
     }
 

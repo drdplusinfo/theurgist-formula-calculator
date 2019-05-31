@@ -7,6 +7,6 @@
   </div>
   <div class="col">
       <?= /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
-      $webPartsContainer->getCalculatorDebugContactsBody(); ?>
+      $webPartsContainer->getDebugContactsBody(); ?>
   </div>
 </div>

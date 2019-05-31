@@ -1,13 +1,11 @@
 <?php
 namespace DrdPlus\Codes\Theurgist;
 
-use DrdPlus\Codes\Partials\AbstractCode;
-
 /**
  * @method static DemonCode getIt($codeValue)
  * @method static DemonCode findIt($codeValue)
  */
-class DemonCode extends AbstractCode
+class DemonCode extends AbstractTheurgistCode
 {
     // link catchers
     public const CRON = 'cron';
@@ -62,7 +60,7 @@ class DemonCode extends AbstractCode
 
     private static $translations = [
         'cs' => [
-            self::CRON => 'cron',
+            self::CRON => 'kron',
             self::DEMON_OF_MOVEMENT => 'démon pohybu',
             self::WARDEN => 'správce',
             self::DEMON_OF_MUSIC => 'démon huudbý',

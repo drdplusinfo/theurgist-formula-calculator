@@ -68,7 +68,12 @@ class Configuration extends StrictObject
     {
         if (!\preg_match('~^UA-121206931-\d+$~', $settings[static::GOOGLE][static::ANALYTICS_ID] ?? '')) {
             throw new Exceptions\InvalidGoogleAnalyticsId(
-                'Expected something like UA-121206931-1 in configuration google.analytics_id, got ' . ($settings[static::GOOGLE][static::ANALYTICS_ID] ?? 'nothing')
+                sprintf(
+                    'Expected something like UA-121206931-1 in configuration %s.%s, got %s',
+                    static::GOOGLE,
+                    static::ANALYTICS_ID,
+                    $settings[static::GOOGLE][static::ANALYTICS_ID] ?? 'nothing'
+                )
             );
         }
     }
@@ -81,7 +86,11 @@ class Configuration extends StrictObject
     {
         if (($settings[static::WEB][static::MENU_POSITION_FIXED] ?? null) === null) {
             throw new Exceptions\InvalidMenuPosition(
-                'Expected explicitly defined menu position fix to true or false in configuration web.menu_position_fixed, got nothing'
+                sprintf(
+                    'Expected explicitly defined menu position fix to true or false in configuration %s.%s, got nothing',
+                    static::WEB,
+                    static::MENU_POSITION_FIXED
+                )
             );
         }
     }
@@ -94,7 +103,11 @@ class Configuration extends StrictObject
     {
         if (($settings[static::WEB][static::NAME] ?? '') === '') {
             throw new Exceptions\MissingWebName(
-                'Expected some web name in configuration web.name'
+                sprintf(
+                    'Expected some web name in configuration %s.%s',
+                    static::WEB,
+                    static::NAME
+                )
             );
         }
     }
@@ -107,7 +120,11 @@ class Configuration extends StrictObject
     {
         if (!\array_key_exists(static::TITLE_SMILEY, $settings[static::WEB])) {
             throw new Exceptions\TitleSmileyIsNotSet(
-                'Title smiley should be set in configuration web.title_smiley, even if just an empty string'
+                sprintf(
+                    'Title smiley should be set in configuration %s.%s, even if just an empty string',
+                    static::WEB,
+                    static::TITLE_SMILEY
+                )
             );
         }
     }
@@ -120,8 +137,12 @@ class Configuration extends StrictObject
     {
         if (!\filter_var($settings[static::WEB][static::ESHOP_URL] ?? '', FILTER_VALIDATE_URL)) {
             throw new Exceptions\InvalidEshopUrl(
-                'Given e-shop URL is not valid, expected some URL in configuration '
-                . static::WEB . ': ' . static::ESHOP_URL . ', got ' . ($settings[static::WEB][static::ESHOP_URL] ?? 'nothing')
+                sprintf(
+                    'Given e-shop URL is not valid, expected some URL in configuration %s.%s, got %s',
+                    static::WEB,
+                    static::ESHOP_URL,
+                    $settings[static::WEB][static::ESHOP_URL] ?? 'nothing'
+                )
             );
         }
     }
@@ -130,8 +151,11 @@ class Configuration extends StrictObject
     {
         if (($settings[static::WEB][static::PROTECTED_ACCESS] ?? null) === null) {
             throw new Exceptions\MissingProtectedAccessConfiguration(
-                'Configuration if web has protected access is missing in configuration '
-                . static::WEB . ': ' . static::PROTECTED_ACCESS
+                sprintf(
+                    'Configuration if web has protected access is missing in configuration %s.%s',
+                    static::WEB,
+                    static::PROTECTED_ACCESS
+                )
             );
         }
     }
@@ -140,8 +164,11 @@ class Configuration extends StrictObject
     {
         if (($settings[static::WEB][static::SHOW_HOME_BUTTON] ?? null) === null) {
             throw new Exceptions\MissingShownHomeButtonConfiguration(
-                'Configuration if home button should be shown is missing in configuration '
-                . static::WEB . ': ' . static::SHOW_HOME_BUTTON
+                sprintf(
+                    'Configuration if home button should be shown is missing in configuration %s.%s',
+                    static::WEB,
+                    static::SHOW_HOME_BUTTON
+                )
             );
         }
     }

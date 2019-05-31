@@ -59,54 +59,77 @@ class Demon extends StrictObject
      */
     private $difficulty;
     /**
-     * @var SpellDuration
+     * @var SpellDuration|null
      */
-    private $duration;
+    private $spellDuration;
     /**
-     * @var DemonCapacity
+     * @var DemonCapacity|null
      */
     private $demonCapacity;
     /**
-     * @var DemonEndurance
+     * @var DemonEndurance|null
      */
     private $demonEndurance;
     /**
-     * @var DemonTraits
+     * @var DemonTrait[]
      */
     private $demonTraits;
     /**
-     * @var SpellSpeed
+     * @var SpellSpeed|null
      */
     private $spellSpeed;
     /**
-     * @var Quality
+     * @var Quality|null
      */
     private $quality;
     /**
-     * @var SpellRadius
+     * @var SpellRadius|null
      */
     private $spellRadius;
     /**
-     * @var Invisibility
+     * @var Invisibility|null
      */
     private $invisibility;
     /**
-     * @var DemonStrength
+     * @var DemonStrength|null
      */
     private $demonStrength;
     /**
-     * @var DemonAgility
+     * @var DemonAgility|null
      */
     private $demonAgility;
     /**
-     * @var DemonKnack
+     * @var DemonKnack|null
      */
     private $demonKnack;
     /**
-     * @var DemonArmor
+     * @var DemonArmor|null
      */
     private $demonArmor;
 
+    /**
+     * Demon constructor.
+     * @param DemonCode $demonCode
+     * @param Realm $realm
+     * @param Evocation $evocation
+     * @param DemonBodyCode $demonBodyCode
+     * @param DemonKindCode $demonKindCode
+     * @param RealmsAffection $realmsAffection
+     * @param SpellDuration $spellDuration
+     * @param Difficulty $difficulty
+     * @param array|DemonTrait[] $demonTraits
+     * @param DemonCapacity $demonCapacity
+     * @param DemonEndurance $demonEndurance
+     * @param Will $will
+     * @param SpellSpeed $spellSpeed
+     * @param Quality $quality
+     * @param SpellRadius $spellRadius
+     * @param Invisibility $invisibility
+     * @param DemonStrength $demonStrength
+     * @param DemonAgility $demonAgility
+     * @param DemonKnack $demonKnack
+     * @param DemonArmor $demonArmor
+     */
     public function __construct(
         DemonCode $demonCode,
         Realm $realm,
@@ -114,20 +137,20 @@ class Demon extends StrictObject
         DemonBodyCode $demonBodyCode,
         DemonKindCode $demonKindCode,
         RealmsAffection $realmsAffection,
-        SpellDuration $duration,
-        Difficulty $difficulty,
-        DemonTraits $demonTraits,
-        DemonCapacity $demonCapacity,
-        DemonEndurance $demonEndurance,
         Will $will,
-        SpellSpeed $spellSpeed,
-        Quality $quality,
-        SpellRadius $spellRadius,
-        Invisibility $invisibility,
-        DemonStrength $demonStrength,
-        DemonAgility $demonAgility,
-        DemonKnack $demonKnack,
-        DemonArmor $demonArmor
+        SpellDuration $spellDuration = null,
+        Difficulty $difficulty = null,
+        array $demonTraits = [],
+        DemonCapacity $demonCapacity = null,
+        DemonEndurance $demonEndurance = null,
+        SpellSpeed $spellSpeed = null,
+        Quality $quality = null,
+        SpellRadius $spellRadius = null,
+        Invisibility $invisibility = null,
+        DemonStrength $demonStrength = null,
+        DemonAgility $demonAgility = null,
+        DemonKnack $demonKnack = null,
+        DemonArmor $demonArmor = null
     )
     {
         $this->demonCode = $demonCode;
@@ -137,7 +160,7 @@ class Demon extends StrictObject
         $this->demonKindCode = $demonKindCode;
         $this->realmsAffection = $realmsAffection;
         $this->will = $will;
-        $this->duration = $duration;
+        $this->spellDuration = $spellDuration;
         $this->difficulty = $difficulty;
         $this->demonCapacity = $demonCapacity;
         $this->demonEndurance = $demonEndurance;
@@ -187,67 +210,70 @@ class Demon extends StrictObject
         return $this->will;
     }
 
-    public function getDifficulty(): Difficulty
+    public function getDifficulty(): ?Difficulty
     {
         return $this->difficulty;
     }
 
-    public function getDuration(): SpellDuration
+    public function getSpellDuration(): ?SpellDuration
     {
-        return $this->duration;
+        return $this->spellDuration;
     }
 
-    public function getDemonCapacity(): DemonCapacity
+    public function getDemonCapacity(): ?DemonCapacity
     {
         return $this->demonCapacity;
     }
 
-    public function getDemonEndurance(): DemonEndurance
+    public function getDemonEndurance(): ?DemonEndurance
     {
         return $this->demonEndurance;
     }
 
-    public function getDemonTraits(): DemonTraits
+    /**
+     * @return array|DemonTrait[]
+     */
+    public function getDemonTraits(): array
     {
         return $this->demonTraits;
     }
 
-    public function getSpellSpeed(): SpellSpeed
+    public function getSpellSpeed(): ?SpellSpeed
     {
         return $this->spellSpeed;
     }
 
-    public function getQuality(): Quality
+    public function getQuality(): ?Quality
     {
         return $this->quality;
     }
 
-    public function getSpellRadius(): SpellRadius
+    public function getSpellRadius(): ?SpellRadius
     {
         return $this->spellRadius;
     }
 
-    public function getInvisibility(): Invisibility
+    public function getInvisibility(): ?Invisibility
     {
         return $this->invisibility;
     }
 
-    public function getDemonStrength(): DemonStrength
+    public function getDemonStrength(): ?DemonStrength
     {
         return $this->demonStrength;
     }
 
-    public function getDemonAgility(): DemonAgility
+    public function getDemonAgility(): ?DemonAgility
     {
         return $this->demonAgility;
     }
 
-    public function getDemonKnack(): DemonKnack
+    public function getDemonKnack(): ?DemonKnack
     {
         return $this->demonKnack;
     }
 
-    public function getDemonArmor(): DemonArmor
+    public function getDemonArmor(): ?DemonArmor
     {
         return $this->demonArmor;
     }

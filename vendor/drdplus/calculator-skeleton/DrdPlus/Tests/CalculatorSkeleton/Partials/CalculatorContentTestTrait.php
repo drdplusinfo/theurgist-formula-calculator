@@ -33,10 +33,16 @@ trait CalculatorContentTestTrait
         HtmlHelper $htmlHelper = null
     ): ServicesContainer
     {
-        return new CalculatorServicesContainer(
+        $servicesContainerClass = $this->getServicesContainerClass();
+        return new $servicesContainerClass(
             $configuration ?? $this->getConfiguration(),
             $htmlHelper ?? $this->createHtmlHelper($this->getDirs())
         );
+    }
+
+    protected function getServicesContainerClass(): string
+    {
+        return CalculatorServicesContainer::class;
     }
 
     /**
@@ -66,11 +72,6 @@ trait CalculatorContentTestTrait
         self::assertNotEmpty($documentRootRealPath, 'Can not find out real path of document root ' . \var_export($this->getProjectRoot(), true));
         $skeletonRootRealPath = \realpath($skeletonDocumentRoot ?? __DIR__ . '/../../../..');
         self::assertNotEmpty($skeletonRootRealPath, 'Can not find out real path of skeleton root ' . \var_export($skeletonRootRealPath, true));
-        self::assertRegExp(
-            '~\Wskeleton$~',
-            \basename($skeletonRootRealPath),
-            'Expected different trailing dir of calculator skeleton document root to detect it'
-        );
 
         return $documentRootRealPath === $skeletonRootRealPath;
     }
@@ -89,7 +90,13 @@ trait CalculatorContentTestTrait
         bool $shouldHideCovered = false
     ): HtmlHelper
     {
-        return new HtmlHelper($dirs ?? $this->getDirs(), $inDevMode, $inForcedProductionMode, $shouldHideCovered);
+        return new HtmlHelper(
+            $dirs ?? $this->getDirs(),
+            $this->getEnvironment(),
+            $inDevMode,
+            $inForcedProductionMode,
+            $shouldHideCovered
+        );
     }
 
     protected function isCalculatorSkeletonChecked(): bool

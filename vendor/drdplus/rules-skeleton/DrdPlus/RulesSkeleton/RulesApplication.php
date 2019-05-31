@@ -33,7 +33,7 @@ class RulesApplication extends StrictObject
             echo $this->updateCode();
         } else {
             $this->persistCurrentVersion();
-            echo $this->getRulesContent()->getValue();
+            echo $this->getContent()->getValue();
         }
     }
 
@@ -42,7 +42,7 @@ class RulesApplication extends StrictObject
         return $this->servicesContainer->getRequest()->getValue(Request::UPDATE) === 'web';
     }
 
-    private function updateCode(): string
+    protected function updateCode(): string
     {
         return \implode(
             "\n",
@@ -57,7 +57,7 @@ class RulesApplication extends StrictObject
         );
     }
 
-    private function getRulesContent(): RulesContent
+    private function getContent(): RulesContent
     {
         if ($this->content) {
             return $this->content;
@@ -166,13 +166,13 @@ class RulesApplication extends StrictObject
 
     private function sendCustomHeaders(): void
     {
-        if ($this->getRulesContent()->containsTables()) {
+        if ($this->getContent()->containsTables()) {
             if (\PHP_SAPI === 'cli') {
                 return;
             }
             // anyone can show content of this page
             \header('Access-Control-Allow-Origin: *');
-        } elseif ($this->getRulesContent()->containsPdf()) {
+        } elseif ($this->getContent()->containsPdf()) {
             $pdfFile = $this->servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile();
             $pdfFileBasename = \basename($pdfFile);
             if (\PHP_SAPI === 'cli') {

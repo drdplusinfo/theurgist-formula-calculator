@@ -43,7 +43,7 @@ class TrialTest extends AbstractContentTest
     private function getRulesContent(RulesApplication $rulesApplication): RulesContent
     {
         $applicationReflection = new \ReflectionClass($rulesApplication);
-        $getRulesContent = $applicationReflection->getMethod('getRulesContent');
+        $getRulesContent = $applicationReflection->getMethod('getContent');
         $getRulesContent->setAccessible(true);
 
         return $getRulesContent->invoke($rulesApplication);

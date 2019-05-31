@@ -31,10 +31,11 @@ class CalculatorConfiguration extends Configuration
         if (($settings[static::WEB][static::COOKIES_POSTFIX] ?? '') === '') {
             throw new Exceptions\CookiesPostfixIsMissing(
                 sprintf(
-                    'Given cookies postfix are empty in web: %s, got %s',
+                    'Expected some postfix in %s.%s, got %s',
+                    static::WEB,
                     static::COOKIES_POSTFIX,
                     array_key_exists(static::COOKIES_POSTFIX, $settings)
-                        ? "'{$settings[static::WEB][static::COOKIES_POSTFIX]}'"
+                        ? var_export([static::WEB][static::COOKIES_POSTFIX], true)
                         : 'nothing'
                 )
             );
@@ -51,7 +52,14 @@ class CalculatorConfiguration extends Configuration
             $settings[static::WEB][static::COOKIES_TTL] = ToInteger::toPositiveIntegerOrNull($settings[static::WEB][static::COOKIES_TTL] ?? null);
         } catch (\Granam\Integer\Tools\Exceptions\Runtime $runtime) {
             throw new Exceptions\InvalidCookiesTtl(
-                'Expected positive integer or null, got ' . var_export($settings[static::WEB][static::COOKIES_TTL] ?? null, true)
+                sprintf(
+                    'Expected positive integer or null in %s.%s, got %s',
+                    static::WEB,
+                    static::COOKIES_TTL,
+                    array_key_exists(static::COOKIES_POSTFIX, $settings)
+                        ? var_export($settings[static::WEB][static::COOKIES_TTL], true)
+                        : 'nothing'
+                )
             );
         }
     }

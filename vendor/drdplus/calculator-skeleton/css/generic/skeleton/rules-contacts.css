@@ -1,6 +1,5 @@
 .contacts {
     text-align: right;
-    font-size: 90%;
     right: 0;
     left: 0;
     z-index: 1030;
@@ -106,20 +105,16 @@
     border-bottom: none;
 }
 
-.contact a.rpgforum-contact {
+.contact a.rpgforum-contact, .contact a.rpgforum-contact:visited {
     color: rgb(255, 202, 228);
 }
 
-.contact a.rpgforum-contact:visited {
-    color: rgb(255, 202, 228);
-}
-
-.contact a.facebook-contact {
+.contact a.facebook-contact, a.facebook-contact:visited {
     color: rgb(221, 222, 255);
 }
 
-.contact a.facebook-contact:visited {
-    color: rgb(221, 222, 255);
+.contact a.discord-contact, .contact a.discord-contact:visited {
+    color: #a0b9f8;
 }
 
 .contacts .contact a:hover {

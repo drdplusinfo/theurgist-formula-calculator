@@ -43,16 +43,19 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
         return \preg_replace('~https?://((?:[^.]+[.])*)drdplus\.info~', 'http://$1drdplus.loc', $link);
     }
 
-    public static function createFromGlobals(Dirs $dirs): HtmlHelper
+    public static function createFromGlobals(Dirs $dirs, Environment $environment): HtmlHelper
     {
         return new static(
             $dirs,
+            $environment,
             !empty($_GET['mode']) && \strpos(\trim($_GET['mode']), 'dev') === 0,
             !empty($_GET['mode']) && \strpos(\trim($_GET['mode']), 'prod') === 0,
             !empty($_GET['hide']) && \strpos(\trim($_GET['hide']), 'cover') === 0
         );
     }
 
+    /** @var Environment */
+    private $environment;
     /** @var bool */
     private $inDevMode;
     /** @var bool */
@@ -60,9 +63,10 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
     /** @var bool */
     private $shouldHideCovered;
 
-    public function __construct(Dirs $dirs, bool $inDevMode, bool $inForcedProductionMode, bool $shouldHideCovered)
+    public function __construct(Dirs $dirs, Environment $environment, bool $inDevMode, bool $inForcedProductionMode, bool $shouldHideCovered)
     {
         parent::__construct($dirs);
+        $this->environment = $environment;
         $this->inDevMode = $inDevMode;
         $this->inForcedProductionMode = $inForcedProductionMode;
         $this->shouldHideCovered = $shouldHideCovered;
@@ -333,7 +337,8 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
 
     public function isInProduction(): bool
     {
-        return $this->inForcedProductionMode || (\PHP_SAPI !== 'cli' && ($_SERVER['REMOTE_ADDR'] ?? null) !== '127.0.0.1');
+        return $this->inForcedProductionMode
+            || (!$this->environment->isOnDevEnvironment() && (!$this->environment->isCliRequest() && !$this->environment->isOnLocalhost()));
     }
 
     public function replaceDiacriticsFromDrdPlusAnchorHashes(HtmlDocument $htmlDocument): HtmlDocument

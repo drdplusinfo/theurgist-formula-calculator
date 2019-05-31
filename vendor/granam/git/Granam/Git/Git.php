@@ -22,7 +22,7 @@ class Git extends StrictObject
     {
         // GIT status is same for any working dir, if it is a sub-dir of wanted GIT project root
         try {
-            $escapedDir = \escapeshellarg($repositoryDir);
+            $escapedDir = escapeshellarg($repositoryDir);
 
             return $this->executeArray("git -C $escapedDir status");
         } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
@@ -43,8 +43,8 @@ class Git extends StrictObject
     public function getDiffAgainstOrigin(string $repositoryDir): array
     {
         try {
-            $escapedDir = \escapeshellarg($repositoryDir);
-            $escapedCurrentBranchName = \escapeshellarg($this->getCurrentBranchName($repositoryDir));
+            $escapedDir = escapeshellarg($repositoryDir);
+            $escapedCurrentBranchName = escapeshellarg($this->getCurrentBranchName($repositoryDir));
 
             return $this->executeArray("git -C $escapedDir diff origin/$escapedCurrentBranchName");
         } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
@@ -64,7 +64,7 @@ class Git extends StrictObject
      */
     public function getLastCommitHash(string $repositoryDir): string
     {
-        $escapedDir = \escapeshellarg($repositoryDir);
+        $escapedDir = escapeshellarg($repositoryDir);
 
         return $this->execute("git -C $escapedDir log --max-count=1 --format=%H --no-abbrev-commit");
     }
@@ -79,8 +79,8 @@ class Git extends StrictObject
      */
     public function cloneBranch(string $branch, string $repositoryUrl, string $destinationDir): array
     {
-        $destinationDirEscaped = \escapeshellarg($destinationDir);
-        $branchEscaped = \escapeshellarg($branch);
+        $destinationDirEscaped = escapeshellarg($destinationDir);
+        $branchEscaped = escapeshellarg($branch);
         try {
             return $this->executeArray("git clone --branch $branchEscaped $repositoryUrl $destinationDirEscaped");
         } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
@@ -110,8 +110,8 @@ class Git extends StrictObject
      */
     public function updateBranch(string $branch, string $repositoryDir): array
     {
-        $branchEscaped = \escapeshellarg($branch);
-        $repositoryDirEscaped = \escapeshellarg($repositoryDir);
+        $branchEscaped = escapeshellarg($branch);
+        $repositoryDirEscaped = escapeshellarg($repositoryDir);
         $commands = [];
         $commands[] = "cd $repositoryDirEscaped";
         $commands[] = "git checkout $branchEscaped";
@@ -130,7 +130,7 @@ class Git extends StrictObject
      */
     public function update(string $repositoryDir): array
     {
-        $repositoryDirEscaped = \escapeshellarg($repositoryDir);
+        $repositoryDirEscaped = escapeshellarg($repositoryDir);
         $commands = [];
         $commands[] = "cd $repositoryDirEscaped";
         $commands[] = 'git pull --ff-only';
@@ -167,7 +167,7 @@ class Git extends StrictObject
             );
         }
         foreach ($rows as $remoteBranch) {
-            $branchFromRemote = \trim(\explode('/', $remoteBranch)[1] ?? '');
+            $branchFromRemote = trim(\explode('/', $remoteBranch)[1] ?? '');
             if ($branchName === $branchFromRemote) {
                 return true;
             }
@@ -183,7 +183,7 @@ class Git extends StrictObject
      */
     public function getAllPatchVersions(string $repositoryDir): array
     {
-        $repositoryDirEscaped = \escapeshellarg($repositoryDir);
+        $repositoryDirEscaped = escapeshellarg($repositoryDir);
         $commands = [
             "git -C $repositoryDirEscaped tag",
             'grep -E "v?([[:digit:]]+[.]){2}[[:alnum:]]+([.][[:digit:]]+)?" --only-matching',
@@ -199,7 +199,7 @@ class Git extends StrictObject
             $command .= ' 2>&1';
         }
 
-        return $this->executeArray(\implode(' | ', $commands), false);
+        return $this->executeArray(implode(' | ', $commands), false);
     }
 
     /**
@@ -221,7 +221,7 @@ class Git extends StrictObject
                 'Excluding both local and remote version-like branches has no sense'
             );
         }
-        $repositoryDirEscaped = \escapeshellarg($repositoryDir);
+        $repositoryDirEscaped = escapeshellarg($repositoryDir);
         $branchesCommandParts = [];
         if ($readLocal) {
             $branchesCommandParts[] = "git -C $repositoryDirEscaped branch 2>&1";
@@ -230,7 +230,7 @@ class Git extends StrictObject
             $branchesCommandParts[] = "git -C $repositoryDirEscaped branch -r 2>&1";
         }
         $branches = $this->executeCommandsChainArray($branchesCommandParts);
-        $escapedBranches = \escapeshellarg(\implode("\n", $branches));
+        $escapedBranches = escapeshellarg(implode("\n", $branches));
         $commands = [
             $escapedBranches,
             'cut -d "/" -f2',
@@ -274,14 +274,14 @@ class Git extends StrictObject
                     'No patch version matches given superior version %s, %s',
                     $superiorVersion,
                     $patchVersions
-                        ? 'available are only' . \implode(',', $patchVersions)
+                        ? 'available are only' . implode(',', $patchVersions)
                         : 'because there are no patch versions at all'
                 )
             );
         }
-        \usort($matchingPatchVersions, 'version_compare');
+        usort($matchingPatchVersions, 'version_compare');
 
-        return \end($matchingPatchVersions);
+        return end($matchingPatchVersions);
     }
 
     /**
@@ -315,7 +315,7 @@ class Git extends StrictObject
             $command .= ' 2>&1';
         }
         if ($solveMissingHomeDir) {
-            $homeDir = \exec('echo $HOME 2>&1', $output, $returnCode);
+            $homeDir = exec('echo $HOME 2>&1', $output, $returnCode);
             $this->guardCommandWithoutError($returnCode, $command, $output);
             if (!$homeDir) {
                 if (\file_exists('/home/www-data')) {
@@ -327,7 +327,7 @@ class Git extends StrictObject
         }
         $returnCode = 0;
         $output = [];
-        \exec($command, $output, $returnCode);
+        exec($command, $output, $returnCode);
         $this->guardCommandWithoutError($returnCode, $command, $output);
 
         return $output;
@@ -345,7 +345,7 @@ class Git extends StrictObject
             throw new Exceptions\ExecutingCommandFailed(
                 "Error while executing '$command', expected return '0', got '$returnCode'"
                 . ($output !== null ?
-                    (" with output: '" . \implode("\n", $output) . "'")
+                    (" with output: '" . implode("\n", $output) . "'")
                     : ''
                 ),
                 $returnCode
@@ -363,8 +363,10 @@ class Git extends StrictObject
     private function execute(string $command, bool $sendErrorsToStdOut = true, bool $solveMissingHomeDir = true): string
     {
         $rows = $this->executeArray($command, $sendErrorsToStdOut, $solveMissingHomeDir);
-
-        return \end($rows);
+        if (!$rows) {
+            return '';
+        }
+        return end($rows);
     }
 
     /**
@@ -387,19 +389,19 @@ class Git extends StrictObject
             $command .= ' 2>&1';
         }
 
-        return \implode(' && ', $commands);
+        return implode(' && ', $commands);
     }
 
     public function getCurrentBranchName(string $repositoryDir): string
     {
-        $escapedRepositoryDir = \escapeshellarg($repositoryDir);
+        $escapedRepositoryDir = escapeshellarg($repositoryDir);
         $branchName = $this->executePiped([
             "git -C $escapedRepositoryDir branch",
             'grep "*"',
             'cut -d "*" -f2',
         ]);
 
-        return \trim($branchName);
+        return trim($branchName);
     }
 
     private function executePiped(array $commands): string
@@ -408,7 +410,7 @@ class Git extends StrictObject
             $command .= ' 2>&1';
         }
 
-        return $this->execute(\implode(' | ', $commands), false);
+        return $this->execute(implode(' | ', $commands), false);
     }
 
 }

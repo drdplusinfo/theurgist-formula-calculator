@@ -1,8 +1,9 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.0/phpunit.xsd"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.0/phpunit.xsd"
         bootstrap="./DrdPlus/Tests/tests_bootstrap.php"
         colors="true"
+        backupGlobals="true"
 >
     <testsuites>
         <testsuite name="all">
