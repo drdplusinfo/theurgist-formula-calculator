@@ -15,7 +15,7 @@ use Granam\String\StringTools;
 
 /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
-$formulaParametersWithoutUnit = [
+$formulaParametersWithUnit = [
     FormulaMutableSpellParameterCode::SPELL_DURATION => function ($optionDurationValue) {
         return (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();
     },
@@ -26,7 +26,7 @@ $formulaParametersWithoutUnit = [
         return (new SpeedBonus($optionSpeedValue, Tables::getIt()->getSpeedTable()))->getSpeed();
     },
 ];
-foreach ($formulaParametersWithoutUnit as $parameterName => $unitFactory) {
+foreach ($formulaParametersWithUnit as $parameterName => $unitFactory) {
     $getParameter = StringTools::assembleGetterForName($parameterName);
     /** @var CastingParameter $parameter */
     $parameter = $webPartsContainer->getTables()->getFormulasTable()->$getParameter($webPartsContainer->getCurrentFormulaCode());
