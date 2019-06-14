@@ -25,12 +25,12 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
 
     /**
      * @param string|int|StringInterface|IntegerInterface $additionByDifficultyNotation in format 'number' or 'number=number'
-     * @param int|null $currentAddition How much is currently active addition
+     * @param string|int|StringInterface|IntegerInterface|null $currentAddition How much is currently active addition
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfDifficultyIncrement
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyValue
      * @throws \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
      */
-    public function __construct($additionByDifficultyNotation, int $currentAddition = null)
+    public function __construct($additionByDifficultyNotation, $currentAddition = null)
     {
         $parts = $this->parseParts(ToString::toString($additionByDifficultyNotation));
         if (\count($parts) === 1 && \array_keys($parts) === [0]) {
@@ -45,7 +45,7 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
                 . ValueDescriber::describe($additionByDifficultyNotation)
             );
         }
-        $this->currentAddition = $currentAddition ?? 0;/* no addition, no difficulty change */
+        $this->currentAddition = ToInteger::toInteger($currentAddition ?? 0 /* no addition, no difficulty change */);
     }
 
     /**
@@ -103,9 +103,8 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
     }
 
     /**
-     * How is difficulty increased on addition step, @see getAdditionStep.
-     *
-     * @return int
+     * How is difficulty increased on addition step
+     * @see getAdditionStep.
      */
     public function getDifficultyPerAdditionStep(): int
     {
@@ -113,9 +112,9 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
     }
 
     /**
-     * Bonus given by increasing difficulty by a point(s), @see getDifficultyPerAdditionStep
+     * Bonus given by increasing difficulty by a point(s)
+     * @see getDifficultyPerAdditionStep
      *
-     * @return int
      */
     public function getAdditionStep(): int
     {
@@ -123,9 +122,9 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
     }
 
     /**
-     * Current value of a bonus paid by difficulty points, steps x @see getAdditionStep
+     * Current value of a bonus paid by difficulty points, steps x
+     * @see getAdditionStep
      *
-     * @return int
      */
     public function getCurrentAddition(): int
     {
@@ -133,9 +132,9 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
     }
 
     /**
-     * How much is difficulty increased to get total bonus, steps x @see getCurrentAddition
+     * How much is difficulty increased to get total bonus, steps x
+     * @see getCurrentAddition
      *
-     * @return int
      */
     public function getCurrentDifficultyIncrement(): int
     {
@@ -147,9 +146,9 @@ class AdditionByDifficulty extends StrictObject implements IntegerInterface
     }
 
     /**
-     * Same as @see getCurrentAddition (representing current value of an Integer object)
+     * Same as
+     * @see getCurrentAddition (representing current value of an Integer object)
      *
-     * @return int
      */
     public function getValue(): int
     {

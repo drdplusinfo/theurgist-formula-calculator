@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1); 
+declare(strict_types=1);
 
 namespace DrdPlus\Codes\Body;
 
@@ -14,6 +14,17 @@ class SeriousWoundOriginCode extends WoundOriginCode
     public const MECHANICAL_CRUSH = 'mechanical_crush';
     public const ELEMENTAL = 'elemental';
     public const PSYCHICAL = 'psychical';
+
+    public static function getPossibleValues(): array
+    {
+        return [
+            self::MECHANICAL_STAB,
+            self::MECHANICAL_CUT,
+            self::MECHANICAL_CRUSH,
+            self::ELEMENTAL,
+            self::PSYCHICAL,
+        ];
+    }
 
     /**
      * @return SeriousWoundOriginCode

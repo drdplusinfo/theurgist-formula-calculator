@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Codes\Theurgist;
 
 /**
@@ -24,19 +25,19 @@ class DemonTraitCode extends AbstractTheurgistCode
         ];
     }
 
-    private static $translations = [
-        'cs' => [
-            self::CHEAP_UNLIMITED_CAPACITY => 'neomezená kapacita',
-            self::UNLIMITED_CAPACITY => 'neomezená kapacita',
-            self::CASTER => 'sesilatel',
-            self::FORMULER => 'formulovač',
-            self::BUILDER => 'budovatel',
-        ],
-    ];
-
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::CHEAP_UNLIMITED_CAPACITY => 'neomezená kapacita',
+                    self::UNLIMITED_CAPACITY => 'neomezená kapacita',
+                    self::CASTER => 'sesilatel',
+                    self::FORMULER => 'formulovač',
+                    self::BUILDER => 'budovatel',
+                ],
+            ],
+        ];
     }
 
 }

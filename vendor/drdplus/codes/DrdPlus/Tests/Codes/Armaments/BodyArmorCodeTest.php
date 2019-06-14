@@ -18,7 +18,7 @@ class BodyArmorCodeTest extends ArmorCodeTest
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value(): void
+    public function I_can_get_it_with_default_value()
     {
         $sut = $this->findSut();
         self::assertSame(BodyArmorCode::WITHOUT_ARMOR, $sut->getValue(), 'Expected without armor as a default value');

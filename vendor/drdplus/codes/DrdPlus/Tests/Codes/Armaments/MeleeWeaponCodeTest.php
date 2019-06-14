@@ -15,7 +15,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_composer_method_to_get_weapons_of_same_category(): void
+    public function I_can_easily_composer_method_to_get_weapons_of_same_category()
     {
         foreach (WeaponCategoryCode::getMeleeWeaponCategoryValues() as $meleeWeaponCategoryValue) {
             $getMeleeWeaponOfCategory = StringTools::assembleGetterForName($meleeWeaponCategoryValue . 'Values');
@@ -42,7 +42,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function It_is_melee_weapon_code(): void
+    public function It_is_melee_weapon_code()
     {
         /** @var MeleeWeaponCode $sut */
         $sut = $this->getSut();
@@ -53,7 +53,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_melee(): void
+    public function I_can_easily_find_out_if_is_melee()
     {
         /** @var MeleeWeaponCode $sut */
         $sut = $this->getSut();
@@ -79,7 +79,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_knife_and_dagger_codes(): void
+    public function I_can_get_knife_and_dagger_codes()
     {
         self::assertSame(
             [
@@ -96,7 +96,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_mace_and_club_codes(): void
+    public function I_can_get_mace_and_club_codes()
     {
         self::assertSame(
             [
@@ -117,7 +117,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_morningstar_and_morgenstern_codes(): void
+    public function I_can_get_morningstar_and_morgenstern_codes()
     {
         self::assertSame(
             [
@@ -136,7 +136,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_saber_and_bowie_knife_codes(): void
+    public function I_can_get_saber_and_bowie_knife_codes()
     {
         self::assertSame(
             [
@@ -153,7 +153,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_staff_and_spear_codes(): void
+    public function I_can_get_staff_and_spear_codes()
     {
         self::assertSame(
             [
@@ -174,7 +174,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_sword_codes(): void
+    public function I_can_get_sword_codes()
     {
         self::assertSame(
             [
@@ -193,7 +193,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_voulges_and_trident_codes(): void
+    public function I_can_get_voulges_and_trident_codes()
     {
         self::assertSame(
             [
@@ -212,7 +212,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_unarmed_codes(): void
+    public function I_can_get_unarmed_codes()
     {
         self::assertSame(
             [
@@ -228,7 +228,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_all_codes_at_once_or_by_same_named_constant(): void
+    public function I_can_get_all_codes_at_once_or_by_same_named_constant()
     {
         self::assertSame(
             $expectedValues = [
@@ -466,7 +466,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_shield(): void
+    public function I_can_easily_find_out_if_is_shield()
     {
         self::assertFalse(MeleeWeaponCode::getIt(MeleeWeaponCode::CLUB)->isShield());
     }
@@ -474,7 +474,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_melee_weapon(): void
+    public function I_can_easily_find_out_if_is_melee_weapon()
     {
         self::assertTrue(MeleeWeaponCode::getIt(MeleeWeaponCode::CLUB)->isMeleeWeapon());
     }
@@ -482,7 +482,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_weapon_is_unarmed_in_fact(): void
+    public function I_can_easily_find_out_if_weapon_is_unarmed_in_fact()
     {
         foreach (MeleeWeaponCode::getPossibleValues() as $meleeWeaponCodeValue) {
             $meleeWeaponCode = MeleeWeaponCode::getIt($meleeWeaponCodeValue);
@@ -521,7 +521,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
      * @expectedException \DrdPlus\Codes\Armaments\Exceptions\InvalidWeaponCategoryForNewMeleeWeaponCode
      * @expectedExceptionMessageRegExp ~throwing~
      */
-    public function I_can_not_add_new_melee_weapon_code_with_not_melee_category(): void
+    public function I_can_not_add_new_melee_weapon_code_with_not_melee_category()
     {
         $throwingCategory = WeaponCategoryCode::getIt(WeaponCategoryCode::THROWING_WEAPONS);
         self::assertFalse($throwingCategory->isMeleeWeaponCategory());
@@ -534,7 +534,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
      * @expectedException \DrdPlus\Codes\Armaments\Exceptions\MeleeWeaponIsAlreadyInDifferentWeaponCategory
      * @throws \ReflectionException
      */
-    public function I_can_not_extended_it_by_same_code_but_different_category(): void
+    public function I_can_not_extended_it_by_same_code_but_different_category()
     {
         $reflectionClass = new \ReflectionClass(MeleeWeaponCode::class);
         $translations = $reflectionClass->getProperty('translations');
@@ -554,7 +554,7 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value(): void
+    public function I_can_get_it_with_default_value()
     {
         $sut = $this->findSut();
         self::assertSame(MeleeWeaponCode::HAND, $sut->getValue(), 'Expected bare hands as a default value');

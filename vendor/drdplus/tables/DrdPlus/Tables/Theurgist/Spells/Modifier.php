@@ -4,8 +4,13 @@ declare(strict_types=1);
 namespace DrdPlus\Tables\Theurgist\Spells;
 
 use DrdPlus\Codes\Theurgist\ModifierCode;
-use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\ModifierMutableParameterCode;
 use DrdPlus\Tables\Tables;
+use DrdPlus\Tables\Theurgist\Exceptions\InvalidValueForMutableParameter;
+use DrdPlus\Tables\Theurgist\Exceptions\UnknownParameter;
+use DrdPlus\Tables\Theurgist\Partials\SanitizeMutableParameterChangesTrait;
+use DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter;
+use DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierParameter;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellAttack;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Noise;
@@ -25,14 +30,13 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Resistance;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Threshold;
-use Granam\Integer\Tools\ToInteger;
 use Granam\Strict\Object\StrictObject;
-use Granam\String\StringTools;
 use Granam\Tools\ValueDescriber;
 
 class Modifier extends StrictObject
 {
     use ToFlatArrayTrait;
+    use SanitizeMutableParameterChangesTrait;
 
     /** @var ModifierCode */
     private $modifierCode;
@@ -48,11 +52,10 @@ class Modifier extends StrictObject
      * @param Tables $tables
      * @param array|int[] $modifierSpellParameterValues spell parameters current values (delta will be calculated from them)
      * by @param array|SpellTrait[] $modifierSpellTraits
-     * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidSpellTrait
-     * @see ModifierMutableSpellParameterCode value indexed its value change
+     * @see ModifierMutableParameterCode value indexed its value change
      */
     public function __construct(
         ModifierCode $modifierCode,
@@ -70,50 +73,31 @@ class Modifier extends StrictObject
     /**
      * @param array $spellParameterValues
      * @return array
-     * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForModifierParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierParameter
      */
     private function sanitizeSpellParameterChanges(array $spellParameterValues): array
     {
-        $sanitizedChanges = [];
-        foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableSpellParameter) {
-            if (!array_key_exists($mutableSpellParameter, $spellParameterValues)) {
-                $sanitizedChanges[$mutableSpellParameter] = 0; // no change
-                continue;
-            }
-            try {
-                $sanitizedValue = ToInteger::toInteger($spellParameterValues[$mutableSpellParameter]);
-            } catch (\Granam\Integer\Tools\Exceptions\Exception $exception) {
-                throw new Exceptions\InvalidValueForModifierParameter(
-                    'Expected integer, got ' . ValueDescriber::describe($spellParameterValues[$mutableSpellParameter])
-                    . ' for ' . $mutableSpellParameter . ": '{$exception->getMessage()}'"
-                );
-            }
-            /** like @see getBaseSpellAttack */
-            $getBaseParameter = StringTools::assembleGetterForName('base_' . $mutableSpellParameter);
-            /** @var CastingParameter $baseParameter */
-            $baseParameter = $this->$getBaseParameter();
-            if ($baseParameter === null) {
-                throw new Exceptions\UselessValueForUnusedSpellParameter(
-                    "Casting parameter {$mutableSpellParameter} is not used for modifier {$this->modifierCode}"
-                    . ', so given spell parameter value ' . ValueDescriber::describe($spellParameterValues[$mutableSpellParameter])
-                    . ' is thrown away'
-                );
-            }
-            $parameterChange = $sanitizedValue - $baseParameter->getDefaultValue();
-            $sanitizedChanges[$mutableSpellParameter] = $parameterChange;
-
-            unset($spellParameterValues[$mutableSpellParameter]);
-        }
-        if (\count($spellParameterValues) > 0) { // there are some remains
-            throw new Exceptions\UnknownModifierParameter(
-                'Unexpected mutable spell parameter(s) [' . implode(', ', array_keys($spellParameterValues)) . ']. Expected only '
-                . implode(', ', ModifierMutableSpellParameterCode::getPossibleValues())
+        try {
+            return $this->sanitizeMutableParameterChanges(
+                $spellParameterValues,
+                ModifierMutableParameterCode::getPossibleValues(),
+                $this->getModifierCode(),
+                $this->tables->getModifiersTable()
+            );
+        } catch (InvalidValueForMutableParameter $invalidValueForMutableParameter) {
+            throw new InvalidValueForModifierParameter(
+                $invalidValueForMutableParameter->getMessage(),
+                $invalidValueForMutableParameter->getCode(),
+                $invalidValueForMutableParameter
+            );
+        } catch (UnknownParameter $unknownParameter) {
+            throw new UnknownModifierParameter(
+                $unknownParameter->getMessage(),
+                $unknownParameter->getCode(),
+                $unknownParameter
             );
         }
-
-        return $sanitizedChanges;
     }
 
     /**
@@ -212,7 +196,7 @@ class Modifier extends StrictObject
 
     public function getSpellRadiusAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::SPELL_RADIUS];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::SPELL_RADIUS];
     }
 
     public function getBaseEpicenterShift(): ?EpicenterShift
@@ -232,7 +216,7 @@ class Modifier extends StrictObject
 
     public function getEpicenterShiftAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::EPICENTER_SHIFT];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::EPICENTER_SHIFT];
     }
 
     public function getBaseSpellPower(): ?SpellPower
@@ -252,7 +236,7 @@ class Modifier extends StrictObject
 
     public function getSpellPowerAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::SPELL_POWER];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::SPELL_POWER];
     }
 
     public function getBaseNoise(): ?Noise
@@ -272,7 +256,7 @@ class Modifier extends StrictObject
 
     public function getNoiseAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::NOISE];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::NOISE];
     }
 
     public function getBaseSpellAttack(): ?SpellAttack
@@ -292,7 +276,7 @@ class Modifier extends StrictObject
 
     public function getSpellAttackAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::SPELL_ATTACK];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::SPELL_ATTACK];
     }
 
     public function getBaseGrafts(): ?Grafts
@@ -312,7 +296,7 @@ class Modifier extends StrictObject
 
     public function getGraftsAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::GRAFTS];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::GRAFTS];
     }
 
     public function getBaseSpellSpeed(): ?SpellSpeed
@@ -332,7 +316,7 @@ class Modifier extends StrictObject
 
     public function getSpellSpeedAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::SPELL_SPEED];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::SPELL_SPEED];
     }
 
     public function getBaseInvisibility(): ?Invisibility
@@ -352,7 +336,7 @@ class Modifier extends StrictObject
 
     public function getInvisibilityAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::INVISIBILITY];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::INVISIBILITY];
     }
 
     public function getBaseQuality(): ?Quality
@@ -372,7 +356,7 @@ class Modifier extends StrictObject
 
     public function getQualityAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::QUALITY];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::QUALITY];
     }
 
     public function getBaseNumberOfConditions(): ?NumberOfConditions
@@ -392,7 +376,7 @@ class Modifier extends StrictObject
 
     public function getNumberOfConditionsAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::NUMBER_OF_CONDITIONS];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::NUMBER_OF_CONDITIONS];
     }
 
     public function getBaseResistance(): ?Resistance
@@ -412,7 +396,7 @@ class Modifier extends StrictObject
 
     public function getResistanceAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::RESISTANCE];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::RESISTANCE];
     }
 
     public function getBaseNumberOfSituations(): ?NumberOfSituations
@@ -432,7 +416,7 @@ class Modifier extends StrictObject
 
     public function getNumberOfSituationsAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::NUMBER_OF_SITUATIONS];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::NUMBER_OF_SITUATIONS];
     }
 
     public function getBaseThreshold(): ?Threshold
@@ -452,7 +436,7 @@ class Modifier extends StrictObject
 
     public function getThresholdAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::THRESHOLD];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::THRESHOLD];
     }
 
     public function getBaseNumberOfWaypoints(): ?NumberOfWaypoints
@@ -472,7 +456,7 @@ class Modifier extends StrictObject
 
     public function getNumberOfWaypointsAddition(): int
     {
-        return $this->modifierSpellParameterChanges[ModifierMutableSpellParameterCode::NUMBER_OF_WAYPOINTS];
+        return $this->modifierSpellParameterChanges[ModifierMutableParameterCode::NUMBER_OF_WAYPOINTS];
     }
 
     public function __toString()

@@ -1,18 +1,18 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
 use Granam\String\StringTools;
 
 /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithoutUnit = [
-    FormulaMutableSpellParameterCode::SPELL_ATTACK,
-    FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS,
-    FormulaMutableSpellParameterCode::SPELL_POWER,
-    FormulaMutableSpellParameterCode::DETAIL_LEVEL,
-    FormulaMutableSpellParameterCode::SIZE_CHANGE,
+    FormulaMutableParameterCode::SPELL_ATTACK,
+    FormulaMutableParameterCode::SPELL_BRIGHTNESS,
+    FormulaMutableParameterCode::SPELL_POWER,
+    FormulaMutableParameterCode::DETAIL_LEVEL,
+    FormulaMutableParameterCode::SIZE_CHANGE,
 ];
 $formulasTable = $webPartsContainer->getTables()->getFormulasTable();
 foreach ($formulaParametersWithoutUnit as $parameterName) {
@@ -22,7 +22,7 @@ foreach ($formulaParametersWithoutUnit as $parameterName) {
     if ($parameter === null) {
         continue;
     }
-    $parameterCode = FormulaMutableSpellParameterCode::getIt($parameterName);
+    $parameterCode = FormulaMutableParameterCode::getIt($parameterName);
     ?>
   <div class="col">
     <label><?= $parameterCode->translateTo('cs') ?>:

@@ -128,6 +128,20 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
+     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
+     */
+    public function I_am_stopped_by_an_exception_if_can_not_convert_bonus_to_value()
+    {
+        $filename = $this->createTempFilename();
+        $bonus = new BonusForTestOfAbstractTable(123);
+        $unit = 'bar';
+        file_put_contents($filename, "bonus,$unit\n$bonus,");
+        $table = TestOfAbstractTable::getIt($filename, [$unit]);
+        $table->toMeasurement($bonus, $unit);
+    }
+
+    /**
+     * @test
      * @expectedException \DrdPlus\Tables\Measurements\Exceptions\BonusAlreadyPaired
      */
     public function I_can_not_use_same_bonus_for_more_values()
@@ -304,6 +318,7 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
             $withLessColumnHeaderRowsThenRowHeader->getHeader()
         );
     }
+
 }
 
 /** inner */
@@ -447,6 +462,7 @@ class WithLessColumnHeaderRowsThenRowHeader extends AbstractTable
     }
 
 }
+
 class JustSomeMeasurementWithBonus implements MeasurementWithBonus
 {
     /** @var float */

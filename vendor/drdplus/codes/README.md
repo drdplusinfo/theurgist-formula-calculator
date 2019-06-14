@@ -1,6 +1,6 @@
 # Keywords for [DrD+](http://www.altar.cz/drdplus/)
 
-[![Build Status](https://travis-ci.org/jaroslavtyc/drd-plus-codes.svg?branch=master)](https://travis-ci.org/jaroslavtyc/drd-plus-codes)
+[![Build Status](https://travis-ci.org/drdplusinfo/codes.svg?branch=master)](https://travis-ci.org/drdplusinfo/codes)
 [![Test Coverage](https://codeclimate.com/github/jaroslavtyc/drd-plus-codes/badges/coverage.svg)](https://codeclimate.com/github/jaroslavtyc/drd-plus-codes/coverage)
 [![License](https://poser.pugx.org/drd-plus/codes/license)](https://packagist.org/packages/drd-plus/codes)
 

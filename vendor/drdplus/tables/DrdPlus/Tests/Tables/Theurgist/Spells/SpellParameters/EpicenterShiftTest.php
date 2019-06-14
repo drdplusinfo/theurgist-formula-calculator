@@ -5,6 +5,7 @@ namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
 use DrdPlus\Codes\Units\DistanceUnitCode;
 use DrdPlus\Tables\Measurements\Distance\Distance;
+use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameterTest;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\EpicenterShift;
@@ -18,7 +19,8 @@ class EpicenterShiftTest extends CastingParameterTest
     {
         $shift = new EpicenterShift(['35', '332211'], Tables::getIt());
         self::assertSame(35, $shift->getValue());
-        self::assertSame(35, $shift->getDistanceBonus()->getValue());
+        self::assertEquals(new DistanceBonus(35, Tables::getIt()->getDistanceTable()), $shift->getDistanceBonus());
+        self::assertEquals(new Distance(56, Distance::METER, Tables::getIt()->getDistanceTable()), $shift->getDistance());
     }
 
     /**

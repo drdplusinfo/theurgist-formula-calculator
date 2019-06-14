@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters;
 
@@ -60,15 +59,19 @@ class Trap extends CastingParameter
             return $this;
         }
 
-        return new static(
+        $newInstance = new static(
             [
                 $this->getDefaultValue(),
                 $this->getAdditionByDifficulty()->getNotation(),
-                $this->getPropertyCode(),
-                $additionValue,
+                $this->getPropertyCode()
             ],
             $this->getTables()
         );
+
+        $newAddition = new AdditionByDifficulty($this->getAdditionByDifficulty()->getNotation(), $additionValue);
+        $newInstance->replaceAddition($newAddition);
+
+        return $newInstance;
     }
 
     /**

@@ -236,30 +236,96 @@ HTML;
 const HTML_FORM_WITH_RADIOS = <<<HTML
 <!doctype>
 <form>
-	<p>What is your ethnic group?</p>
-	<label>
-		<span>White</span>
-		<input type="radio" name="ethnic-group" value="white" />
-	</label>
-	<label>
-		<span>Mixed / multiple ethnic groups</span>
-		<input type="radio" name="ethnic-group" value="mixed" />
-	</label>
-	<label>
-		<span>Asian / Asian British</span>
-		<input type="radio" name="ethnic-group" value="asian" />
-	</label>
-	<label>
-		<span>Black / African / Caribbean / Black British</span>
-		<input type="radio" name="ethnic-group" value="black" />
-	</label>
-	<label>
-		<span>Other ethnic group</span>
-		<input type="radio" name="ethnic-group" value="other" />
-	</label>
+	<fieldset title="Ethnicity">
+		<p>What is your ethnic group?</p>
+		<label>
+			<span>White</span>
+			<input type="radio" name="ethnic-group" value="white" />
+		</label>
+		<label>
+			<span>Mixed / multiple ethnic groups</span>
+			<input type="radio" name="ethnic-group" value="mixed" />
+		</label>
+		<label>
+			<span>Asian / Asian British</span>
+			<input type="radio" name="ethnic-group" value="asian" />
+		</label>
+		<label>
+			<span>Black / African / Caribbean / Black British</span>
+			<input type="radio" name="ethnic-group" value="black" />
+		</label>
+		<label>
+			<span>Other ethnic group</span>
+			<input type="radio" name="ethnic-group" value="other" />
+		</label>
+	</fieldset>
+	<fieldset title="Age Range">
+		<label>
+			<span>What is your age range?</span>
+			<select name="age">
+				<option value="0-17">Under 18</option>
+				<option value="18-35">18 - 35</option>
+				<option value="36-50">36 - 50</option>
+				<option value="51-75">51 - 75</option>
+				<option value="76-100">Over 75</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset title"Programming">
+		<label>
+			<span>What are your favourite programming languages?</span>
+			<select multiple name="languages">
+				<option value="php">PHP</option>
+				<option value="c">C / C++</option>
+				<option value="java">Java</option>
+				<option value="sql">SQL</option>
+				<option value="python">Python</option>
+				<option value="basic">BASIC</option>
+				<option value="haskell">Haskell</option>
+				<option value="go">Go</option>
+				<option value="ruby">Ruby</option>
+				<option value="csharp">C#</option>
+			</select>
+		</label>
+	</fieldset>
 	
 	<button name="do" value="submit-ethnicity">Submit</button>
 </form>
+HTML;
+
+const HTML_FORM_PROPERTY = <<<HTML
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Test HTML</title>
+</head>
+<body>
+
+	<form action="" id="form_1">
+		<input  id="f1">
+		<input  id="f2" form="form_2">
+		<button id="f3">button</button>
+		<span id="non_form_control_1"></span>
+	</form>
+
+	<form action="" id="form_2"></form>
+
+	<BUTTON   id="f4"  form="form_2"></BUTTON>
+	<fieldset id="f5"  form="form_2"></fieldset>
+	<input    id="f6"  form="form_2">
+	<object   id="f7"  form="form_2"></object>
+	<output   id="f8"  form="form_2"></output>
+	<select   id="f9"  form="form_2"></select>
+	<textarea id="f10" form="form_2"></textarea>
+
+	<input    id="f11">
+	<input    id="f12" type="image" form="form_2">
+
+	<span id="non_form_control_2" form="form_2"></span>
+	
+</body>
+</html>
 HTML;
 
 }

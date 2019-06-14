@@ -10,7 +10,7 @@ class SubRaceCodeTest extends TranslatableCodeTest
     /**
      * @test
      */
-    public function I_can_get_races_to_sub_races_codes(): void
+    public function I_can_get_races_to_sub_races_codes()
     {
         self::assertEquals($this->getExpectedRacesToSubRaces(), SubRaceCode::getRaceToSubRaceValues());
         self::assertSame(
@@ -75,7 +75,7 @@ class SubRaceCodeTest extends TranslatableCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_sub_race_belongs_to_race(): void
+    public function I_can_easily_find_out_if_sub_race_belongs_to_race()
     {
         foreach ($this->getExpectedRacesToSubRaces() as $race => $subRaces) {
             $raceCode = RaceCode::getIt($race);
@@ -99,7 +99,7 @@ class SubRaceCodeTest extends TranslatableCodeTest
     /**
      * @test
      */
-    public function I_can_get_sub_race_default_to_a_race(): void
+    public function I_can_get_sub_race_default_to_a_race()
     {
         $defaultOrcSubRace = SubRaceCode::getDefaultSubRaceFor(RaceCode::getIt(RaceCode::ORC));
         self::assertSame(SubRaceCode::getIt(SubRaceCode::COMMON), $defaultOrcSubRace);
@@ -110,7 +110,7 @@ class SubRaceCodeTest extends TranslatableCodeTest
      * @expectedException \DrdPlus\Codes\Exceptions\UnknownRaceCode
      * @expectedExceptionMessageRegExp ~rat-at-toullie~
      */
-    public function I_can_not_get_sub_race_default_to_an_unknown_race(): void
+    public function I_can_not_get_sub_race_default_to_an_unknown_race()
     {
         $defaultOrcSubRace = SubRaceCode::getDefaultSubRaceFor($this->createRaceCode('rat-at-toullie'));
         self::assertSame(SubRaceCode::getIt(SubRaceCode::COMMON), $defaultOrcSubRace);

@@ -192,4 +192,22 @@ class SquareTest extends AbstractTestOfMeasurement
         $distance = new Square(900 /* maximal distance with known bonus */ ** 2 /* power of two to get square */ + 1 /* out of range */, SquareUnitCode::SQUARE_KILOMETER, Tables::getIt()->getDistanceTable());
         $distance->getBonus();
     }
+
+    /**
+     * @test
+     * @expectedException  \DrdPlus\Tables\Measurements\Square\Exceptions\UnknownSquareUnit
+     * @expectedExceptionMessageRegExp ~penny~
+     */
+    public function Exception_is_thrown_if_unit_is_somehow_broken_after_initial_check()
+    {
+        $cheapSquare = new class(123, Square::SQUARE_METER, Tables::getIt()->getDistanceTable()) extends Square
+        {
+            public function getUnit(): string
+            {
+                return 'penny';
+            }
+
+        };
+        $cheapSquare->getBonus();
+    }
 }

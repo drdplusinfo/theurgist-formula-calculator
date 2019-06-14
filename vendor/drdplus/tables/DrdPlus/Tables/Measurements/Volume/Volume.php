@@ -64,9 +64,11 @@ class Volume extends AbstractMeasurementWithBonus
             case VolumeUnitCode::CUBIC_KILOMETER :
                 return DistanceUnitCode::KILOMETER;
             default :
+                // @codeCoverageIgnoreStart
                 throw new Exceptions\UnknownVolumeUnit(
                     "Do not know how to get distance unit of a cube side by cube unit {$volumeUnit}"
                 );
+            // @codeCoverageIgnoreEnd
         }
     }
 

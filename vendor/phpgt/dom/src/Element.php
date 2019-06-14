@@ -14,6 +14,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  * @property-read TokenList $classList Returns a live TokenList collection of
  * the class attributes of the element
  * @property bool $checked Indicates whether the element is checked or not
+ * @property bool $selected Indicates whether the element is selected or not
  * @property string $value Gets or sets the value of the element according to
  * its element type
  * @property string $id Gets or sets the value of the id attribute
@@ -32,6 +33,11 @@ class Element extends DOMElement {
 	protected $liveProperty_classList;
 	/** @var StringMap */
 	protected $liveProperty_dataset;
+	/**
+	 * @const Array
+	 * @link https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement#Elements_that_are_considered_form_controls
+	 */
+	const FORM_CONTROL_ELEMENTS = ['button', 'fieldset', 'input', 'object', 'output', 'select', 'textarea'];
 
 	/**
 	 * returns true if the element would be selected by the specified selector
@@ -201,12 +207,16 @@ class Element extends DOMElement {
 	}
 
 	public function prop_set_checked(bool $checked):bool {
-		if ($checked) {
-			if ($this->getAttribute("type") === "radio") {
+		if($checked) {
+			if($this->getAttribute("type") === "radio") {
 // TODO: Use `form` attribute when implemented: https://github.com/PhpGt/Dom/issues/161
 				$parentForm = $this->closest("form");
-				if (!is_null($parentForm)) {
-					self::formRemoveCheckedAttributeFromElementsWithName($parentForm, $this->getAttribute("name"));
+				if(!is_null($parentForm)) {
+					$this->removeAttributeFromNamedElementAndChildren(
+						$parentForm,
+						$this->getAttribute("name"),
+						"checked"
+					);
 				}
 			}
 
@@ -217,6 +227,47 @@ class Element extends DOMElement {
 		}
 
 		return $this->checked;
+	}
+
+	public function prop_get_selected():bool {
+		return $this->hasAttribute("selected");
+	}
+
+	public function prop_set_selected(bool $selected):bool {
+		if($selected) {
+			$selectElement = $this->closest("select");
+			if(!$selectElement->hasAttribute("multiple")) {
+				$this->removeAttributeFromNamedElementAndChildren(
+					$selectElement->closest("form"),
+					$selectElement->getAttribute("name"),
+					"selected"
+				);
+			}
+
+			$this->setAttribute("selected", true);
+		}
+		else {
+			$this->removeAttribute("selected");
+		}
+
+		return $this->selected;
+	}
+
+	public function prop_get_form() {
+		if (in_array($this->tagName, self::FORM_CONTROL_ELEMENTS)) {
+			if ($this->tagName === "input" && $this->getAttribute("type") === "image") {
+				return null;
+			}
+
+			if ($this->hasAttribute("form")) {
+				return $this->getRootDocument()->getElementById($this->getAttribute("form"));
+			}
+			else {
+				return $this->closest('form');
+			}
+		}
+
+		return null;
 	}
 
 	protected function createDataset():StringMap {
@@ -236,7 +287,7 @@ class Element extends DOMElement {
 		$newSelectedIndex = null;
 
 		for($i = $options->length - 1; $i >= 0; --$i) {
-			if(self::isSelectOptionSelected($options->item($i))) {
+			if($this->isSelectOptionSelected($options->item($i))) {
 				$selectedIndexes[] = $i;
 			}
 
@@ -264,7 +315,7 @@ class Element extends DOMElement {
 		}
 
 		foreach($options as $option) {
-			if(self::isSelectOptionSelected($option)) {
+			if($this->isSelectOptionSelected($option)) {
 				$value = $option->getAttribute('value');
 				break;
 			}
@@ -281,13 +332,7 @@ class Element extends DOMElement {
 		return $this->getAttribute("value");
 	}
 
-	static public function isSelectOptionSelected(Element $option) {
+	public function isSelectOptionSelected(Element $option) {
 		return $option->hasAttribute('selected') && $option->getAttribute('selected');
-	}
-
-	static public function formRemoveCheckedAttributeFromElementsWithName(Element $form, string $name):void {
-		foreach($form->querySelectorAll('[name="' . $name . '"]') as $element) {
-			$element->removeAttribute('checked');
-		}
 	}
 }

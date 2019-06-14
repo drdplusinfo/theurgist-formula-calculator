@@ -248,4 +248,31 @@ class TimeTest extends AbstractTestOfMeasurement
         self::assertEquals($inHours->getMinutes(), $inMinutes);
         self::assertEquals($inMinutes->getRounds(), $inMinutes->findInLesserUnit());
     }
+
+    /**
+     * @test
+     */
+    public function I_will_get_null_if_there_is_no_lesser_unit(): void
+    {
+        $round = new Time(1, TimeUnitCode::ROUND, new TimeTable());
+        self::assertNull($round->findInLesserUnit(), 'Expected NULL as a time in a lesser unit than round');
+    }
+
+    /**
+     * @test
+     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\UnknownTimeUnit
+     * @expectedExceptionMessageRegExp ~cake~
+     */
+    public function It_will_throw_an_exception_on_unknown_unit(): void
+    {
+        $round = new class(1, TimeUnitCode::ROUND, new TimeTable()) extends Time
+        {
+            public function getUnit(): string
+            {
+                return 'cake';
+            }
+
+        };
+        $round->findInLesserUnit();
+    }
 }

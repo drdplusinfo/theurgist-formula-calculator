@@ -128,11 +128,11 @@ class Difficulty extends StrictObject implements PositiveInteger
      * @param int|float|NumberInterface $difficultyChangeValue
      * @return Difficulty
      */
-    public function createWithChange($difficultyChangeValue): Difficulty
+    public function getWithDifficultyChange($difficultyChangeValue): Difficulty
     {
         $difficultyChangeValue = ToInteger::toInteger($difficultyChangeValue);
         if ($difficultyChangeValue === 0) {
-            return $this;
+            return $this; // no change needed
         }
 
         return new static(

@@ -11,12 +11,10 @@ use Granam\IntegerEnum\IntegerEnum;
 
 /**
  * @method PropertyCode getCode()
+ * @method static AbstractIntegerProperty getEnum(int|IntegerInterface $value)
  */
 abstract class AbstractIntegerProperty extends IntegerEnum implements Property
 {
-
-    use WithHistoryTrait;
-
     /**
      * @param int|IntegerInterface $value
      * @return AbstractIntegerProperty
@@ -28,26 +26,6 @@ abstract class AbstractIntegerProperty extends IntegerEnum implements Property
 
     /**
      * @param int|IntegerInterface $value
-     * @return AbstractIntegerProperty|IntegerEnum
-     */
-    public static function getEnum($value): IntegerEnum
-    {
-        return new static($value);
-    }
-
-    /**
-     * Does NOT gives same instance for same value.
-     *
-     * @param int|IntegerInterface $enumValue
-     */
-    protected function __construct($enumValue)
-    {
-        parent::__construct($enumValue);
-        $this->noticeChange();
-    }
-
-    /**
-     * @param int|IntegerInterface $value
      * @return AbstractIntegerProperty
      * @throws \Granam\Integer\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Integer\Tools\Exceptions\ValueLostOnCast
@@ -55,7 +33,6 @@ abstract class AbstractIntegerProperty extends IntegerEnum implements Property
     public function add($value)
     {
         $increased = static::getIt($this->getValue() + ToInteger::toInteger($value));
-        $increased->adoptHistory($this); // prepends history of predecessor
 
         return $increased;
     }
@@ -69,7 +46,6 @@ abstract class AbstractIntegerProperty extends IntegerEnum implements Property
     public function sub($value)
     {
         $decreased = static::getIt($this->getValue() - ToInteger::toInteger($value));
-        $decreased->adoptHistory($this); // prepends history of predecessor
 
         return $decreased;
     }

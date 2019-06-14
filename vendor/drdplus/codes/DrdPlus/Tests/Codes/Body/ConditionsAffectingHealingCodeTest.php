@@ -9,7 +9,7 @@ class ConditionsAffectingHealingCodeTest extends AbstractCodeTest
     /**
      * @test
      */
-    public function I_will_get_conditions_from_best_to_worst(): void
+    public function I_will_get_conditions_from_best_to_worst()
     {
         self::assertSame(
             [
@@ -25,7 +25,7 @@ class ConditionsAffectingHealingCodeTest extends AbstractCodeTest
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value(): void
+    public function I_can_get_it_with_default_value()
     {
         $sut = $this->findSut();
         self::assertSame(ConditionsAffectingHealingCode::GOOD_CONDITIONS, $sut->getValue(), 'Expected good conditions as a default value');

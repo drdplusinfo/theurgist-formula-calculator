@@ -7,10 +7,15 @@ use DrdPlus\Codes\Units\DistanceUnitCode;
 use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Codes\Theurgist\FormulaCode;
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
-use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\ModifierMutableParameterCode;
 use DrdPlus\Tables\Tables;
+use DrdPlus\Tables\Theurgist\Exceptions\InvalidValueForMutableParameter;
+use DrdPlus\Tables\Theurgist\Exceptions\UnknownParameter;
+use DrdPlus\Tables\Theurgist\Partials\SanitizeMutableParameterChangesTrait;
+use DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter;
+use DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellAttack;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellBrightness;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
@@ -26,7 +31,6 @@ use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SizeChange;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
-use Granam\Integer\Tools\ToInteger;
 use Granam\Strict\Object\StrictObject;
 use Granam\String\StringTools;
 use Granam\Tools\ValueDescriber;
@@ -34,6 +38,9 @@ use Granam\Tools\ValueDescriber;
 class Formula extends StrictObject
 {
     use ToFlatArrayTrait;
+    use SanitizeMutableParameterChangesTrait;
+
+    private const NO_ADDITION_BY_DIFFICULTY = 0;
 
     /** @var FormulaCode */
     private $formulaCode;
@@ -52,19 +59,18 @@ class Formula extends StrictObject
      * @param array $formulaSpellParameterValues Current values of spell parameters (changes will be calculated from them)
      * @param array|Modifier[] $modifiers
      * @param array|SpellTrait[] $formulaSpellTraits
-     * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidModifier
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidSpellTrait
-     * @see FormulaMutableSpellParameterCode value indexed its value change
+     * @see FormulaMutableParameterCode value indexed its value change
      */
     public function __construct(
         FormulaCode $formulaCode,
         Tables $tables,
-        array $formulaSpellParameterValues = [],
-        array $modifiers = [],
-        array $formulaSpellTraits = []
+        array $formulaSpellParameterValues,
+        array $modifiers,
+        array $formulaSpellTraits
     )
     {
         $this->formulaCode = $formulaCode;
@@ -78,50 +84,31 @@ class Formula extends StrictObject
     /**
      * @param array $spellParameterValues
      * @return array
-     * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter
      * @throws \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter
      */
     private function sanitizeSpellParameterChanges(array $spellParameterValues): array
     {
-        $sanitizedChanges = [];
-        foreach (FormulaMutableSpellParameterCode::getPossibleValues() as $mutableSpellParameter) {
-            if (!\array_key_exists($mutableSpellParameter, $spellParameterValues)) {
-                $sanitizedChanges[$mutableSpellParameter] = 0;
-                continue;
-            }
-            try {
-                $sanitizedValue = ToInteger::toInteger($spellParameterValues[$mutableSpellParameter]);
-            } catch (\Granam\Integer\Tools\Exceptions\Exception $exception) {
-                throw new Exceptions\InvalidValueForFormulaParameter(
-                    'Expected integer, got ' . ValueDescriber::describe($spellParameterValues[$mutableSpellParameter])
-                    . ' for ' . $mutableSpellParameter . ": '{$exception->getMessage()}'"
-                );
-            }
-            /** like @see FormulasTable::getCastingRounds() */
-            $getParameter = StringTools::assembleGetterForName($mutableSpellParameter);
-            /** @var CastingParameter $baseParameter */
-            $baseParameter = $this->tables->getFormulasTable()->$getParameter($this->getFormulaCode());
-            if ($baseParameter === null) {
-                throw new Exceptions\UselessValueForUnusedSpellParameter(
-                    "Casting parameter {$mutableSpellParameter} is not used for formula {$this->formulaCode}"
-                    . ', so given non-zero addition ' . ValueDescriber::describe($spellParameterValues[$mutableSpellParameter])
-                    . ' is thrown away'
-                );
-            }
-            $parameterChange = $sanitizedValue - $baseParameter->getDefaultValue();
-            $sanitizedChanges[$mutableSpellParameter] = $parameterChange;
-
-            unset($spellParameterValues[$mutableSpellParameter]);
-        }
-        if (\count($spellParameterValues) > 0) { // there are some remains
-            throw new Exceptions\UnknownFormulaParameter(
-                'Unexpected mutable spells parameter(s) [' . \implode(', ', array_keys($spellParameterValues)) . ']. Expected only '
-                . \implode(', ', FormulaMutableSpellParameterCode::getPossibleValues())
+        try {
+            return $this->sanitizeMutableParameterChanges(
+                $spellParameterValues,
+                FormulaMutableParameterCode::getPossibleValues(),
+                $this->getFormulaCode(),
+                $this->tables->getFormulasTable()
+            );
+        } catch (InvalidValueForMutableParameter $invalidValueForMutableParameter) {
+            throw new InvalidValueForFormulaParameter(
+                $invalidValueForMutableParameter->getMessage(),
+                $invalidValueForMutableParameter->getCode(),
+                $invalidValueForMutableParameter
+            );
+        } catch (UnknownParameter $unknownParameter) {
+            throw new UnknownFormulaParameter(
+                $unknownParameter->getMessage(),
+                $unknownParameter->getCode(),
+                $unknownParameter
             );
         }
-
-        return $sanitizedChanges;
     }
 
     /**
@@ -152,7 +139,7 @@ class Formula extends StrictObject
         foreach ($spellTraits as $spellTrait) {
             if (!is_a($spellTrait, SpellTrait::class)) {
                 throw new Exceptions\InvalidSpellTrait(
-                    'Expected instance of ' . Modifier::class . ', got ' . ValueDescriber::describe($spellTrait)
+                    'Expected instance of ' . SpellTrait::class . ', got ' . ValueDescriber::describe($spellTrait)
                 );
             }
         }
@@ -186,7 +173,7 @@ class Formula extends StrictObject
         }
         $difficulty = $this->tables->getFormulasTable()->getDifficulty($this->getFormulaCode());
 
-        return $difficulty->createWithChange(
+        return $difficulty->getWithDifficultyChange(
             $parametersDifficultyChangeSum
             + $modifiersDifficultyChangeSum
             + $spellTraitsDifficultyChangeSum
@@ -216,15 +203,25 @@ class Formula extends StrictObject
         );
     }
 
+    public function getBaseCastingRounds(): CastingRounds
+    {
+        return $this->tables->getFormulasTable()->getCastingRounds($this->getFormulaCode());
+    }
+
     public function getCurrentCastingRounds(): CastingRounds
     {
         $castingRoundsSum = 0;
         foreach ($this->modifiers as $modifier) {
             $castingRoundsSum += $modifier->getCastingRounds()->getValue();
         }
-        $castingRoundsSum += $this->tables->getFormulasTable()->getCastingRounds($this->getFormulaCode())->getValue();
+        $castingRoundsSum += $this->getBaseCastingRounds()->getValue();
 
         return new CastingRounds([$castingRoundsSum, 0], $this->tables);
+    }
+
+    public function getBaseEvocation(): Evocation
+    {
+        return $this->tables->getFormulasTable()->getEvocation($this->getFormulaCode());
     }
 
     /**
@@ -234,7 +231,12 @@ class Formula extends StrictObject
      */
     public function getCurrentEvocation(): Evocation
     {
-        return $this->tables->getFormulasTable()->getEvocation($this->getFormulaCode());
+        return $this->getBaseEvocation();
+    }
+
+    public function getBaseRealmAffection(): RealmsAffection
+    {
+        return $this->tables->getFormulasTable()->getRealmsAffection($this->getFormulaCode());
     }
 
     /**
@@ -257,7 +259,7 @@ class Formula extends StrictObject
      */
     private function getRealmsAffectionsSum(): array
     {
-        $baseRealmsAffection = $this->tables->getFormulasTable()->getRealmsAffection($this->getFormulaCode());
+        $baseRealmsAffection = $this->getBaseRealmAffection();
         $realmsAffectionsSum = [
             // like daily => -2
             $baseRealmsAffection->getAffectionPeriodCode()->getValue() => $baseRealmsAffection->getValue(),
@@ -268,13 +270,15 @@ class Formula extends StrictObject
                 continue;
             }
             $modifierRealmsAffectionPeriod = $modifierRealmsAffection->getAffectionPeriodCode()->getValue();
-            if (!array_key_exists($modifierRealmsAffectionPeriod, $realmsAffectionsSum)) {
-                $realmsAffectionsSum[$modifierRealmsAffectionPeriod] = 0;
-            }
-            $realmsAffectionsSum[$modifierRealmsAffectionPeriod] += $modifierRealmsAffection->getValue();
+            $realmsAffectionsSum[$modifierRealmsAffectionPeriod] = ($realmsAffectionsSum[$modifierRealmsAffectionPeriod] ?? 0) + $modifierRealmsAffection->getValue();
         }
 
         return $realmsAffectionsSum;
+    }
+
+    public function getBaseRealm(): Realm
+    {
+        return $this->tables->getFormulasTable()->getRealm($this->getFormulaCode());
     }
 
     /**
@@ -284,11 +288,12 @@ class Formula extends StrictObject
      */
     public function getRequiredRealm(): Realm
     {
-        $realmsIncrement = $this->getCurrentDifficulty()->getCurrentRealmsIncrement();
-        $realm = $this->tables->getFormulasTable()->getRealm($this->getFormulaCode());
-        $requiredRealm = $realm->add($realmsIncrement);
+        $baseRealm = $this->getBaseRealm();
 
-        foreach ($this->modifiers as $modifier) {
+        $realmsIncrementBecauseOfDifficulty = $this->getCurrentDifficulty()->getCurrentRealmsIncrement();
+        $requiredRealm = $baseRealm->add($realmsIncrementBecauseOfDifficulty);
+
+        foreach ($this->getModifiers() as $modifier) {
             $byModifierRequiredRealm = $modifier->getRequiredRealm();
             if ($requiredRealm->getValue() < $byModifierRequiredRealm->getValue()) {
                 // some modifier requires even higher realm, so we are forced to increase it
@@ -304,6 +309,11 @@ class Formula extends StrictObject
         return $this->formulaCode;
     }
 
+    public function getBaseSpellRadius(): ?SpellRadius
+    {
+        return $this->tables->getFormulasTable()->getSpellRadius($this->getFormulaCode());
+    }
+
     /**
      * Final radius including direct formula change and all its active traits and modifiers.
      *
@@ -316,7 +326,7 @@ class Formula extends StrictObject
             return null;
         }
 
-        $radiusModifiersChange = $this->getParameterBonusFromModifiers(ModifierMutableSpellParameterCode::SPELL_RADIUS);
+        $radiusModifiersChange = $this->getParameterBonusFromModifiers(ModifierMutableParameterCode::SPELL_RADIUS);
         if (!$radiusModifiersChange) {
             return new SpellRadius([$radiusWithAddition->getValue(), 0], $this->tables);
         }
@@ -331,12 +341,12 @@ class Formula extends StrictObject
      */
     private function getRadiusWithAddition(): ?SpellRadius
     {
-        $baseSpellRadius = $this->tables->getFormulasTable()->getSpellRadius($this->formulaCode);
+        $baseSpellRadius = $this->getBaseSpellRadius();
         if ($baseSpellRadius === null) {
             return null;
         }
 
-        return $baseSpellRadius->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_RADIUS]);
+        return $baseSpellRadius->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_RADIUS]);
     }
 
     /**
@@ -347,14 +357,15 @@ class Formula extends StrictObject
     public function getCurrentEpicenterShift(): ?EpicenterShift
     {
         $epicenterShiftWithAddition = $this->getEpicenterShiftWithAddition();
-        $epicenterShiftByModifiers = $this->getParameterBonusFromModifiers(ModifierMutableSpellParameterCode::EPICENTER_SHIFT);
+        $epicenterShiftByModifiers = $this->getParameterBonusFromModifiers(ModifierMutableParameterCode::EPICENTER_SHIFT);
         if ($epicenterShiftWithAddition === null) {
             if ($epicenterShiftByModifiers === false) {
                 return null;
             }
 
+            // Transposition modifier can shift epicenter even if formula itself can not (if formula supports Transposition of course)
             return new EpicenterShift(
-                [$epicenterShiftByModifiers['bonus'], 0 /* no added difficulty*/],
+                [$epicenterShiftByModifiers['bonus'], self::NO_ADDITION_BY_DIFFICULTY],
                 $this->tables,
                 new Distance($epicenterShiftByModifiers['meters'], DistanceUnitCode::METER, $this->tables->getDistanceTable())
             );
@@ -367,17 +378,22 @@ class Formula extends StrictObject
 
         $distance = new Distance($meters, DistanceUnitCode::METER, $this->tables->getDistanceTable());
 
-        return new EpicenterShift([$distance->getBonus(), 0 /* no added difficulty */], $this->tables, $distance);
+        return new EpicenterShift([$distance->getBonus(), self::NO_ADDITION_BY_DIFFICULTY], $this->tables, $distance);
+    }
+
+    public function getBaseEpicenterShift(): ?EpicenterShift
+    {
+        return $this->tables->getFormulasTable()->getEpicenterShift($this->getFormulaCode());
     }
 
     private function getEpicenterShiftWithAddition(): ?EpicenterShift
     {
-        $baseEpicenterShift = $this->tables->getFormulasTable()->getEpicenterShift($this->formulaCode);
+        $baseEpicenterShift = $this->getBaseEpicenterShift();
         if ($baseEpicenterShift === null) {
             return null;
         }
 
-        return $baseEpicenterShift->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::EPICENTER_SHIFT]);
+        return $baseEpicenterShift->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::EPICENTER_SHIFT]);
     }
 
     /**
@@ -387,32 +403,37 @@ class Formula extends StrictObject
      */
     public function getCurrentSpellPower(): ?SpellPower
     {
-        $powerWithAddition = $this->getSpellPowerWithAddition();
-        $powerBonus = $this->getParameterBonusFromModifiers(ModifierMutableSpellParameterCode::SPELL_POWER);
-        if (!$powerWithAddition && $powerBonus === false) {
+        $spellPowerWithAddition = $this->getSpellPowerWithAddition();
+        $spellPowerBonus = $this->getParameterBonusFromModifiers(ModifierMutableParameterCode::SPELL_POWER);
+        if (!$spellPowerWithAddition && $spellPowerBonus === false) {
             return null;
         }
 
         return new SpellPower(
             [
-                ($powerWithAddition
-                    ? $powerWithAddition->getValue()
+                ($spellPowerWithAddition
+                    ? $spellPowerWithAddition->getValue()
                     : 0)
-                + (int)$powerBonus,
-                0, // no addition
+                + (int)$spellPowerBonus,
+                self::NO_ADDITION_BY_DIFFICULTY,
             ],
             Tables::getIt()
         );
     }
 
+    public function getBaseSpellPower(): ?SpellPower
+    {
+        return $this->tables->getFormulasTable()->getSpellPower($this->getFormulaCode());
+    }
+
     private function getSpellPowerWithAddition(): ?SpellPower
     {
-        $basePower = $this->tables->getFormulasTable()->getSpellPower($this->formulaCode);
-        if ($basePower === null) {
+        $baseSpellPower = $this->getBaseSpellPower();
+        if ($baseSpellPower === null) {
             return null;
         }
 
-        return $basePower->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_POWER]);
+        return $baseSpellPower->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_POWER]);
     }
 
     /**
@@ -430,21 +451,26 @@ class Formula extends StrictObject
         return new SpellAttack(
             [
                 $spellAttackWithAddition->getValue()
-                + (int)$this->getParameterBonusFromModifiers(ModifierMutableSpellParameterCode::SPELL_ATTACK),
-                0 // no addition
+                + (int)$this->getParameterBonusFromModifiers(ModifierMutableParameterCode::SPELL_ATTACK),
+                self::NO_ADDITION_BY_DIFFICULTY,
             ],
             Tables::getIt()
         );
     }
 
+    public function getBaseSpellAttack(): ?SpellAttack
+    {
+        return $this->tables->getFormulasTable()->getSpellAttack($this->getFormulaCode());
+    }
+
     private function getSpellAttackWithAddition(): ?SpellAttack
     {
-        $baseSpellAttack = $this->tables->getFormulasTable()->getSpellAttack($this->formulaCode);
+        $baseSpellAttack = $this->getBaseSpellAttack();
         if ($baseSpellAttack === null) {
             return null;
         }
 
-        return $baseSpellAttack->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_ATTACK]);
+        return $baseSpellAttack->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_ATTACK]);
     }
 
     /**
@@ -458,7 +484,7 @@ class Formula extends StrictObject
             if ($modifier->getModifierCode()->getValue() === ModifierCode::GATE) {
                 continue; // gate does not give bonus to a parameter, it is standalone being with its own parameters
             }
-            if ($parameterName === ModifierMutableSpellParameterCode::SPELL_POWER
+            if ($parameterName === ModifierMutableParameterCode::SPELL_POWER
                 && $modifier->getModifierCode()->getValue() === ModifierCode::THUNDER
             ) {
                 continue; // thunder power means a noise, does not affects formula power
@@ -477,7 +503,7 @@ class Formula extends StrictObject
         }
 
         // transpositions are chained in sequence and their values (distances) have to be summed, not bonuses
-        if ($parameterName === ModifierMutableSpellParameterCode::EPICENTER_SHIFT) {
+        if ($parameterName === ModifierMutableParameterCode::EPICENTER_SHIFT) {
             $meters = 0;
             foreach ($bonusParts as $bonusPart) {
                 $meters += (new DistanceBonus($bonusPart, $this->tables->getDistanceTable()))->getDistance()->getMeters();
@@ -500,7 +526,7 @@ class Formula extends StrictObject
     public function getCurrentSpellSpeed(): ?SpellSpeed
     {
         $spellSpeedWithAddition = $this->getSpellSpeedWithAddition();
-        $spellSpeedBonus = $this->getParameterBonusFromModifiers(ModifierMutableSpellParameterCode::SPELL_SPEED);
+        $spellSpeedBonus = $this->getParameterBonusFromModifiers(ModifierMutableParameterCode::SPELL_SPEED);
         if (!$spellSpeedWithAddition && $spellSpeedBonus === false) {
             return null;
         }
@@ -517,14 +543,19 @@ class Formula extends StrictObject
         );
     }
 
+    public function getBaseSpellSpeed(): ?SpellSpeed
+    {
+        return $this->tables->getFormulasTable()->getSpellSpeed($this->getFormulaCode());
+    }
+
     private function getSpellSpeedWithAddition(): ?SpellSpeed
     {
-        $baseSpellSpeed = $this->tables->getFormulasTable()->getSpellSpeed($this->formulaCode);
+        $baseSpellSpeed = $this->getBaseSpellSpeed();
         if ($baseSpellSpeed === null) {
             return null;
         }
 
-        return $baseSpellSpeed->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_SPEED]);
+        return $baseSpellSpeed->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_SPEED]);
     }
 
     public function getCurrentDetailLevel(): ?DetailLevel
@@ -532,14 +563,19 @@ class Formula extends StrictObject
         return $this->getDetailLevelWithAddition();
     }
 
+    public function getBaseDetailLevel(): ?DetailLevel
+    {
+        return $this->tables->getFormulasTable()->getDetailLevel($this->getFormulaCode());
+    }
+
     private function getDetailLevelWithAddition(): ?DetailLevel
     {
-        $baseDetailLevel = $this->tables->getFormulasTable()->getDetailLevel($this->formulaCode);
+        $baseDetailLevel = $this->getBaseDetailLevel();
         if ($baseDetailLevel === null) {
             return null;
         }
 
-        return $baseDetailLevel->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::DETAIL_LEVEL]);
+        return $baseDetailLevel->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::DETAIL_LEVEL]);
     }
 
     public function getCurrentSpellBrightness(): ?SpellBrightness
@@ -547,14 +583,19 @@ class Formula extends StrictObject
         return $this->getSpellBrightnessWithAddition();
     }
 
+    public function getBaseSpellBrightness(): ?SpellBrightness
+    {
+        return $this->tables->getFormulasTable()->getSpellBrightness($this->getFormulaCode());
+    }
+
     private function getSpellBrightnessWithAddition(): ?SpellBrightness
     {
-        $baseSpellBrightness = $this->tables->getFormulasTable()->getSpellBrightness($this->formulaCode);
+        $baseSpellBrightness = $this->getBaseSpellBrightness();
         if ($baseSpellBrightness === null) {
             return null;
         }
 
-        return $baseSpellBrightness->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS]);
+        return $baseSpellBrightness->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_BRIGHTNESS]);
     }
 
     public function getCurrentSpellDuration(): SpellDuration
@@ -562,11 +603,16 @@ class Formula extends StrictObject
         return $this->getDurationWithAddition();
     }
 
+    public function getBaseSpellDuration()
+    {
+        return $this->tables->getFormulasTable()->getSpellDuration($this->getFormulaCode());
+    }
+
     private function getDurationWithAddition(): SpellDuration
     {
-        $baseDuration = $this->tables->getFormulasTable()->getSpellDuration($this->formulaCode);
+        $baseSpellDuration = $this->getBaseSpellDuration();
 
-        return $baseDuration->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SPELL_DURATION]);
+        return $baseSpellDuration->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SPELL_DURATION]);
     }
 
     public function getCurrentSizeChange(): ?SizeChange
@@ -574,14 +620,19 @@ class Formula extends StrictObject
         return $this->getSizeChangeWithAddition();
     }
 
+    public function getBaseSizeChange(): ?SizeChange
+    {
+        return $this->tables->getFormulasTable()->getSizeChange($this->getFormulaCode());
+    }
+
     private function getSizeChangeWithAddition(): ?SizeChange
     {
-        $baseSizeChange = $this->tables->getFormulasTable()->getSizeChange($this->formulaCode);
+        $baseSizeChange = $this->getBaseSizeChange();
         if ($baseSizeChange === null) {
             return null;
         }
 
-        return $baseSizeChange->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableSpellParameterCode::SIZE_CHANGE]);
+        return $baseSizeChange->getWithAddition($this->formulaSpellParameterChanges[FormulaMutableParameterCode::SIZE_CHANGE]);
     }
 
     public function __toString()

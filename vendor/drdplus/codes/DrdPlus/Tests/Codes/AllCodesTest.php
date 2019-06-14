@@ -3,6 +3,7 @@ namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\Code;
 use DrdPlus\Codes\Partials\AbstractCode;
+use DrdPlus\Codes\Partials\TranslatableExtendableCode;
 use Granam\Tests\Tools\TestWithMockery;
 
 class AllCodesTest extends TestWithMockery
@@ -13,7 +14,7 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function All_of_them_are_code(): void
+    public function All_of_them_are_code()
     {
         foreach ($this->getCodeClasses() as $codeClass) {
             self::assertTrue(
@@ -28,15 +29,15 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function I_can_get_all_codes_at_once_or_by_same_named_constant(): void
+    public function I_can_get_all_codes_at_once_or_by_same_named_constant()
     {
         /** @var AbstractCode $codeClass */
         foreach ($this->getCodeClasses() as $codeClass) {
             $reflection = new \ReflectionClass($codeClass);
             $constants = $reflection->getConstants();
-            \asort($constants);
+            asort($constants);
             $values = $codeClass::getPossibleValues();
-            \sort($values);
+            sort($values);
             self::assertSame(array_values($constants), $values, 'Expected different possible values from code ' . $codeClass);
             foreach ($values as $value) {
                 $constantName = strtoupper($value);
@@ -50,11 +51,11 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function All_constants_can_be_given_by_getter(): void
+    public function All_constants_can_be_given_by_getter()
     {
         foreach ($this->getCodeClasses() as $codeClass) {
             $constantValues = (new \ReflectionClass($codeClass))->getConstants();
-            \sort($constantValues); // re-index by numbers
+            sort($constantValues); // re-index by numbers
             /** @var string[] $givenValues */
             $givenValues = $codeClass::getPossibleValues();
             $expectedIndex = 0;
@@ -62,12 +63,12 @@ class AllCodesTest extends TestWithMockery
                 self::assertSame($expectedIndex, $index, 'Indexes of all values should be continual.');
                 $expectedIndex++;
             }
-            \sort($givenValues);
+            sort($givenValues);
             self::assertSame(
                 $constantValues,
                 $givenValues,
                 'There are ' . (
-                \count($missingOrDifferent = \array_diff($constantValues, $givenValues)) > 0
+                count($missingOrDifferent = array_diff($constantValues, $givenValues)) > 0
                     ? "missing values from 'getPossibleValues' " . var_export($missingOrDifferent, true)
                     : "superfluous values from 'getPossibleValues' " . var_export(array_diff($givenValues, $constantValues), true)
                 )
@@ -79,7 +80,7 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function I_can_create_code_instance_from_every_constant(): void
+    public function I_can_create_code_instance_from_every_constant()
     {
         /** @var AbstractCode $codeClass */
         foreach ($this->getCodeClasses() as $codeClass) {
@@ -101,7 +102,7 @@ class AllCodesTest extends TestWithMockery
      * @dataProvider provideCodeClasses
      * @param string $codeClass
      */
-    public function I_can_not_create_code_from_unknown_value(string $codeClass): void
+    public function I_can_not_create_code_from_unknown_value(string $codeClass)
     {
         /** @var AbstractCode $codeClass */
         self::assertFalse($codeClass::hasIt('da Vinci'));
@@ -114,7 +115,7 @@ class AllCodesTest extends TestWithMockery
      */
     public function provideCodeClasses(): array
     {
-        return \array_map(
+        return array_map(
             function (string $className) {
                 return [$className];
             },
@@ -129,7 +130,7 @@ class AllCodesTest extends TestWithMockery
      * @dataProvider provideCodeClasses
      * @param string $codeClass
      */
-    public function I_can_not_create_code_from_invalid_value_format(string $codeClass): void
+    public function I_can_not_create_code_from_invalid_value_format(string $codeClass)
     {
         /** @var AbstractCode $codeClass */
         $codeClass::getIt(new \DateTime());
@@ -139,7 +140,7 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function I_can_use_code_object_as_its_string_value(): void
+    public function I_can_use_code_object_as_its_string_value()
     {
         foreach ($this->getCodeClasses() as $codeClass) {
             /** @var string[] $givenValues */
@@ -156,12 +157,12 @@ class AllCodesTest extends TestWithMockery
      * @test
      * @throws \ReflectionException
      */
-    public function I_get_whispered_current_code_as_return_value_of_factory_method(): void
+    public function I_get_whispered_current_code_as_return_value_of_factory_method()
     {
         foreach ($this->getCodeClasses() as $codeClass) {
             $reflectionClass = new \ReflectionClass($codeClass);
-            $classBaseName = \preg_replace('~^.*[\\\](\w+)$~', '$1', $codeClass);
-            if (\strpos($reflectionClass->getDocComment(), 'getIt') !== false) {
+            $classBaseName = preg_replace('~^.*[\\\](\w+)$~', '$1', $codeClass);
+            if (strpos($reflectionClass->getDocComment(), 'getIt') !== false) {
                 self::assertContains(<<<PHPDOC
  * @method static {$classBaseName} getIt(\$codeValue)
 PHPDOC
@@ -172,11 +173,11 @@ PHPDOC
                 self::assertContains(<<<PHPDOC
  * @return {$classBaseName}|AbstractCode
 PHPDOC
-                    , \preg_replace('~ +~', ' ', $reflectionClass->getMethod('getIt')->getDocComment()),
+                    , preg_replace('~ +~', ' ', $reflectionClass->getMethod('getIt')->getDocComment()),
                     "Missing getIt method annotation in $codeClass"
                 );
             }
-            if (\strpos($reflectionClass->getDocComment(), 'findIt') !== false) {
+            if (strpos($reflectionClass->getDocComment(), 'findIt') !== false) {
                 self::assertContains(<<<PHPDOC
  * @method static {$classBaseName} findIt(\$codeValue)
 PHPDOC
@@ -187,7 +188,7 @@ PHPDOC
                 self::assertContains(<<<PHPDOC
  * @return {$classBaseName}|AbstractCode
 PHPDOC
-                    , \preg_replace('~ +~', ' ', $reflectionClass->getMethod('findIt')->getDocComment()),
+                    , preg_replace('~ +~', ' ', $reflectionClass->getMethod('findIt')->getDocComment()),
                     "Missing findIt method annotation in $codeClass"
                 );
             }
@@ -206,6 +207,39 @@ PHPDOC
                 class_exists($expectedTestClass),
                 "Expected test $expectedTestClass has not been found"
             );
+        }
+    }
+
+    /**
+     * @test
+     * @throws \ReflectionException
+     */
+    public function Every_code_has_own_optimized_get_possible_values_method()
+    {
+        foreach ($this->getCodeClasses() as $codeClass) {
+            $codeClassReflection = new \ReflectionClass($codeClass);
+            self::assertTrue($codeClassReflection->hasMethod('getPossibleValues'), "Why $codeClass does not have getPossibleValues() method?");
+            $getPossibleValuesReflection = $codeClassReflection->getMethod('getPossibleValues');
+            if (is_a($codeClass, TranslatableExtendableCode::class, true)) {
+                self::assertTrue($codeClassReflection->hasMethod('getDefaultValues'), "Why $codeClass does not have getDefaultValues() method?");
+                $getDefaultValuesReflection = $codeClassReflection->getMethod('getDefaultValues');
+                self::assertSame(
+                    $codeClass,
+                    $getDefaultValuesReflection->getDeclaringClass()->getName(),
+                    "$codeClass should have own getDefaultValues() method with direct list of its constants for readability"
+                );
+                self::assertSame(
+                    TranslatableExtendableCode::class,
+                    $getPossibleValuesReflection->getDeclaringClass()->getName(),
+                    "$codeClass should not overload getPossibleValues() method as it has special logic in " . TranslatableExtendableCode::class
+                );
+            } else {
+                self::assertSame(
+                    $codeClass,
+                    $getPossibleValuesReflection->getDeclaringClass()->getName(),
+                    "$codeClass should have own getPossibleValues() method with direct list of its constants for readability"
+                );
+            }
         }
     }
 }

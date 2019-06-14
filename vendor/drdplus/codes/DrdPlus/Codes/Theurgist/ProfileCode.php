@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -107,56 +106,51 @@ class ProfileCode extends AbstractTheurgistCode
         return static::getIt(str_replace('venus', 'mars', $this->getValue()));
     }
 
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        if ($languageCode === 'en' && !array_key_exists('en', self::$translations)) {
-            self::$translations['en'] = [];
-            foreach (self::getPossibleValues() as $key) {
-                $translation = str_replace(['venus', 'mars', '_'], ['♀', '♂', ' '], $key);
-                self::$translations['en'][$key] = $translation;
-            }
+        $translations = [
+            'cs' => [
+                'one' => [
+                    self::BARRIER_VENUS => 'bariéra ♀',
+                    self::BARRIER_MARS => 'bariéra ♂',
+                    self::SPARK_VENUS => 'jiskra ♀',
+                    self::SPARK_MARS => 'jiskra ♂',
+                    self::RELEASE_VENUS => 'uvolnění ♀',
+                    self::RELEASE_MARS => 'uvolnění ♂',
+                    self::SCENT_VENUS => 'pach ♀',
+                    self::SCENT_MARS => 'pach ♂',
+                    self::ILLUSION_VENUS => 'iluze ♀',
+                    self::ILLUSION_MARS => 'iluze ♂',
+                    self::RECEPTOR_VENUS => 'receptor ♀',
+                    self::RECEPTOR_MARS => 'receptor ♂',
+                    self::BREACH_VENUS => 'průraz ♀',
+                    self::BREACH_MARS => 'průraz ♂',
+                    self::FIRE_VENUS => 'oheň ♀',
+                    self::FIRE_MARS => 'oheň ♂',
+                    self::GATE_VENUS => 'brána ♀',
+                    self::GATE_MARS => 'brána ♂',
+                    self::MOVEMENT_VENUS => 'pohyb ♀',
+                    self::MOVEMENT_MARS => 'pohyb ♂',
+                    self::TRANSPOSITION_VENUS => 'transpozice ♀',
+                    self::TRANSPOSITION_MARS => 'transpozice ♂',
+                    self::DISCHARGE_VENUS => 'výboj ♀',
+                    self::DISCHARGE_MARS => 'výboj ♂',
+                    self::WATCHER_VENUS => 'hlídač ♀',
+                    self::WATCHER_MARS => 'hlídač ♂',
+                    self::LOOK_VENUS => 'vzhled ♀',
+                    self::LOOK_MARS => 'vzhled ♂',
+                    self::TIME_VENUS => 'čas ♀',
+                    self::TIME_MARS => 'čas ♂',
+                ],
+            ],
+            'en' => ['one' => []],
+        ];
+        foreach (self::getPossibleValues() as $key) {
+            $translation = str_replace(['venus', 'mars', '_'], ['♀', '♂', ' '], $key);
+            $translations['en']['one'][$key] = $translation;
         }
 
-        return self::$translations[$languageCode] ?? [];
+        return $translations;
     }
-
-    private static $translations = [
-        'cs' => [
-            self::BARRIER_VENUS => 'bariéra ♀',
-            self::BARRIER_MARS => 'bariéra ♂',
-            self::SPARK_VENUS => 'jiskra ♀',
-            self::SPARK_MARS => 'jiskra ♂',
-            self::RELEASE_VENUS => 'uvolnění ♀',
-            self::RELEASE_MARS => 'uvolnění ♂',
-            self::SCENT_VENUS => 'pach ♀',
-            self::SCENT_MARS => 'pach ♂',
-            self::ILLUSION_VENUS => 'iluze ♀',
-            self::ILLUSION_MARS => 'iluze ♂',
-            self::RECEPTOR_VENUS => 'receptor ♀',
-            self::RECEPTOR_MARS => 'receptor ♂',
-            self::BREACH_VENUS => 'průraz ♀',
-            self::BREACH_MARS => 'průraz ♂',
-            self::FIRE_VENUS => 'oheň ♀',
-            self::FIRE_MARS => 'oheň ♂',
-            self::GATE_VENUS => 'brána ♀',
-            self::GATE_MARS => 'brána ♂',
-            self::MOVEMENT_VENUS => 'pohyb ♀',
-            self::MOVEMENT_MARS => 'pohyb ♂',
-            self::TRANSPOSITION_VENUS => 'transpozice ♀',
-            self::TRANSPOSITION_MARS => 'transpozice ♂',
-            self::DISCHARGE_VENUS => 'výboj ♀',
-            self::DISCHARGE_MARS => 'výboj ♂',
-            self::WATCHER_VENUS => 'hlídač ♀',
-            self::WATCHER_MARS => 'hlídač ♂',
-            self::LOOK_VENUS => 'vzhled ♀',
-            self::LOOK_MARS => 'vzhled ♂',
-            self::TIME_VENUS => 'čas ♀',
-            self::TIME_MARS => 'čas ♂',
-        ],
-    ];
 
 }

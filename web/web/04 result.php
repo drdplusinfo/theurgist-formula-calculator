@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\TheurgistCalculator\Formulas;
 
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Codes\Units\TimeUnitCode;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 
@@ -66,7 +66,7 @@ HTML;
 /** @noinspection PhpUnhandledExceptionInspection */
 $radius = $currentFormula->getCurrentSpellRadius();
 if ($radius !== null) {
-    $radiusNameInCzech = FormulaMutableSpellParameterCode::getIt(FormulaMutableSpellParameterCode::SPELL_RADIUS)->translateTo('cs');
+    $radiusNameInCzech = FormulaMutableParameterCode::getIt(FormulaMutableParameterCode::SPELL_RADIUS)->translateTo('cs');
     $radiusDistance = $radius->getDistanceBonus()->getDistance();
     $radiusUnitInCzech = $radiusDistance->getUnitCode()->translateTo('cs', $radiusDistance->getValue());
     $radiusResult = ($radius->getValue() >= 0 ? '+' : '') . "{$radius->getValue()} ({$radiusDistance->getValue()}

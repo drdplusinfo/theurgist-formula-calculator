@@ -12,6 +12,7 @@ use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\FormulasTable;
 use DrdPlus\Tables\Theurgist\Spells\ModifiersTable;
 use DrdPlus\Tables\Theurgist\Spells\ProfilesTable;
+use DrdPlus\Tables\Theurgist\Spells\SpellTrait;
 use DrdPlus\Tests\Tables\Theurgist\AbstractTheurgistTableTest;
 
 class ModifiersTableTest extends AbstractTheurgistTableTest
@@ -32,7 +33,7 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
             ModifiersTable::REALMS_AFFECTION, ModifiersTable::CASTING_ROUNDS, ModifiersTable::RADIUS, ModifiersTable::EPICENTER_SHIFT,
             ModifiersTable::SPELL_POWER, ModifiersTable::SPELL_ATTACK, ModifiersTable::GRAFTS, ModifiersTable::SPELL_SPEED,
             ModifiersTable::NUMBER_OF_WAYPOINTS, ModifiersTable::INVISIBILITY, ModifiersTable::QUALITY, ModifiersTable::NUMBER_OF_CONDITIONS,
-            ModifiersTable::RESISTANCE, ModifiersTable::NUMBER_OF_SITUATIONS, ModifiersTable::THRESHOLD,
+            ModifiersTable::RESISTANCE, ModifiersTable::NUMBER_OF_SITUATIONS, ModifiersTable::THRESHOLD, ModifiersTable::NOISE,
         ];
     }
 
@@ -96,26 +97,65 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
     {
         $modifiersTable = new ModifiersTable(Tables::getIt());
         foreach (ModifierCode::getPossibleValues() as $modifierValue) {
+            $expectedSpellTraitCodes = $this->getExpectedSpellTraitCodes($modifiersTable, $modifierValue);
             $spellTraitCodes = $modifiersTable->getSpellTraitCodes(ModifierCode::getIt($modifierValue));
-            /** @var array|string[] $expectedTraitValues */
-            $expectedTraitValues = $this->getValueFromTable($modifiersTable, $modifierValue, 'spell_traits');
-            $expectedSpellTraitCodes = [];
-            foreach ($expectedTraitValues as $expectedSpellTraitValue) {
-                $expectedSpellTraitCodes[] = SpellTraitCode::getIt($expectedSpellTraitValue);
-            }
             self::assertEquals($expectedSpellTraitCodes, $spellTraitCodes);
 
-            $spellTraitCodeValues = [];
-            foreach ($spellTraitCodes as $spellTraitCode) {
-                self::assertInstanceOf(SpellTraitCode::class, $spellTraitCode);
-                $spellTraitCodeValues[] = $spellTraitCode->getValue();
-            }
+            $spellTraitCodeValues = $this->extractSpellTraitCodeValues($spellTraitCodes);
             self::assertSame($spellTraitCodeValues, array_unique($spellTraitCodeValues));
             sort($spellTraitCodeValues);
             $expectedSpellTraitCodeValues = $this->getExpectedSpellTraitCodeValues($modifierValue);
             sort($expectedSpellTraitCodeValues);
             self::assertEquals($expectedSpellTraitCodeValues, $spellTraitCodeValues, "Expected different traits for '{$modifierValue}'");
         }
+    }
+
+    /**
+     * @param array|SpellTraitCode[] $spellTraitCodes
+     * @return array|string[]
+     */
+    private function extractSpellTraitCodeValues(array $spellTraitCodes)
+    {
+        $spellTraitCodeValues = [];
+        foreach ($spellTraitCodes as $spellTraitCode) {
+            self::assertInstanceOf(SpellTraitCode::class, $spellTraitCode);
+            $spellTraitCodeValues[] = $spellTraitCode->getValue();
+        }
+        return $spellTraitCodeValues;
+    }
+
+    private function getExpectedSpellTraitCodes(ModifiersTable $modifiersTable, string $modifierValue): array
+    {
+        /** @var array|string[] $expectedTraitValues */
+        $expectedTraitValues = $this->getValueFromTable($modifiersTable, $modifierValue, 'spell_traits');
+        $expectedSpellTraitCodes = [];
+        foreach ($expectedTraitValues as $expectedSpellTraitValue) {
+            $expectedSpellTraitCodes[] = SpellTraitCode::getIt($expectedSpellTraitValue);
+        }
+        return $expectedSpellTraitCodes;
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_spell_traits()
+    {
+        $modifiersTable = new ModifiersTable(Tables::getIt());
+        foreach (ModifierCode::getPossibleValues() as $modifierValue) {
+            $expectedSpellTraits = $this->getExpectedSpellTraits($modifiersTable, $modifierValue);
+            $spellTraits = $modifiersTable->getSpellTraits(ModifierCode::getIt($modifierValue));
+            self::assertEquals($expectedSpellTraits, $spellTraits);
+        }
+    }
+
+    private function getExpectedSpellTraits(ModifiersTable $modifiersTable, string $modifierValue): array
+    {
+        $expectedSpellTraitCodes = $this->getExpectedSpellTraitCodes($modifiersTable, $modifierValue);
+        $expectedSpellTraits = [];
+        foreach ($expectedSpellTraitCodes as $expectedSpellTraitCode) {
+            $expectedSpellTraits[] = new SpellTrait($expectedSpellTraitCode, Tables::getIt());
+        }
+        return $expectedSpellTraits;
     }
 
     private static $excludedTraitValues = [

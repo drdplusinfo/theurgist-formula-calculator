@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -25,20 +24,16 @@ class DemonKindCode extends AbstractTheurgistCode
         return self::BARE;
     }
 
-    private static $translations = [
-        'cs' => [
-            self::BARE => 'prostý',
-            self::ANIMATING => 'animační',
-        ],
-    ];
-
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::BARE => 'prostý',
+                    self::ANIMATING => 'animační',
+                ],
+            ],
+        ];
     }
 
 }

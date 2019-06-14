@@ -1,9 +1,8 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Spells;
 
-use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\ModifierMutableParameterCode;
 use DrdPlus\Tables\Partials\AbstractFileTable;
 use DrdPlus\Tables\Partials\Exceptions\RequiredRowNotFound;
 use DrdPlus\Codes\Theurgist\FormCode;
@@ -63,17 +62,17 @@ class ModifiersTable extends AbstractFileTable
     public const RADIUS = FormulasTable::SPELL_RADIUS;
     public const EPICENTER_SHIFT = FormulasTable::EPICENTER_SHIFT;
     public const SPELL_POWER = FormulasTable::SPELL_POWER;
-    public const NOISE = ModifierMutableSpellParameterCode::NOISE;
+    public const NOISE = ModifierMutableParameterCode::NOISE;
     public const SPELL_ATTACK = FormulasTable::SPELL_ATTACK;
-    public const GRAFTS = ModifierMutableSpellParameterCode::GRAFTS;
+    public const GRAFTS = ModifierMutableParameterCode::GRAFTS;
     public const SPELL_SPEED = FormulasTable::SPELL_SPEED;
-    public const NUMBER_OF_WAYPOINTS = ModifierMutableSpellParameterCode::NUMBER_OF_WAYPOINTS;
-    public const INVISIBILITY = ModifierMutableSpellParameterCode::INVISIBILITY;
-    public const QUALITY = ModifierMutableSpellParameterCode::QUALITY;
-    public const NUMBER_OF_CONDITIONS = ModifierMutableSpellParameterCode::NUMBER_OF_CONDITIONS;
-    public const RESISTANCE = ModifierMutableSpellParameterCode::RESISTANCE;
-    public const NUMBER_OF_SITUATIONS = ModifierMutableSpellParameterCode::NUMBER_OF_SITUATIONS;
-    public const THRESHOLD = ModifierMutableSpellParameterCode::THRESHOLD;
+    public const NUMBER_OF_WAYPOINTS = ModifierMutableParameterCode::NUMBER_OF_WAYPOINTS;
+    public const INVISIBILITY = ModifierMutableParameterCode::INVISIBILITY;
+    public const QUALITY = ModifierMutableParameterCode::QUALITY;
+    public const NUMBER_OF_CONDITIONS = ModifierMutableParameterCode::NUMBER_OF_CONDITIONS;
+    public const RESISTANCE = ModifierMutableParameterCode::RESISTANCE;
+    public const NUMBER_OF_SITUATIONS = ModifierMutableParameterCode::NUMBER_OF_SITUATIONS;
+    public const THRESHOLD = ModifierMutableParameterCode::THRESHOLD;
     public const FORMS = 'forms';
     public const SPELL_TRAITS = 'spell_traits';
     public const PROFILES = 'profiles';

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Calculators\Theurgist;
 
 use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
@@ -6,7 +7,7 @@ use DrdPlus\Calculators\Theurgist\FormulaServicesContainer;
 use DrdPlus\CalculatorSkeleton\CurrentValues;
 use DrdPlus\CalculatorSkeleton\Memory;
 use DrdPlus\Codes\Theurgist\FormulaCode;
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HtmlHelper;
@@ -107,13 +108,13 @@ class CurrentFormulaValuesTest extends CalculatorContentTest
     public function provideOldAndNewExpectedParameterName(): array
     {
         return [
-            ['power', FormulaMutableSpellParameterCode::SPELL_POWER],
-            ['radius', FormulaMutableSpellParameterCode::SPELL_RADIUS],
-            ['brightness', FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS],
-            ['attack', FormulaMutableSpellParameterCode::SPELL_ATTACK],
-            ['duration', FormulaMutableSpellParameterCode::SPELL_DURATION],
-            ['speed', FormulaMutableSpellParameterCode::SPELL_SPEED],
-            [FormulaMutableSpellParameterCode::EPICENTER_SHIFT, FormulaMutableSpellParameterCode::EPICENTER_SHIFT],
+            ['power', FormulaMutableParameterCode::SPELL_POWER],
+            ['radius', FormulaMutableParameterCode::SPELL_RADIUS],
+            ['brightness', FormulaMutableParameterCode::SPELL_BRIGHTNESS],
+            ['attack', FormulaMutableParameterCode::SPELL_ATTACK],
+            ['duration', FormulaMutableParameterCode::SPELL_DURATION],
+            ['speed', FormulaMutableParameterCode::SPELL_SPEED],
+            [FormulaMutableParameterCode::EPICENTER_SHIFT, FormulaMutableParameterCode::EPICENTER_SHIFT],
         ];
     }
 }

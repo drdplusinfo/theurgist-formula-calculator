@@ -14,7 +14,7 @@ class PhysicalWoundTypeCodeTest extends TranslatableCodeTest
      * @param bool $isStab
      * @param bool $isCut
      */
-    public function I_can_ask_it_for_type(string $value, bool $isCrush, bool $isStab, bool $isCut): void
+    public function I_can_ask_it_for_type(string $value, bool $isCrush, bool $isStab, bool $isCut)
     {
         $woundTypeCode = PhysicalWoundTypeCode::getIt($value);
         self::assertSame($isCrush, $woundTypeCode->isCrush());

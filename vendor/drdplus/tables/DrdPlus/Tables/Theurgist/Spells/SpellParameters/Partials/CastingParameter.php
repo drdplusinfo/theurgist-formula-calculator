@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials;
 
@@ -53,7 +52,7 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
                 . ' for ' . $this->getParameterName()
             );
         }
-        $this->additionByDifficulty = new AdditionByDifficulty($values[1], $values[2] ?? null);
+        $this->additionByDifficulty = new AdditionByDifficulty($values[1], 0);
         $this->tables = $tables;
     }
 
@@ -90,8 +89,18 @@ abstract class CastingParameter extends StrictObject implements IntegerInterface
         if ($additionValue === $this->getAdditionByDifficulty()->getCurrentAddition()) {
             return $this;
         }
-        $values = [$this->getDefaultValue(), $this->getAdditionByDifficulty()->getNotation(), $additionValue /* current addition */];
-        return new static($values, $this->tables);
+        $values = [$this->getDefaultValue(), $this->getAdditionByDifficulty()->getNotation()];
+        $newInstance = new static($values, $this->tables);
+
+        $newAddition = new AdditionByDifficulty($this->getAdditionByDifficulty()->getNotation(), $additionValue);
+        $newInstance->replaceAddition($newAddition);
+
+        return $newInstance;
+    }
+
+    protected function replaceAddition(AdditionByDifficulty $additionByDifficulty)
+    {
+        $this->additionByDifficulty = $additionByDifficulty;
     }
 
     protected function getTables(): Tables

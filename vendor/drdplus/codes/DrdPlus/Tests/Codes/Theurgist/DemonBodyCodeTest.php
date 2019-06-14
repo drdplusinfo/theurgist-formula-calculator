@@ -5,7 +5,7 @@ class DemonBodyCodeTest extends AbstractTheurgistCodeTest
 {
     protected function getValuesSameInCzechAndEnglish(): array
     {
-        return [];
+        return ['amulet'];
     }
 
 }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -27,22 +26,18 @@ class AffectionPeriodCode extends AbstractTheurgistCode
         ];
     }
 
-    private static $translations = [
-        'cs' => [
-            self::DAILY => 'denní',
-            self::MONTHLY => 'měsíční',
-            self::YEARLY => 'roční',
-            self::LIFE => 'životní',
-        ],
-    ];
-
-    /**
-     * @param string $languageCode
-     * @return array
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::DAILY => 'denní',
+                    self::MONTHLY => 'měsíční',
+                    self::YEARLY => 'roční',
+                    self::LIFE => 'životní',
+                ],
+            ],
+        ];
     }
 
 }

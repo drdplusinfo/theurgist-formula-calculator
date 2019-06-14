@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Partials;
 
@@ -32,10 +31,16 @@ abstract class TranslatableCode extends AbstractCode implements Translatable
         if (($translations[$code][$plural] ?? null) !== null) {
             return $translations[$code][$plural];
         }
+        if (($translations[$plural][$code] ?? null) !== null) {
+            return $translations[$plural][$code];
+        }
         if ($plural === self::$FEW_DECIMAL) {
             $plural = self::$FEW;
             if (($translations[$code][$plural] ?? null) !== null) {
                 return $translations[$code][$plural];
+            }
+            if (($translations[$plural][$code] ?? null) !== null) {
+                return $translations[$plural][$code];
             }
         }
         if ($plural !== self::$ONE) {
@@ -43,11 +48,14 @@ abstract class TranslatableCode extends AbstractCode implements Translatable
             if (($translations[$code][$plural] ?? null) !== null) {
                 return $translations[$code][$plural];
             }
+            if (($translations[$plural][$code] ?? null) !== null) {
+                return $translations[$plural][$code];
+            }
         }
         if ($languageCode === 'en') {
             return str_replace('_', ' ', $code); // just replacing underscores by spaces
         }
-        \trigger_error(
+        trigger_error(
             "Missing translation for value '{$code}', language '{$languageCode}' and plural '{$plural}' for code "
             . static::class . ', english will be used instead',
             E_USER_WARNING
@@ -55,6 +63,9 @@ abstract class TranslatableCode extends AbstractCode implements Translatable
         $translations = $this->getTranslations('en');
         if (($translations[$code][$plural] ?? null) !== null) {
             return $translations[$code][$plural]; // explicit english translation
+        }
+        if (($translations[$plural][$code] ?? null) !== null) {
+            return $translations[$plural][$code];
         }
 
         return str_replace('_', ' ', $code); // just replacing underscores by spaces
@@ -66,12 +77,12 @@ abstract class TranslatableCode extends AbstractCode implements Translatable
      */
     private function convertAmountToPlural($amount): string
     {
-        $amount = \abs($amount);
+        $amount = abs($amount);
         if ((float)$amount === 1.0) {
             return self::$ONE;
         }
         if ($amount < 5) {
-            if (\strpos((string)$amount, '.') !== false) {
+            if (strpos((string)$amount, '.') !== false) {
                 return self::$FEW_DECIMAL;
             }
 

@@ -29,7 +29,7 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
             'Symfony\\Polyfill\\Php73\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
-            'Symfony\\Contracts\\' => 18,
+            'Symfony\\Contracts\\Service\\' => 26,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Finder\\' => 25,
             'Symfony\\Component\\Filesystem\\' => 29,
@@ -41,6 +41,7 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Prophecy\\' => 9,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'J' => 
@@ -92,9 +93,9 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
-        'Symfony\\Contracts\\' => 
+        'Symfony\\Contracts\\Service\\' => 
         array (
-            0 => __DIR__ . '/..' . '/symfony/contracts',
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
         'Symfony\\Component\\Process\\' => 
         array (
@@ -127,6 +128,10 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Prophecy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (
@@ -207,10 +212,6 @@ class ComposerStaticInit0e27bf2b1b2cacd2680869e4dc5ec699
     public static $prefixesPsr0 = array (
         'P' => 
         array (
-            'Prophecy\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
             'Parsedown' => 
             array (
                 0 => __DIR__ . '/..' . '/erusev/parsedown',

@@ -8,7 +8,7 @@ class OrdinaryWoundOriginCodeTest extends WoundOriginCodeTest
     /**
      * @test
      */
-    public function I_can_use_it(): void
+    public function I_can_use_it()
     {
         $ordinaryWoundOrigin = OrdinaryWoundOriginCode::getIt();
         $sameOrdinaryWoundOrigin = OrdinaryWoundOriginCode::getIt(OrdinaryWoundOriginCode::ORDINARY);
@@ -23,7 +23,7 @@ class OrdinaryWoundOriginCodeTest extends WoundOriginCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
      * @expectedExceptionMessageRegExp ~Kitchen accident~
      */
-    public function I_can_not_create_custom_ordinary_origin(): void
+    public function I_can_not_create_custom_ordinary_origin()
     {
         OrdinaryWoundOriginCode::getEnum('Kitchen accident');
     }

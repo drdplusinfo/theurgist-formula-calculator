@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Square;
 
@@ -75,5 +74,4 @@ class SquareBonusTest extends AbstractTestOfBonus
     {
         (new SquareBonus(120 /* maximal distance bonus */ * 2 /* doubled */ + 1 /* out of range */, Tables::getIt()->getDistanceTable()))->getSquare();
     }
-
 }

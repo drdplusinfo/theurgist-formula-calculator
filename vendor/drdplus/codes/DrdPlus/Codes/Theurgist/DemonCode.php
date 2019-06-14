@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Codes\Theurgist;
 
 /**
@@ -58,36 +59,32 @@ class DemonCode extends AbstractTheurgistCode
         return self::CRON;
     }
 
-    private static $translations = [
-        'cs' => [
-            self::CRON => 'kron',
-            self::DEMON_OF_MOVEMENT => 'démon pohybu',
-            self::WARDEN => 'správce',
-            self::DEMON_OF_MUSIC => 'démon huudbý',
-            self::DEMON_DEFENDER => 'démon obránce',
-            self::DEMON_GAMBLER => 'démon hazardér',
-            self::DEMON_OF_TIRELESSNESS => 'démon neúnavnosti',
-            self::DEMON_OF_OMIT_VOMIT => 'démon odložené šavle',
-            self::DEMON_ATTACKER => 'démon útočník',
-            self::DEMON_OF_VISION => 'démon vidění',
-            self::GOLEM => 'golem',
-            self::DEADY => 'mrtvák',
-            self::BERSERK => 'berserk',
-            self::IMP => 'ďáblík',
-            self::DEMON_OF_KNOWLEDGE => 'démon vědění věcí',
-            self::NAVIGATOR => 'navigátor',
-            self::GUARDIAN => 'strážce',
-            self::SPY => 'špión',
-        ],
-    ];
-
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::CRON => 'kron',
+                    self::DEMON_OF_MOVEMENT => 'démon pohybu',
+                    self::WARDEN => 'správce',
+                    self::DEMON_OF_MUSIC => 'démon huudbý',
+                    self::DEMON_DEFENDER => 'démon obránce',
+                    self::DEMON_GAMBLER => 'démon hazardér',
+                    self::DEMON_OF_TIRELESSNESS => 'démon neúnavnosti',
+                    self::DEMON_OF_OMIT_VOMIT => 'démon odložené šavle',
+                    self::DEMON_ATTACKER => 'démon útočník',
+                    self::DEMON_OF_VISION => 'démon vidění',
+                    self::GOLEM => 'golem',
+                    self::DEADY => 'mrtvák',
+                    self::BERSERK => 'berserk',
+                    self::IMP => 'ďáblík',
+                    self::DEMON_OF_KNOWLEDGE => 'démon vědění věcí',
+                    self::NAVIGATOR => 'navigátor',
+                    self::GUARDIAN => 'strážce',
+                    self::SPY => 'špión',
+                ],
+            ],
+        ];
     }
 
     public function isLinkCatcher(): bool

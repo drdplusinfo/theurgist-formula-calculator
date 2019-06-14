@@ -11,7 +11,7 @@ use Granam\Tests\Tools\TestWithMockery;
 abstract class AbstractCodeTest extends TestWithMockery
 {
 
-    protected function setUp(): void
+    protected function setUp()
     {
         self::assertContains(__NAMESPACE__, static::class, 'Code test has to be in "Tests" namespace');
     }
@@ -19,7 +19,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function It_is_code(): void
+    public function It_is_code()
     {
         self::assertTrue(
             class_exists(self::getSutClass()),
@@ -55,7 +55,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_can_create_code_instance_from_every_constant(): void
+    public function I_can_create_code_instance_from_every_constant()
     {
         $sutClass = self::getSutClass();
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -74,7 +74,7 @@ abstract class AbstractCodeTest extends TestWithMockery
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
      * @expectedExceptionMessageRegExp ~da Vinci~
      */
-    public function I_can_not_create_code_from_unknown_value(): void
+    public function I_can_not_create_code_from_unknown_value()
     {
         $sutClass = self::getSutClass();
         $sutClass::getIt('da Vinci');
@@ -85,7 +85,7 @@ abstract class AbstractCodeTest extends TestWithMockery
      * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      * @expectedExceptionMessageRegExp ~\DateTime~
      */
-    public function I_can_not_create_code_from_invalid_value_format(): void
+    public function I_can_not_create_code_from_invalid_value_format()
     {
         $sutClass = self::getSutClass();
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -95,7 +95,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function All_public_constants_can_be_given_by_getter(): void
+    public function All_public_constants_can_be_given_by_getter()
     {
         $sutClass = self::getSutClass();
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -127,7 +127,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_can_use_code_object_as_its_string_value(): void
+    public function I_can_use_code_object_as_its_string_value()
     {
         $sutClass = self::getSutClass();
         /** @var string[] $givenValues */
@@ -144,7 +144,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_can_call_its_possible_values_even_if_they_are_empty(): void
+    public function I_can_call_its_possible_values_even_if_they_are_empty()
     {
         $sutClass = self::getSutClass();
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -159,7 +159,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_will_get_constant_values_from_reflection_as_fallback(): void
+    public function I_will_get_constant_values_from_reflection_as_fallback()
     {
         self::assertSame([], AbstractCode::getPossibleValues());
         $sutClass = static::getSutClass();
@@ -169,7 +169,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value(): void
+    public function I_can_get_it_with_default_value()
     {
         $sut = $this->findSut();
         self::assertSame($this->getSutDefaultValue(), $sut->getValue(), 'Expected different default value');
@@ -178,7 +178,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value_when_requested_unknown_value(): void
+    public function I_can_get_it_with_default_value_when_requested_unknown_value()
     {
         $sut = $this->findSut('Particle from outer word');
         $sutClass = static::getSutClass();
@@ -212,7 +212,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_get_false_when_asking_if_has_null(): void
+    public function I_get_false_when_asking_if_has_null()
     {
         $sutClass = self::getSutClass();
         self::assertFalse($sutClass::hasIt(null));
@@ -221,7 +221,7 @@ abstract class AbstractCodeTest extends TestWithMockery
     /**
      * @test
      */
-    public function I_get_it_with_default_value_if_finding_it_with_null(): void
+    public function I_get_it_with_default_value_if_finding_it_with_null()
     {
         $sutClass = self::getSutClass();
         self::assertSame($this->getSutDefaultValue(), $sutClass::findIt(null)->getValue());

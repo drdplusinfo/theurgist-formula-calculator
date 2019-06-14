@@ -1,11 +1,11 @@
 # Table values for [DrD+](http://www.altar.cz/drdplus/)
 
-[![Build Status](https://travis-ci.org/jaroslavtyc/drd-plus-tables.svg?branch=master)](https://travis-ci.org/jaroslavtyc/drd-plus-tables)
+[![Build Status](https://travis-ci.org/drdplusinfo/tables.svg?branch=master)](https://travis-ci.org/jaroslavtyc/drd-plus-tables)
 [![Test Coverage](https://codeclimate.com/github/jaroslavtyc/drd-plus-tables/badges/coverage.svg)](https://codeclimate.com/github/jaroslavtyc/drd-plus-tables/coverage)
 [![License](https://poser.pugx.org/drd-plus/tables/license)](https://packagist.org/packages/drd-plus/tables)
 
 ### Warning about JumpsAndFallsTable
-[JumpsAndFallsTable](./DrdPlus/Tables/Environments/JumpsAndFallsTable.php) automatically lowers wounds from fall (or jump) by an armour protection, despite rules
+[JumpsAndFallsTable](./DrdPlus/Tables/Activities/JumpsAndFallsTable.php) automatically lowers wounds from fall (or jump) by an armour protection, despite rules
 which DM should decide about portion of reduced damage by himself.
 
 ### Description

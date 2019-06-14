@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Armaments;
 
@@ -105,8 +104,8 @@ class RangedWeaponCode extends WeaponCode
      */
     protected static function getDefaultValues(): array
     {
-        return \array_values( // to get continual integer keys
-            \array_merge(
+        return array_values( // to get continual integer keys
+            array_merge(
                 self::getThrowingWeaponsValues(false /* without custom */),
                 self::getBowsValues(false /* without custom */),
                 self::getCrossbowsValues(false /* without custom */)
@@ -153,7 +152,7 @@ class RangedWeaponCode extends WeaponCode
      * @param WeaponCategoryCode $weaponCategoryCode
      * @throws \DrdPlus\Codes\Armaments\Exceptions\RangedWeaponIsAlreadyInDifferentWeaponCategory
      */
-    private static function guardSameCategory(string $meleeWeaponValue, WeaponCategoryCode $weaponCategoryCode): void
+    private static function guardSameCategory(string $meleeWeaponValue, WeaponCategoryCode $weaponCategoryCode)
     {
         if (!\in_array($meleeWeaponValue, self::$customRangedWeaponCodePerCategory[$weaponCategoryCode->getValue()] ?? [], true)) {
             $alreadyUsedCategory = null;

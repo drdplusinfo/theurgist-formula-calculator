@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -42,31 +41,26 @@ class FormulaCode extends AbstractTheurgistCode
         ];
     }
 
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::BARRIER => 'bariéra',
+                    self::SMOKE => 'dým',
+                    self::ILLUSION => 'iluze',
+                    self::METAMORPHOSIS => 'metamorfóza',
+                    self::FIRE => 'oheň',
+                    self::PORTAL => 'portál',
+                    self::LIGHT => 'světlo',
+                    self::FLOW_OF_TIME => 'tok času',
+                    self::TSUNAMI_FROM_CLAY_AND_STONES => 'tsunami z hlíny a kamení',
+                    self::HIT => 'úder',
+                    self::GREAT_MASSACRE => 'velký mord',
+                    self::DISCHARGE => 'výboj',
+                    self::LOCK => 'zamčení',
+                ],
+            ],
+        ];
     }
-
-    private static $translations = [
-        'cs' => [
-            self::BARRIER => 'bariéra',
-            self::SMOKE => 'dým',
-            self::ILLUSION => 'iluze',
-            self::METAMORPHOSIS => 'metamorfóza',
-            self::FIRE => 'oheň',
-            self::PORTAL => 'portál',
-            self::LIGHT => 'světlo',
-            self::FLOW_OF_TIME => 'tok času',
-            self::TSUNAMI_FROM_CLAY_AND_STONES => 'tsunami z hlíny a kamení',
-            self::HIT => 'úder',
-            self::GREAT_MASSACRE => 'velký mord',
-            self::DISCHARGE => 'výboj',
-            self::LOCK => 'zamčení',
-        ],
-    ];
-
 }

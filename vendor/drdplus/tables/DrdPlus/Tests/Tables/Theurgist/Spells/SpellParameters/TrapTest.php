@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
@@ -37,6 +36,15 @@ class TrapTest extends CastingParameterTest
         self::assertSame($trap->getPropertyCode(), PropertyCode::getIt(PropertyCode::ENDURANCE));
         self::assertEquals(new AdditionByDifficulty('332211'), $trap->getAdditionByDifficulty());
         self::assertSame('35689 endurance (0 {1=>332211})', (string)$trap);
+    }
+
+    protected function I_can_not_change_initial_addition()
+    {
+        $trap = new Trap(['1', '2', PropertyCode::AGILITY], Tables::getIt());
+        self::assertSame(1, $trap->getValue());
+        self::assertSame($trap->getPropertyCode(), PropertyCode::getIt(PropertyCode::AGILITY));
+        self::assertEquals(new AdditionByDifficulty('2'), $trap->getAdditionByDifficulty());
+        self::assertSame('1 agility (0 {1=>2})', (string)$trap);
     }
 
     /**

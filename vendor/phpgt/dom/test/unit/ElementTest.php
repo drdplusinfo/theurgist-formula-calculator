@@ -114,26 +114,26 @@ class ElementTest extends TestCase {
 	public function testInnerHTML() {
 		$document = new HTMLDocument(Helper::HTML_MORE);
 		$p = $document->querySelector(".link-to-twitter");
-		$this->assertContains("<a href=", $p->innerHTML);
-		$this->assertContains("Greg Bowler", $p->innerHTML);
-		$this->assertNotContains("<p", $p->innerHTML);
+		$this->assertStringContainsString("<a href=", $p->innerHTML);
+		$this->assertStringContainsString("Greg Bowler", $p->innerHTML);
+		$this->assertStringNotContainsString("<p", $p->innerHTML);
 
 		$p->innerHTML = "This is <strong>very</strong> important!";
 		$this->assertInstanceOf(Element::class, $p->querySelector("strong"));
-		$this->assertContains("This is", $p->textContent);
-		$this->assertContains("very", $p->textContent);
+		$this->assertStringContainsString("This is", $p->textContent);
+		$this->assertStringContainsString("very", $p->textContent);
 		$this->assertEquals("very", $p->querySelector("strong")->textContent);
 	}
 
 	public function testOuterHTML() {
 		$document = new HTMLDocument(Helper::HTML_MORE);
 		$p = $document->querySelector(".link-to-twitter");
-		$this->assertContains("<a href=", $p->outerHTML);
-		$this->assertContains("Greg Bowler", $p->outerHTML);
-		$this->assertContains("<p", $p->outerHTML);
-		$this->assertContains("</p>", $p->outerHTML);
-		$this->assertNotContains("<h2", $p->outerHTML);
-		$this->assertNotContains("name=\"forms\">", $p->outerHTML);
+		$this->assertStringContainsString("<a href=", $p->outerHTML);
+		$this->assertStringContainsString("Greg Bowler", $p->outerHTML);
+		$this->assertStringContainsString("<p", $p->outerHTML);
+		$this->assertStringContainsString("</p>", $p->outerHTML);
+		$this->assertStringNotContainsString("<h2", $p->outerHTML);
+		$this->assertStringNotContainsString("name=\"forms\">", $p->outerHTML);
 	}
 
 	public function testClassListProperty() {
@@ -148,10 +148,10 @@ class ElementTest extends TestCase {
 	public function testClassNameProperty() {
 		$document = new HTMLDocument(Helper::HTML_MORE);
 		$element = $document->getElementById("who");
-		$this->assertInternalType("string", $element->className);
+		$this->assertIsString($element->className);
 
-		$this->assertContains("m-before-p", $element->className);
-		$this->assertNotContains("nothing", $element->className);
+		$this->assertStringContainsString("m-before-p", $element->className);
+		$this->assertStringNotContainsString("nothing", $element->className);
 	}
 
 	public function testIdProperty() {
@@ -323,5 +323,66 @@ class ElementTest extends TestCase {
 		self::assertTrue(isset($element->dataset->name));
 		unset($element->dataset->name);
 		self::assertFalse(isset($element->dataset->name));
+	}
+
+	public function testFormControlElementsCanHaveFormProperty() {
+		$document = new HTMLDocument(Helper::HTML_FORM_PROPERTY);
+		$form = $document->getElementById('form_2');
+
+		$input = $document->getElementById('f2');
+		self::assertEquals($form, $input->form);
+
+		$button = $document->getElementById('f4');
+		self::assertEquals($form, $button->form);
+
+		$fieldset = $document->getElementById('f5');
+		self::assertEquals($form, $fieldset->form);
+
+		$input = $document->getElementById('f6');
+		self::assertEquals($form, $input->form);
+
+		$object = $document->getElementById('f7');
+		self::assertEquals($form, $object->form);
+
+		$output = $document->getElementById('f8');
+		self::assertEquals($form, $output->form);
+
+		$select = $document->getElementById('f9');
+		self::assertEquals($form, $select->form);
+	}
+
+	public function testFormControlElementReturnsParentFormAsFormPropertyIfItDoesNotHaveFormAttribute() {
+		$document = new HTMLDocument(Helper::HTML_FORM_PROPERTY);
+		$form = $document->getElementById('form_1');
+
+		$input = $document->getElementById('f1');
+		self::assertEquals($form, $input->form);
+
+		$button = $document->getElementById('f3');
+		self::assertEquals($form, $button->form);
+	}
+
+	public function testFormControlElementReturnsNullIfItDoesNotHaveFormAttributeAndDoesNotHaveParentForm() {
+		$document = new HTMLDocument(Helper::HTML_FORM_PROPERTY);
+
+		$input = $document->getElementById('f11');
+		self::assertEquals(NULL, $input->form);
+	}
+
+	public function testNonControlElementRetursNullAsFormProperty() {
+		$document = new HTMLDocument(Helper::HTML_FORM_PROPERTY);
+
+		$span = $document->getElementById('non_form_control_1');
+		self::assertEquals(NULL, $span->form);
+
+		$span = $document->getElementById('non_form_control_2');
+		self::assertEquals(NULL, $span->form);
+	}
+
+	public function testInputElementWithTypeImagetReturnsNullAsFormProperty() {
+		$document = new HTMLDocument(Helper::HTML_FORM_PROPERTY);
+
+		$input = $document->getElementById('f12');
+		self::assertEquals(NULL, $input->form);
 	}
 }

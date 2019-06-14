@@ -1,7 +1,7 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Measurements\Measurement;
@@ -16,13 +16,13 @@ use Granam\String\StringTools;
 /** @var \DrdPlus\Calculators\Theurgist\FormulaWebPartsContainer $webPartsContainer */
 
 $formulaParametersWithUnit = [
-    FormulaMutableSpellParameterCode::SPELL_DURATION => function ($optionDurationValue) {
+    FormulaMutableParameterCode::SPELL_DURATION => function ($optionDurationValue) {
         return (new TimeBonus($optionDurationValue, Tables::getIt()->getTimeTable()))->getTime();
     },
-    FormulaMutableSpellParameterCode::SPELL_RADIUS => function ($optionRadiusValue) {
+    FormulaMutableParameterCode::SPELL_RADIUS => function ($optionRadiusValue) {
         return (new DistanceBonus($optionRadiusValue, Tables::getIt()->getDistanceTable()))->getDistance();
     },
-    FormulaMutableSpellParameterCode::SPELL_SPEED => function ($optionSpeedValue) {
+    FormulaMutableParameterCode::SPELL_SPEED => function ($optionSpeedValue) {
         return (new SpeedBonus($optionSpeedValue, Tables::getIt()->getSpeedTable()))->getSpeed();
     },
 ];
@@ -33,7 +33,7 @@ foreach ($formulaParametersWithUnit as $parameterName => $unitFactory) {
     if ($parameter === null) {
         continue;
     }
-    $parameterCode = FormulaMutableSpellParameterCode::getIt($parameterName);
+    $parameterCode = FormulaMutableParameterCode::getIt($parameterName);
     ?>
   <div class="col">
     <label><?= $parameterCode->translateTo('cs') ?>:

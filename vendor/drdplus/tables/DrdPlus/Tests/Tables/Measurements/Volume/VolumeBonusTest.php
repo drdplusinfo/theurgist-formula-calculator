@@ -33,11 +33,11 @@ class VolumeBonusTest extends AbstractTestOfBonus
         self::assertSame(1.0 / $cubicKilometerToMeter, $volume->getCubicKilometers());
         self::assertSame($volumeBonus->getValue(), $volume->getBonus()->getValue());
 
-        $volumeBonus = new VolumeBonus(119, Tables::getIt()->getDistanceTable());
+        $volumeBonus = new VolumeBonus(119 * 3, Tables::getIt()->getDistanceTable());
         $volume = $volumeBonus->getVolume();
-        self::assertSame(0.001 * $cubicKilometerToLiter, $volume->getLiters());
-        self::assertSame(0.001 * $cubicKilometerToMeter, $volume->getCubicMeters());
-        self::assertSame(0.001, $volume->getCubicKilometers());
+        self::assertSame(900.0 ** 3 * $cubicKilometerToLiter, $volume->getLiters());
+        self::assertSame(900.0 ** 3 * $cubicKilometerToMeter, $volume->getCubicMeters());
+        self::assertSame(900.0 ** 3, $volume->getCubicKilometers());
     }
 
     /**
@@ -73,5 +73,4 @@ class VolumeBonusTest extends AbstractTestOfBonus
     {
         (new VolumeBonus(999, Tables::getIt()->getDistanceTable()))->getVolume();
     }
-
 }

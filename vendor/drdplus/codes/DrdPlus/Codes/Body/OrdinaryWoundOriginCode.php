@@ -13,6 +13,11 @@ class OrdinaryWoundOriginCode extends WoundOriginCode
 {
     public const ORDINARY = 'ordinary';
 
+    public static function getPossibleValues(): array
+    {
+        return [self::ORDINARY];
+    }
+
     /**
      * @param string|StringInterface $codeValue
      * @return OrdinaryWoundOriginCode|AbstractCode

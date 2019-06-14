@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Calculators\Theurgist;
 
@@ -9,7 +8,7 @@ class FormulaDirs extends Dirs
 {
     public function getWebRoot(): string
     {
-        return parent::getWebRoot() . '/web';
+        return parent::getWebRoot() . '/web'; // web/web
     }
 
 }

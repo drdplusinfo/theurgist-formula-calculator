@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -20,9 +19,6 @@ class FormCode extends AbstractTheurgistCode
     public const INVISIBLE = 'invisible';
     public const BY_FORMULA = 'by_formula';
 
-    /**
-     * @return array
-     */
     public static function getPossibleValues(): array
     {
         return [
@@ -39,28 +35,24 @@ class FormCode extends AbstractTheurgistCode
         ];
     }
 
-    private static $translations = [
-        'cs' => [
-            self::DIRECT => 'přímmá',
-            self::INDIRECT => 'nepřímá',
-            self::VOLUME => 'objemová',
-            self::PLANAR => 'plošná',
-            self::BEAM => 'paprsková',
-            self::TANGIBLE => 'hmotná',
-            self::INTANGIBLE => 'nehmotná',
-            self::VISIBLE => 'viditelná',
-            self::INVISIBLE => 'neviditelná',
-            self::BY_FORMULA => 'podle formule',
-        ],
-    ];
-
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::DIRECT => 'přímmá',
+                    self::INDIRECT => 'nepřímá',
+                    self::VOLUME => 'objemová',
+                    self::PLANAR => 'plošná',
+                    self::BEAM => 'paprsková',
+                    self::TANGIBLE => 'hmotná',
+                    self::INTANGIBLE => 'nehmotná',
+                    self::VISIBLE => 'viditelná',
+                    self::INVISIBLE => 'neviditelná',
+                    self::BY_FORMULA => 'podle formule',
+                ],
+            ],
+        ];
     }
 
 }

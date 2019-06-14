@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tables\Combat;
 
@@ -33,12 +32,10 @@ class FightTable extends AbstractTable
         return [self::FIRST_PROPERTY, self::SECOND_PROPERTY];
     }
 
-    /**
-     * @return array
-     */
     public function getIndexedValues(): array
     {
         return [
+            ProfessionCode::COMMONER => [self::FIRST_PROPERTY => false, self::SECOND_PROPERTY => PropertyCode::AGILITY],
             ProfessionCode::FIGHTER => [self::FIRST_PROPERTY => PropertyCode::AGILITY, self::SECOND_PROPERTY => false],
             ProfessionCode::THIEF => [self::FIRST_PROPERTY => PropertyCode::KNACK, self::SECOND_PROPERTY => PropertyCode::AGILITY],
             ProfessionCode::RANGER => [self::FIRST_PROPERTY => PropertyCode::KNACK, self::SECOND_PROPERTY => PropertyCode::AGILITY],

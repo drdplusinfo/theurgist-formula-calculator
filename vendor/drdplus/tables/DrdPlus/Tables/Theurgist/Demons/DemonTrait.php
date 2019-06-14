@@ -26,7 +26,7 @@ class DemonTrait extends StrictObject
         $this->demonTraitsTable = $tables;
     }
 
-    public function getRealm(): Realm
+    public function getRequiredRealm(): Realm
     {
         return $this->demonTraitsTable->getDemonTraitsTable()->getRealm($this->getDemonTraitCode());
     }

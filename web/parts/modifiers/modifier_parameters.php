@@ -3,7 +3,7 @@ namespace DrdPlus\Theurgist\Formulas;
 
 use DrdPlus\Calculators\Theurgist\CurrentFormulaValues;
 use DrdPlus\Codes\Theurgist\ModifierCode;
-use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\ModifierMutableParameterCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\EpicenterShift;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
@@ -20,29 +20,29 @@ use Granam\String\StringTools;
 /** @var CurrentFormulaValues $currentFormulaValues */
 
 $measurementSizes = [
-    ModifierMutableSpellParameterCode::SPELL_SPEED => function (SpellSpeed $spellSpeed) {
+    ModifierMutableParameterCode::SPELL_SPEED => function (SpellSpeed $spellSpeed) {
         $speed = $spellSpeed->getSpeedBonus()->getSpeed();
         return $speed->getValue() . ' ' . $speed->getUnitCode()->translateTo('cs', $speed->getValue());
     },
-    ModifierMutableSpellParameterCode::EPICENTER_SHIFT => function (EpicenterShift $epicenterShift) {
+    ModifierMutableParameterCode::EPICENTER_SHIFT => function (EpicenterShift $epicenterShift) {
         $distance = $epicenterShift->getDistance();
         return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
     },
-    ModifierMutableSpellParameterCode::SPELL_RADIUS => function (SpellRadius $spellRadius) {
+    ModifierMutableParameterCode::SPELL_RADIUS => function (SpellRadius $spellRadius) {
         $distance = $spellRadius->getDistanceBonus()->getDistance();
         return $distance->getValue() . ' ' . $distance->getUnitCode()->translateTo('cs', $distance->getValue());
     },
 ];
 
 $modifiersTable = $tables->getModifiersTable();
-foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $possibleParameterName) {
+foreach (ModifierMutableParameterCode::getPossibleValues() as $possibleParameterName) {
     $getParameter = StringTools::assembleGetterForName($possibleParameterName);
     $parameter = $modifiersTable->$getParameter($possibleModifier);
     if ($parameter === null) {
         continue;
     }
     /** @var CastingParameter $parameter */
-    $parameterCode = ModifierMutableSpellParameterCode::getIt($possibleParameterName);
+    $parameterCode = ModifierMutableParameterCode::getIt($possibleParameterName);
     ?>
   <div class="parameter">
     <label><?= $parameterCode->translateTo('cs') ?>:

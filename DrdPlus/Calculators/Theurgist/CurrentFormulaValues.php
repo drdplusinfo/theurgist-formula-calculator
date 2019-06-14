@@ -1,11 +1,10 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Calculators\Theurgist;
 
 use DrdPlus\CalculatorSkeleton\CurrentValues;
 use DrdPlus\Codes\Theurgist\FormulaCode;
-use DrdPlus\Codes\Theurgist\FormulaMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\FormulaMutableParameterCode;
 use DrdPlus\Codes\Theurgist\ModifierCode;
 use DrdPlus\Codes\Theurgist\SpellTraitCode;
 use DrdPlus\Tables\Tables;
@@ -130,12 +129,12 @@ class CurrentFormulaValues extends StrictObject
     }
 
     private static $oldToNewMutableSpellParameterName = [
-        'power' => FormulaMutableSpellParameterCode::SPELL_POWER,
-        'radius' => FormulaMutableSpellParameterCode::SPELL_RADIUS,
-        'brightness' => FormulaMutableSpellParameterCode::SPELL_BRIGHTNESS,
-        'attack' => FormulaMutableSpellParameterCode::SPELL_ATTACK,
-        'duration' => FormulaMutableSpellParameterCode::SPELL_DURATION,
-        'speed' => FormulaMutableSpellParameterCode::SPELL_SPEED,
+        'power' => FormulaMutableParameterCode::SPELL_POWER,
+        'radius' => FormulaMutableParameterCode::SPELL_RADIUS,
+        'brightness' => FormulaMutableParameterCode::SPELL_BRIGHTNESS,
+        'attack' => FormulaMutableParameterCode::SPELL_ATTACK,
+        'duration' => FormulaMutableParameterCode::SPELL_DURATION,
+        'speed' => FormulaMutableParameterCode::SPELL_SPEED,
     ];
 
     private function getFormulaNewParameterName(string $formulaParameterName): string

@@ -6,6 +6,7 @@ namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\CastingParameter;
+use Granam\String\StringTools;
 use Granam\Tests\Tools\TestWithMockery;
 
 abstract class CastingParameterTest extends TestWithMockery
@@ -36,6 +37,7 @@ abstract class CastingParameterTest extends TestWithMockery
         $this->I_can_create_it_negative();
         $this->I_can_create_it_with_zero();
         $this->I_can_create_it_positive();
+        $this->I_can_not_change_initial_addition();
     }
 
     protected function I_can_create_it_negative()
@@ -59,7 +61,15 @@ abstract class CastingParameterTest extends TestWithMockery
         $sut = $this->createSut(['35689', '332211']);
         self::assertSame(35689, $sut->getValue());
         self::assertEquals(new AdditionByDifficulty('332211'), $sut->getAdditionByDifficulty());
-        self::assertSame('35689 (' . $sut->getAdditionByDifficulty() . ')', (string)$sut);
+        self::assertSame('35689 (0 {1=>332211})', (string)$sut);
+    }
+
+    protected function I_can_not_change_initial_addition()
+    {
+        $sut = $this->createSut(['1', '2', '3' /* this should be ignored */]);
+        self::assertSame(1, $sut->getValue());
+        self::assertEquals(new AdditionByDifficulty('2'), $sut->getAdditionByDifficulty());
+        self::assertSame('1 (0 {1=>2})', (string)$sut);
     }
 
     /**
@@ -98,4 +108,32 @@ abstract class CastingParameterTest extends TestWithMockery
         self::assertNotSame($original, $decreased);
     }
 
+    /**
+     * @test
+     * @throws \ReflectionException
+     */
+    public function I_get_whispered_current_casting_parameter_as_return_value_of_getter_with_addition(): void
+    {
+        $className = static::getSutClass();
+        $reflectionClass = new \ReflectionClass($className);
+        $classBaseName = StringTools::getClassBaseName($className);
+        if (strpos($reflectionClass->getDocComment() ?: '', 'getWithAddition') !== false) {
+            self::assertContains(<<<PHPDOC
+ * @method {$classBaseName} getWithAddition(\$additionValue)
+PHPDOC
+                ,
+                $reflectionClass->getDocComment(),
+                "Missing getWithAddition method annotation in $className"
+            );
+        } else {
+            $reflectionMethod = $reflectionClass->getMethod('getWithAddition');
+            self::assertContains(<<<PHPDOC
+ * @return {$classBaseName}|CastingParameter
+PHPDOC
+                ,
+                $reflectionMethod->getDocComment(),
+                "Missing getWithAddition method annotation in $className"
+            );
+        }
+    }
 }

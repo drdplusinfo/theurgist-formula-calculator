@@ -219,7 +219,7 @@ class Time extends AbstractMeasurement implements MeasurementWithBonus
      */
     public function findInLesserUnit(): ?Time
     {
-        $lesserUnit = $this->findLesserUnit($this->getUnit());
+        $lesserUnit = $this->findLesserUnitThan($this->getUnit());
         if ($lesserUnit === null) {
             return null; // there is no lesser unit
         }
@@ -232,7 +232,7 @@ class Time extends AbstractMeasurement implements MeasurementWithBonus
      * @return null|string
      * @throws \DrdPlus\Tables\Measurements\Time\Exceptions\UnknownTimeUnit
      */
-    private function findLesserUnit(string $currentUnit): ?string
+    private function findLesserUnitThan(string $currentUnit): ?string
     {
         $currentIndex = \array_search($currentUnit, TimeUnitCode::getPossibleValues(), true);
         if ($currentIndex === false) {

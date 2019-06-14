@@ -11,7 +11,7 @@ class SeriousWoundOriginCodeTest extends WoundOriginCodeTest
      * @dataProvider provideSeriousWoundOriginCode
      * @param string $seriousWoundOriginName
      */
-    public function I_can_get_every_type_of_serious_wound_origin(string $seriousWoundOriginName): void
+    public function I_can_get_every_type_of_serious_wound_origin(string $seriousWoundOriginName)
     {
         $getWoundOrigin = StringTools::assembleGetterForName($seriousWoundOriginName) . 'WoundOrigin';
         /** @var SeriousWoundOriginCode $seriousWoundOrigin */
@@ -45,7 +45,7 @@ class SeriousWoundOriginCodeTest extends WoundOriginCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
      * @expectedExceptionMessageRegExp ~Bathroom slipping~
      */
-    public function I_can_not_create_custom_origin(): void
+    public function I_can_not_create_custom_origin()
     {
         SeriousWoundOriginCode::getEnum('Bathroom slipping');
     }
@@ -53,7 +53,7 @@ class SeriousWoundOriginCodeTest extends WoundOriginCodeTest
     /**
      * @test
      */
-    public function I_can_get_all_codes_at_once_or_by_same_named_constant(): void
+    public function I_can_get_all_codes_at_once_or_by_same_named_constant()
     {
         self::assertSame(
             [
@@ -75,7 +75,7 @@ class SeriousWoundOriginCodeTest extends WoundOriginCodeTest
      * @param bool $isElemental
      * @param bool $isMechanical
      */
-    public function I_can_ask_it_if_is_mechanical(string $origin, bool $isPsychical, bool $isElemental, bool $isMechanical): void
+    public function I_can_ask_it_if_is_mechanical(string $origin, bool $isPsychical, bool $isElemental, bool $isMechanical)
     {
         $seriousWoundOriginCode = SeriousWoundOriginCode::getIt($origin);
         self::assertSame($origin, $seriousWoundOriginCode->getValue());

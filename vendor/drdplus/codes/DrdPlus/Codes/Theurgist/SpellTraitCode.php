@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -59,34 +58,34 @@ class SpellTraitCode extends AbstractTheurgistCode
         ];
     }
 
-    private static $translations = [
-        'cs' => [
-            self::AFFECTING => 'ovlivňující',
-            self::INVISIBLE => 'zneviditelňující',
-            self::SILENT => 'zneslyšitelňující',
-            self::ODORLESS => 'znevycítitelňující',
-            self::CYCLIC => 'cyklický',
-            self::MEMORY => 'paměť',
-            self::DEFORMATION => 'deformace',
-            self::UNIDIRECTIONAL => 'jednosměrná',
-            self::BIDIRECTIONAL => 'obousměrná',
-            self::INACRID => 'neštiplavý',
-            self::EVERY_SENSE => 'za každý smysl',
-            self::SITUATIONAL => 'situační',
-            self::SHAPESHIFT => 'změna tvaru',
-            self::STATE_CHANGE => 'změna skupenství',
-            self::NATURE_CHANGE => 'změna podstaty',
-            self::NO_SMOKE => 'bez dýmu',
-            self::TRANSPARENCY => 'průhlednost',
-            self::MULTIPLE_ENTRY => 'vícevstupný',
-            self::OMNIPRESENT => 'všudypřítomné',
-            self::ACTIVE => 'aktivní',
-        ],
-    ];
-
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::AFFECTING => 'ovlivňující',
+                    self::INVISIBLE => 'zneviditelňující',
+                    self::SILENT => 'zneslyšitelňující',
+                    self::ODORLESS => 'znevycítitelňující',
+                    self::CYCLIC => 'cyklický',
+                    self::MEMORY => 'paměť',
+                    self::DEFORMATION => 'deformace',
+                    self::UNIDIRECTIONAL => 'jednosměrná',
+                    self::BIDIRECTIONAL => 'obousměrná',
+                    self::INACRID => 'neštiplavý',
+                    self::EVERY_SENSE => 'za každý smysl',
+                    self::SITUATIONAL => 'situační',
+                    self::SHAPESHIFT => 'změna tvaru',
+                    self::STATE_CHANGE => 'změna skupenství',
+                    self::NATURE_CHANGE => 'změna podstaty',
+                    self::NO_SMOKE => 'bez dýmu',
+                    self::TRANSPARENCY => 'průhlednost',
+                    self::MULTIPLE_ENTRY => 'vícevstupný',
+                    self::OMNIPRESENT => 'všudypřítomné',
+                    self::ACTIVE => 'aktivní',
+                ],
+            ],
+        ];
     }
 
 }

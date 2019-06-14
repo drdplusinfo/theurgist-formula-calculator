@@ -6,6 +6,7 @@ namespace DrdPlus\Tables\Measurements\Square;
 use DrdPlus\Calculations\SumAndRound;
 use DrdPlus\Codes\Units\DistanceUnitCode;
 use DrdPlus\Codes\Units\SquareUnitCode;
+use DrdPlus\Tables\Measurements\Distance\Distance;
 use DrdPlus\Tables\Measurements\Distance\DistanceBonus;
 use DrdPlus\Tables\Measurements\Distance\DistanceTable;
 use DrdPlus\Tables\Measurements\Partials\AbstractBonus;
@@ -46,13 +47,17 @@ class SquareBonus extends AbstractBonus
     {
         $squareBonusValue = $this->getValue();
         $squareSideBonusValue = SumAndRound::round($squareBonusValue / 2);
-        /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-        $squareSideDistanceBonus = new DistanceBonus($squareSideBonusValue, $this->distanceTable);
-        $squareSideDistance = $squareSideDistanceBonus->getDistance();
+        $squareSideDistance = $this->getSquareSideDistance($squareSideBonusValue);
         $squareValue = $squareSideDistance->getValue() ** 2;
 
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         return new Square($squareValue, $this->getSquareUnitByDistanceUnit($squareSideDistance->getUnit()), $this->distanceTable);
+    }
+
+    private function getSquareSideDistance(int $squareSideBonusValue): Distance
+    {
+        $squareSideDistanceBonus = new DistanceBonus($squareSideBonusValue, $this->distanceTable);
+        return $squareSideDistanceBonus->getDistance();
     }
 
     /**
@@ -70,9 +75,11 @@ class SquareBonus extends AbstractBonus
             case DistanceUnitCode::KILOMETER :
                 return SquareUnitCode::SQUARE_KILOMETER;
             default :
+                // @codeCoverageIgnoreStart
                 throw new Exceptions\SquareFromSquareBonusIsOutOfRange(
                     "Can not convert square bonus {$this->getValue()} to a square value as it is out of known values"
                 );
+            // @codeCoverageIgnoreEnd
         }
     }
 

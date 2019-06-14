@@ -10,7 +10,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      */
-    public function It_is_weapon_code(): void
+    public function It_is_weapon_code()
     {
         /** @var WeaponCode $sut */
         $sut = $this->getSut();
@@ -22,7 +22,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_weapon(): void
+    public function I_can_easily_find_out_if_is_weapon()
     {
         /** @var WeaponCode $sut */
         $sut = $this->getSut();
@@ -32,7 +32,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_shield(): void
+    public function I_can_easily_find_out_if_is_shield()
     {
         /** @var WeaponCode $sut */
         $sut = $this->getSut();
@@ -42,7 +42,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_it_is_not_projectile(): void
+    public function I_can_easily_find_out_it_is_not_projectile()
     {
         /** @var WeaponCode $sut */
         $sut = $this->getSut();
@@ -54,7 +54,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @runInSeparateProcess
      * @throws \ReflectionException
      */
-    public function I_can_extended_it_by_custom_translatable_code(): void
+    public function I_can_extended_it_by_custom_translatable_code()
     {
         /** @var WeaponCode $sutClass */
         $sutClass = self::getSutClass();
@@ -109,7 +109,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidLanguageCode
      * @expectedExceptionMessageRegExp ~a1~
      */
-    public function I_can_not_use_invalid_language_code_format_for_custom_code(): void
+    public function I_can_not_use_invalid_language_code_format_for_custom_code()
     {
         /** @var WeaponCode $sutClass */
         $sutClass = self::getSutClass();
@@ -139,7 +139,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
      * @expectedExceptionMessageRegExp ~this should be array~
      */
-    public function I_can_not_use_invalid_data_format_of_translations_for_custom_code(): void
+    public function I_can_not_use_invalid_data_format_of_translations_for_custom_code()
     {
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
@@ -157,7 +157,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownTranslationPlural
      * @expectedExceptionMessageRegExp ~all~
      */
-    public function I_can_not_use_invalid_plural_for_translation_of_custom_code(): void
+    public function I_can_not_use_invalid_plural_for_translation_of_custom_code()
     {
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
@@ -179,7 +179,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
      * @expectedExceptionMessageRegExp ~NULL~
      */
-    public function I_can_not_use_non_string_for_translation_of_custom_code(): void
+    public function I_can_not_use_non_string_for_translation_of_custom_code()
     {
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
@@ -197,7 +197,7 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
      * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
      * @expectedExceptionMessageRegExp ~''~
      */
-    public function I_can_not_use_empty_string_for_translation_of_custom_code(): void
+    public function I_can_not_use_empty_string_for_translation_of_custom_code()
     {
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
@@ -209,6 +209,6 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
         );
     }
 
-    abstract public function I_can_not_extended_it_by_same_code_but_different_category(): void;
+    abstract public function I_can_not_extended_it_by_same_code_but_different_category();
 
 }

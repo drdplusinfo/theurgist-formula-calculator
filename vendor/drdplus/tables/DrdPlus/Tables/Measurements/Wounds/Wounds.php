@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DrdPlus\Tables\Measurements\Wounds;
 
 use DrdPlus\Tables\Measurements\Partials\AbstractMeasurementWithBonus;
-use Granam\Float\Tools\Exceptions\PositiveFloatCanNotBeNegative;
 use Granam\Integer\PositiveInteger;
+use Granam\Integer\Tools\Exceptions\PositiveIntegerCanNotBeNegative;
 use Granam\Integer\Tools\ToInteger;
 
 class Wounds extends AbstractMeasurementWithBonus implements PositiveInteger
@@ -27,7 +27,7 @@ class Wounds extends AbstractMeasurementWithBonus implements PositiveInteger
     {
         try {
             parent::__construct($value, self::WOUNDS);
-        } catch (PositiveFloatCanNotBeNegative $exception) {
+        } catch (PositiveIntegerCanNotBeNegative $exception) {
             throw new Exceptions\WoundsCanNotBeNegative(
                 'Wounds has to be positive integer with least zero as \'healed\', given ' . \var_export($value, true)
             );

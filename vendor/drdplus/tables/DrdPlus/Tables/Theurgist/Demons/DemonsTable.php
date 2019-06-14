@@ -1,27 +1,29 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tables\Theurgist\Demons;
 
-use DrdPlus\BaseProperties\Will;
 use DrdPlus\Codes\Theurgist\DemonBodyCode;
 use DrdPlus\Codes\Theurgist\DemonCode;
 use DrdPlus\Codes\Theurgist\DemonKindCode;
 use DrdPlus\Codes\Theurgist\DemonTraitCode;
 use DrdPlus\Tables\Partials\AbstractFileTable;
 use DrdPlus\Tables\Tables;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonActivationDuration;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonAgility;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonArea;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonArmor;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonCapacity;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonEndurance;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonInvisibility;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonKnack;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonQuality;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonRadius;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonStrength;
+use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonWill;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Difficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Evocation;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Invisibility;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Quality;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellDuration;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellRadius;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\SpellSpeed;
 
 /**
@@ -46,47 +48,48 @@ class DemonsTable extends AbstractFileTable
 
     public const REALM = 'realm';
     public const EVOCATION = 'evocation';
-    public const DEMON_BODY = 'demon_body';
-    public const DEMON_KIND = 'demon_kind';
+    public const DEMON_BODY_CODE = 'demon_body_code';
+    public const DEMON_KIND_CODE = 'demon_kind_code';
     public const REALMS_AFFECTION = 'realms_affection';
-    public const WILL = 'will';
     public const DIFFICULTY = 'difficulty';
     public const DEMON_TRAITS = 'demon_traits';
     public const DEMON_CAPACITY = 'demon_capacity';
     public const DEMON_ENDURANCE = 'demon_endurance';
     public const SPELL_SPEED = 'spell_speed';
-    public const QUALITY = 'quality';
-    public const SPELL_DURATION = 'spell_duration';
-    public const SPELL_RADIUS = 'spell_radius';
+    public const DEMON_QUALITY = 'demon_quality';
+    public const DEMON_ACTIVATION_DURATION = 'demon_activation_duration';
+    public const DEMON_RADIUS = 'demon_radius';
     public const DEMON_STRENGTH = 'demon_strength';
     public const DEMON_AGILITY = 'demon_agility';
     public const DEMON_KNACK = 'demon_knack';
+    public const DEMON_WILL = 'demon_will';
     public const DEMON_ARMOR = 'demon_armor';
-    public const INVISIBILITY = 'invisibility';
+    public const DEMON_INVISIBILITY = 'demon_invisibility';
+    public const DEMON_AREA = 'demon_area';
 
     protected function getExpectedDataHeaderNamesToTypes(): array
     {
         return [
             self::REALM => self::STRING,
             self::EVOCATION => self::ARRAY,
-            self::DEMON_BODY => self::STRING,
-            self::DEMON_KIND => self::STRING,
+            self::DEMON_BODY_CODE => self::STRING,
+            self::DEMON_KIND_CODE => self::STRING,
             self::REALMS_AFFECTION => self::ARRAY,
-            self::WILL => self::INTEGER,
             self::DIFFICULTY => self::ARRAY,
             self::DEMON_TRAITS => self::ARRAY,
             self::DEMON_CAPACITY => self::ARRAY,
             self::DEMON_ENDURANCE => self::ARRAY,
             self::SPELL_SPEED => self::ARRAY,
-            self::QUALITY => self::ARRAY,
-            self::SPELL_DURATION => self::ARRAY,
-            self::SPELL_RADIUS => self::ARRAY,
+            self::DEMON_QUALITY => self::ARRAY,
+            self::DEMON_ACTIVATION_DURATION => self::ARRAY,
+            self::DEMON_RADIUS => self::ARRAY,
             self::DEMON_STRENGTH => self::ARRAY,
             self::DEMON_AGILITY => self::ARRAY,
             self::DEMON_KNACK => self::ARRAY,
+            self::DEMON_WILL => self::ARRAY,
             self::DEMON_ARMOR => self::ARRAY,
-            self::INVISIBILITY => self::ARRAY,
-
+            self::DEMON_INVISIBILITY => self::ARRAY,
+            self::DEMON_AREA => self::ARRAY,
         ];
     }
 
@@ -145,19 +148,14 @@ class DemonsTable extends AbstractFileTable
         return new RealmsAffection($this->getValue($demonCode, self::REALMS_AFFECTION));
     }
 
-    public function getDemonBody(DemonCode $demonCode): DemonBodyCode
+    public function getDemonBodyCode(DemonCode $demonCode): DemonBodyCode
     {
-        return DemonBodyCode::getIt($this->getValue($demonCode, self::DEMON_BODY));
+        return DemonBodyCode::getIt($this->getValue($demonCode, self::DEMON_BODY_CODE));
     }
 
-    public function getDemonKind(DemonCode $demonCode): DemonKindCode
+    public function getDemonKindCode(DemonCode $demonCode): DemonKindCode
     {
-        return DemonKindCode::getIt($this->getValue($demonCode, self::DEMON_KIND));
-    }
-
-    public function getWill(DemonCode $demonCode): Will
-    {
-        return Will::getIt($this->getValue($demonCode, self::WILL));
+        return DemonKindCode::getIt($this->getValue($demonCode, self::DEMON_KIND_CODE));
     }
 
     public function getDemonCapacity(DemonCode $demonCode): ?DemonCapacity
@@ -187,31 +185,31 @@ class DemonsTable extends AbstractFileTable
         return new SpellSpeed($value, $this->tables);
     }
 
-    public function getQuality(DemonCode $demonCode): ?Quality
+    public function getDemonQuality(DemonCode $demonCode): ?DemonQuality
     {
-        $value = $this->getValue($demonCode, self::QUALITY);
+        $value = $this->getValue($demonCode, self::DEMON_QUALITY);
         if ($value === []) {
             return null;
         }
-        return new Quality($value, $this->tables);
+        return new DemonQuality($value, $this->tables);
     }
 
-    public function getSpellDuration(DemonCode $demonCode): ?SpellDuration
+    public function getDemonActivationDuration(DemonCode $demonCode): ?DemonActivationDuration
     {
-        $value = $this->getValue($demonCode, self::SPELL_DURATION);
+        $value = $this->getValue($demonCode, self::DEMON_ACTIVATION_DURATION);
         if ($value === []) {
             return null;
         }
-        return new SpellDuration($value, $this->tables);
+        return new DemonActivationDuration($value, $this->tables);
     }
 
-    public function getSpellRadius(DemonCode $demonCode): ?SpellRadius
+    public function getDemonRadius(DemonCode $demonCode): ?DemonRadius
     {
-        $value = $this->getValue($demonCode, self::SPELL_RADIUS);
+        $value = $this->getValue($demonCode, self::DEMON_RADIUS);
         if ($value === []) {
             return null;
         }
-        return new SpellRadius($value, $this->tables);
+        return new DemonRadius($value, $this->tables);
     }
 
     public function getDemonStrength(DemonCode $demonCode): ?DemonStrength
@@ -241,6 +239,11 @@ class DemonsTable extends AbstractFileTable
         return new DemonKnack($value, $this->tables);
     }
 
+    public function getDemonWill(DemonCode $demonCode): DemonWill
+    {
+        return new DemonWill($this->getValue($demonCode, self::DEMON_WILL), $this->tables);
+    }
+
     public function getDemonArmor(DemonCode $demonCode): ?DemonArmor
     {
         $value = $this->getValue($demonCode, self::DEMON_ARMOR);
@@ -250,13 +253,22 @@ class DemonsTable extends AbstractFileTable
         return new DemonArmor($value, $this->tables);
     }
 
-    public function getInvisibility(DemonCode $demonCode): ?Invisibility
+    public function getDemonInvisibility(DemonCode $demonCode): ?DemonInvisibility
     {
-        $value = $this->getValue($demonCode, self::INVISIBILITY);
+        $value = $this->getValue($demonCode, self::DEMON_INVISIBILITY);
         if ($value === []) {
             return null;
         }
-        return new Invisibility($value, $this->tables);
+        return new DemonInvisibility($value, $this->tables);
+    }
+
+    public function getDemonArea(DemonCode $demonCode): ?DemonArea
+    {
+        $value = $this->getValue($demonCode, self::DEMON_AREA);
+        if ($value === []) {
+            return null;
+        }
+        return new DemonArea($value, $this->tables);
     }
 
 }

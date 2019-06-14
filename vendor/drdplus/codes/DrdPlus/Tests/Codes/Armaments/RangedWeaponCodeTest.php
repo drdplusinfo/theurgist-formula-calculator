@@ -14,7 +14,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_composer_method_to_get_weapons_of_same_category(): void
+    public function I_can_easily_composer_method_to_get_weapons_of_same_category()
     {
         foreach (WeaponCategoryCode::getRangedWeaponCategoryValues() as $rangedWeaponCategoryValue) {
             $getRangedWeaponOfCategory = StringTools::assembleGetterForName($rangedWeaponCategoryValue . 'Values');
@@ -41,7 +41,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_easily_find_out_if_is_melee(): void
+    public function I_can_easily_find_out_if_is_melee()
     {
         $rangedWeaponCode = RangedWeaponCode::getIt(RangedWeaponCode::getPossibleValues()[0]);
         self::assertFalse($rangedWeaponCode->isMelee());
@@ -288,7 +288,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
      * @expectedException \DrdPlus\Codes\Armaments\Exceptions\InvalidWeaponCategoryForNewRangedWeaponCode
      * @expectedExceptionMessageRegExp ~voulge~
      */
-    public function I_can_not_add_new_ranged_weapon_code_with_not_melee_category(): void
+    public function I_can_not_add_new_ranged_weapon_code_with_not_melee_category()
     {
         $meleeCategory = WeaponCategoryCode::getIt(WeaponCategoryCode::VOULGES_AND_TRIDENTS);
         self::assertFalse($meleeCategory->isRangedWeaponCategory());
@@ -301,7 +301,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
      * @expectedException \DrdPlus\Codes\Armaments\Exceptions\RangedWeaponIsAlreadyInDifferentWeaponCategory
      * @throws \ReflectionException
      */
-    public function I_can_not_extended_it_by_same_code_but_different_category(): void
+    public function I_can_not_extended_it_by_same_code_but_different_category()
     {
         $reflectionClass = new \ReflectionClass(RangedWeaponCode::class);
         $translations = $reflectionClass->getProperty('translations');
@@ -321,7 +321,7 @@ class RangedWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      */
-    public function I_can_get_it_with_default_value(): void
+    public function I_can_get_it_with_default_value()
     {
         $sut = $this->findSut();
         self::assertSame(RangedWeaponCode::SAND, $sut->getValue(), 'Expected sand as a harmless default value');

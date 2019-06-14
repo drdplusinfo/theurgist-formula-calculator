@@ -73,9 +73,11 @@ class VolumeBonus extends AbstractBonus
             case DistanceUnitCode::KILOMETER :
                 return VolumeUnitCode::CUBIC_KILOMETER;
             default :
+                // @codeCoverageIgnoreStart
                 throw new Exceptions\VolumeFromVolumeBonusIsOutOfRange(
                     "Can not convert volume bonus {$this->getValue()} to a volume as it is out of known values"
                 );
+            // @codeCoverageIgnoreEnd
         }
     }
 }

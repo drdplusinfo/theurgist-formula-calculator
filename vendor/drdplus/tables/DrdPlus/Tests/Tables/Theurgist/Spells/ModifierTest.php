@@ -5,7 +5,7 @@ namespace DrdPlus\Tests\Tables\Theurgist\Spells;
 
 use DrdPlus\Tables\Tables;
 use DrdPlus\Codes\Theurgist\ModifierCode;
-use DrdPlus\Codes\Theurgist\ModifierMutableSpellParameterCode;
+use DrdPlus\Codes\Theurgist\ModifierMutableParameterCode;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\AdditionByDifficulty;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\CastingRounds;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\DifficultyChange;
@@ -41,7 +41,7 @@ class ModifierTest extends TestWithMockery
             $modifier = new Modifier($modifierCode, $tables, [], []);
             self::assertSame($modifierCode, $modifier->getModifierCode());
             self::assertSame($modifierValue, (string)$modifier);
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $mutableParameterName) {
                 /** like instance of @see SpellSpeed */
                 $baseParameter = $this->createExpectedParameter($mutableParameterName);
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, $baseParameter);
@@ -144,8 +144,8 @@ class ModifierTest extends TestWithMockery
             $tables = $this->createTables($modifiersTable);
             $modifier = new Modifier($modifierCode, $tables, [], []);
             self::assertSame($modifierCode, $modifier->getModifierCode());
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
-                /*if ($mutableParameterName === ModifierMutableSpellParameterCode::) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $mutableParameterName) {
+                /*if ($mutableParameterName === ModifierMutableParameterCode::) {
                     continue; // can not be null, skipping
                 }*/
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, null);
@@ -170,7 +170,7 @@ class ModifierTest extends TestWithMockery
     public function I_can_create_it_with_change_for_every_modifier()
     {
         $parameterChanges = [];
-        foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $index => $parameterName) {
+        foreach (ModifierMutableParameterCode::getPossibleValues() as $index => $parameterName) {
             $parameterChanges[$parameterName] = $index + 1; // 1...x
         }
         $spellTraits = [$this->createSpellTraitShell(), $this->createSpellTraitShell()];
@@ -179,7 +179,7 @@ class ModifierTest extends TestWithMockery
             $modifiersTable = $this->createModifiersTable();
             $tables = $this->createTables($modifiersTable);
             $baseParameters = [];
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $parameterName) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $parameterName) {
                 /** like instance of @see SpellSpeed */
                 $baseParameter = $this->createExpectedParameter($parameterName, -1 /* default value */);
                 $this->addBaseParameterGetter($parameterName, $modifierCode, $modifiersTable, $baseParameter);
@@ -187,7 +187,7 @@ class ModifierTest extends TestWithMockery
             }
             $modifier = new Modifier($modifierCode, $tables, $parameterChanges, $spellTraits);
             self::assertSame($modifierCode, $modifier->getModifierCode());
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $parameterName) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $parameterName) {
                 $baseParameter = $baseParameters[$parameterName];
                 $change = $parameterChanges[$parameterName] + 1 /* because of difference against default value -1 */
                 ;
@@ -233,7 +233,7 @@ class ModifierTest extends TestWithMockery
             $modifierCode = ModifierCode::getIt($modifierValue);
             $modifiersTable = $this->createModifiersTable();
             $tables = $this->createTables($modifiersTable);
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $mutableParameterName) {
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, null);
             }
             $difficultyChange = $this->createDifficultyChange(0);
@@ -279,7 +279,7 @@ class ModifierTest extends TestWithMockery
             $modifiersTable = $this->createModifiersTable();
             $tables = $this->createTables($modifiersTable);
             $parameterDifficulties = [];
-            foreach (ModifierMutableSpellParameterCode::getPossibleValues() as $mutableParameterName) {
+            foreach (ModifierMutableParameterCode::getPossibleValues() as $mutableParameterName) {
                 $parameter = $this->createExpectedParameter($mutableParameterName);
                 $this->addBaseParameterGetter($mutableParameterName, $modifierCode, $modifiersTable, $parameter);
                 $changedParameter = $this->createExpectedParameter($mutableParameterName);
@@ -394,7 +394,7 @@ class ModifierTest extends TestWithMockery
         $modifiersTable = $this->createModifiersTable();
         $tables = $this->createTables($modifiersTable);
         $this->addBaseParameterGetter(
-            $parameterName = ModifierMutableSpellParameterCode::EPICENTER_SHIFT,
+            $parameterName = ModifierMutableParameterCode::EPICENTER_SHIFT,
             $code = ModifierCode::getIt(ModifierCode::INVISIBILITY),
             $modifiersTable,
             $this->createExpectedParameter($parameterName, 123 /* whatever */)
@@ -408,7 +408,7 @@ class ModifierTest extends TestWithMockery
             $modifiersTable = $this->createModifiersTable();
             $tables = $this->createTables($modifiersTable);
             $this->addBaseParameterGetter(
-                $parameterName = ModifierMutableSpellParameterCode::SPELL_RADIUS,
+                $parameterName = ModifierMutableParameterCode::SPELL_RADIUS,
                 $code = ModifierCode::getIt(ModifierCode::GATE),
                 $modifiersTable,
                 $this->createExpectedParameter($parameterName, 432 /* whatever */)
@@ -420,14 +420,14 @@ class ModifierTest extends TestWithMockery
         new Modifier(
             ModifierCode::getIt(ModifierCode::TRANSPOSITION),
             $tables,
-            [ModifierMutableSpellParameterCode::GRAFTS => 0.1],
+            [ModifierMutableParameterCode::GRAFTS => 0.1],
             []
         );
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UselessValueForUnusedSpellParameter
+     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierParameter
      * @expectedExceptionMessageRegExp ~4~
      */
     public function I_can_not_add_non_zero_addition_to_unused_parameter()
@@ -436,7 +436,7 @@ class ModifierTest extends TestWithMockery
         $tables = $this->createTables($modifiersTable);
         try {
             $this->addBaseParameterGetter(
-                $parameterName = ModifierMutableSpellParameterCode::SPELL_ATTACK,
+                $parameterName = ModifierMutableParameterCode::SPELL_ATTACK,
                 $modifierCode = ModifierCode::getIt(ModifierCode::INTERACTIVE_ILLUSION),
                 $modifiersTable,
                 $this->createExpectedParameter($parameterName, 9 /* whatever */)
@@ -453,7 +453,7 @@ class ModifierTest extends TestWithMockery
         $modifiersTable = $this->createModifiersTable();
         $tables = $this->createTables($modifiersTable);
         $this->addBaseParameterGetter(
-            $parameterName = ModifierMutableSpellParameterCode::RESISTANCE,
+            $parameterName = ModifierMutableParameterCode::RESISTANCE,
             $modifierCode = ModifierCode::getIt(ModifierCode::COLOR),
             $modifiersTable,
             null // unused

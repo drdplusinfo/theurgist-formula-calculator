@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Theurgist;
 
@@ -55,36 +54,32 @@ class ModifierCode extends AbstractTheurgistCode
         ];
     }
 
-    /**
-     * @param string $languageCode
-     * @return array|string[]
-     */
-    protected function getTranslations(string $languageCode): array
+    protected function fetchTranslations(): array
     {
-        return self::$translations[$languageCode] ?? [];
+        return [
+            'cs' => [
+                'one' => [
+                    self::COLOR => 'barva',
+                    self::GATE => 'brána',
+                    self::EXPLOSION => 'exploze',
+                    self::FILTER => 'filtr',
+                    self::WATCHER => 'hlídač',
+                    self::THUNDER => 'hrom',
+                    self::INTERACTIVE_ILLUSION => 'interaktivní iluze',
+                    self::HAMMER => 'kladivo',
+                    self::CAMOUFLAGE => 'maskování',
+                    self::INVISIBILITY => 'neviditelnost',
+                    self::MOVEMENT => 'pohyb',
+                    self::BREACH => 'průraz',
+                    self::RECEPTOR => 'receptor',
+                    self::STEP_TO_FUTURE => 'schod do budoucnosti',
+                    self::STEP_TO_PAST => 'schod do minulosti',
+                    self::TRANSPOSITION => 'transpozice',
+                    self::RELEASE => 'uvolnění',
+                    self::FRAGRANCE => 'vůně',
+                ],
+            ],
+        ];
     }
-
-    private static $translations = [
-        'cs' => [
-            self::COLOR => 'barva',
-            self::GATE => 'brána',
-            self::EXPLOSION => 'exploze',
-            self::FILTER => 'filtr',
-            self::WATCHER => 'hlídač',
-            self::THUNDER => 'hrom',
-            self::INTERACTIVE_ILLUSION => 'interaktivní iluze',
-            self::HAMMER => 'kladivo',
-            self::CAMOUFLAGE => 'maskování',
-            self::INVISIBILITY => 'neviditelnost',
-            self::MOVEMENT => 'pohyb',
-            self::BREACH => 'průraz',
-            self::RECEPTOR => 'receptor',
-            self::STEP_TO_FUTURE => 'schod do budoucnosti',
-            self::STEP_TO_PAST => 'schod do minulosti',
-            self::TRANSPOSITION => 'transpozice',
-            self::RELEASE => 'uvolnění',
-            self::FRAGRANCE => 'vůně',
-        ],
-    ];
 
 }
