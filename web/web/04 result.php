@@ -112,7 +112,7 @@ HTML;
 $brightness = $currentFormula->getCurrentSpellBrightness();
 if ($brightness !== null) {
     $resultParts[] = <<<HTML
-jas: {$currentFormulaValues->formatNumber($brightness)}
+jas: <strong>{$currentFormulaValues->formatNumber($brightness)}</strong>
 HTML;
 }
 /** @noinspection PhpUnhandledExceptionInspection */
@@ -121,14 +121,14 @@ if ($spellSpeed !== null) {
     $speed = $spellSpeed->getSpeedBonus()->getSpeed();
     $spellSpeedUnitInCzech = $speed->getUnitCode()->translateTo('cs', $speed->getValue());
     $resultParts[] = <<<HTML
-rychlost: {$currentFormulaValues->formatNumber($spellSpeed)} ({$speed->getValue()} {$spellSpeedUnitInCzech})
+rychlost: <strong>{$currentFormulaValues->formatNumber($spellSpeed)} ({$speed->getValue()} {$spellSpeedUnitInCzech})</strong>
 HTML;
 }
 /** @noinspection PhpUnhandledExceptionInspection */
 $attack = $currentFormula->getCurrentSpellAttack();
 if ($attack !== null) {
     $resultParts[] = <<<HTML
-útočnost: {$currentFormulaValues->formatNumber($attack)}
+útočnost: <strong>{$currentFormulaValues->formatNumber($attack)}</strong>
 HTML;
 } ?>
 <div id="result">
