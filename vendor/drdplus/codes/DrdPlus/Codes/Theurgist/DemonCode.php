@@ -67,7 +67,7 @@ class DemonCode extends AbstractTheurgistCode
                     self::CRON => 'kron',
                     self::DEMON_OF_MOVEMENT => 'démon pohybu',
                     self::WARDEN => 'správce',
-                    self::DEMON_OF_MUSIC => 'démon huudbý',
+                    self::DEMON_OF_MUSIC => 'démon hudby',
                     self::DEMON_DEFENDER => 'démon obránce',
                     self::DEMON_GAMBLER => 'démon hazardér',
                     self::DEMON_OF_TIRELESSNESS => 'démon neúnavnosti',

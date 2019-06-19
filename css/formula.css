@@ -78,3 +78,11 @@ input[disabled], select[disabled] {
 .trap {
     font-size: small;
 }
+
+.name {
+    display: inline-block;
+}
+
+.name::first-letter {
+    text-transform: uppercase;
+}
