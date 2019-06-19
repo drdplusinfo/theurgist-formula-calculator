@@ -86,3 +86,7 @@ input[disabled], select[disabled] {
 .name::first-letter {
     text-transform: uppercase;
 }
+
+.preview {
+    bottom: 1.5em;
+}
