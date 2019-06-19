@@ -15,16 +15,18 @@ use DrdPlus\Codes\Theurgist\FormulaCode;
   <div class="row">
     <div class="col">
       <select id="formula" name="<?= CurrentFormulaValues::FORMULA ?>">
-          <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) { ?>
+          <?php foreach (FormulaCode::getPossibleValues() as $formulaValue) {
+              $formulaCode = FormulaCode::getIt($formulaValue);
+              $formulaDifficulty = $webPartsContainer->getTables()->getFormulasTable()->getDifficulty($formulaCode);
+              ?>
             <option value="<?= $formulaValue ?>"
                     <?php if ($formulaValue === $webPartsContainer->getCurrentFormulaCode()->getValue()){ ?>selected<?php } ?>>
-                <?= FormulaCode::getIt($formulaValue)->translateTo('cs') ?>
+                <?= $formulaCode->translateTo('cs') ?>
+              [<?= $formulaDifficulty->getValue() ?>]
             </option>
           <?php } ?>
       </select>
       <button type="submit">Vybrat</button>
-        <?php $formulaDifficulty = $webPartsContainer->getTables()->getFormulasTable()->getDifficulty($webPartsContainer->getCurrentFormulaCode()); ?>
-      <span>[<?= $formulaDifficulty->getValue() ?>]</span>
       <span class="forms" title="Forma">
             <?php $formulaForms = implode(', ', $webPartsContainer->getCurrentFormulaValues()->getFormulaFormNames($webPartsContainer->getCurrentFormulaCode(), 'cs')); ?>
         (<?= $formulaForms ?>)
