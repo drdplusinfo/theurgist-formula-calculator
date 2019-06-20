@@ -6,7 +6,7 @@ namespace DrdPlus\Tables\Theurgist\Demons;
 use DrdPlus\Codes\Theurgist\DemonTraitCode;
 use DrdPlus\Tables\Partials\AbstractFileTable;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAddition;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 use DrdPlus\Tables\Theurgist\Spells\ToFlatArrayTrait;
 
@@ -32,13 +32,13 @@ class DemonTraitsTable extends AbstractFileTable
         return __DIR__ . '/data/demon_traits.csv';
     }
 
-    public const REALM = 'realm';
+    public const REALMS_ADDITION = 'realms_addition';
     public const REALMS_AFFECTION = 'realms_affection';
 
     protected function getExpectedDataHeaderNamesToTypes(): array
     {
         return [
-            self::REALM => self::POSITIVE_INTEGER,
+            self::REALMS_ADDITION => self::POSITIVE_INTEGER,
             self::REALMS_AFFECTION => self::ARRAY,
         ];
     }
@@ -50,9 +50,9 @@ class DemonTraitsTable extends AbstractFileTable
         return [self::TRAIT];
     }
 
-    public function getRealm(DemonTraitCode $demonTraitCode): Realm
+    public function getRealmsAddition(DemonTraitCode $demonTraitCode): RealmsAddition
     {
-        return new Realm($this->getValue($demonTraitCode, self::REALM));
+        return new RealmsAddition($this->getValue($demonTraitCode, self::REALMS_ADDITION));
     }
 
     public function getRealmsAffection(DemonTraitCode $demonTraitCode): RealmsAffection

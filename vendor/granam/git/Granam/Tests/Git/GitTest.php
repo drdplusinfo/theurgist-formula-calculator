@@ -1,8 +1,8 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\Git;
 
+use Granam\Git\Exceptions\ExecutingCommandFailed;
 use Granam\Git\Git;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ class GitTest extends TestCase
      */
     public function I_can_get_last_commit(): void
     {
-        $expectedLastCommit = \trim(\file_get_contents(__DIR__ . '/../../../.git/refs/heads/master'));
+        $expectedLastCommit = trim(file_get_contents(__DIR__ . '/../../../.git/refs/heads/master'));
         self::assertSame($expectedLastCommit, $this->getGit()->getLastCommitHash(__DIR__));
     }
 
@@ -145,5 +145,59 @@ class GitTest extends TestCase
     public function I_can_get_current_branch_name(): void
     {
         self::assertRegExp('~^(master|v?\d+[.]\d+)$~', $this->getGit()->getCurrentBranchName(__DIR__));
+    }
+
+    /**
+     * @test
+     */
+    public function It_can_detect_lock()
+    {
+        $tempDir = sys_get_temp_dir();
+        $tempGitDir = $tempDir . '/' . uniqid('git_lock_test', true);
+        $tempGitOriginDir = $tempDir . '/' . uniqid('git_origin_lock_test', true);
+        $tempGitOriginDirEscaped = escapeshellarg($tempGitOriginDir);
+        $tempGitDirEscaped = escapeshellarg($tempGitDir);
+        $commands = [
+            "mkdir $tempGitDirEscaped",
+            "cd $tempGitDirEscaped",
+            "git init",
+            "touch foo",
+            "git add foo",
+            "git commit -m 'bar'",
+            "cp -r $tempGitDirEscaped $tempGitOriginDirEscaped",
+            "git remote add origin $tempGitOriginDirEscaped",
+            "git fetch",
+            "git branch --set-upstream-to=origin/master master",
+            "cd $tempGitOriginDirEscaped",
+            "touch baz",
+            "git add baz",
+            "git commit -m 'qux'",
+        ];
+        $command = implode(' 2>&1 && ', $commands) . ' 2>&1';
+        exec(
+            $command,
+            $output,
+            $returnCode
+        );
+        self::assertSame(0, $returnCode, "Failed command $command: " . implode("\n", $output));
+
+        $commands = [
+            "touch $tempGitDirEscaped/.git/refs/remotes/origin/master.lock",
+        ];
+        $command = implode(' 2>&1 && ', $commands) . ' 2>&1';
+        exec(
+            $command,
+            $output,
+            $returnCode
+        );
+        self::assertSame(0, $returnCode, "Failed command $command: " . implode("\n", $output));
+
+        $git = new Git(0 /* instant "sleep" */);
+        try {
+            $git->update($tempGitDir);
+        } catch (ExecutingCommandFailed $executingCommandFailed) {
+            unlink("$tempGitDir/.git/refs/remotes/origin/master.lock");
+            $git->update($tempGitDir);
+        }
     }
 }

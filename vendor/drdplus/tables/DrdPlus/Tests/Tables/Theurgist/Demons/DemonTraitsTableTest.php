@@ -9,7 +9,7 @@ class DemonTraitsTableTest extends AbstractTheurgistTableTest
 {
     protected function getMandatoryParameters(): array
     {
-        return [DemonTraitsTable::REALM, DemonTraitsTable::REALMS_AFFECTION];
+        return [DemonTraitsTable::REALMS_ADDITION, DemonTraitsTable::REALMS_AFFECTION];
     }
 
     protected function getMainCodeClass(): string

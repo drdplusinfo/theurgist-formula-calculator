@@ -1,11 +1,10 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tables\Theurgist\Demons;
 
 use DrdPlus\Codes\Theurgist\DemonTraitCode;
 use DrdPlus\Tables\Tables;
-use DrdPlus\Tables\Theurgist\Spells\SpellParameters\Realm;
+use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAddition;
 use DrdPlus\Tables\Theurgist\Spells\SpellParameters\RealmsAffection;
 use Granam\Strict\Object\StrictObject;
 
@@ -26,9 +25,9 @@ class DemonTrait extends StrictObject
         $this->demonTraitsTable = $tables;
     }
 
-    public function getRequiredRealm(): Realm
+    public function getRealmsAddition(): RealmsAddition
     {
-        return $this->demonTraitsTable->getDemonTraitsTable()->getRealm($this->getDemonTraitCode());
+        return $this->demonTraitsTable->getDemonTraitsTable()->getRealmsAddition($this->getDemonTraitCode());
     }
 
     public function getDemonTraitCode(): DemonTraitCode

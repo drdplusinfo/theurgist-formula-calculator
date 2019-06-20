@@ -8,6 +8,7 @@ namespace DrdPlus\Codes\Theurgist;
  */
 class DemonTraitCode extends AbstractTheurgistCode
 {
+    public const UNLIMITED_ENDURANCE = 'unlimited_endurance';
     public const CHEAP_UNLIMITED_CAPACITY = 'cheap_unlimited_capacity';
     public const UNLIMITED_CAPACITY = 'unlimited_capacity';
     public const CASTER = 'caster';
@@ -17,6 +18,7 @@ class DemonTraitCode extends AbstractTheurgistCode
     public static function getPossibleValues(): array
     {
         return [
+            self::UNLIMITED_ENDURANCE,
             self::CHEAP_UNLIMITED_CAPACITY,
             self::UNLIMITED_CAPACITY,
             self::CASTER,
@@ -30,6 +32,7 @@ class DemonTraitCode extends AbstractTheurgistCode
         return [
             'cs' => [
                 'one' => [
+                    self::UNLIMITED_ENDURANCE => 'neomezená výdrž',
                     self::CHEAP_UNLIMITED_CAPACITY => 'neomezená kapacita',
                     self::UNLIMITED_CAPACITY => 'neomezená kapacita',
                     self::CASTER => 'sesilatel',

@@ -136,16 +136,16 @@
         },
         {
             "name": "drdplus/codes",
-            "version": "2.1.2",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/codes.git",
-                "reference": "f56fa579fa560ebd62341a936618950a617d2d1f"
+                "reference": "c2556238bf27f7890c0015449232ed6732a581fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/codes/zipball/f56fa579fa560ebd62341a936618950a617d2d1f",
-                "reference": "f56fa579fa560ebd62341a936618950a617d2d1f",
+                "url": "https://api.github.com/repos/drdplusinfo/codes/zipball/c2556238bf27f7890c0015449232ed6732a581fd",
+                "reference": "c2556238bf27f7890c0015449232ed6732a581fd",
                 "shasum": ""
             },
             "require": {
@@ -172,7 +172,7 @@
                 "MIT"
             ],
             "description": "Codes of Drd+ races, properties",
-            "time": "2019-06-16T06:36:10+00:00"
+            "time": "2019-06-19T15:54:30+00:00"
         },
         {
             "name": "drdplus/rules-skeleton",
@@ -245,16 +245,16 @@
         },
         {
             "name": "drdplus/tables",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/tables.git",
-                "reference": "ce25fd7d868b4fd438871744a81872f5dde50b0d"
+                "reference": "d998d84e06be913bb91445aef3047c263ab128d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/ce25fd7d868b4fd438871744a81872f5dde50b0d",
-                "reference": "ce25fd7d868b4fd438871744a81872f5dde50b0d",
+                "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/d998d84e06be913bb91445aef3047c263ab128d7",
+                "reference": "d998d84e06be913bb91445aef3047c263ab128d7",
                 "shasum": ""
             },
             "require": {
@@ -285,7 +285,7 @@
                 "MIT"
             ],
             "description": "Drd+ tables and their units conversion",
-            "time": "2019-06-16T05:46:51+00:00"
+            "time": "2019-06-20T07:05:50+00:00"
         },
         {
             "name": "drdplus/web-versions",
@@ -563,16 +563,16 @@
         },
         {
             "name": "granam/git",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/granam/git.git",
-                "reference": "37c02c6e5bc7cf7fe3c85d2581dcd506c8134885"
+                "reference": "679ea2c1d48553fe44326d247b561bda12af4235"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/granam/git/zipball/37c02c6e5bc7cf7fe3c85d2581dcd506c8134885",
-                "reference": "37c02c6e5bc7cf7fe3c85d2581dcd506c8134885",
+                "url": "https://api.github.com/repos/granam/git/zipball/679ea2c1d48553fe44326d247b561bda12af4235",
+                "reference": "679ea2c1d48553fe44326d247b561bda12af4235",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,7 @@
                 "tag",
                 "versions"
             ],
-            "time": "2019-04-16T08:20:01+00:00"
+            "time": "2019-06-20T14:19:05+00:00"
         },
         {
             "name": "granam/integer",
@@ -2671,16 +2671,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.5.12",
+            "version": "7.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c"
+                "reference": "b9278591caa8630127f96c63b598712b699e671c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c",
-                "reference": "9ba59817745b0fe0c1a5a3032dfd4a6d2994ad1c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b9278591caa8630127f96c63b598712b699e671c",
+                "reference": "b9278591caa8630127f96c63b598712b699e671c",
                 "shasum": ""
             },
             "require": {
@@ -2751,7 +2751,56 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-05-28T11:59:40+00:00"
+            "time": "2019-06-19T12:01:51+00:00"
+        },
+        {
+            "name": "psr/container",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/container.git",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/container/zipball/b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "reference": "b7ce3b176482dbbc1245ebf52b181af44c2cf55f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Container\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common Container Interface (PHP FIG PSR-11)",
+            "homepage": "https://github.com/php-fig/container",
+            "keywords": [
+                "PSR-11",
+                "container",
+                "container-interface",
+                "container-interop",
+                "psr"
+            ],
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "psr/log",
@@ -4073,23 +4122,23 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v1.1.2",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "191afdcb5804db960d26d8566b7e9a2843cab3a0"
+                "reference": "f391a00de78ec7ec8cf5cdcdae59ec7b883edb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/191afdcb5804db960d26d8566b7e9a2843cab3a0",
-                "reference": "191afdcb5804db960d26d8566b7e9a2843cab3a0",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/f391a00de78ec7ec8cf5cdcdae59ec7b883edb8d",
+                "reference": "f391a00de78ec7ec8cf5cdcdae59ec7b883edb8d",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3"
+                "php": "^7.1.3",
+                "psr/container": "^1.0"
             },
             "suggest": {
-                "psr/container": "",
                 "symfony/service-implementation": ""
             },
             "type": "library",
@@ -4127,7 +4176,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-05-28T07:50:59+00:00"
+            "time": "2019-06-13T11:15:36+00:00"
         },
         {
             "name": "theseer/tokenizer",

@@ -50,8 +50,12 @@ class AllDemonParametersTest extends TestWithMockery
                         $demonClasses[] = $foundCode;
                     }
                 } elseif (is_file($folderFullPath) && preg_match('~(?<classBasename>\w+(?:Code)?)\.php$~', $folder, $matches)) {
-                    $reflectionClass = new \ReflectionClass($rootNamespace . '\\' . $matches['classBasename']);
-                    if (!$reflectionClass->isAbstract() && !$reflectionClass->isInterface()) {
+                    $className = $rootNamespace . '\\' . $matches['classBasename'];
+                    if (is_a($className, \Throwable::class, true)) {
+                        continue;
+                    }
+                    $reflectionClass = new \ReflectionClass($className);
+                    if (!$reflectionClass->isAbstract() && !$reflectionClass->isInterface() && !$reflectionClass->isInterface()) {
                         self::assertRegExp(
                             '~\\Demon[[:alpha:]]+$~',
                             $reflectionClass->getName(),

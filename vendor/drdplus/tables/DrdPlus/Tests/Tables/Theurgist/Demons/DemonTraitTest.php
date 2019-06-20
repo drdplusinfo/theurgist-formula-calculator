@@ -18,7 +18,7 @@ class DemonTraitTest extends TestCase
         $demonTrait = new DemonTrait($demonTraitCode, Tables::getIt());
         self::assertSame($demonTraitCode, $demonTrait->getDemonTraitCode());
         self::assertSame($demonTraitCode->getValue(), (string)$demonTrait);
-        self::assertEquals(Tables::getIt()->getDemonTraitsTable()->getRealm($demonTraitCode), $demonTrait->getRequiredRealm());
+        self::assertEquals(Tables::getIt()->getDemonTraitsTable()->getRealmsAddition($demonTraitCode), $demonTrait->getRealmsAddition());
         self::assertEquals(Tables::getIt()->getDemonTraitsTable()->getRealmsAffection($demonTraitCode), $demonTrait->getRealmsAffection());
     }
 }

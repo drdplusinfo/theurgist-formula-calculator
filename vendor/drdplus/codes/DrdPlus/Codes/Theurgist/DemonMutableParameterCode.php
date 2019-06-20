@@ -17,7 +17,6 @@ class DemonMutableParameterCode extends AbstractTheurgistCode
     const DEMON_INVISIBILITY = 'demon_invisibility';
     const DEMON_ARMOR = 'demon_armor';
     const SPELL_SPEED = 'spell_speed';
-    const SPELL_RADIUS = 'spell_radius';
     const DEMON_STRENGTH = 'demon_strength';
     const DEMON_AGILITY = 'demon_agility';
     const DEMON_KNACK = 'demon_knack';
@@ -34,7 +33,6 @@ class DemonMutableParameterCode extends AbstractTheurgistCode
             self::DEMON_INVISIBILITY,
             self::DEMON_ARMOR,
             self::SPELL_SPEED,
-            self::SPELL_RADIUS,
             self::DEMON_STRENGTH,
             self::DEMON_AGILITY,
             self::DEMON_KNACK,
@@ -55,7 +53,6 @@ class DemonMutableParameterCode extends AbstractTheurgistCode
                     self::DEMON_INVISIBILITY => 'neviditelnost',
                     self::DEMON_ARMOR => 'zbroj ',
                     self::SPELL_SPEED => 'rychlost kouzla',
-                    self::SPELL_RADIUS => 'oblast',
                     self::DEMON_STRENGTH => 'síla',
                     self::DEMON_AGILITY => 'obratnost',
                     self::DEMON_KNACK => 'zručnost',

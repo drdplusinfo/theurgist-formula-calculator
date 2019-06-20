@@ -6,6 +6,7 @@ use DrdPlus\Codes\Theurgist\DemonBodyCode;
 use DrdPlus\Codes\Theurgist\DemonCode;
 use DrdPlus\Codes\Theurgist\DemonKindCode;
 use DrdPlus\Codes\Theurgist\DemonMutableParameterCode;
+use DrdPlus\Codes\Theurgist\DemonTraitCode;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonActivationDuration;
 use DrdPlus\Tables\Theurgist\Demons\DemonParameters\DemonAgility;
@@ -134,20 +135,26 @@ class Demon extends StrictObject
      */
     public function getRequiredRealm(): Realm
     {
+        $requiredRealm = $this->getEffectiveRealm();
+
+        $realmsAdditionSum = 0;
+        foreach ($this->getDemonTraits() as $demonTrait) {
+            $realmsAdditionSum += $demonTrait->getRealmsAddition()->getValue();
+        }
+
+        if ($realmsAdditionSum === 0) {
+            return $requiredRealm;
+        }
+
+        return $requiredRealm->add($realmsAdditionSum);
+    }
+
+    public function getEffectiveRealm(): Realm
+    {
         $baseRealm = $this->getBaseRealm();
 
         $realmsIncrementBecauseOfDifficulty = $this->getCurrentDifficulty()->getCurrentRealmsIncrement();
-        $requiredRealm = $baseRealm->add($realmsIncrementBecauseOfDifficulty);
-
-        foreach ($this->getDemonTraits() as $demonTrait) {
-            $byTraitRequiredRealm = $demonTrait->getRequiredRealm();
-            if ($requiredRealm->getValue() < $byTraitRequiredRealm->getValue()) {
-                // some trait requires even higher realm, so we are forced to increase it
-                $requiredRealm = $byTraitRequiredRealm;
-            }
-        }
-
-        return $requiredRealm;
+        return $baseRealm->add($realmsIncrementBecauseOfDifficulty);
     }
 
     public function getBaseRealm(): Realm
@@ -353,6 +360,16 @@ class Demon extends StrictObject
     public function getDemonTraits(): array
     {
         return $this->demonTraits;
+    }
+
+    public function hasUnlimitedEndurance(): bool
+    {
+        foreach ($this->getDemonTraits() as $demonTrait) {
+            if ($demonTrait->getDemonTraitCode()->is(DemonTraitCode::UNLIMITED_ENDURANCE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getCurrentSpellSpeed(): ?SpellSpeed

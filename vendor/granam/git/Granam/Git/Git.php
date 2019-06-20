@@ -1,9 +1,7 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Git;
 
-use Granam\Git\Exceptions\ExecutingCommandFailed;
 use Granam\Strict\Object\StrictObject;
 
 class Git extends StrictObject
@@ -12,6 +10,13 @@ class Git extends StrictObject
     public const EXCLUDE_LOCAL_BRANCHES = false;
     public const INCLUDE_REMOTE_BRANCHES = true;
     public const EXCLUDE_REMOTE_BRANCHES = false;
+
+    private $sleepMultiplierOnLock;
+
+    public function __construct(int $sleepMultiplierOnLock = 1)
+    {
+        $this->sleepMultiplierOnLock = $sleepMultiplierOnLock;
+    }
 
     /**
      * @param string $repositoryDir
@@ -131,18 +136,24 @@ class Git extends StrictObject
     public function update(string $repositoryDir): array
     {
         $repositoryDirEscaped = escapeshellarg($repositoryDir);
-        $commands = [];
-        $commands[] = "cd $repositoryDirEscaped";
-        $commands[] = 'git pull --ff-only';
-        $commands[] = 'git pull --tags';
         $attempt = 1;
+        $commands = [
+            "echo 'attempt number $attempt'",
+            "cd $repositoryDirEscaped",
+            'git pull --ff-only',
+            'git pull --tags',
+        ];
         do {
             try {
                 return $this->executeCommandsChainArray($commands);
-            } catch (ExecutingCommandFailed $executingCommandFailed) {
-                if (\preg_match("~'fatal: Unable to create '[^']+[.]lock': File exists[.]$~", $executingCommandFailed->getMessage())) {
-                    \sleep($attempt); // some update currently proceeds
+            } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
+                if (preg_match("~Unable to create '[^']+[.]lock': File exists[.]~", $executingCommandFailed->getMessage())) {
                     $attempt++;
+                    if ($attempt === 3) {
+                        throw $executingCommandFailed;
+                    }
+                    sleep($this->sleepMultiplierOnLock * $attempt); // some update currently proceeds
+                    $commands[0] = "echo 'attempt number $attempt'";
                     continue;
                 }
                 throw $executingCommandFailed;
@@ -167,7 +178,7 @@ class Git extends StrictObject
             );
         }
         foreach ($rows as $remoteBranch) {
-            $branchFromRemote = trim(\explode('/', $remoteBranch)[1] ?? '');
+            $branchFromRemote = trim(explode('/', $remoteBranch)[1] ?? '');
             if ($branchName === $branchFromRemote) {
                 return true;
             }
@@ -264,7 +275,7 @@ class Git extends StrictObject
         $patchVersions = $this->getAllPatchVersions($repositoryDir);
         $matchingPatchVersions = [];
         foreach ($patchVersions as $patchVersion) {
-            if (\strpos($patchVersion, $superiorVersion) === 0) {
+            if (strpos($patchVersion, $superiorVersion) === 0) {
                 $matchingPatchVersions[] = $patchVersion;
             }
         }
@@ -318,9 +329,9 @@ class Git extends StrictObject
             $homeDir = exec('echo $HOME 2>&1', $output, $returnCode);
             $this->guardCommandWithoutError($returnCode, $command, $output);
             if (!$homeDir) {
-                if (\file_exists('/home/www-data')) {
+                if (file_exists('/home/www-data')) {
                     $command = 'export HOME=/home/www-data 2>&1 && ' . $command;
-                } elseif (\file_exists('/var/www')) {
+                } elseif (file_exists('/var/www')) {
                     $command = 'export HOME=/var/www 2>&1 && ' . $command;
                 } // else we will hope it will somehow pass without fatal: failed to expand user dir in: '~/.gitignore'
             }

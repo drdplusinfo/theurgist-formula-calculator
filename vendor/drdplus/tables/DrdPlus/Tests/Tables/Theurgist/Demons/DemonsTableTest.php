@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Demons;
 
@@ -72,24 +72,24 @@ class DemonsTableTest extends AbstractTheurgistTableTest
     public function provideDemonAndExpectedTraits(): array
     {
         return [
-            DemonCode::CRON => [DemonCode::CRON, [DemonTraitCode::UNLIMITED_CAPACITY]],
-            DemonCode::DEMON_OF_MOVEMENT => [DemonCode::DEMON_OF_MOVEMENT, [DemonTraitCode::CHEAP_UNLIMITED_CAPACITY]],
-            DemonCode::WARDEN => [DemonCode::WARDEN, [DemonTraitCode::CASTER, DemonTraitCode::FORMULER, DemonTraitCode::BUILDER, DemonTraitCode::UNLIMITED_CAPACITY]],
-            DemonCode::DEMON_OF_MUSIC => [DemonCode::DEMON_OF_MUSIC, []],
-            DemonCode::DEMON_DEFENDER => [DemonCode::DEMON_DEFENDER, []],
-            DemonCode::DEMON_GAMBLER => [DemonCode::DEMON_GAMBLER, []],
-            DemonCode::DEMON_OF_TIRELESSNESS => [DemonCode::DEMON_OF_TIRELESSNESS, []],
-            DemonCode::DEMON_OF_OMIT_VOMIT => [DemonCode::DEMON_OF_OMIT_VOMIT, []],
-            DemonCode::DEMON_ATTACKER => [DemonCode::DEMON_ATTACKER, []],
-            DemonCode::DEMON_OF_VISION => [DemonCode::DEMON_OF_VISION, []],
-            DemonCode::GOLEM => [DemonCode::GOLEM, []],
-            DemonCode::DEADY => [DemonCode::DEADY, []],
+            DemonCode::CRON => [DemonCode::CRON, [DemonTraitCode::UNLIMITED_ENDURANCE, DemonTraitCode::UNLIMITED_CAPACITY]],
+            DemonCode::DEMON_OF_MOVEMENT => [DemonCode::DEMON_OF_MOVEMENT, [DemonTraitCode::UNLIMITED_ENDURANCE, DemonTraitCode::CHEAP_UNLIMITED_CAPACITY]],
+            DemonCode::WARDEN => [DemonCode::WARDEN, [DemonTraitCode::UNLIMITED_ENDURANCE, DemonTraitCode::CASTER, DemonTraitCode::FORMULER, DemonTraitCode::BUILDER, DemonTraitCode::UNLIMITED_CAPACITY]],
+            DemonCode::DEMON_OF_MUSIC => [DemonCode::DEMON_OF_MUSIC, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_DEFENDER => [DemonCode::DEMON_DEFENDER, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_GAMBLER => [DemonCode::DEMON_GAMBLER, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_OF_TIRELESSNESS => [DemonCode::DEMON_OF_TIRELESSNESS, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_OF_OMIT_VOMIT => [DemonCode::DEMON_OF_OMIT_VOMIT, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_ATTACKER => [DemonCode::DEMON_ATTACKER, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_OF_VISION => [DemonCode::DEMON_OF_VISION, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::GOLEM => [DemonCode::GOLEM, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEADY => [DemonCode::DEADY, [DemonTraitCode::UNLIMITED_ENDURANCE]],
             DemonCode::BERSERK => [DemonCode::BERSERK, []],
-            DemonCode::IMP => [DemonCode::IMP, []],
-            DemonCode::DEMON_OF_KNOWLEDGE => [DemonCode::DEMON_OF_KNOWLEDGE, []],
-            DemonCode::NAVIGATOR => [DemonCode::NAVIGATOR, []],
+            DemonCode::IMP => [DemonCode::IMP, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::DEMON_OF_KNOWLEDGE => [DemonCode::DEMON_OF_KNOWLEDGE, [DemonTraitCode::UNLIMITED_ENDURANCE]],
+            DemonCode::NAVIGATOR => [DemonCode::NAVIGATOR, [DemonTraitCode::UNLIMITED_ENDURANCE]],
             DemonCode::GUARDIAN => [DemonCode::GUARDIAN, []],
-            DemonCode::SPY => [DemonCode::SPY, []],
+            DemonCode::SPY => [DemonCode::SPY, [DemonTraitCode::UNLIMITED_ENDURANCE]],
         ];
     }
 
