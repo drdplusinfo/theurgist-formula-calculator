@@ -38,7 +38,7 @@ abstract class MainContent extends Content
     {
         $this->htmlHelper->addIdsToHeadings($htmlDocument);
         $this->htmlHelper->addIdsToTables($htmlDocument);
-        $this->htmlHelper->replaceDiacriticsFromIds($htmlDocument);
+        $this->htmlHelper->unifyIds($htmlDocument);
         $this->htmlHelper->addAnchorsToIds($htmlDocument);
         $this->htmlHelper->replaceDiacriticsFromDrdPlusAnchorHashes($htmlDocument);
     }

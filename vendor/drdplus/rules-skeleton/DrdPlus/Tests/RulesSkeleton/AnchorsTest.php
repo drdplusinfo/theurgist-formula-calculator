@@ -315,7 +315,14 @@ class AnchorsTest extends AbstractContentTest
 
             return;
         }
-        self::assertNotEmpty($originalIds);
+        self::assertNotEmpty(
+            $originalIds,
+            sprintf(
+                'Expected some IDs identified by a HTML class %s according to test configuration %s',
+                HtmlHelper::CLASS_INVISIBLE,
+                TestsConfiguration::HAS_IDS
+            )
+        );
         foreach ($originalIds as $originalId) {
             self::assertSame('', $originalId->innerHTML);
         }

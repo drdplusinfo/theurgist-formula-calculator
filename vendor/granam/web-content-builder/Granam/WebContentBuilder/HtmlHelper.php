@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\WebContentBuilder;
 
@@ -12,6 +11,7 @@ class HtmlHelper extends StrictObject
 
     public const CLASS_INVISIBLE_ID = 'invisible-id';
     public const DATA_ORIGINAL_ID = 'data-original-id';
+    public const DATA_ORIGINAL_FOR = 'data-original-for';
     public const CLASS_INTERNAL_URL = 'internal-url';
 
     /** @var Dirs */
@@ -64,19 +64,28 @@ class HtmlHelper extends StrictObject
         return $htmlDocument;
     }
 
-    public function replaceDiacriticsFromIds(HtmlDocument $htmlDocument): HtmlDocument
+    public function unifyIds(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        $htmlDocument = $this->unifyIdsOnly($htmlDocument);
+        $htmlDocument = $this->unifyForInLabels($htmlDocument);
+
+        return $htmlDocument;
+    }
+
+    private function unifyIdsOnly(HtmlDocument $htmlDocument): HtmlDocument
     {
         foreach ($this->getElementsWithId($htmlDocument) as $id => $elementWithId) {
             $idWithoutDiacritics = static::toId($id);
             if ($idWithoutDiacritics === $id) {
                 continue;
             }
-            $elementWithId = $this->getElementWithId($id, $htmlDocument);
             $elementWithId->setAttribute(self::DATA_ORIGINAL_ID, $id);
             $elementWithId->setAttribute('id', $this->sanitizeId($idWithoutDiacritics));
-            $elementWithId->appendChild($invisibleId = new Element('span'));
-            $invisibleId->setAttribute('id', $this->sanitizeId($id));
-            $invisibleId->className = self::CLASS_INVISIBLE_ID;
+
+            $invisibleIdElement = new Element('span');
+            $elementWithId->appendChild($invisibleIdElement);
+            $invisibleIdElement->setAttribute('id', $this->sanitizeId($id));
+            $invisibleIdElement->className = self::CLASS_INVISIBLE_ID;
         }
 
         return $htmlDocument;
@@ -84,7 +93,39 @@ class HtmlHelper extends StrictObject
 
     private function sanitizeId(string $id): string
     {
-        return \str_replace('#', '_', $id);
+        return str_replace('#', '_', $id);
+    }
+
+    private function unifyForInLabels(HtmlDocument $htmlDocument): HtmlDocument
+    {
+        foreach ($this->getLabelsWithFor($htmlDocument) as $id => $labelWithFor) {
+            $idWithoutDiacritics = static::toId($id);
+            if ($idWithoutDiacritics === $id) {
+                continue;
+            }
+            $labelWithFor->setAttribute(self::DATA_ORIGINAL_FOR, $id);
+            $labelWithFor->setAttribute('for', $this->sanitizeId($idWithoutDiacritics));
+        }
+
+        return $htmlDocument;
+    }
+
+    /**
+     * @param HtmlDocument $htmlDocument
+     * @return array|Element[]
+     */
+    private function getLabelsWithFor(HtmlDocument $htmlDocument): array
+    {
+        $labels = $htmlDocument->getElementsByTagName('label');
+        $labelsWithFor = [];
+        foreach ($labels as $label) {
+            $id = (string)$label->getAttribute('for');
+            if ($id !== '') {
+                $labelsWithFor[$id] = $label;
+            }
+        }
+
+        return $labelsWithFor;
     }
 
     public function replaceDiacriticsFromAnchorHashes(
@@ -121,7 +162,7 @@ class HtmlHelper extends StrictObject
             if ($hashWithoutDiacritics === $hash) {
                 continue;
             }
-            $hrefWithoutDiacritics = \str_replace('#' . $hash, '#' . $hashWithoutDiacritics, $href);
+            $hrefWithoutDiacritics = str_replace('#' . $hash, '#' . $hashWithoutDiacritics, $href);
             $anchor->setAttribute('href', $hrefWithoutDiacritics);
         }
     }
@@ -150,15 +191,15 @@ class HtmlHelper extends StrictObject
 
     public function addAnchorsToIds(HtmlDocument $htmlDocument): HtmlDocument
     {
-        foreach ($this->getElementsWithId($htmlDocument) as $elementWithId) {
-            if (!\in_array($elementWithId->nodeName, ['a', 'button'], true)
+        foreach ($this->getElementsWithId($htmlDocument) as $id => $elementWithId) {
+            if (!in_array($elementWithId->nodeName, ['a', 'button'], true)
                 && $elementWithId->getElementsByTagName('a')->length === 0 // already have some anchors, skip it to avoid wrapping them by another one
                 && !$elementWithId->prop_get_classList()->contains(self::CLASS_INVISIBLE_ID)
             ) {
                 $toMove = [];
                 /** @var \DOMElement $childNode */
                 foreach ($elementWithId->childNodes as $childNode) {
-                    if (!\in_array($childNode->nodeName, ['span', 'strong', 'b', 'i', '#text'], true)) {
+                    if (!in_array($childNode->nodeName, ['span', 'strong', 'b', 'i', '#text'], true)) {
                         break;
                     }
                     $toMove[] = $childNode;
@@ -166,7 +207,7 @@ class HtmlHelper extends StrictObject
                 if ($toMove) {
                     $anchorToSelf = new Element('a');
                     $elementWithId->replaceChild($anchorToSelf, $toMove[0]); // pairs anchor with parent element
-                    $anchorToSelf->setAttribute('href', '#' . $elementWithId->getAttribute('id'));
+                    $anchorToSelf->setAttribute('href', '#' . $id);
                     foreach ($toMove as $index => $item) {
                         $anchorToSelf->appendChild($item);
                     }
@@ -273,7 +314,7 @@ class HtmlHelper extends StrictObject
         $relativePath = \ltrim($relativePath, '\\/');
         $absolutePath = $masterDocumentRoot . '/' . $relativePath;
 
-        return \str_replace('/./', '/', $absolutePath);
+        return str_replace('/./', '/', $absolutePath);
     }
 
     private function getFileHash(string $fileName): string

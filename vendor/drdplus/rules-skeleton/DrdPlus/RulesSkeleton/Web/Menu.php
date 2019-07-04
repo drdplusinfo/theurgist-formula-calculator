@@ -82,6 +82,13 @@ HTML;
           <span class="desktop"><i class="fab fa-discord"></i> Discord</span>
         </a>
       </span>
+      <span class="contact">
+        <a target="_blank" class="trello-contact" href="https://trello.com/b/L64FNYj3/drdplusinfo">
+          <span class="mobile"><i class="fab fa-trello"></i></span>
+          <span class="tablet">Trello</span>
+          <span class="desktop"><i class="fab fa-trello"></i> Trello</span>
+        </a>
+      </span>
     </div>
   </div>
   <div class="contacts-placeholder invisible">

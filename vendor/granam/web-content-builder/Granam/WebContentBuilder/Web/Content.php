@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\WebContentBuilder\Web;
 
@@ -49,7 +48,7 @@ class Content extends StrictObject implements HtmlContentInterface
     {
         $htmlDocument = new HtmlDocument($content);
         $this->htmlHelper->addIdsToHeadings($htmlDocument);
-        $this->htmlHelper->replaceDiacriticsFromIds($htmlDocument);
+        $this->htmlHelper->unifyIds($htmlDocument);
         $this->htmlHelper->replaceDiacriticsFromAnchorHashes($htmlDocument);
         $this->htmlHelper->addAnchorsToIds($htmlDocument);
         $this->htmlHelper->externalLinksTargetToBlank($htmlDocument);

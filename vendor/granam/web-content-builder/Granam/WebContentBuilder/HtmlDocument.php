@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\WebContentBuilder;
 
@@ -15,6 +14,6 @@ class HtmlDocument extends \Gt\Dom\HTMLDocument
     {
         $html = parent::saveHTML($node);
 
-        return \str_replace('</script><', "</script>\n<", $html);
+        return str_replace('</script><', "</script>\n<", $html);
     }
 }

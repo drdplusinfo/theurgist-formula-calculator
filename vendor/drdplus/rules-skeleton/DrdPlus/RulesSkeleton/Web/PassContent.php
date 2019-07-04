@@ -31,7 +31,7 @@ class PassContent extends Content
 
     private function solveIds(HtmlDocument $htmlDocument): void
     {
-        $this->htmlHelper->replaceDiacriticsFromIds($htmlDocument);
+        $this->htmlHelper->unifyIds($htmlDocument);
         $this->htmlHelper->replaceDiacriticsFromDrdPlusAnchorHashes($htmlDocument);
     }
 

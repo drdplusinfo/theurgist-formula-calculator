@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (var controlIndex = 0, controlsLength = allControls.length; controlIndex < controlsLength; controlIndex++) {
         var control = allControls[controlIndex];
-        if (typeof control.type !== 'undefined' && control.type !== 'submit') {
+        if ((typeof control.type === 'undefined' || control.type !== 'submit') && !control.classList.contains('manual')) {
             if (typeof control.type === 'undefined' || control.type !== 'button') {
                 control.addEventListener('change', function () {
                     submitOnChange(this)
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             node = form;
         } while (form && form.tagName.toUpperCase() !== 'FORM');
         if (!form || form.tagName.toUpperCase() !== 'FORM') {
-            throw 'No form found for an input ' + changedInput.outerHTML
+            throw 'No form found for input ' + changedInput.outerHTML
         }
         if (submit(form) && requiredInputsAreFilled(form)) {
             invalidateResult();
@@ -67,23 +67,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function submit(form) {
+        var hasManualSubmit = false;
         var formButtons = form.getElementsByTagName('button');
         for (var buttonIndex = 0, buttonsLength = formButtons.length; buttonIndex < buttonsLength; buttonIndex++) {
             var button = formButtons[buttonIndex];
             if (button.type === 'submit' && !button.disabled) {
-                button.click();
-                return true;
+                if (button.classList.contains('manual')) {
+                    hasManualSubmit = true;
+                } else {
+                    button.click();
+                    return true;
+                }
             }
         }
         var formInputs = form.getElementsByTagName('input');
         for (var inputIndex = 0, inputsLength = formInputs.length; inputIndex < inputsLength; inputIndex++) {
             var input = formInputs[inputIndex];
             if (input.type === 'submit' && !input.disabled) {
-                input.click();
-                return true;
+                if (input.classList.contains('manual')) {
+                    hasManualSubmit = true;
+                } else {
+                    input.click();
+                    return true;
+                }
             }
         }
-        throw 'No submit has been found in form ' + form.outerHTML;
+        if (!hasManualSubmit) {
+            throw 'No non-disabled submit has been found in form ' + form.outerHTML;
+        }
     }
 
     function requiredInputsAreFilled(form) {

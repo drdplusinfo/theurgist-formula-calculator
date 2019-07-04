@@ -229,7 +229,7 @@ HTML
 </htm>
 HTML
         );
-        $htmlHelper->replaceDiacriticsFromIds($htmlDocument);
+        $htmlHelper->unifyIds($htmlDocument);
         $divs = $htmlDocument->getElementsByClassName('test');
         self::assertCount(1, $divs);
         $div = $divs[0];

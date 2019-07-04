@@ -11,7 +11,7 @@
   "require": {
     "php": ">=7.1",
     "composer-plugin-api": "^1.1",
-    "drdplus/rules-skeleton": "~1.1",
+    "drdplus/rules-skeleton": "~1.2",
     "granam/exceptions-hierarchy": "^4.0",
     "granam/integer": "^6.1",
     "granam/scalar": "^4.0",

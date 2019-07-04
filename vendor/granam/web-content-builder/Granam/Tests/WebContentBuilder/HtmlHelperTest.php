@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\WebContentBuilder;
 
@@ -139,29 +138,50 @@ HTML
     /**
      * @test
      */
-    public function I_can_replace_diacritics_from_id(): void
+    public function I_can_unify_ids_and_for_in_related_labels(): void
     {
         $htmlHelper = $this->getHtmlHelper();
-        $withIdsWithoutDiacritics = $htmlHelper->replaceDiacriticsFromIds(new HtmlDocument(<<<HTML
+        $unified = $htmlHelper->unifyIds(new HtmlDocument(<<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <body>
 <h1 class="text-to-left">Obsah</h1>
-<div id="Břetislav"><span id="Svíčková s příšernou šlehačkou">Fůůj</span></div>
+<div id="english">
+  <label for="deadlyLiving">Human</label>
+  <div id="deadlyLiving">Walking dude</div>
+</div>
+<div id="czech">
+  <label for="Křivule pro srovnání">Nakřivo</label>
+  <div id="Křivule pro srovnání">Srovnej si to</div>
+</div>
 </body>
 </html>
 HTML
         ));
-        /** @var Element $bretislav */
-        $bretislav = $withIdsWithoutDiacritics->getElementById('bretislav');
-        self::assertNotEmpty($bretislav);
+        $h = $unified->saveHTML();
+        /** @var Element $english */
+        $english = $unified->getElementById('english');
+        self::assertNotEmpty($english);
         self::assertSame(
             <<<'HTML'
-<span id="svickova_s_prisernou_slehackou" data-original-id="Svíčková s příšernou šlehačkou">Fůůj<span id="Svíčková s příšernou šlehačkou" class="invisible-id"></span></span>
-<span id="Břetislav" class="invisible-id"></span>
+<label for="deadly_living" data-original-for="deadlyLiving">Human</label>
+<div id="deadly_living" data-original-id="deadlyLiving">Walking dude<span id="deadlyLiving" class="invisible-id"></span>
+</div>
 HTML
             ,
-            $bretislav->prop_get_innerHTML()
+            preg_replace('~(\s*\n\s*)+~', "\n", trim($english->prop_get_innerHTML()))
+        );
+        /** @var Element $czech */
+        $czech = $unified->getElementById('czech');
+        self::assertNotEmpty($czech);
+        self::assertSame(
+            <<<'HTML'
+<label for="krivule_pro_srovnani" data-original-for="Křivule pro srovnání">Nakřivo</label>
+<div id="krivule_pro_srovnani" data-original-id="Křivule pro srovnání">Srovnej si to<span id="Křivule pro srovnání" class="invisible-id"></span>
+</div>
+HTML
+            ,
+            preg_replace('~(\s*\n\s*)+~', "\n", trim($czech->prop_get_innerHTML()))
         );
     }
 

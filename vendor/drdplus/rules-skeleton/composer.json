@@ -34,7 +34,7 @@
     "granam/strict-object": "^3.0",
     "granam/string": "^3.2",
     "granam/tools": "^3.0",
-    "granam/web-content-builder": "^1.0",
+    "granam/web-content-builder": "^1.1",
     "granam/yaml-reader": "^1.0",
     "phpgt/dom": "~1.1",
     "phpmailer/phpmailer": "^6.0",

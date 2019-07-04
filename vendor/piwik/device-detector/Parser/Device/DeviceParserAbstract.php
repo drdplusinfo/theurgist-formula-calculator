@@ -65,6 +65,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
         '4G' => '4Good',
         'AA' => 'AllCall',
         'AC' => 'Acer',
+        'A9' => 'Advan',
         'AD' => 'Advance',
         'A3' => 'AGM',
         'AZ' => 'Ainol',
@@ -83,6 +84,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'AR' => 'Archos',
         'AS' => 'ARRIS',
         'AT' => 'Airties',
+        'A6' => 'Ark',
         'A4' => 'Ask',
         'AU' => 'Asus',
         'AH' => 'AVH',
@@ -187,6 +189,8 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'EX' => 'Explay',
         'E5' => 'Extrem',
         'EZ' => 'Ezze',
+        'E8' => 'E-tel',
+        'E9' => 'Evercoss',
         'FA' => 'Fairphone',
         'FI' => 'FiGO',
         'FL' => 'Fly',
@@ -239,9 +243,11 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'IW' => 'iNew',
         'IP' => 'iPro',
         'IF' => 'Infinix',
+        'I0' => 'InFocus',
         'I5' => 'InnJoo',
         'IN' => 'Innostream',
         'I4' => 'Inoi',
+        'IR' => 'iRola',
         'II' => 'Inkti',
         'IX' => 'Intex',
         'IO' => 'i-mobile',
@@ -253,6 +259,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'JA' => 'JAY-Tech',
         'JI' => 'Jiayu',
         'JO' => 'Jolla',
+        'J5' => 'Just5',
         'KL' => 'Kalley',
         'KA' => 'Karbonn',
         'KD' => 'KDDI',
@@ -401,6 +408,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'RM' => 'RIM',
         'RK' => 'Roku',
         'RO' => 'Rover',
+        'R1' => 'Rokit',
         'RT' => 'RT Project',
         'SQ' => 'Santin BiTBiZ',
         'SA' => 'Samsung',
@@ -440,6 +448,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
         'S3' => 'SunVan',
         'SZ' => 'Sumvision',
         'SS' => 'SWISSMOBILITY',
+        'X1' => 'Safaricom',
         'TA' => 'Tesla',
         'T5' => 'TB Touch',
         'TC' => 'TCL',
@@ -534,6 +543,7 @@ abstract class DeviceParserAbstract extends ParserAbstract
 
         // legacy brands, might be removed in future versions
         'WB' => 'Web TV',
+        'XT' => 'X-TIGI',
         'XX' => 'Unknown'
     );
 
