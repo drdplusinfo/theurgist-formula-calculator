@@ -188,4 +188,26 @@ class ConfigurationTest extends AbstractContentTest
         $configuration = new Configuration($this->getDirs(), $completeSettings);
         self::assertSame('', $configuration->getTitleSmiley());
     }
+
+    /**
+     * @test
+     */
+    public function I_can_create_it_without_yaml_file_with_routes(): void
+    {
+        $completeSettings = $this->getSomeCompleteSettings();
+        $completeSettings[Configuration::APPLICATION][Configuration::YAML_FILE_WITH_ROUTES] = null;
+        $configuration = new Configuration($this->getDirs(), $completeSettings);
+        self::assertSame('', $configuration->getYamlFileWithRoutes());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_yaml_file_with_routes(): void
+    {
+        $completeSettings = $this->getSomeCompleteSettings();
+        $completeSettings[Configuration::APPLICATION][Configuration::YAML_FILE_WITH_ROUTES] = 'foo';
+        $configuration = new Configuration($this->getDirs(), $completeSettings);
+        self::assertSame('foo', $configuration->getYamlFileWithRoutes());
+    }
 }

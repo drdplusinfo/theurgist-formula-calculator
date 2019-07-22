@@ -1,0 +1,4 @@
+root:
+  path: /{path}
+  defaults:
+    path: 'default_frmol'

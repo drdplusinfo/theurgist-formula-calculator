@@ -104,7 +104,7 @@ class AnchorsTest extends AbstractContentTest
                         'responseHttpCode' => $responseHttpCode,
                         'redirectUrl' => $redirectUrl,
                         'error' => $error,
-                    ] = $this->fetchContentFromLink($link, false /* just headers*/);
+                    ] = $this->fetchContentFromUrl($link, false /* just headers*/);
                     if (!$isDrdPlus && $responseHttpCode >= 200 && $responseHttpCode < 300) {
                         $this->cacheContent((string)$responseHttpCode, $tempFileName, $isDrdPlus, $responseHttpCode);
                     }
@@ -252,7 +252,7 @@ class AnchorsTest extends AbstractContentTest
                     'redirectUrl' => $redirectUrl,
                     'error' => $error,
                     'content' => $content,
-                ] = $this->fetchContentFromLink($link, true /* fetch body */, $this->getPostDataToFetchContent($isDrdPlus));
+                ] = $this->fetchContentFromUrl($link, true /* fetch body */, $this->getPostDataToFetchContent($isDrdPlus));
                 self::assertTrue(
                     $responseHttpCode >= 200 && $responseHttpCode < 300,
                     "Could not reach $link, got response code $responseHttpCode and redirect URL '$redirectUrl' ($error)"

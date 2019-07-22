@@ -36,6 +36,9 @@ class Configuration extends StrictObject
     // google
     public const GOOGLE = 'google';
     public const ANALYTICS_ID = 'analytics_id';
+    // application
+    public const APPLICATION = 'application';
+    public const YAML_FILE_WITH_ROUTES = 'yaml_file_with_routes';
 
     /** @var Dirs */
     private $dirs;
@@ -234,5 +237,10 @@ class Configuration extends StrictObject
     public function getFavicon(): string
     {
         return $this->getSettings()[static::WEB][static::FAVICON] ?? '';
+    }
+
+    public function getYamlFileWithRoutes(): string
+    {
+        return $this->getSettings()[static::APPLICATION][static::YAML_FILE_WITH_ROUTES] ?? '';
     }
 }

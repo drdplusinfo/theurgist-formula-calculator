@@ -6,6 +6,9 @@ namespace DrdPlus\Tests\RulesSkeleton;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 
+/**
+ * @backupGlobals enabled
+ */
 class RequestTest extends AbstractContentTest
 {
     public static function getCrawlerUserAgents(): array
@@ -27,7 +30,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_detect_czech_seznam_bot(): void
     {
@@ -47,7 +49,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_do_not_get_non_bot_browsers_marked_as_bots(): void
     {
@@ -67,29 +68,26 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_current_url_even_if_query_string_is_not_set(): void
     {
         $request = new Request($this->getBot());
         unset($_SERVER['QUERY_STRING']);
-        self::assertSame('', $request->getCurrentUrl());
+        self::assertSame('/', $request->getCurrentUrl());
     }
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_current_url_with_updated_query_parameters(): void
     {
         $request = new Request($this->getBot());
         $_GET = ['foo' => 123, 'bar' => 456];
-        self::assertSame('?foo=0&bar=456&baz=OK', $request->getCurrentUrl(['foo' => false, 'baz' => 'OK']));
+        self::assertSame('/?foo=0&bar=456&baz=OK', $request->getCurrentUrl(['foo' => false, 'baz' => 'OK']));
     }
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_current_url_with_updated_query_parameters_even_if_get_is_not_set(): void
     {
@@ -98,12 +96,11 @@ class RequestTest extends AbstractContentTest
         $currentUrl = $request->getCurrentUrl(['foo' => true]);
         global $_GET; // because backup globals do not works for unset global
         $_GET = [];
-        self::assertSame('?foo=1', $currentUrl);
+        self::assertSame('/?foo=1', $currentUrl);
     }
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_value_from_get(): void
     {
@@ -118,7 +115,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_value_from_post(): void
     {
@@ -132,7 +128,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_value_from_cookie(): void
     {
@@ -146,7 +141,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_value_from_request_with_priority_post_get_cookie(): void
     {
@@ -168,7 +162,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      * @dataProvider provideTablesIdsParameterName
      * @param string $parameterName
      */
@@ -194,7 +187,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_get_path_info(): void
     {
@@ -207,7 +199,18 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
+     */
+    public function I_can_get_current_path(): void
+    {
+        $_SERVER['REQUEST_URI'] = null;
+        $request = new Request($this->getBot());
+        self::assertSame('/', $request->getPath());
+        $_SERVER['REQUEST_URI'] = '/foo/bar';
+        self::assertSame('/foo/bar', $request->getPath());
+    }
+
+    /**
+     * @test
      */
     public function I_can_get_query_string(): void
     {
@@ -229,7 +232,6 @@ class RequestTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_find_out_if_trial_just_expired(): void
     {

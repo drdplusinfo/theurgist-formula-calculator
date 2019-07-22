@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton;
 
@@ -20,10 +19,14 @@ use Granam\String\StringTools;
 use Granam\WebContentBuilder\Web\CssFiles;
 use Granam\WebContentBuilder\Web\HtmlContentInterface;
 use Granam\WebContentBuilder\Web\JsFiles;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\Routing\RequestContext;
 
 class ServicesContainer extends StrictObject
 {
-    
+
     /** @var CurrentWebVersion */
     private $currentWebVersion;
     /** @var WebVersions */
@@ -74,6 +77,8 @@ class ServicesContainer extends StrictObject
     private $usagePolicy;
     /** @var Pass */
     private $pass;
+    /** @var RulesUrlMatcher */
+    private $rulesUrlMatcher;
 
     public function __construct(Configuration $configuration, HtmlHelper $htmlHelper)
     {
@@ -268,9 +273,38 @@ class ServicesContainer extends StrictObject
     public function getWebFiles(): WebFiles
     {
         if ($this->webFiles === null) {
-            $this->webFiles = new WebFiles($this->getDirs());
+            $this->webFiles = new WebFiles($this->createRoutedDirs($this->getDirs()));
         }
         return $this->webFiles;
+    }
+
+    protected function createRoutedDirs(Dirs $dirs): Dirs
+    {
+        $match = $this->getRulesUrlMatcher()->match($this->getRequest()->getCurrentUrl());
+        return new Dirs($dirs->getProjectRoot(), $match->getPath());
+    }
+
+    public function getRulesUrlMatcher(): RulesUrlMatcher
+    {
+        if ($this->rulesUrlMatcher === null) {
+            $this->rulesUrlMatcher = new RulesUrlMatcher($this->createUrlMatcher());
+        }
+        return $this->rulesUrlMatcher;
+    }
+
+    private function createUrlMatcher(): UrlMatcherInterface
+    {
+        $yamlFileWithRoutes = $this->getConfiguration()->getYamlFileWithRoutes();
+        if (!$yamlFileWithRoutes) {
+            return new DummyUrlMatcher();
+        }
+        $router = new \Symfony\Component\Routing\Router(
+            new YamlFileLoader(new FileLocator([$this->getDirs()->getProjectRoot()])),
+            $yamlFileWithRoutes,
+            ['cache_dir' => $this->getPassWebCache()->getCacheDir() . '/router'],
+            (new RequestContext())->fromRequest(\Symfony\Component\HttpFoundation\Request::createFromGlobals())
+        );
+        return $router->getMatcher();
     }
 
     public function getCookiesService(): CookiesService

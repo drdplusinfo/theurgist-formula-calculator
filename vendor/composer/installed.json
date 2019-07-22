@@ -547,17 +547,17 @@
     },
     {
         "name": "drdplus/rules-skeleton",
-        "version": "1.2.1",
-        "version_normalized": "1.2.1.0",
+        "version": "1.3.2",
+        "version_normalized": "1.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-            "reference": "e2a9d26303dc9fb9ca474b723bd002f9972bafd3"
+            "reference": "b5ee567061fb8fa81e0f48854de3d4f7a34c7498"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/e2a9d26303dc9fb9ca474b723bd002f9972bafd3",
-            "reference": "e2a9d26303dc9fb9ca474b723bd002f9972bafd3",
+            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/b5ee567061fb8fa81e0f48854de3d4f7a34c7498",
+            "reference": "b5ee567061fb8fa81e0f48854de3d4f7a34c7498",
             "shasum": ""
         },
         "require": {
@@ -582,6 +582,10 @@
             "phpgt/dom": "~1.1",
             "phpmailer/phpmailer": "^6.0",
             "piwik/device-detector": "^3.11",
+            "symfony/config": "^4.3",
+            "symfony/http-foundation": "^4.3",
+            "symfony/routing": "^4.3",
+            "symfony/yaml": "^4.3",
             "tracy/tracy": "^2.4"
         },
         "require-dev": {
@@ -590,7 +594,7 @@
             "phpunit/phpunit": "^7.5",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-07-04T12:38:51+00:00",
+        "time": "2019-07-22T07:31:52+00:00",
         "bin": [
             "bin/fix_web_permissions.sh"
         ],
@@ -2532,17 +2536,17 @@
     },
     {
         "name": "phpunit/php-token-stream",
-        "version": "3.0.1",
-        "version_normalized": "3.0.1.0",
+        "version": "3.0.2",
+        "version_normalized": "3.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-            "reference": "c99e3be9d3e85f60646f152f9002d46ed7770d18"
+            "reference": "c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/c99e3be9d3e85f60646f152f9002d46ed7770d18",
-            "reference": "c99e3be9d3e85f60646f152f9002d46ed7770d18",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c",
+            "reference": "c4a66b97f040e3e20b3aa2a243230a1c3a9f7c8c",
             "shasum": ""
         },
         "require": {
@@ -2552,7 +2556,7 @@
         "require-dev": {
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2018-10-30T05:52:18+00:00",
+        "time": "2019-07-08T05:24:54+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2583,17 +2587,17 @@
     },
     {
         "name": "phpunit/phpunit",
-        "version": "7.5.13",
-        "version_normalized": "7.5.13.0",
+        "version": "7.5.14",
+        "version_normalized": "7.5.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit.git",
-            "reference": "b9278591caa8630127f96c63b598712b699e671c"
+            "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b9278591caa8630127f96c63b598712b699e671c",
-            "reference": "b9278591caa8630127f96c63b598712b699e671c",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2834789aeb9ac182ad69bfdf9ae91856a59945ff",
+            "reference": "2834789aeb9ac182ad69bfdf9ae91856a59945ff",
             "shasum": ""
         },
         "require": {
@@ -2632,7 +2636,7 @@
             "ext-xdebug": "*",
             "phpunit/php-invoker": "^2.0"
         },
-        "time": "2019-06-19T12:01:51+00:00",
+        "time": "2019-07-15T06:24:08+00:00",
         "bin": [
             "phpunit"
         ],
@@ -2655,8 +2659,8 @@
         "authors": [
             {
                 "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de",
-                "role": "lead"
+                "role": "lead",
+                "email": "sebastian@phpunit.de"
             }
         ],
         "description": "The PHP Unit Testing framework.",
@@ -2669,22 +2673,22 @@
     },
     {
         "name": "piwik/device-detector",
-        "version": "3.11.8",
-        "version_normalized": "3.11.8.0",
+        "version": "3.12.0",
+        "version_normalized": "3.12.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/matomo-org/device-detector.git",
-            "reference": "8bfdbafc07ef6ba1c3cfff3bbb0554a860828a39"
+            "reference": "a698de2c57d8e106b8f8e54671b4bf794dc9698e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/matomo-org/device-detector/zipball/8bfdbafc07ef6ba1c3cfff3bbb0554a860828a39",
-            "reference": "8bfdbafc07ef6ba1c3cfff3bbb0554a860828a39",
+            "url": "https://api.github.com/repos/matomo-org/device-detector/zipball/a698de2c57d8e106b8f8e54671b4bf794dc9698e",
+            "reference": "a698de2c57d8e106b8f8e54671b4bf794dc9698e",
             "shasum": ""
         },
         "require": {
             "mustangostang/spyc": "*",
-            "php": ">=5.3.2"
+            "php": ">=5.5"
         },
         "require-dev": {
             "fabpot/php-cs-fixer": "~1.7",
@@ -2697,7 +2701,7 @@
             "doctrine/cache": "Can directly be used for caching purpose",
             "ext-yaml": "Necessary for using the Pecl YAML parser"
         },
-        "time": "2019-06-20T21:32:44+00:00",
+        "time": "2019-07-22T14:35:14+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2831,12 +2835,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/Roave/SecurityAdvisories.git",
-            "reference": "a53a6f855cbff7edb078f87c72bb808c89443a00"
+            "reference": "ea693fa060702164985511acc3ceb5389c9ac761"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a53a6f855cbff7edb078f87c72bb808c89443a00",
-            "reference": "a53a6f855cbff7edb078f87c72bb808c89443a00",
+            "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ea693fa060702164985511acc3ceb5389c9ac761",
+            "reference": "ea693fa060702164985511acc3ceb5389c9ac761",
             "shasum": ""
         },
         "conflict": {
@@ -2871,8 +2875,8 @@
             "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
             "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
             "dompdf/dompdf": ">=0.6,<0.6.2",
-            "drupal/core": ">=7,<7.67|>=8,<8.6.16|>=8.7,<8.7.1",
-            "drupal/drupal": ">=7,<7.67|>=8,<8.6.16|>=8.7,<8.7.1",
+            "drupal/core": ">=7,<7.67|>=8,<8.6.16|>=8.7,<8.7.1|>8.7.3,<8.7.5",
+            "drupal/drupal": ">=7,<7.67|>=8,<8.6.16|>=8.7,<8.7.1|>8.7.3,<8.7.5",
             "erusev/parsedown": "<1.7.2",
             "ezsystems/ezplatform-admin-ui": ">=1.3,<1.3.5|>=1.4,<1.4.4",
             "ezsystems/ezpublish-kernel": ">=5.3,<5.3.12.1|>=5.4,<5.4.13.1|>=6,<6.7.9.1|>=6.8,<6.13.5.1|>=7,<7.2.4.1|>=7.3,<7.3.2.1",
@@ -2939,7 +2943,7 @@
             "silverstripe/userforms": "<3",
             "simple-updates/phpwhois": "<=1",
             "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
-            "simplesamlphp/simplesamlphp": "<1.15.2|>=1.16,<1.16.3",
+            "simplesamlphp/simplesamlphp": "<1.17.3",
             "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
             "slim/slim": "<2.6",
             "smarty/smarty": "<3.1.33",
@@ -3025,7 +3029,7 @@
             "zfcampus/zf-apigility-doctrine": ">=1,<1.0.3",
             "zfr/zfr-oauth2-server-module": "<0.1.2"
         },
-        "time": "2019-06-25T10:37:35+00:00",
+        "time": "2019-07-18T15:17:58+00:00",
         "type": "metapackage",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -3726,6 +3730,72 @@
         ]
     },
     {
+        "name": "symfony/config",
+        "version": "v4.3.2",
+        "version_normalized": "4.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/config.git",
+            "reference": "9198eea354be75794a7b1064de00d9ae9ae5090f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/config/zipball/9198eea354be75794a7b1064de00d9ae9ae5090f",
+            "reference": "9198eea354be75794a7b1064de00d9ae9ae5090f",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
+            "symfony/filesystem": "~3.4|~4.0",
+            "symfony/polyfill-ctype": "~1.8"
+        },
+        "conflict": {
+            "symfony/finder": "<3.4"
+        },
+        "require-dev": {
+            "symfony/dependency-injection": "~3.4|~4.0",
+            "symfony/event-dispatcher": "~3.4|~4.0",
+            "symfony/finder": "~3.4|~4.0",
+            "symfony/messenger": "~4.1",
+            "symfony/yaml": "~3.4|~4.0"
+        },
+        "suggest": {
+            "symfony/yaml": "To use the yaml reference dumper"
+        },
+        "time": "2019-06-08T06:33:08+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Config\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Config Component",
+        "homepage": "https://symfony.com"
+    },
+    {
         "name": "symfony/console",
         "version": "v4.3.2",
         "version_normalized": "4.3.2.0",
@@ -3961,6 +4031,124 @@
         "homepage": "https://symfony.com"
     },
     {
+        "name": "symfony/http-foundation",
+        "version": "v4.3.2",
+        "version_normalized": "4.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/http-foundation.git",
+            "reference": "e1b507fcfa4e87d192281774b5ecd4265370180d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e1b507fcfa4e87d192281774b5ecd4265370180d",
+            "reference": "e1b507fcfa4e87d192281774b5ecd4265370180d",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
+            "symfony/mime": "^4.3",
+            "symfony/polyfill-mbstring": "~1.1"
+        },
+        "require-dev": {
+            "predis/predis": "~1.0",
+            "symfony/expression-language": "~3.4|~4.0"
+        },
+        "time": "2019-06-26T09:25:00+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\HttpFoundation\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony HttpFoundation Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "symfony/mime",
+        "version": "v4.3.2",
+        "version_normalized": "4.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/mime.git",
+            "reference": "ec2c5565de60e03f33d4296a655e3273f0ad1f8b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/mime/zipball/ec2c5565de60e03f33d4296a655e3273f0ad1f8b",
+            "reference": "ec2c5565de60e03f33d4296a655e3273f0ad1f8b",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
+            "symfony/polyfill-intl-idn": "^1.10",
+            "symfony/polyfill-mbstring": "^1.0"
+        },
+        "require-dev": {
+            "egulias/email-validator": "^2.0",
+            "symfony/dependency-injection": "~3.4|^4.1"
+        },
+        "time": "2019-06-04T09:22:54+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Mime\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "A library to manipulate MIME messages",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "mime",
+            "mime-type"
+        ]
+    },
+    {
         "name": "symfony/polyfill-ctype",
         "version": "v1.11.0",
         "version_normalized": "1.11.0.0",
@@ -4021,6 +4209,70 @@
         ]
     },
     {
+        "name": "symfony/polyfill-intl-idn",
+        "version": "v1.11.0",
+        "version_normalized": "1.11.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-intl-idn.git",
+            "reference": "c766e95bec706cdd89903b1eda8afab7d7a6b7af"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/c766e95bec706cdd89903b1eda8afab7d7a6b7af",
+            "reference": "c766e95bec706cdd89903b1eda8afab7d7a6b7af",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "symfony/polyfill-mbstring": "^1.3",
+            "symfony/polyfill-php72": "^1.9"
+        },
+        "suggest": {
+            "ext-intl": "For best performance"
+        },
+        "time": "2019-03-04T13:44:35+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.9-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Intl\\Idn\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            },
+            {
+                "name": "Laurent Bassin",
+                "email": "laurent@bassin.info"
+            }
+        ],
+        "description": "Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "idn",
+            "intl",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
         "name": "symfony/polyfill-mbstring",
         "version": "v1.11.0",
         "version_normalized": "1.11.0.0",
@@ -4076,6 +4328,63 @@
         "keywords": [
             "compatibility",
             "mbstring",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-php72",
+        "version": "v1.11.0",
+        "version_normalized": "1.11.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-php72.git",
+            "reference": "ab50dcf166d5f577978419edd37aa2bb8eabce0c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/ab50dcf166d5f577978419edd37aa2bb8eabce0c",
+            "reference": "ab50dcf166d5f577978419edd37aa2bb8eabce0c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2019-02-06T07:57:58+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.11-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Php72\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
             "polyfill",
             "portable",
             "shim"
@@ -4193,6 +4502,84 @@
         "homepage": "https://symfony.com"
     },
     {
+        "name": "symfony/routing",
+        "version": "v4.3.2",
+        "version_normalized": "4.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/routing.git",
+            "reference": "2ef809021d72071c611b218c47a3bf3b17b7325e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/routing/zipball/2ef809021d72071c611b218c47a3bf3b17b7325e",
+            "reference": "2ef809021d72071c611b218c47a3bf3b17b7325e",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3"
+        },
+        "conflict": {
+            "symfony/config": "<4.2",
+            "symfony/dependency-injection": "<3.4",
+            "symfony/yaml": "<3.4"
+        },
+        "require-dev": {
+            "doctrine/annotations": "~1.2",
+            "psr/log": "~1.0",
+            "symfony/config": "~4.2",
+            "symfony/dependency-injection": "~3.4|~4.0",
+            "symfony/expression-language": "~3.4|~4.0",
+            "symfony/http-foundation": "~3.4|~4.0",
+            "symfony/yaml": "~3.4|~4.0"
+        },
+        "suggest": {
+            "doctrine/annotations": "For using the annotation loader",
+            "symfony/config": "For using the all-in-one router or any loader",
+            "symfony/expression-language": "For using expression matching",
+            "symfony/http-foundation": "For using a Symfony Request object",
+            "symfony/yaml": "For using the YAML loader"
+        },
+        "time": "2019-06-26T13:54:39+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Routing\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Routing Component",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "router",
+            "routing",
+            "uri",
+            "url"
+        ]
+    },
+    {
         "name": "symfony/service-contracts",
         "version": "v1.1.5",
         "version_normalized": "1.1.5.0",
@@ -4253,6 +4640,67 @@
         ]
     },
     {
+        "name": "symfony/yaml",
+        "version": "v4.3.2",
+        "version_normalized": "4.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/yaml.git",
+            "reference": "c60ecf5ba842324433b46f58dc7afc4487dbab99"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/c60ecf5ba842324433b46f58dc7afc4487dbab99",
+            "reference": "c60ecf5ba842324433b46f58dc7afc4487dbab99",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.1.3",
+            "symfony/polyfill-ctype": "~1.8"
+        },
+        "conflict": {
+            "symfony/console": "<3.4"
+        },
+        "require-dev": {
+            "symfony/console": "~3.4|~4.0"
+        },
+        "suggest": {
+            "symfony/console": "For validating YAML files using the lint command"
+        },
+        "time": "2019-04-06T14:04:46+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.3-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Yaml\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Yaml Component",
+        "homepage": "https://symfony.com"
+    },
+    {
         "name": "theseer/tokenizer",
         "version": "1.1.3",
         "version_normalized": "1.1.3.0",
@@ -4296,17 +4744,17 @@
     },
     {
         "name": "tracy/tracy",
-        "version": "v2.6.3",
-        "version_normalized": "2.6.3.0",
+        "version": "v2.6.4",
+        "version_normalized": "2.6.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/nette/tracy.git",
-            "reference": "7613eeff265b49a865add75360d1962449e3c12f"
+            "reference": "cad2ec2c40cee828ce5538a4bc5bbde7045a7c1b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nette/tracy/zipball/7613eeff265b49a865add75360d1962449e3c12f",
-            "reference": "7613eeff265b49a865add75360d1962449e3c12f",
+            "url": "https://api.github.com/repos/nette/tracy/zipball/cad2ec2c40cee828ce5538a4bc5bbde7045a7c1b",
+            "reference": "cad2ec2c40cee828ce5538a4bc5bbde7045a7c1b",
             "shasum": ""
         },
         "require": {
@@ -4323,7 +4771,7 @@
         "suggest": {
             "https://nette.org/donate": "Please support Tracy via a donation"
         },
-        "time": "2019-06-18T12:20:11+00:00",
+        "time": "2019-07-16T14:23:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

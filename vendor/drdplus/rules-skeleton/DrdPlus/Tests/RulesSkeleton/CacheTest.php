@@ -82,12 +82,15 @@ class CacheTest extends AbstractContentTest
      */
     public function I_will_get_cached_content_if_available(): void
     {
+        $request = $this->mockery($this->getRequestClass());
+        $request->makePartial();
+
         $cacheClass = $this->getCacheClass();
         /** @var Cache $cache */
         $cache = new $cacheClass(
             $this->getCurrentWebVersion(),
             $this->getDirs(),
-            $this->createRequest(),
+            $request,
             $this->getContentIrrelevantParametersFilter(),
             $this->createGit(),
             Cache::NOT_IN_PRODUCTION,
@@ -95,6 +98,13 @@ class CacheTest extends AbstractContentTest
         );
         self::assertFalse($cache->isCacheValid(), 'Nothing should be cached so far');
         $cache->cacheContent($content = 'foo of bar over baz!');
+        self::assertTrue($cache->isCacheValid(), 'Expected content to be cached now');
+        self::assertSame($content, $cache->getCachedContent());
+
+        $request->allows('getPath')
+            ->andReturn('/different-route');
+        self::assertFalse($cache->isCacheValid(), 'Nothing should be cached due to different route');
+        $cache->cacheContent($content);
         self::assertTrue($cache->isCacheValid(), 'Expected content to be cached now');
         self::assertSame($content, $cache->getCachedContent());
     }

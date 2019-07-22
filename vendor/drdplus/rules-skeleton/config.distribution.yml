@@ -7,3 +7,5 @@ web:
   title_smiley: '☠️'
 google:
   analytics_id: 'UA-121206931-0'
+application:
+  yaml_file_with_routes: 'routes.yml'

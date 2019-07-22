@@ -12,7 +12,7 @@ class TracyTest extends AbstractContentTest
      */
     public function Tracy_watch_it(): void
     {
-        $response = $this->fetchContentFromLink($this->getTestsConfiguration()->getLocalUrl(), self::WITH_BODY);
+        $response = $this->fetchContentFromUrl($this->getTestsConfiguration()->getLocalUrl(), self::WITH_BODY);
         self::assertSame(
             200,
             $response['responseHttpCode'],

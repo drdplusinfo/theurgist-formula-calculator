@@ -94,7 +94,7 @@ class Cache extends StrictObject
     {
         $filteredGetParameters = $this->contentIrrelevantParametersFilter
             ->removeContentIrrelevantParameters($this->request->getValuesFromGet());
-        return \md5(\serialize($filteredGetParameters));
+        return \md5($this->request->getPath() . \serialize($filteredGetParameters));
     }
 
     /**

@@ -39,6 +39,10 @@
     "phpgt/dom": "~1.1",
     "phpmailer/phpmailer": "^6.0",
     "piwik/device-detector": "^3.11",
+    "symfony/config": "^4.3",
+    "symfony/http-foundation": "^4.3",
+    "symfony/routing": "^4.3",
+    "symfony/yaml": "^4.3",
     "tracy/tracy": "^2.4"
   },
   "require-dev": {

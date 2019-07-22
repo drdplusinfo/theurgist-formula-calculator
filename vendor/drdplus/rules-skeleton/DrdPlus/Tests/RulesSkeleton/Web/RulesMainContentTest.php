@@ -155,4 +155,17 @@ class RulesMainContentTest extends MainContentTest
         $rulesAuthors = $rulesAuthors->current();
         self::assertNotEmpty(\trim($rulesAuthors->textContent), 'Expected some content of rules authors');
     }
+
+    /**
+     * @test
+     */
+    public function I_can_get_routed_content()
+    {
+        if (!$this->isSkeletonChecked()) {
+            self::assertTrue(true);
+            return;
+        }
+        $routedContent = $this->getHtmlDocument([], [], [], '/routed')->getElementById('just_some_element_from_routed_content');
+        self::assertNotEmpty($routedContent);
+    }
 }

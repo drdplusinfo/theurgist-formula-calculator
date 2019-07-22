@@ -62,14 +62,19 @@ class Request extends StrictObject
 
     public function getCurrentUrl(array $parameters = []): string
     {
+        $url = $_SERVER['REQUEST_URI'] ?? '/';
         if ($parameters === []) {
-            return ($_SERVER['QUERY_STRING'] ?? '') !== ''
-                ? '?' . $_SERVER['QUERY_STRING']
-                : '';
+            return $url;
         }
+        $path = parse_url($url, PHP_URL_PATH);
         $queryParameters = \array_merge($_GET ?? [], $parameters);
 
-        return '?' . \http_build_query($queryParameters);
+        return $path . '?' . \http_build_query($queryParameters);
+    }
+
+    public function getPath(): string
+    {
+        return parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
     }
 
     /**
