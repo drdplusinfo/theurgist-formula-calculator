@@ -456,17 +456,17 @@
     },
     {
         "name": "drdplus/calculator-skeleton",
-        "version": "1.0.43",
-        "version_normalized": "1.0.43.0",
+        "version": "1.0.44",
+        "version_normalized": "1.0.44.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/calculator-skeleton.git",
-            "reference": "cbbf23157e27f804f126d71d35919bc1d5e548b8"
+            "reference": "9fa464202c7477eb44e0aa44d191c43873ee366c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/cbbf23157e27f804f126d71d35919bc1d5e548b8",
-            "reference": "cbbf23157e27f804f126d71d35919bc1d5e548b8",
+            "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/9fa464202c7477eb44e0aa44d191c43873ee366c",
+            "reference": "9fa464202c7477eb44e0aa44d191c43873ee366c",
             "shasum": ""
         },
         "require": {
@@ -486,7 +486,7 @@
             "phpunit/phpunit": "~7.0",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-07-04T11:36:17+00:00",
+        "time": "2019-07-22T20:19:04+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "DrdPlus\\CalculatorSkeleton\\CalculatorInjectorComposerPlugin"
@@ -602,7 +602,7 @@
         "extra": {
             "class": "DrdPlus\\RulesSkeleton\\SkeletonInjectorComposerPlugin"
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "DrdPlus\\": "DrdPlus/"
@@ -4196,7 +4196,7 @@
             },
             {
                 "name": "Gert de Pagter",
-                "email": "backendtea@gmail.com"
+                "email": "BackEndTea@gmail.com"
             }
         ],
         "description": "Symfony polyfill for ctype functions",

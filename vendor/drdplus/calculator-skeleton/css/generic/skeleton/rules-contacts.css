@@ -110,11 +110,15 @@
 }
 
 .contact a.facebook-contact, a.facebook-contact:visited {
-    color: rgb(221, 222, 255);
+    color: rgba(66, 103, 178, 0.91);
 }
 
 .contact a.discord-contact, .contact a.discord-contact:visited {
     color: #a0b9f8;
+}
+
+.contact a.trello-contact, .contact a.trello-contact:visited {
+    color: #67A6CA;
 }
 
 .contacts .contact a:hover {

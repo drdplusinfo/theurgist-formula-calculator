@@ -17,9 +17,9 @@ function cutBrowsingOnTrialExpiration() {
         return false;
     }
     var trialExpiresAtMs = parseInt(trialExpiresAt) * 1000;
-    var trialExpiredAtName = Cookies.get('trialExpiredAtName');
+    var trialExpiredAtName = Cookies.get('trialExpiredAtCookieName');
     if (typeof trialExpiredAtName === 'undefined' || !trialExpiredAtName) {
-        trialExpiredAtName = 'trialExpiredAt';
+        trialExpiredAtName = 'trial_expired_at';
     }
     setTimeout(function () {
         // have to use replace because reload is not sufficient as it ask for sending FORM again

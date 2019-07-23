@@ -3,6 +3,7 @@
 namespace DrdPlus\Calculators\Theurgist;
 
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
+use DrdPlus\RulesSkeleton\Dirs;
 use DrdPlus\RulesSkeleton\Web\WebPartsContainer;
 use DrdPlus\Tables\Tables;
 
@@ -45,5 +46,11 @@ class FormulaServicesContainer extends CalculatorServicesContainer
         }
 
         return $this->currentFormulaValues;
+    }
+
+    protected function createRoutedDirs(Dirs $dirs): Dirs
+    {
+        $match = $this->getRulesUrlMatcher()->match($this->getRequest()->getCurrentUrl());
+        return new FormulaDirs($dirs->getProjectRoot(), $match->getPath());
     }
 }
