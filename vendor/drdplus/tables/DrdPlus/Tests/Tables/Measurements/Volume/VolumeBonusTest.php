@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Volume;
@@ -58,19 +59,19 @@ class VolumeBonusTest extends AbstractTestOfBonus
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_use_too_low_bonus_to_value(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         (new VolumeBonus(-999, Tables::getIt()->getDistanceTable()))->getVolume();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         (new VolumeBonus(999, Tables::getIt()->getDistanceTable()))->getVolume();
     }
 }

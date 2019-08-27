@@ -1,9 +1,12 @@
-<?php /** @var $configuration \DrdPlus\RulesSkeleton\Configuration */ ?>
+<?php declare(strict_types=1);
+/** @var $configuration \DrdPlus\RulesSkeleton\Configuration */
+/** @var $request \DrdPlus\RulesSkeleton\Request */
+?>
 <h1><?= $configuration->getWebName() ?></h1>
 
 <h3>Zkusím</h3>
 <div class="row">
-  <form class="manifest trial" action="/" method="post">
+  <form class="manifest trial" action="<?= $request->getCurrentUrlWithoutAutomaticValues() ?>" method="post">
     <div class="col">
       <button class="btn btn-light" type="submit" id="trial" name="trial" value="trial">
         Zkusím <?= $configuration->getWebName() ?>
@@ -24,7 +27,7 @@
 
 <h2>Koupím</h2>
 <div class="row">
-  <form class="manifest buy" action="<?= $configuration->getEshopUrl() ?>">
+  <form class="manifest buy" action="<?= $configuration->getEshopUrl() ?>" method="get">
     <div class="col">
       <button class="btn btn-light" type="submit" id="buy" name="buy" value="buy">Koupím
           <?= $configuration->getWebName() ?>
@@ -78,7 +81,7 @@
         A klidně to potvrdím dvakrát
       </div>
       <div class="modal-footer">
-        <form class="manifest owning" action="/" method="post">
+        <form class="manifest owning" action="<?= $request->getCurrentUrlWithoutAutomaticValues() ?>" method="post">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
           <button type="submit" class="btn btn-primary" name="confirm" value="1">Vlastním</button>
         </form>

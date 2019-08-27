@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
@@ -29,11 +28,11 @@ class SpellDurationTest extends PositiveCastingParameterTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter
-     * @expectedExceptionMessageRegExp ~-5~
      */
     public function I_can_not_create_it_negative()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter::class);
+        $this->expectExceptionMessageRegExp('~-5~');
         new SpellDuration(['-5'], Tables::getIt());
     }
 

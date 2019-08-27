@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -124,11 +123,11 @@ class ConfigurationTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\InvalidGoogleAnalyticsId
-     * @expectedExceptionMessageRegExp ~GoogleItself~
      */
     public function I_can_not_create_it_with_invalid_google_analytics_id(): void
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\InvalidGoogleAnalyticsId::class);
+        $this->expectExceptionMessageRegExp('~GoogleItself~');
         $completeSettings = $this->getSomeCompleteSettings();
         $completeSettings[Configuration::GOOGLE][Configuration::ANALYTICS_ID] = 'GoogleItself';
         new Configuration($this->getDirs(), $completeSettings);
@@ -136,10 +135,10 @@ class ConfigurationTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\InvalidMenuPosition
      */
     public function I_can_not_create_it_without_defining_if_menu_should_be_fixed(): void
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\InvalidMenuPosition::class);
         $completeSettings = $this->getSomeCompleteSettings();
         unset($completeSettings[Configuration::WEB][Configuration::MENU_POSITION_FIXED]);
         new Configuration($this->getDirs(), $completeSettings);
@@ -147,10 +146,10 @@ class ConfigurationTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\MissingShownHomeButtonConfiguration
      */
     public function I_can_not_create_it_without_defining_if_show_home_button(): void
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\MissingShownHomeButtonConfiguration::class);
         $completeSettings = $this->getSomeCompleteSettings();
         unset($completeSettings[Configuration::WEB][Configuration::SHOW_HOME_BUTTON]);
         new Configuration($this->getDirs(), $completeSettings);
@@ -158,10 +157,10 @@ class ConfigurationTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\MissingWebName
      */
     public function I_can_not_create_it_without_web_name(): void
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\MissingWebName::class);
         $completeSettings = $this->getSomeCompleteSettings();
         $completeSettings[Configuration::WEB][Configuration::NAME] = '';
         new Configuration($this->getDirs(), $completeSettings);
@@ -169,10 +168,10 @@ class ConfigurationTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\TitleSmileyIsNotSet
      */
     public function I_can_not_create_it_without_set_title_smiley(): void
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\TitleSmileyIsNotSet::class);
         $completeSettings = $this->getSomeCompleteSettings();
         unset($completeSettings[Configuration::WEB][Configuration::TITLE_SMILEY]);
         new Configuration($this->getDirs(), $completeSettings);
@@ -209,5 +208,26 @@ class ConfigurationTest extends AbstractContentTest
         $completeSettings[Configuration::APPLICATION][Configuration::YAML_FILE_WITH_ROUTES] = 'foo';
         $configuration = new Configuration($this->getDirs(), $completeSettings);
         self::assertSame('foo', $configuration->getYamlFileWithRoutes());
+    }
+
+    /**
+     * @test
+     */
+    public function I_will_get_default_home_button_target_if_none_custom_is_set()
+    {
+        $completeSettings = $this->getSomeCompleteSettings();
+        $configuration = new Configuration($this->getDirs(), $completeSettings);
+        self::assertSame('https://www.drdplus.info', $configuration->getHomeButtonTarget());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_overwrite_default_home_button_target()
+    {
+        $completeSettings = $this->getSomeCompleteSettings();
+        $completeSettings[Configuration::WEB][Configuration::HOME_BUTTON_TARGET] = '..';
+        $configuration = new Configuration($this->getDirs(), $completeSettings);
+        self::assertSame('..', $configuration->getHomeButtonTarget());
     }
 }

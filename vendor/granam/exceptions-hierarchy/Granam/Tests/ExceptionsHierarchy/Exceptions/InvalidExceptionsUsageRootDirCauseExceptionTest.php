@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class InvalidExceptionsUsageRootDirCauseExceptionTest extends AbstractExceptionsHierarchyTest
@@ -36,14 +37,14 @@ class InvalidExceptionsUsageRootDirCauseExceptionTest extends AbstractExceptions
     {
         // disabled
         return false;
-    }/** @noinspection SenselessProxyMethodInspection */
+    }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\FolderCanNotBeRead
      */
     public function My_exceptions_are_used()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\FolderCanNotBeRead::class);
         parent::My_exceptions_are_used();
     }
 

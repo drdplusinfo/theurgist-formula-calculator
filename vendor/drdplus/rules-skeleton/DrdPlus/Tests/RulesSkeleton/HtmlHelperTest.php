@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -46,7 +45,6 @@ class HtmlHelperTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      * @dataProvider provideEnvironment
      * @param bool $forcedProduction
      * @param bool $onDev
@@ -56,8 +54,7 @@ class HtmlHelperTest extends AbstractContentTest
      */
     public function I_can_find_out_if_I_am_in_production(bool $forcedProduction, bool $onDev, bool $isCli, bool $onLocalhost, bool $expectingProduction): void
     {
-        /** @var HtmlHelper $htmlHelperClass */
-        $htmlHelperClass = static::getSutClass();
+        $htmlHelperClass = $this->getHtmlHelperClass();
         /** @var HtmlHelper $htmlHelper */
         $htmlHelper = new $htmlHelperClass(
             $this->getDirs(),
@@ -115,7 +112,7 @@ class HtmlHelperTest extends AbstractContentTest
         $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
 
         $tablesWithIds = $htmlHelper->findTablesWithIds($this->getHtmlDocument());
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
+        if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(0, $tablesWithIds);
 
             return;
@@ -123,12 +120,12 @@ class HtmlHelperTest extends AbstractContentTest
         self::assertGreaterThan(0, \count($tablesWithIds));
         self::assertEmpty($htmlHelper->findTablesWithIds($this->getHtmlDocument(), ['nonExistingTableId']));
         $someExpectedTableIds = $this->getTestsConfiguration()->getSomeExpectedTableIds();
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
+        if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(0, $someExpectedTableIds, 'No tables expected');
 
             return;
         }
-        self::assertGreaterThan(0, \count($someExpectedTableIds), 'Some tables expected');
+        self::assertNotEmpty($someExpectedTableIds, 'Some tables expected');
         foreach ($someExpectedTableIds as $someExpectedTableId) {
             $lowerExpectedTableId = HtmlHelper::toId($someExpectedTableId);
             self::assertArrayHasKey($lowerExpectedTableId, $tablesWithIds, 'A table ID is missing');
@@ -173,7 +170,7 @@ HTML
      */
     public function Same_table_ids_are_filtered_on_tables_only_mode(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
+        if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(
                 0,
                 $this->getHtmlDocument()->getElementsByTagName('table'),

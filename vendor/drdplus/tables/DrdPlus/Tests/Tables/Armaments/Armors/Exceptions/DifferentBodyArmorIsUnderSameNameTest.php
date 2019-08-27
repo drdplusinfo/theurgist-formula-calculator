@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Armors\Exceptions;
@@ -10,11 +11,11 @@ class DifferentBodyArmorIsUnderSameNameTest extends TestWithMockery
 {
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentArmorPartIsUnderSameName
-     * @expectedExceptionMessage foo
      */
     public function I_am_descendant_of_different_armor_part_exception()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentArmorPartIsUnderSameName::class);
+        $this->expectExceptionMessage('foo');
         throw new DifferentBodyArmorIsUnderSameName('foo');
     }
 }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
@@ -34,7 +33,7 @@ abstract class MainContent extends Content
         return $this->body->postProcessDocument($htmlDocument);
     }
 
-    private function solveIds(HtmlDocument $htmlDocument): void
+    protected function solveIds(HtmlDocument $htmlDocument): void
     {
         $this->htmlHelper->addIdsToHeadings($htmlDocument);
         $this->htmlHelper->addIdsToTables($htmlDocument);
@@ -43,7 +42,7 @@ abstract class MainContent extends Content
         $this->htmlHelper->replaceDiacriticsFromDrdPlusAnchorHashes($htmlDocument);
     }
 
-    private function solveLinks(HtmlDocument $htmlDocument): void
+    protected function solveLinks(HtmlDocument $htmlDocument): void
     {
         $this->htmlHelper->externalLinksTargetToBlank($htmlDocument);
         $this->htmlHelper->prepareSourceCodeLinks($htmlDocument);

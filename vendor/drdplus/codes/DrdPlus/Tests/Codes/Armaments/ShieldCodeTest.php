@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Armaments;
 
 use DrdPlus\Codes\Armaments\ProtectiveArmamentCode;
@@ -79,19 +80,19 @@ class ShieldCodeTest extends WeaponlikeCodeTest implements ProtectiveArmamentCod
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToMeleeWeaponCode
      */
     public function I_can_not_convert_it_to_melee_weapon_code()
     {
+        $this->expectException(\DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToMeleeWeaponCode::class);
         ShieldCode::getIt(ShieldCode::BUCKLER)->convertToMeleeWeaponCodeEquivalent();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToRangeWeaponCode
      */
     public function I_can_not_convert_it_to_range_weapon_code()
     {
+        $this->expectException(\DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToRangeWeaponCode::class);
         ShieldCode::getIt(ShieldCode::BUCKLER)->convertToRangedWeaponCodeEquivalent();
     }
 

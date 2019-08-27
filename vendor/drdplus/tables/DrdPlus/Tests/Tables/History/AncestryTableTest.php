@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\History;
@@ -55,21 +56,21 @@ class AncestryTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\History\Exceptions\UnexpectedBackgroundPoints
-     * @expectedExceptionMessageRegExp ~9~
      */
     public function I_can_not_get_ancestry_by_invalid_background_points()
     {
+        $this->expectException(\DrdPlus\Tables\History\Exceptions\UnexpectedBackgroundPoints::class);
+        $this->expectExceptionMessageRegExp('~9~');
         (new AncestryTable())->getAncestryCodeByBackgroundPoints(new PositiveIntegerObject(9));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\History\Exceptions\UnknownAncestryCode
-     * @expectedExceptionMessageRegExp ~king kong~
      */
     public function I_can_not_get_background_points_by_unknown_ancestry()
     {
+        $this->expectException(\DrdPlus\Tables\History\Exceptions\UnknownAncestryCode::class);
+        $this->expectExceptionMessageRegExp('~king kong~');
         (new AncestryTable())->getBackgroundPointsByAncestryCode($this->createAncestryCode('king kong'));
     }
 

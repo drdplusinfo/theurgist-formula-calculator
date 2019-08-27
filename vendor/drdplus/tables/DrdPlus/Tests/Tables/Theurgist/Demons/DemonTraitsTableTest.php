@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace DrdPlus\Tests\Tables\Theurgist\Demons;
 
 use DrdPlus\Codes\Theurgist\DemonTraitCode;

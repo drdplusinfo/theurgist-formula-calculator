@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Codes\Wizard;
 
 use DrdPlus\Codes\Partials\TranslatableCode;

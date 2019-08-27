@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Body\MovementTypes;
@@ -205,11 +206,11 @@ class MovementTypesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\MovementTypes\Exceptions\UnknownMovementType
-     * @expectedExceptionMessageRegExp ~moonwalk~
      */
     public function I_can_not_get_movement_bonus_for_unknown_type(): void
     {
+        $this->expectException(\DrdPlus\Tables\Body\MovementTypes\Exceptions\UnknownMovementType::class);
+        $this->expectExceptionMessageRegExp('~moonwalk~');
         $movementTypesTable = new MovementTypesTable($this->speedTable, $this->timeTable);
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $movementTypesTable->getSpeedBonus('moonwalk');
@@ -217,11 +218,11 @@ class MovementTypesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\MovementTypes\Exceptions\UnknownMovementType
-     * @expectedExceptionMessageRegExp ~sneaking~
      */
     public function I_can_not_get_period_of_fatigue_for_unknown_type(): void
     {
+        $this->expectException(\DrdPlus\Tables\Body\MovementTypes\Exceptions\UnknownMovementType::class);
+        $this->expectExceptionMessageRegExp('~sneaking~');
         $movementTypesTable = new MovementTypesTable($this->speedTable, $this->timeTable);
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $movementTypesTable->getPeriodForPointOfFatigueOn('sneaking');

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Partials;
@@ -70,22 +71,22 @@ abstract class PercentsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\UnexpectedPercents
-     * @expectedExceptionMessageRegExp ~-1~
      */
     public function I_can_not_create_negative_percents(): void
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\UnexpectedPercents::class);
+        $this->expectExceptionMessageRegExp('~-1~');
         $sutClass = self::getSutClass();
         new $sutClass(-1);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\UnexpectedPercents
-     * @expectedExceptionMessageRegExp ~half of quarter~
      */
     public function I_can_not_create_it_from_non_integer(): void
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\UnexpectedPercents::class);
+        $this->expectExceptionMessageRegExp('~half of quarter~');
         $sutClass = self::getSutClass();
         try {
             new $sutClass(1);

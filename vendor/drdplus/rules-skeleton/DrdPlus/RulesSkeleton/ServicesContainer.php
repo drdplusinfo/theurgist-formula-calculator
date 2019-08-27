@@ -6,12 +6,14 @@ use DeviceDetector\Parser\Bot;
 use DrdPlus\RulesSkeleton\Web\EmptyMenu;
 use DrdPlus\RulesSkeleton\Web\Head;
 use DrdPlus\RulesSkeleton\Web\Menu;
+use DrdPlus\RulesSkeleton\Web\NotFoundContent;
 use DrdPlus\RulesSkeleton\Web\Pass;
 use DrdPlus\RulesSkeleton\Web\PassContent;
 use DrdPlus\RulesSkeleton\Web\RulesMainContent;
 use DrdPlus\RulesSkeleton\Web\TablesContent;
 use DrdPlus\RulesSkeleton\Web\WebFiles;
 use DrdPlus\RulesSkeleton\Web\WebPartsContainer;
+use DrdPlus\RulesSkeleton\Web\WebRootProvider;
 use DrdPlus\WebVersions\WebVersions;
 use Granam\Git\Git;
 use Granam\Strict\Object\StrictObject;
@@ -35,6 +37,8 @@ class ServicesContainer extends StrictObject
     private $git;
     /** @var Configuration */
     private $configuration;
+    /** @var HomepageDetector */
+    private $homepageDetector;
     /** @var HtmlHelper */
     private $htmlHelper;
     /** @var Head */
@@ -49,8 +53,14 @@ class ServicesContainer extends StrictObject
     private $jsFiles;
     /** @var WebFiles */
     private $webFiles;
+    /** @var WebRootProvider */
+    private $webRootProvider;
+    /** @var PathProvider */
+    private $pathProvider;
     /** @var Request */
     private $request;
+    /** @var Environment */
+    private $environment;
     /** @var ContentIrrelevantParametersFilter */
     private $contentIrrelevantParametersFilter;
     /** @var Bot */
@@ -65,6 +75,8 @@ class ServicesContainer extends StrictObject
     private $rulesPdfWebContent;
     /** @var RulesMainContent */
     private $passContent;
+    /** @var NotFoundContent */
+    private $notFoundContent;
     /** @var CookiesService */
     private $cookiesService;
     /** @var \DateTimeImmutable */
@@ -73,6 +85,8 @@ class ServicesContainer extends StrictObject
     private $passWebCache;
     /** @var Cache */
     private $passedWebCache;
+    /** @var Cache */
+    private $notFoundCache;
     /** @var UsagePolicy */
     private $usagePolicy;
     /** @var Pass */
@@ -89,6 +103,14 @@ class ServicesContainer extends StrictObject
     public function getConfiguration(): Configuration
     {
         return $this->configuration;
+    }
+
+    public function getHomepageDetector(): HomepageDetector
+    {
+        if ($this->homepageDetector === null) {
+            $this->homepageDetector = new HomepageDetector($this->getPathProvider());
+        }
+        return $this->homepageDetector;
     }
 
     public function getCurrentWebVersion(): CurrentWebVersion
@@ -114,9 +136,17 @@ class ServicesContainer extends StrictObject
     public function getRequest(): Request
     {
         if ($this->request === null) {
-            $this->request = new Request($this->getBotParser());
+            $this->request = Request::createFromGlobals($this->getBotParser(), $this->getEnvironment());
         }
         return $this->request;
+    }
+
+    public function getEnvironment(): Environment
+    {
+        if ($this->environment === null) {
+            $this->environment = Environment::createFromGlobals();
+        }
+        return $this->environment;
     }
 
     public function getGit(): Git
@@ -193,6 +223,18 @@ class ServicesContainer extends StrictObject
         return $this->passContent;
     }
 
+    public function getNotFoundContent(): NotFoundContent
+    {
+        if ($this->notFoundContent === null) {
+            $this->notFoundContent = new NotFoundContent(
+                $this->getHtmlHelper(),
+                $this->getHead(),
+                $this->getWebPartsContainer()->getNotFoundBody()
+            );
+        }
+        return $this->notFoundContent;
+    }
+
     public function getHtmlHelper(): HtmlHelper
     {
         return $this->htmlHelper;
@@ -201,7 +243,7 @@ class ServicesContainer extends StrictObject
     public function getMenu(): Menu
     {
         if ($this->menu === null) {
-            $this->menu = new Menu($this->getConfiguration(), $this->getWebVersions(), $this->getCurrentWebVersion(), $this->getRequest());
+            $this->menu = new Menu($this->getConfiguration(), $this->getHomepageDetector());
         }
         return $this->menu;
     }
@@ -273,15 +315,30 @@ class ServicesContainer extends StrictObject
     public function getWebFiles(): WebFiles
     {
         if ($this->webFiles === null) {
-            $this->webFiles = new WebFiles($this->createRoutedDirs($this->getDirs()));
+            $this->webFiles = new WebFiles($this->getWebRootProvider());
         }
         return $this->webFiles;
     }
 
-    protected function createRoutedDirs(Dirs $dirs): Dirs
+    protected function getWebRootProvider(): WebRootProvider
     {
-        $match = $this->getRulesUrlMatcher()->match($this->getRequest()->getCurrentUrl());
-        return new Dirs($dirs->getProjectRoot(), $match->getPath());
+        if ($this->webRootProvider === null) {
+            $this->webRootProvider = new WebRootProvider($this->createRoutedDirs($this->getDirs()));
+        }
+        return $this->webRootProvider;
+    }
+
+    protected function createRoutedDirs(Dirs $dirs): RoutedDirs
+    {
+        return new RoutedDirs($dirs->getProjectRoot(), $this->getPathProvider());
+    }
+
+    protected function getPathProvider(): PathProvider
+    {
+        if ($this->pathProvider === null) {
+            $this->pathProvider = new PathProvider($this->getRulesUrlMatcher(), $this->getRequest()->getCurrentUrl());
+        }
+        return $this->pathProvider;
     }
 
     public function getRulesUrlMatcher(): RulesUrlMatcher
@@ -294,8 +351,8 @@ class ServicesContainer extends StrictObject
 
     private function createUrlMatcher(): UrlMatcherInterface
     {
-        $yamlFileWithRoutes = $this->getConfiguration()->getYamlFileWithRoutes();
-        if (!$yamlFileWithRoutes) {
+        $yamlFileWithRoutes = $this->getYamlFileWithRoutes();
+        if ($yamlFileWithRoutes === '') {
             return new DummyUrlMatcher();
         }
         $router = new \Symfony\Component\Routing\Router(
@@ -307,10 +364,23 @@ class ServicesContainer extends StrictObject
         return $router->getMatcher();
     }
 
+    protected function getYamlFileWithRoutes(): string
+    {
+        $yamlFileWithRoutes = $this->getConfiguration()->getYamlFileWithRoutes();
+        if ($yamlFileWithRoutes !== '') {
+            return $yamlFileWithRoutes;
+        }
+        $defaultYamlFileWithRoutes = $this->getDirs()->getProjectRoot() . '/' . $this->getConfiguration()->getDefaultYamlFileWithRoutes();
+        if (!file_exists($defaultYamlFileWithRoutes)) {
+            return '';
+        }
+        return $defaultYamlFileWithRoutes;
+    }
+
     public function getCookiesService(): CookiesService
     {
         if ($this->cookiesService === null) {
-            $this->cookiesService = new CookiesService();
+            $this->cookiesService = new CookiesService($this->getRequest());
         }
         return $this->cookiesService;
     }
@@ -356,10 +426,26 @@ class ServicesContainer extends StrictObject
         return $this->passedWebCache;
     }
 
+    public function getNotFoundCache(): Cache
+    {
+        if ($this->notFoundCache === null) {
+            $this->notFoundCache = new Cache(
+                $this->getCurrentWebVersion(),
+                $this->getDirs(),
+                $this->getRequest(),
+                $this->getContentIrrelevantParametersFilter(),
+                $this->getGit(),
+                $this->getHtmlHelper()->isInProduction(),
+                Cache::NOT_FOUND
+            );
+        }
+        return $this->notFoundCache;
+    }
+
     public function getPass(): Pass
     {
         if ($this->pass === null) {
-            $this->pass = new Pass($this->getConfiguration(), $this->getUsagePolicy());
+            $this->pass = new Pass($this->getConfiguration(), $this->getUsagePolicy(), $this->getRequest());
         }
         return $this->pass;
     }
@@ -380,9 +466,7 @@ class ServicesContainer extends StrictObject
     {
         return new EmptyMenu(
             $this->getConfiguration(),
-            $this->getWebVersions(),
-            $this->getCurrentWebVersion(),
-            $this->getRequest()
+            $this->getHomepageDetector()
         );
     }
 

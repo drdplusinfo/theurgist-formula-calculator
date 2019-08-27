@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
@@ -272,11 +273,11 @@ class FormulasTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetModifiersFor
-     * @expectedExceptionMessageRegExp ~Abraka dabra~
      */
     public function I_can_not_get_modifiers_to_unknown_formula(): void
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetModifiersFor::class);
+        $this->expectExceptionMessageRegExp('~Abraka dabra~');
         (new FormulasTable(Tables::getIt()))
             ->getModifierCodes($this->createFormulaCode('Abraka dabra'));
     }
@@ -394,11 +395,11 @@ class FormulasTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetProfilesFor
-     * @expectedExceptionMessageRegExp ~Charge!~
      */
     public function I_can_not_get_profiles_to_unknown_formula(): void
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaToGetProfilesFor::class);
+        $this->expectExceptionMessageRegExp('~Charge!~');
         (new FormulasTable(Tables::getIt()))->getProfileCodes($this->createFormulaCode('Charge!'));
     }
 }

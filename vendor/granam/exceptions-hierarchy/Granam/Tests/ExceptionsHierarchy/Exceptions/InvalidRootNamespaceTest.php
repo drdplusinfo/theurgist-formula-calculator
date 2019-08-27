@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 use Granam\ExceptionsHierarchy\TestOfExceptionsHierarchy;
@@ -6,17 +7,17 @@ use Granam\ExceptionsHierarchy\TestOfExceptionsHierarchy;
 class InvalidRootNamespaceTest extends AbstractExceptionsHierarchyTest
 {
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        return false; // disabling parent setup
+        return; // disabling parent setup
     }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\RootNamespaceHasToBeSuperior
      */
     public function I_am_stopped_on_invalid_root_namespace()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\RootNamespaceHasToBeSuperior::class);
         new TestOfExceptionsHierarchy(
             $this->getTestedNamespace(),
             $this->getRootNamespace(),

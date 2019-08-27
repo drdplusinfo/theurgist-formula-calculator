@@ -1,4 +1,15 @@
+with_path_and_query:
+  path: /{path}?{query}
+  defaults:
+    path: ''
+    query: ''
+with_query:
+  path: /?{query}
+  defaults:
+    path: ''
+    query: ''
 root:
   path: /{path}
   defaults:
     path: ''
+    query: ''

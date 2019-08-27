@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Wounds;
@@ -26,11 +27,11 @@ class WoundsTest extends AbstractTestOfMeasurement
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Wounds\Exceptions\WoundsCanNotBeNegative
-     * @expectedExceptionMessageRegExp ~-1~
      */
     public function I_can_not_create_negative_wounds()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Wounds\Exceptions\WoundsCanNotBeNegative::class);
+        $this->expectExceptionMessageRegExp('~-1~');
         new Wounds(-1, Tables::getIt()->getWoundsTable());
     }
 }

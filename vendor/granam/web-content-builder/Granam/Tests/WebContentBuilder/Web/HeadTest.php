@@ -28,7 +28,7 @@ class HeadTest extends AbstractContentTest
             $title
         );
         self::assertSame($title, $head->getPageTitle());
-        self::assertContains("<title>$title</title>", $head->getValue());
+        self::assertStringContainsString("<title>$title</title>", $head->getValue());
     }
 
     protected function getHtmlHelper(): HtmlHelper
@@ -62,7 +62,7 @@ class HeadTest extends AbstractContentTest
             '',
             $faviconUrl
         );
-        self::assertContains("<link rel=\"shortcut icon\" href=\"{$faviconUrl}\">", $head->getValue());
+        self::assertStringContainsString("<link rel=\"shortcut icon\" href=\"{$faviconUrl}\">", $head->getValue());
     }
 
     /**

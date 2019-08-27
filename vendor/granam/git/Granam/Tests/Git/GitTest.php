@@ -86,10 +86,10 @@ class GitTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Git\Exceptions\LocalOrRemoteBranchesShouldBeRequired
      */
     public function I_can_not_exclude_both_local_and_remote_branches_when_asking_to_versions(): void
     {
+        $this->expectException(\Granam\Git\Exceptions\LocalOrRemoteBranchesShouldBeRequired::class);
         $this->getGit()->getAllMinorVersions(__DIR__, Git::EXCLUDE_LOCAL_BRANCHES, Git::EXCLUDE_REMOTE_BRANCHES);
     }
 
@@ -119,11 +119,11 @@ class GitTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Git\Exceptions\NoPatchVersionsMatch
-     * @expectedExceptionMessageRegExp ~999[.]999~
      */
     public function I_am_stopped_when_asking_for_last_patch_version_of_non_existing_minor_version(): void
     {
+        $this->expectExceptionMessageRegExp('~999[.]999~');
+        $this->expectException(\Granam\Git\Exceptions\NoPatchVersionsMatch::class);
         $this->getGit()->getLastPatchVersionOf('999.999', __DIR__);
     }
 

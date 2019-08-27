@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\RulesSkeleton;
 
-use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;/**
- * @backupGlobals enabled
- */
+use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+
 class DevModeTest extends AbstractContentTest
 {
 
@@ -12,7 +12,7 @@ class DevModeTest extends AbstractContentTest
      */
     public function I_see_content_marked_by_development_classes(): void
     {
-        if (!$this->isSkeletonChecked()) {
+        if (!$this->isRulesSkeletonChecked()) {
             self::assertFalse(false, 'Intended for skeleton only');
 
             return;

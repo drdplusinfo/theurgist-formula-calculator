@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Granam\Tests\Boolean;
 
 use Granam\Boolean\Tools\ToBoolean;
@@ -58,46 +59,46 @@ class ToBooleanTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_by_default()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         ToBoolean::toBoolean(null);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_if_strict()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         ToBoolean::toBoolean(null, true /* strict */);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_array()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         ToBoolean::toBoolean([]);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_resource()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         ToBoolean::toBoolean(tmpfile());
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_object()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         ToBoolean::toBoolean(new \stdClass());
     }
 

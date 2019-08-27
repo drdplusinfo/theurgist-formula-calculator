@@ -4,10 +4,12 @@
 	"type": "library",
 
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=7.2",
 		"ext-dom": "*",
+		"ext-libxml": "*",
 		"ext-mbstring": "*",
-		"symfony/css-selector": "3.2.14"
+		"phpgt/cssxpath": "*",
+		"psr/http-message": "1.*"
 	},
 
 	"require-dev": {

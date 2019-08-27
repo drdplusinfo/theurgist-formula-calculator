@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\Armaments\ShieldCode;
@@ -162,7 +163,7 @@ class AllTranslatableCodesTest extends TestWithMockery
                 $sut = $codeClass::getIt($value);
                 $oneInEnglish = $this->codeToEnglish($value);
                 $oneInCzech = $sut->translateTo('cs');
-                self::assertNotContains('_', $oneInCzech, 'Underscore is really weird in a translation');
+                self::assertStringNotContainsString('_', $oneInCzech, 'Underscore is really weird in a translation');
                 self::assertSame($oneInCzech, $sut->translateTo('cs', 1));
                 if (in_array($oneInEnglish, $this->getValuesSameInCzechAndEnglish(), true)) {
                     self::assertSame($oneInEnglish, $oneInCzech);
@@ -276,8 +277,8 @@ class AllTranslatableCodesTest extends TestWithMockery
                 error_clear_last();
                 self::assertNotEmpty($lastError);
                 self::assertSame(E_USER_WARNING, $lastError['type']);
-                self::assertContains($value, $lastError['message']);
-                self::assertContains('demonic', $lastError['message']);
+                self::assertStringContainsString($value, $lastError['message']);
+                self::assertStringContainsString('demonic', $lastError['message']);
             }
         }
     }

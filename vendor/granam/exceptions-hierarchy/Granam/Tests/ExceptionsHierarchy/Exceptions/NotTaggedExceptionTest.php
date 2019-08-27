@@ -1,17 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\ExceptionIsNotTaggedProperly;
 
 class NotTaggedExceptionTest extends AbstractExceptionsHierarchyTest
 {
-    /** @noinspection SenselessProxyMethodInspection */
-
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\ExceptionIsNotTaggedProperly
-     * @expectedExceptionMessageRegExp ~^Class .+\\NotTaggedExceptionWithout\\IToughIAmTagged has to be tagged by Exception interface$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(ExceptionIsNotTaggedProperly::class);
+        $this->expectExceptionMessageRegExp('~^Class .+\\\NotTaggedExceptionWithout\\\IToughIAmTagged has to be tagged by Exception interface$~');
         parent::My_exceptions_are_in_family_tree();
     }
 

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class RuntimeExceptionAsLogicExceptionTest extends AbstractExceptionsHierarchyTest
@@ -6,11 +7,11 @@ class RuntimeExceptionAsLogicExceptionTest extends AbstractExceptionsHierarchyTe
     /** @noinspection SenselessProxyMethodInspection */
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~should be child of \\LogicException$~
+* @expectExceptionMessageRegExp ~should be child of \\LogicException$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

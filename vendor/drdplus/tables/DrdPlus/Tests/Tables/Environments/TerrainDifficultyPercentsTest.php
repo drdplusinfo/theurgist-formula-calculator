@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Environments;
@@ -16,11 +17,11 @@ class TerrainDifficultyPercentsTest extends PercentsTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Environments\Exceptions\UnexpectedDifficultyPercents
-     * @expectedExceptionMessageRegExp ~101~
      */
     public function I_can_not_create_more_than_hundred_of_percents()
     {
+        $this->expectException(\DrdPlus\Tables\Environments\Exceptions\UnexpectedDifficultyPercents::class);
+        $this->expectExceptionMessageRegExp('~101~');
         try {
             new TerrainDifficultyPercents(100);
         } catch (\Exception $exception) {

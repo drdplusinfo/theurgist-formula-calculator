@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Amount;
@@ -48,20 +49,20 @@ class AmountTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_use_too_low_bonus_to_value()
     {
+        $this->expectException(\OutOfRangeException::class);
         $amountTable = new AmountTable();
         $amountTable->toAmount(new AmountBonus(-21, $amountTable));
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit()
     {
+        $this->expectException(\OutOfRangeException::class);
         $amountTable = new AmountTable();
         $amountTable->toAmount(new AmountBonus(100, $amountTable));
     }
@@ -98,20 +99,20 @@ class AmountTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_low_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $amountTable = new AmountTable();
         $amountTable->toBonus(new Amount(0, Amount::AMOUNT, $amountTable));
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $amountTable = new AmountTable();
         $amountTable->toBonus(new Amount(90001, Amount::AMOUNT, $amountTable));
     }

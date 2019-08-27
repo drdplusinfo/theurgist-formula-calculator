@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Armaments;
 
 use DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToRangeWeaponCode;
@@ -438,11 +439,11 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToRangeWeaponCode
-     * @expectedExceptionMessageRegExp ~cudgel~
      */
     public function I_can_not_convert_anything_to_melee_weapon_code()
     {
+        $this->expectException(\DrdPlus\Codes\Armaments\Exceptions\CanNotBeConvertedToRangeWeaponCode::class);
+        $this->expectExceptionMessageRegExp('~cudgel~');
         $wantItRange = MeleeWeaponCode::getIt(MeleeWeaponCode::CUDGEL);
         self::assertFalse($wantItRange->isRanged());
         $wantItRange->convertToRangedWeaponCodeEquivalent();
@@ -518,11 +519,11 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Armaments\Exceptions\InvalidWeaponCategoryForNewMeleeWeaponCode
-     * @expectedExceptionMessageRegExp ~throwing~
      */
     public function I_can_not_add_new_melee_weapon_code_with_not_melee_category()
     {
+        $this->expectException(\DrdPlus\Codes\Armaments\Exceptions\InvalidWeaponCategoryForNewMeleeWeaponCode::class);
+        $this->expectExceptionMessageRegExp('~throwing~');
         $throwingCategory = WeaponCategoryCode::getIt(WeaponCategoryCode::THROWING_WEAPONS);
         self::assertFalse($throwingCategory->isMeleeWeaponCategory());
         MeleeWeaponCode::addNewMeleeWeaponCode('foo', $throwingCategory, []);
@@ -531,11 +532,11 @@ class MeleeWeaponCodeTest extends WeaponCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Armaments\Exceptions\MeleeWeaponIsAlreadyInDifferentWeaponCategory
      * @throws \ReflectionException
      */
     public function I_can_not_extended_it_by_same_code_but_different_category()
     {
+        $this->expectException(\DrdPlus\Codes\Armaments\Exceptions\MeleeWeaponIsAlreadyInDifferentWeaponCategory::class);
         $reflectionClass = new \ReflectionClass(MeleeWeaponCode::class);
         $translations = $reflectionClass->getProperty('translations');
         $translations->setAccessible(true);

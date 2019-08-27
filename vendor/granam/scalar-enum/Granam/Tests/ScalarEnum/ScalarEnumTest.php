@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\ScalarEnum;
 
@@ -69,10 +68,10 @@ class ScalarEnumTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\CanNotBeCloned
      */
     public function I_can_not_clone_it(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\CanNotBeCloned::class);
         $enumClass = $this->getEnumClass();
         $enum = $enumClass::getEnum('foo');
         /** @noinspection PhpExpressionResultUnusedInspection */
@@ -92,10 +91,10 @@ class ScalarEnumTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      */
     public function I_can_not_create_it_by_object_without_to_string(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum(new \stdClass());
     }
@@ -151,10 +150,10 @@ class ScalarEnumTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\EnumIsAlreadyBuilt
      */
     public function Adding_an_existing_enum_cause_exception(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\EnumIsAlreadyBuilt::class);
         TestInvalidExistingScalarEnumUsage::forceGetting(false);
         TestInvalidExistingScalarEnumUsage::forceAdding(true);
         // getting twice to internally add twice
@@ -164,10 +163,10 @@ class ScalarEnumTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\EnumIsNotBuilt
      */
     public function Getting_an_non_existing_enum_cause_exception(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\EnumIsNotBuilt::class);
         TestInvalidExistingScalarEnumUsage::forceAdding(false);
         TestInvalidExistingScalarEnumUsage::forceGetting(true);
         TestInvalidExistingScalarEnumUsage::getEnum('bar');
@@ -175,30 +174,30 @@ class ScalarEnumTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      */
     public function Using_invalid_value_without_casting_cause_exception(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum::class);
         TestInvalidScalarEnumValue::getEnum(new \stdClass());
     }
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
      */
     public function I_can_not_create_it_with_null(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum::class);
         $sutClass = $this->getEnumClass();
         $sutClass::getEnum(null);
     }
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum
-     * @expectedExceptionMessageRegExp ~abstract.+TestOfAbstractScalarEnum~
      */
     public function I_am_stopped_by_exception_if_trying_to_create_abstract_enum(): void
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\CanNotCreateInstanceOfAbstractEnum::class);
+        $this->expectExceptionMessageRegExp('~abstract.+TestOfAbstractScalarEnum~');
         TestOfAbstractScalarEnum::getEnum('foo');
     }
 }

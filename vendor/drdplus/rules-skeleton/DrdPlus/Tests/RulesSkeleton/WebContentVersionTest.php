@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -50,9 +49,11 @@ class WebContentVersionTest extends AbstractContentTest
      */
     public function Current_version_is_written_into_cookie(): void
     {
-        unset($_COOKIE[CookiesService::VERSION]);
-        $this->fetchNonCachedContent(null, false /* keep changed globals */);
-        self::assertArrayHasKey(CookiesService::VERSION, $_COOKIE, "Missing '" . CookiesService::VERSION . "' in cookie");
-        self::assertNotEmpty($_COOKIE[CookiesService::VERSION]);
+        $application = $this->createRulesApplication($servicesContainer = $this->getServicesContainer());
+        $this->fetchNonCachedContent($application, false /* keep changed globals */);
+        self::assertNotEmpty(
+            $servicesContainer->getCookiesService()->getCookie(CookiesService::VERSION),
+            sprintf('Missing %s in cookies', CookiesService::VERSION)
+        );
     }
 }

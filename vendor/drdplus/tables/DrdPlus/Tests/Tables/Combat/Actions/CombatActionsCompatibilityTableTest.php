@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Combat\Actions;
@@ -102,12 +103,12 @@ class CombatActionsCompatibilityTableTest extends TableTest
     /**
      * @test
      * @dataProvider provideUnknownCombatActions
-     * @expectedException \DrdPlus\Tables\Combat\Actions\Exceptions\UnknownCombatAction
      * @param string $someAction
      * @param string $anotherAction
      */
     public function I_can_not_get_compatibility_of_unknown_actions(string $someAction, string $anotherAction)
     {
+        $this->expectException(\DrdPlus\Tables\Combat\Actions\Exceptions\UnknownCombatAction::class);
         $someActionCode = $this->createCombatActionCode($someAction);
         $anotherActionCode = $this->createCombatActionCode($anotherAction);
         (new CombatActionsCompatibilityTable())->canCombineTwoActions($someActionCode, $anotherActionCode);

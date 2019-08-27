@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton\Web;
 
@@ -51,7 +50,7 @@ class MainContentTest extends AbstractContentTest
             $this->createEmptyHead(),
             $this->createMainBody(sprintf('<a href="%s">Some link</a>', $linkToDrdPlus))
         );
-        self::assertContains($expectedLinkWithoutDiacritics, $rulesMainContent->getValue());
+        self::assertStringContainsString($expectedLinkWithoutDiacritics, $rulesMainContent->getValue());
     }
 
     public function provideLinkToDrdPlus(): array
@@ -77,7 +76,7 @@ class MainContentTest extends AbstractContentTest
         );
         $hash = \substr($linkOutOfDrdPlus, \strpos($linkOutOfDrdPlus, '#') + 1);
         $expectedLinkOutOfDrdPlus = \str_replace('#' . $hash, '#' . \rawurlencode($hash), $linkOutOfDrdPlus);
-        self::assertContains($expectedLinkOutOfDrdPlus, $rulesMainContent->getValue());
+        self::assertStringContainsString($expectedLinkOutOfDrdPlus, $rulesMainContent->getValue());
     }
 
     public function provideLinkOutOfDrdPlus(): array
@@ -97,6 +96,6 @@ class MainContentTest extends AbstractContentTest
             $this->createEmptyHead(),
             $this->createMainBody('<a href="https://blog.drdplus.info/#!index.md">To blog</a>')
         );
-        self::assertContains('http://blog.drdplus.loc/#!index.md', $rulesMainContent->getValue());
+        self::assertStringContainsString('http://blog.drdplus.loc/#!index.md', $rulesMainContent->getValue());
     }
 }

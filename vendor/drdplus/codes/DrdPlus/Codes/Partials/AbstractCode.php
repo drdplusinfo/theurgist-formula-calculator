@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Codes\Partials;
 
@@ -47,7 +46,7 @@ abstract class AbstractCode extends ScalarEnum implements Code
      */
     public static function getIt($codeValue): AbstractCode
     {
-        return self::getEnum($codeValue);
+        return static::getEnum($codeValue);
     }
 
     /**
@@ -59,10 +58,10 @@ abstract class AbstractCode extends ScalarEnum implements Code
     public static function findIt($codeValue): AbstractCode
     {
         if (static::hasIt($codeValue)) {
-            return self::getIt($codeValue);
+            return static::getIt($codeValue);
         }
 
-        return self::getIt(static::getDefaultValue());
+        return static::getIt(static::getDefaultValue());
     }
 
     protected static function getDefaultValue(): string
@@ -83,7 +82,7 @@ abstract class AbstractCode extends ScalarEnum implements Code
             return false;
         }
 
-        return \in_array(ToString::toString($codeValue), self::getPossibleValues(), true);
+        return \in_array(ToString::toString($codeValue), static::getPossibleValues(), true);
     }
 
     /**

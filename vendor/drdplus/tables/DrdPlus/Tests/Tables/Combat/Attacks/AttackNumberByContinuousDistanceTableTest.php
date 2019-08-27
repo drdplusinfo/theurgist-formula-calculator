@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Combat\Attacks;
@@ -41,11 +42,11 @@ class AttackNumberByContinuousDistanceTableTest extends AbstractAttackNumberByDi
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Combat\Attacks\Exceptions\DistanceOutOfKnownValues
-     * @expectedExceptionMessageRegExp ~999999 m~
      */
     public function I_can_not_get_attack_number_modifier_with_enormous_distance(): void
     {
+        $this->expectException(\DrdPlus\Tables\Combat\Attacks\Exceptions\DistanceOutOfKnownValues::class);
+        $this->expectExceptionMessageRegExp('~999999 m~');
         (new AttackNumberByContinuousDistanceTable())
             ->getAttackNumberModifierByDistance(new Distance(999999, DistanceUnitCode::METER, new DistanceTable()));
     }

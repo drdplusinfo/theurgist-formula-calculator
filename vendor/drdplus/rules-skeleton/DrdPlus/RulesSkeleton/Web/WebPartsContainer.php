@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
@@ -28,6 +27,8 @@ class WebPartsContainer extends StrictObject
     private $pdfBody;
     /** @var RulesMainBody */
     private $rulesMainBody;
+    /** @var NotFoundBody */
+    private $notFoundBody;
     /** @var TablesBody */
     private $tablesBody;
 
@@ -78,6 +79,14 @@ class WebPartsContainer extends StrictObject
             $this->rulesMainBody = new RulesMainBody($this->webFiles, $this);
         }
         return $this->rulesMainBody;
+    }
+
+    public function getNotFoundBody(): NotFoundBody
+    {
+        if ($this->notFoundBody === null) {
+            $this->notFoundBody = new NotFoundBody($this->request, $this->getDebugContactsBody());
+        }
+        return $this->notFoundBody;
     }
 
 }

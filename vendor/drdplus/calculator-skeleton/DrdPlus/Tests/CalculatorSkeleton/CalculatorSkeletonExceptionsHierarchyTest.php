@@ -1,9 +1,8 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
-class CalculatorSkeletonExceptionsHierarchyTest extends RulesSkeletonExceptionsHierarchyTest
+class CalculatorSkeletonExceptionsHierarchyTest extends \DrdPlus\Tests\RulesSkeleton\RulesSkeletonExceptionsHierarchyTest
 {
     /**
      * @return string

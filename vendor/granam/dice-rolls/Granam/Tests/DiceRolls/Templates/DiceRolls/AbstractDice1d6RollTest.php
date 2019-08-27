@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\DiceRolls\Templates\DiceRolls;
 
@@ -45,33 +44,33 @@ abstract class AbstractDice1d6RollTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\DiceRolls\Exceptions\Invalid1d6DiceRollValue
-     * @expectedExceptionMessageRegExp ~got 0~
      */
     public function I_can_not_create_it_with_zero_or_less(): void
     {
+        $this->expectException(\Granam\DiceRolls\Templates\DiceRolls\Exceptions\Invalid1d6DiceRollValue::class);
+        $this->expectExceptionMessageRegExp('~got 0~');
         $sutClass = self::getSutClass();
         new $sutClass($rolledNumber = $this->createRolledNumber(0), 1);
     }
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\DiceRolls\Exceptions\Invalid1d6DiceRollValue
-     * @expectedExceptionMessageRegExp ~got 7~
      */
     public function I_can_not_create_it_with_greater_number_than_six(): void
     {
+        $this->expectException(\Granam\DiceRolls\Templates\DiceRolls\Exceptions\Invalid1d6DiceRollValue::class);
+        $this->expectExceptionMessageRegExp('~got 7~');
         $sutClass = self::getSutClass();
         new $sutClass($rolledNumber = $this->createRolledNumber(7), 1);
     }
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Exceptions\InvalidSequenceNumber
-     * @expectedExceptionMessageRegExp ~got 0~
      */
     public function I_can_not_create_it_with_zero_or_less_sequence_number(): void
     {
+        $this->expectException(\Granam\DiceRolls\Exceptions\InvalidSequenceNumber::class);
+        $this->expectExceptionMessageRegExp('~got 0~');
         $sutClass = self::getSutClass();
         new $sutClass($rolledNumber = $this->createRolledNumber(5), 0);
     }

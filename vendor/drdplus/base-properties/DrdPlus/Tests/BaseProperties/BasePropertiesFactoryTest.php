@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\BaseProperties;
 
@@ -67,12 +66,11 @@ class BasePropertiesFactoryTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DrdPlus\BaseProperties\Exceptions\UnknownBasePropertyCode
      */
     public function I_can_not_create_property_by_unknown_code(): void
     {
+        $this->expectException(\DrdPlus\BaseProperties\Exceptions\UnknownBasePropertyCode::class);
         $factory = new BasePropertiesFactory();
-
         $factory->createProperty(123, 'unknown code');
     }
 }

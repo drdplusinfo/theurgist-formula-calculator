@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Experiences;
@@ -91,19 +92,19 @@ class LevelTest extends AbstractTestOfBonus
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Experiences\Exceptions\MaxLevelOverflow
      */
     public function I_cannot_create_higher_level_than_cap()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Experiences\Exceptions\MaxLevelOverflow::class);
         new Level(21, $this->getExperiencesTable());
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Experiences\Exceptions\MinLevelUnderflow
      */
     public function I_cannot_create_negative_level()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Experiences\Exceptions\MinLevelUnderflow::class);
         new Level(-1, $this->getExperiencesTable());
     }
 

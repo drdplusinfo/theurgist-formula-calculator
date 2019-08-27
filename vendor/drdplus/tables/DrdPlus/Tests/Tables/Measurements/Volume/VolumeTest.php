@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Volume;
@@ -79,12 +80,12 @@ class VolumeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideInSpecificUnitGetters
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
-     * @expectedExceptionMessageRegExp ~drop~
      * @param string $getInUnit
      */
     public function Can_not_cast_it_from_unknown_unit(string $getInUnit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
+        $this->expectExceptionMessageRegExp('~drop~');
         /** @var Volume|\Mockery\MockInterface $volumeWithInvalidUnit */
         $volumeWithInvalidUnit = $this->mockery(Volume::class);
         $volumeWithInvalidUnit->shouldReceive('getUnit')
@@ -107,13 +108,13 @@ class VolumeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideVolumeUnits
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
-     * @expectedExceptionMessageRegExp ~first~
      * @param string $unit
      * @throws \ReflectionException
      */
     public function Can_not_cast_it_to_unknown_unit(string $unit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
+        $this->expectExceptionMessageRegExp('~first~');
         $volume = new \ReflectionClass(Volume::class);
         $getValueInDifferentUnit = $volume->getMethod('getValueInDifferentUnit');
         $getValueInDifferentUnit->setAccessible(true);
@@ -132,20 +133,20 @@ class VolumeTest extends AbstractTestOfMeasurement
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_low_value_to_bonus(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $volume = new Volume(0.000000009, VolumeUnitCode::CUBIC_METER, Tables::getIt()->getDistanceTable());
         $volume->getBonus();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_high_value_to_bonus(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $volume = new Volume(9999999999, VolumeUnitCode::CUBIC_KILOMETER, Tables::getIt()->getDistanceTable());
         $volume->getBonus();
     }

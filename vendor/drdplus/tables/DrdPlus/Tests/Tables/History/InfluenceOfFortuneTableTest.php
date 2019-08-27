@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\History;
@@ -68,11 +69,11 @@ class InfluenceOfFortuneTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\History\Exceptions\UnexpectedDiceRoll
-     * @expectedExceptionMessageRegExp ~7~
      */
     public function I_can_not_get_primary_property_on_non_1d6_roll()
     {
+        $this->expectException(\DrdPlus\Tables\History\Exceptions\UnexpectedDiceRoll::class);
+        $this->expectExceptionMessageRegExp('~7~');
         (new InfluenceOfFortuneTable())->getPrimaryPropertyOnFate(FateCode::getIt(FateCode::GOOD_BACKGROUND), 7);
     }
 
@@ -117,11 +118,11 @@ class InfluenceOfFortuneTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\History\Exceptions\UnexpectedDiceRoll
-     * @expectedExceptionMessageRegExp ~0~
      */
     public function I_can_not_get_secondary_property_on_non_1d6_roll()
     {
+        $this->expectException(\DrdPlus\Tables\History\Exceptions\UnexpectedDiceRoll::class);
+        $this->expectExceptionMessageRegExp('~0~');
         (new InfluenceOfFortuneTable())->getSecondaryPropertyOnFate(FateCode::getIt(FateCode::EXCEPTIONAL_PROPERTIES), 0);
     }
 }

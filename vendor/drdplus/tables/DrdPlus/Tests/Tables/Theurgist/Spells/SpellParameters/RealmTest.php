@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
@@ -27,11 +28,11 @@ class RealmTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmCanNotBeNegative
-     * @expectedExceptionMessageRegExp ~-456~
      */
     public function I_can_not_create_it_negative()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\RealmCanNotBeNegative::class);
+        $this->expectExceptionMessageRegExp('~-456~');
         new Realm(-456);
     }
 }

@@ -59,19 +59,19 @@ class SquareBonusTest extends AbstractTestOfBonus
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_use_too_low_bonus_to_value(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         (new SquareBonus(-40 /* minimal distance bonus */ * 2 /* doubled */ - 1 /* out of range */, Tables::getIt()->getDistanceTable()))->getSquare();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         (new SquareBonus(120 /* maximal distance bonus */ * 2 /* doubled */ + 1 /* out of range */, Tables::getIt()->getDistanceTable()))->getSquare();
     }
 }

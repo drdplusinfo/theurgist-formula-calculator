@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Environments;
@@ -37,11 +38,11 @@ class StealthinessTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Environments\Exceptions\UnknownStealthinessCode
-     * @expectedExceptionMessageRegExp ~in showcase~
      */
     public function I_can_not_get_stealthiness_on_unknown_situation()
     {
+        $this->expectException(\DrdPlus\Tables\Environments\Exceptions\UnknownStealthinessCode::class);
+        $this->expectExceptionMessageRegExp('~in showcase~');
         (new StealthinessTable())->getStealthinessOnSituation($this->createItemStealthinessCode('in showcase'));
     }
 

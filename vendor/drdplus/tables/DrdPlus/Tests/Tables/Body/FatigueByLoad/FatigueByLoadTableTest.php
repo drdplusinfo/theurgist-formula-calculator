@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Body\FatigueByLoad;
@@ -126,19 +127,19 @@ class FatigueByLoadTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\FatigueByLoad\Exceptions\OverloadedAndCanNotMove
      */
     public function I_am_stopped_by_exception_if_want_name_but_can_not_move()
     {
+        $this->expectException(\DrdPlus\Tables\Body\FatigueByLoad\Exceptions\OverloadedAndCanNotMove::class);
         (new FatigueByLoadTable())->getLoadName(22, $this->createAthletic(0));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\FatigueByLoad\Exceptions\OverloadedAndCanNotMove
      */
     public function I_am_stopped_by_exception_if_want_period_but_can_not_move()
     {
+        $this->expectException(\DrdPlus\Tables\Body\FatigueByLoad\Exceptions\OverloadedAndCanNotMove::class);
         (new FatigueByLoadTable())->getPeriodForPointOfFatigue(
             24,
             $this->createAthletic(2),

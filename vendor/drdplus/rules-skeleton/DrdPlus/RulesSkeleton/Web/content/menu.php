@@ -1,13 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 /** @var $configuration \DrdPlus\RulesSkeleton\Configuration */
+/** @var $homepageDetector \DrdPlus\RulesSkeleton\HomepageDetector */
 $fixed = $configuration->isMenuPositionFixed()
     ? 'fixed'
     : '';
 $homeButton = '';
-if ($configuration->isShowHomeButton()) {
+if ($configuration->isShowHomeButton()
+    || ($homepageDetector->isHomepageRequested() && $configuration->isShowHomeButtonOnHomepage())
+    || (!$homepageDetector->isHomepageRequested() && $configuration->isShowHomeButtonOnRoutes())
+) {
     $homeButton = <<<HTML
 <span class="menu">
-    <a id="homeButton" class="internal-url" href="https://www.drdplus.info">
+    <a id="homeButton" class="internal-url" href="{$configuration->getHomeButtonTarget()}">
         <img class="home" alt="Small dragon menu" src="/images/generic/skeleton/rules-drd-plus-dragon-menu-2x22.png">
     </a>
 </span>
@@ -15,7 +19,7 @@ HTML;
 }
 ?>
 
-<div class="contacts visible top permanent $fixed" id="menu">
+<div class="contacts visible top permanent <?= $fixed ?>" id="menu">
   <div class="container">
       <?= $homeButton ?>
     <span class="contact">

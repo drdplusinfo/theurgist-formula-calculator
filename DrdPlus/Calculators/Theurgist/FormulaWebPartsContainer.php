@@ -14,13 +14,9 @@ use DrdPlus\Tables\Theurgist\Spells\Formula;
 
 class FormulaWebPartsContainer extends CalculatorWebPartsContainer
 {
-    /**
-     * @var Tables
-     */
+    /** @var Tables */
     private $tables;
-    /**
-     * @var CurrentFormulaValues
-     */
+    /** @var CurrentFormulaValues */
     private $currentFormulaValues;
 
     public function __construct(
@@ -29,13 +25,13 @@ class FormulaWebPartsContainer extends CalculatorWebPartsContainer
         Dirs $dirs,
         HtmlHelper $htmlHelper,
         Request $request,
-        Tables $tables,
-        CurrentFormulaValues $currentFormulaValues
+        CurrentFormulaValues $currentFormulaValues,
+        Tables $tables
     )
     {
         parent::__construct($pass, $webFiles, $dirs, $htmlHelper, $request);
-        $this->tables = $tables;
         $this->currentFormulaValues = $currentFormulaValues;
+        $this->tables = $tables;
     }
 
     public function getTables(): Tables

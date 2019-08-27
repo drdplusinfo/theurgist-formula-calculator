@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Partials;
@@ -30,10 +31,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\FileCanNotBeRead
      */
     public function I_can_not_create_table_without_source_file()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\FileCanNotBeRead::class);
         $originalErrorReporting = error_reporting();
         try {
             error_reporting($originalErrorReporting ^ E_WARNING);
@@ -49,10 +50,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\FileIsEmpty
      */
     public function I_can_not_create_table_with_empty_source_file()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\FileIsEmpty::class);
         $table = TestOfAbstractTable::getIt($this->createTempFilename());
         try {
             $table->getIndexedValues();
@@ -68,10 +69,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\DataFromFileAreCorrupted
      */
     public function I_can_not_create_table_with_corrupted_data()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\DataFromFileAreCorrupted::class);
         $filename = $this->createTempFilename();
         file_put_contents($filename, 'bar');
         $table = TestOfAbstractTable::getIt($filename);
@@ -84,10 +85,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\DataRowsAreMissingInFile
      */
     public function I_can_not_create_table_without_data()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\DataRowsAreMissingInFile::class);
         $filename = $this->createTempFilename();
         file_put_contents($filename, 'bonus');
         $table = TestOfAbstractTable::getIt($filename);
@@ -100,10 +101,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
      */
     public function I_can_not_convert_bonus_to_unknown_unit()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
         $filename = $this->createTempFilename();
         $bonus = new BonusForTestOfAbstractTable(123);
         file_put_contents($filename, "bonus\n$bonus");
@@ -113,10 +114,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnexpectedChanceNotation
      */
     public function I_can_not_convert_bonus_to_invalid_value_change()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnexpectedChanceNotation::class);
         $filename = $this->createTempFilename();
         $bonus = new BonusForTestOfAbstractTable(123);
         $unit = 'bar';
@@ -128,10 +129,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_am_stopped_by_an_exception_if_can_not_convert_bonus_to_value()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $filename = $this->createTempFilename();
         $bonus = new BonusForTestOfAbstractTable(123);
         $unit = 'bar';
@@ -142,10 +143,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\BonusAlreadyPaired
      */
     public function I_can_not_use_same_bonus_for_more_values()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\BonusAlreadyPaired::class);
         $filename = $this->createTempFilename();
         $bonus = 123;
         $unit = 'bar';
@@ -160,10 +161,10 @@ class AbstractMeasurementFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\LoadingDataFailed
      */
     public function I_am_stopped_if_bonus_contains_non_numeric_value()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\LoadingDataFailed::class);
         $filename = $this->createTempFilename();
         file_put_contents($filename, "bonus,foo\nSonOfSun,123456");
         $table = TestOfAbstractTable::getIt($filename, ['foo']);

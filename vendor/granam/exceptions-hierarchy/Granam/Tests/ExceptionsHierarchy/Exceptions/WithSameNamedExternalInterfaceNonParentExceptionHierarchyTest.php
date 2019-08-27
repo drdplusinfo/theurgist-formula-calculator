@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class WithSameNamedExternalInterfaceNonParentExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
@@ -44,11 +45,11 @@ class WithSameNamedExternalInterfaceNonParentExceptionHierarchyTest extends Abst
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy
-     * @expectedExceptionMessageRegExp ~Tag interface .+\\WithSameNamedExternalInterfaceNonParent\\Exception .+external parent tag interface .+\\WithSameNamedParent\\Exception~
+* @expectExceptionMessageRegExp ~Tag interface .+\\WithSameNamedExternalInterfaceNonParent\\Exception .+external parent tag interface .+\\WithSameNamedParent\\Exception~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 }

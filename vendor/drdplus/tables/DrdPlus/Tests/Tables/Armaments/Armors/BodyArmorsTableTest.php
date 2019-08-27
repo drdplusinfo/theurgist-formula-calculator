@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Armors;
@@ -143,7 +144,6 @@ class BodyArmorsTableTest extends AbstractArmorsTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentBodyArmorIsUnderSameName
      * @dataProvider provideSlightlyDifferentArmorProperties
      * @param int $strengthValue
      * @param int $restrictionValue
@@ -169,6 +169,7 @@ class BodyArmorsTableTest extends AbstractArmorsTableTest
         int $newRoundsToPutOnValue
     )
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentBodyArmorIsUnderSameName::class);
         $bodyArmorCode = $this->createBodyArmorCode(uniqid('bar', true));
         $bodyArmorsTable = Tables::getIt()->getBodyArmorsTable();
         $added = $bodyArmorsTable->addCustomBodyArmor(

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Body;
 
 use DrdPlus\Codes\Body\OrdinaryWoundOriginCode;
@@ -20,11 +21,11 @@ class OrdinaryWoundOriginCodeTest extends WoundOriginCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @expectedExceptionMessageRegExp ~Kitchen accident~
      */
     public function I_can_not_create_custom_ordinary_origin()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode::class);
+        $this->expectExceptionMessageRegExp('~Kitchen accident~');
         OrdinaryWoundOriginCode::getEnum('Kitchen accident');
     }
 }

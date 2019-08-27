@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
@@ -19,7 +20,7 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
      */
     private $formulasTable;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->formulasTable = new FormulasTable(Tables::getIt());
     }
@@ -117,11 +118,11 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetFormulasFor
-     * @expectedExceptionMessageRegExp ~Sexy texy~
      */
     public function I_can_not_get_formulas_to_unknown_profile()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetFormulasFor::class);
+        $this->expectExceptionMessageRegExp('~Sexy texy~');
         (new ProfilesTable())->getFormulaCodes($this->createProfileCode('Sexy texy'));
     }
 
@@ -217,11 +218,11 @@ class ProfilesTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetModifiersFor
-     * @expectedExceptionMessageRegExp ~Lazy lizard~
      */
     public function I_can_not_get_modifiers_to_unknown_profile()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownProfileToGetModifiersFor::class);
+        $this->expectExceptionMessageRegExp('~Lazy lizard~');
         (new ProfilesTable())->getModifierCodes($this->createProfileCode('Lazy lizard'));
     }
 

@@ -935,11 +935,11 @@ class FormulaTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter
-     * @expectedExceptionMessageRegExp ~0\.1~
      */
     public function I_can_not_create_it_with_non_integer_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidValueForFormulaParameter::class);
+        $this->expectExceptionMessageRegExp('~0\.1~');
         try {
             $formulaCode = FormulaCode::getIt(FormulaCode::PORTAL);
             $formulasTable = $this->createFormulasTable();
@@ -983,11 +983,11 @@ class FormulaTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter
-     * @expectedExceptionMessageRegExp ~4~
      */
     public function I_can_not_add_non_zero_addition_to_unused_parameter()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter::class);
+        $this->expectExceptionMessageRegExp('~4~');
         try {
             $formulasTable = $this->createFormulasTable();
             $brightness = $this->createExpectedParameter(FormulaMutableParameterCode::SPELL_BRIGHTNESS);
@@ -1022,11 +1022,11 @@ class FormulaTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter
-     * @expectedExceptionMessageRegExp ~divine~
      */
     public function I_can_not_create_it_with_addition_of_unknown_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownFormulaParameter::class);
+        $this->expectExceptionMessageRegExp('~divine~');
         $this->createFormula(
             FormulaCode::getIt(FormulaCode::PORTAL),
             $this->createTables($this->createFormulasTable()),
@@ -1036,11 +1036,11 @@ class FormulaTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidModifier
-     * @expectedExceptionMessageRegExp ~DateTime~
      */
     public function I_can_not_create_it_with_invalid_modifier()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidModifier::class);
+        $this->expectExceptionMessageRegExp('~DateTime~');
         $this->createFormula(
             FormulaCode::getIt(FormulaCode::PORTAL),
             $this->createTables($this->createFormulasTable()),
@@ -1051,11 +1051,11 @@ class FormulaTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidSpellTrait
-     * @expectedExceptionMessageRegExp ~stdClass~
      */
     public function I_can_not_create_it_with_invalid_spell_trait()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\InvalidSpellTrait::class);
+        $this->expectExceptionMessageRegExp('~stdClass~');
         new Formula(
             FormulaCode::getIt(FormulaCode::PORTAL),
             $this->createTables($this->createFormulasTable()),

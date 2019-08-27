@@ -1,17 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy;
 
 class GreedyLogicTagTest extends AbstractExceptionsHierarchyTest
 {
-    /** @noinspection SenselessProxyMethodInspection */
-
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy
-     * @expectedExceptionMessageRegExp ~Logic tag interface .+\\Logic can not be a runtime tag~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(InvalidTagInterfaceHierarchy::class);
+        $this->expectExceptionMessageRegExp('~Logic tag interface .+\\\Logic can not be a runtime tag~');
         parent::My_exceptions_are_in_family_tree();
     }
 

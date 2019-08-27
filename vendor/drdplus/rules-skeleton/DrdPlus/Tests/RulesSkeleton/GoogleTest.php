@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
@@ -26,7 +27,7 @@ class GoogleTest extends AbstractContentTest
      */
     public function Google_analytics_are_active(): void
     {
-        $htmlDocument = $this->getHtmlDocument();
+        $htmlDocument = $this->getHtmlDocument(['mode' => 'prod']);
         $scripts = $htmlDocument->head->getElementsByTagName('script');
         self::assertNotEmpty($scripts, 'No scripts found in head ' . $htmlDocument->head->outerHTML);
         $sourcesToScripts = [];

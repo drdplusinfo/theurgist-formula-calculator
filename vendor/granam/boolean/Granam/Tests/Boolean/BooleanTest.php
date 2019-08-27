@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\Boolean;
 
 use Granam\Boolean\Boolean;
@@ -16,16 +17,19 @@ class BooleanTest extends TestCase
         self::assertFalse($withFalse->getValue());
         self::assertSame((string)$false, (string)$withFalse);
         self::assertSame('', (string)$withFalse);
+
         $withTrue = new Boolean($true = true);
         self::assertTrue($withTrue->getValue());
         self::assertSame((string)$true, (string)$withTrue);
         self::assertSame('1', (string)$withTrue);
+
         $withString = new Boolean($stringValue = '');
         self::assertSame((bool)$stringValue, $withString->getValue());
         self::assertSame($stringValue, (string)$withString);
+
         $withInteger = new Boolean($integerValue = 123456);
         self::assertSame('1', (string)$withInteger);
-        self::assertTrue(true, $withInteger->getValue());
+        self::assertTrue($withInteger->getValue());
     }
 
     /**
@@ -65,46 +69,46 @@ class BooleanTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_by_default()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         new Boolean(null);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_if_strict()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         new Boolean(null, true /* strict */);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_array()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         new Boolean([]);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_resource()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         new Boolean(tmpfile());
     }
 
     /**
      * @test
-     * @expectedException \Granam\Boolean\Tools\Exceptions\WrongParameterType
      */
     public function I_cannot_use_object()
     {
+        $this->expectException(\Granam\Boolean\Tools\Exceptions\WrongParameterType::class);
         new Boolean(new \stdClass());
     }
 

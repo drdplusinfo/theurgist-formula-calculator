@@ -7,9 +7,9 @@ use DrdPlus\Tests\Codes\Partials\TranslatableCodeTest;
 
 abstract class AbstractTheurgistCodeTest extends TranslatableCodeTest
 {
-    protected function setUp()
+    protected function setUp(): void
     {
-        self::assertContains(__NAMESPACE__, static::class, 'Code test has to be in "Tests" namespace');
+        self::assertStringContainsString(__NAMESPACE__, static::class, 'Code test has to be in "Tests" namespace');
     }
 
     /**
@@ -97,8 +97,8 @@ abstract class AbstractTheurgistCodeTest extends TranslatableCodeTest
             error_clear_last();
             self::assertNotEmpty($lastError);
             self::assertSame(E_USER_WARNING, $lastError['type']);
-            self::assertContains($value, $lastError['message']);
-            self::assertContains('demonic', $lastError['message']);
+            self::assertStringContainsString($value, $lastError['message']);
+            self::assertStringContainsString('demonic', $lastError['message']);
         }
     }
 }

@@ -1,5 +1,8 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy;
 
 class ExternalExceptionTagMissingTest extends AbstractExceptionsHierarchyTest
 {
@@ -22,16 +25,15 @@ class ExternalExceptionTagMissingTest extends AbstractExceptionsHierarchyTest
     {
         // skipping some namespace chain up from root namespace
         return ['\Granam\ExceptionsHierarchy'];
-    }/** @noinspection SenselessProxyMethodInspection */
+    }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy
-     * @expectedExceptionMessageRegExp ~^Tag interface .+\\Exception should extends external parent tag interface .+~
      */
     public function My_exceptions_are_in_family_tree()
     {
-        // overloading parent method annotations
+        $this->expectException(InvalidTagInterfaceHierarchy::class);
+        $this->expectExceptionMessageRegExp('~^Tag interface .+\\Exception should extends external parent tag interface .+~');
         parent::My_exceptions_are_in_family_tree();
     }
 

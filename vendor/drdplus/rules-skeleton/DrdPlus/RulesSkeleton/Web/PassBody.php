@@ -1,11 +1,9 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
 use Granam\Strict\Object\StrictObject;
 use Granam\WebContentBuilder\HtmlDocument;
-use Granam\WebContentBuilder\Web\BodyInterface;
 
 class PassBody extends StrictObject implements RulesBodyInterface
 {

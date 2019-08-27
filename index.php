@@ -1,10 +1,10 @@
 <?php
 namespace DrdPlus\Theurgist\Formulas;
 
-use DrdPlus\Calculators\Theurgist\FormulaCalculatorApplication;
-use DrdPlus\Calculators\Theurgist\FormulaDirs;
 use DrdPlus\Calculators\Theurgist\FormulaServicesContainer;
+use DrdPlus\CalculatorSkeleton\CalculatorApplication;
 use DrdPlus\CalculatorSkeleton\CalculatorConfiguration;
+use DrdPlus\RulesSkeleton\Dirs;
 use DrdPlus\RulesSkeleton\Environment;
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\TracyDebugger;
@@ -20,14 +20,14 @@ $documentRoot = $documentRoot ?? (PHP_SAPI !== 'cli' ? rtrim(dirname($_SERVER['S
 /** @noinspection PhpIncludeInspection */
 require_once $documentRoot . '/vendor/autoload.php';
 
-$dirs = $dirs ?? new FormulaDirs($documentRoot);
-$htmlHelper = $htmlHelper ?? HtmlHelper::createFromGlobals($dirs, new Environment());
+$dirs = $dirs ?? new Dirs($documentRoot);
+$htmlHelper = $htmlHelper ?? HtmlHelper::createFromGlobals($dirs, Environment::createFromGlobals());
 if (PHP_SAPI !== 'cli') {
     TracyDebugger::enable($htmlHelper->isInProduction());
 }
 
 $configuration = $configuration ?? CalculatorConfiguration::createFromYml($dirs);
 $servicesContainer = $servicesContainer ?? new FormulaServicesContainer($configuration, $htmlHelper);
-$formulaCalculatorApplication = new FormulaCalculatorApplication($servicesContainer);
+$formulaCalculatorApplication = $calculatorApplication ?? $rulesApplication ?? new CalculatorApplication($servicesContainer);
 
 $formulaCalculatorApplication->run();

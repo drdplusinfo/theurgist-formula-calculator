@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\DiceRolls\Templates\Dices;
 
@@ -49,10 +48,10 @@ class CustomDiceTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_minimum_greater_than_maximum()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange::class);
         /** @var IntegerInterface|\Mockery\MockInterface $minimum */
         $minimum = $this->mockery(IntegerInterface::class);
         $minimum->shouldReceive('getValue')
@@ -68,10 +67,10 @@ class CustomDiceTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_zero_for_minimum()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange::class);
         /** @var IntegerInterface|\Mockery\MockInterface $minimum */
         $minimum = $this->mockery(IntegerInterface::class);
         $minimum->shouldReceive('getValue')
@@ -86,10 +85,10 @@ class CustomDiceTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_negative_number_for_minimum()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange::class);
         /** @var IntegerInterface|\Mockery\MockInterface $minimum */
         $minimum = $this->mockery(IntegerInterface::class);
         $minimum->shouldReceive('getValue')
@@ -104,10 +103,10 @@ class CustomDiceTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_zero_limits()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange::class);
         /** @var IntegerInterface|\Mockery\MockInterface $minimum */
         $minimum = $this->mockery(IntegerInterface::class);
         $minimum->shouldReceive('getValue')
@@ -122,10 +121,10 @@ class CustomDiceTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_negatives_for_limits()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Dices\Exceptions\InvalidDiceRange::class);
         /** @var IntegerInterface|\Mockery\MockInterface $minimum */
         $minimum = $this->mockery(IntegerInterface::class);
         $minimum->shouldReceive('getValue')

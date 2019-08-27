@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\Tools;
 
 use Mockery\Generator\CachingGenerator;
@@ -15,7 +16,7 @@ abstract class TestWithMockery extends TestCase
     /** @var StringManipulationGenerator|null */
     private static $strictGenerator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!self::$strictGenerator) {
             self::$strictGenerator = StringManipulationGenerator::withDefaultPasses();
@@ -24,7 +25,7 @@ abstract class TestWithMockery extends TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (!$this->strict) {
             \Mockery::setGenerator(new CachingGenerator(self::$strictGenerator));
@@ -35,28 +36,31 @@ abstract class TestWithMockery extends TestCase
 
     /**
      * @param string $className
+     * @param array $constructorArguments
      * @return \Mockery\MockInterface
      */
-    protected function mockery(string $className): MockInterface
+    protected function mockery(...$args): MockInterface
     {
+        $className = $args[0];
         self::assertTrue(
             \class_exists($className) || \interface_exists($className),
             "Given class $className does not exists."
         );
 
-        return \Mockery::mock($className);
+        return \Mockery::mock(...$args);
     }
 
     /**
      * @param string $className
+     * @param array $constructorArguments
      * @return MockInterface
      */
-    protected function weakMockery(string $className): MockInterface
+    protected function weakMockery(...$args): MockInterface
     {
         $this->strict = false;
         \Mockery::setGenerator(new CachingGenerator(StringManipulationGenerator::withDefaultPasses()));
 
-        return $this->mockery($className);
+        return $this->mockery(...$args);
     }
 
     /**

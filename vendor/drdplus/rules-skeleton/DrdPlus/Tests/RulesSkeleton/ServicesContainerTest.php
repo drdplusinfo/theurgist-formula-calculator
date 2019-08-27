@@ -100,15 +100,36 @@ class ServicesContainerTest extends AbstractContentTest
      */
     public function I_can_get_rules_url_matcher_even_if_no_routes_are_defined(): void
     {
-        $configuration = $this->createCustomConfiguration(
-            [Configuration::APPLICATION => [Configuration::YAML_FILE_WITH_ROUTES => null]]
-        );
+        $configuration = $this->createCustomConfiguration([
+            Configuration::APPLICATION => [
+                Configuration::YAML_FILE_WITH_ROUTES => null,
+                Configuration::DEFAULT_YAML_FILE_WITH_ROUTES => 'non-existing.yml',
+            ],
+        ]);
         $servicesContainerClass = static::getSutClass();
         /** @var ServicesContainer $servicesContainer */
         $servicesContainer = new $servicesContainerClass($configuration, $this->createHtmlHelper());
         $rulesUrlMatcher = $servicesContainer->getRulesUrlMatcher();
         self::assertNotEmpty($rulesUrlMatcher);
         self::assertEquals(new RouteMatch(['path' => '/']), $rulesUrlMatcher->match('/anything'));
+    }
+
+    /**
+     * @test
+     */
+    public function I_will_get_rules_url_matcher_with_routes_if_route_file_matches_default(): void
+    {
+        $configuration = $this->createCustomConfiguration([
+            Configuration::APPLICATION => [
+                Configuration::YAML_FILE_WITH_ROUTES => null,
+            ],
+        ]);
+        $servicesContainerClass = static::getSutClass();
+        /** @var ServicesContainer $servicesContainer */
+        $servicesContainer = new $servicesContainerClass($configuration, $this->createHtmlHelper());
+        $rulesUrlMatcher = $servicesContainer->getRulesUrlMatcher();
+        self::assertNotEmpty($rulesUrlMatcher);
+        self::assertEquals(new RouteMatch(['path' => 'something']), $rulesUrlMatcher->match('/something'));
     }
 
     /**
@@ -134,6 +155,6 @@ class ServicesContainerTest extends AbstractContentTest
         $servicesContainerClass = static::getSutClass();
         /** @var ServicesContainer $servicesContainer */
         $servicesContainer = new $servicesContainerClass($this->getConfiguration(), $this->createHtmlHelper());
-        self::assertEquals(new CookiesService(), $servicesContainer->getCookiesService());
+        self::assertEquals(new CookiesService($servicesContainer->getRequest()), $servicesContainer->getCookiesService());
     }
 }

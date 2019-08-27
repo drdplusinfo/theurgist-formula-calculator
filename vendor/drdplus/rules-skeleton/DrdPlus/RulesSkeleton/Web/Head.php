@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
@@ -25,7 +24,9 @@ class Head extends \Granam\WebContentBuilder\Web\Head
             $jsFiles,
             $pageTitle,
             $configuration->getFavicon(),
-            $configuration->getGoogleAnalyticsId()
+            $htmlHelper->isInProduction()
+                ? $configuration->getGoogleAnalyticsId()
+                : ''
         );
     }
 

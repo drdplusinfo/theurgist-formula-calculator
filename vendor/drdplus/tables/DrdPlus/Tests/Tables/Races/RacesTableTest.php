@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Races;
@@ -166,11 +167,11 @@ class RacesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Races\Exceptions\RaceToSubRaceMismatch
-     * @expectedExceptionMessageRegExp ~human.+green~
      */
     public function I_can_not_se_invalid_race_and_sub_race_combination(): void
     {
+        $this->expectException(\DrdPlus\Tables\Races\Exceptions\RaceToSubRaceMismatch::class);
+        $this->expectExceptionMessageRegExp('~human.+green~');
         (new RacesTable(Tables::getIt()->getFemaleModifiersTable()))->getAge(RaceCode::getIt(RaceCode::HUMAN), SubRaceCode::getIt(SubRaceCode::GREEN));
     }
 
@@ -990,10 +991,10 @@ class RacesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Races\Exceptions\UnknownGender
      */
     public function I_can_not_get_weight_of_unknown_gender(): void
     {
+        $this->expectException(\DrdPlus\Tables\Races\Exceptions\UnknownGender::class);
         $racesTable = new RacesTable(Tables::getIt()->getFemaleModifiersTable());
         $racesTable->getWeightInKg(
             RaceCode::getIt(RaceCode::HUMAN),
@@ -1059,10 +1060,10 @@ class RacesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Races\Exceptions\UnknownGender
      */
     public function I_can_not_get_size_for_unknown_gender(): void
     {
+        $this->expectException(\DrdPlus\Tables\Races\Exceptions\UnknownGender::class);
         $racesTable = new RacesTable(Tables::getIt()->getFemaleModifiersTable());
         $racesTable->getSize(
             RaceCode::getIt(RaceCode::HUMAN),

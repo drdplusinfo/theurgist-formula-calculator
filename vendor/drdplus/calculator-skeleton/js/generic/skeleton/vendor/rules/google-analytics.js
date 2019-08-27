@@ -1,9 +1,13 @@
-window.dataLayer = window.dataLayer || [];
+const googleAnalyticsId = document.getElementById('googleAnalyticsId')
 
-function gtag() {
-    dataLayer.push(arguments);
+if (googleAnalyticsId) {
+    window.dataLayer = window.dataLayer || []
+
+    function gtag() {
+        dataLayer.push(arguments)
+    }
+
+    gtag('js', new Date())
+
+    gtag('config', document.getElementById('googleAnalyticsId').dataset.googleAnalyticsId)
 }
-
-gtag('js', new Date());
-
-gtag('config', document.getElementById('googleAnalyticsId').dataset.googleAnalyticsId);

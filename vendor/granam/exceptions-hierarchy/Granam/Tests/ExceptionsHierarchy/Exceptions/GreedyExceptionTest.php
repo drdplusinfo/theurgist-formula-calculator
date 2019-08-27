@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
+use Granam\ExceptionsHierarchy\Exceptions\ExceptionIsNotTaggedProperly;
 use Granam\Tests\ExceptionsHierarchy\Exceptions\DummyExceptionsHierarchy\GreedyException\BothRuntimeAndLogicTagged;
 
 class GreedyExceptionTest extends AbstractExceptionsHierarchyTest
@@ -9,11 +11,11 @@ class GreedyExceptionTest extends AbstractExceptionsHierarchyTest
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\ExceptionIsNotTaggedProperly
-     * @expectedExceptionMessageRegExp ~ can not be tagged by Runtime interface and Logic interface at the same time$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(ExceptionIsNotTaggedProperly::class);
+        $this->expectExceptionMessageRegExp('~ can not be tagged by Runtime interface and Logic interface at the same time$~');
         parent::My_exceptions_are_in_family_tree();
     }
 

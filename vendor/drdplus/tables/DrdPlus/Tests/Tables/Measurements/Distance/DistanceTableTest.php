@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Distance;
@@ -39,20 +40,20 @@ class DistanceTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_use_too_low_bonus_to_value()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         $distanceTable = new DistanceTable();
         $distanceTable->toDistance(new DistanceBonus(-41, $distanceTable));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\UnknownBonus::class);
         $distanceTable = new DistanceTable();
         $distanceTable->toDistance(new DistanceBonus(120, $distanceTable));
     }
@@ -86,10 +87,10 @@ class DistanceTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_low_value_to_bonus()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $distanceTable = new DistanceTable();
         $distance = new Distance(0.009, Distance::METER, $distanceTable);
         $distance->getBonus();
@@ -97,10 +98,10 @@ class DistanceTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_high_value_to_bonus()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $distanceTable = new DistanceTable();
         $distance = new Distance(901, Distance::KILOMETER, $distanceTable);
         $distance->getBonus();

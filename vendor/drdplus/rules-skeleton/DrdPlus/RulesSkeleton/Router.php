@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton;
 
@@ -16,12 +15,12 @@ class Router extends StrictObject
      */
     private $routesToKnownBlocNames;
 
-    public function __construct(Request $request, array $routesToKnownBlocNames)
+    public function __construct(Request $request, array $routesToKnownBlockNames)
     {
         $this->request = $request;
         $this->routesToKnownBlocNames = \array_map(function (string $blockName) {
             return \preg_replace('~^block-~', '', $blockName);
-        }, $routesToKnownBlocNames);
+        }, $routesToKnownBlockNames);
     }
 
     public function getRequiredBlockName(): string

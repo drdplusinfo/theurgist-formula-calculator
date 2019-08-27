@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\RaceCode;
@@ -107,11 +108,11 @@ class SubRaceCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Exceptions\UnknownRaceCode
-     * @expectedExceptionMessageRegExp ~rat-at-toullie~
      */
     public function I_can_not_get_sub_race_default_to_an_unknown_race()
     {
+        $this->expectException(\DrdPlus\Codes\Exceptions\UnknownRaceCode::class);
+        $this->expectExceptionMessageRegExp('~rat-at-toullie~');
         $defaultOrcSubRace = SubRaceCode::getDefaultSubRaceFor($this->createRaceCode('rat-at-toullie'));
         self::assertSame(SubRaceCode::getIt(SubRaceCode::COMMON), $defaultOrcSubRace);
     }

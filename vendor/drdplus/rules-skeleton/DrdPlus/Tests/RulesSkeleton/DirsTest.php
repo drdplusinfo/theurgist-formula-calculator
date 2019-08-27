@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -20,9 +19,6 @@ class DirsTest extends AbstractContentTest
         self::assertSame('foo/vendor', $dirs->getVendorRoot());
         self::assertSame('foo/cache/' . \PHP_SAPI, $dirs->getCacheRoot());
         self::assertSame('foo/web', $dirs->getWebRoot());
-
-        $dirsWithCustomWebRoot = new $dirsClass('foo', 'bar');
-        self::assertSame('foo/web/bar', $dirsWithCustomWebRoot->getWebRoot());
     }
 
     /**

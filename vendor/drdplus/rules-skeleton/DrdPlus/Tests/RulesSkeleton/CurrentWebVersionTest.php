@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -155,10 +154,10 @@ class CurrentWebVersionTest extends AbstractContentTest
 
     /**
      * @test
-     * @expectedException \Granam\Git\Exceptions\NoPatchVersionsMatch
      */
     public function I_can_not_get_last_patch_version_for_non_existing_version(): void
     {
+        $this->expectException(\Granam\Git\Exceptions\NoPatchVersionsMatch::class);
         $nonExistingVersion = '-999.999';
         $webVersions = $this->createWebVersions();
         try {

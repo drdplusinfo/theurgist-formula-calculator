@@ -10,6 +10,8 @@ class HtmlHelper extends StrictObject
 {
 
     public const CLASS_INVISIBLE_ID = 'invisible-id';
+    public const CLASS_WITHOUT_ANCHOR_TO_ID = 'without-anchor-to-id';
+    public const CLASS_HEADING_WITHOUT_ID = 'heading-without-id';
     public const DATA_ORIGINAL_ID = 'data-original-id';
     public const DATA_ORIGINAL_FOR = 'data-original-for';
     public const CLASS_INTERNAL_URL = 'internal-url';
@@ -43,7 +45,9 @@ class HtmlHelper extends StrictObject
         foreach ($elementNames as $elementName) {
             /** @var Element $headerCell */
             foreach ($htmlDocument->getElementsByTagName($elementName) as $headerCell) {
-                if ($headerCell->getAttribute('id')) {
+                if ($headerCell->getAttribute('id')
+                    || $headerCell->prop_get_classList()->contains(self::CLASS_HEADING_WITHOUT_ID)
+                ) {
                     continue;
                 }
                 $id = false;
@@ -195,6 +199,7 @@ class HtmlHelper extends StrictObject
             if (!in_array($elementWithId->nodeName, ['a', 'button'], true)
                 && $elementWithId->getElementsByTagName('a')->length === 0 // already have some anchors, skip it to avoid wrapping them by another one
                 && !$elementWithId->prop_get_classList()->contains(self::CLASS_INVISIBLE_ID)
+                && !$elementWithId->prop_get_classList()->contains(self::CLASS_WITHOUT_ANCHOR_TO_ID)
             ) {
                 $toMove = [];
                 /** @var \DOMElement $childNode */

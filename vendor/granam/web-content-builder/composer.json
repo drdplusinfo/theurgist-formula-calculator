@@ -23,16 +23,15 @@
     "ext-json": "*",
     "composer-plugin-api": "^1.1",
     "erusev/parsedown": "^1.7",
-    "granam/strict-object": "^3.0",
-    "granam/string": "^3.2",
-    "phpgt/dom": "^1.1",
-    "piwik/device-detector": "^3.11"
+    "granam/string": "^4.0",
+    "phpgt/dom": "^2.1",
+    "piwik/device-detector": "^3.12"
   },
   "require-dev": {
     "composer/composer": "^1.7",
-    "granam/exceptions-hierarchy": "^4.0",
+    "granam/exceptions-hierarchy": "^5.0",
     "mockery/mockery": "^1.2",
-    "phpunit/phpunit": "~7.0",
+    "phpunit/phpunit": "^8.3",
     "roave/security-advisories": "dev-master"
   },
   "config": {

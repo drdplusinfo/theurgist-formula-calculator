@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 use Granam\ExceptionsHierarchy\TestOfExceptionsHierarchy;
@@ -31,19 +32,19 @@ class InvalidExternalParentRootNamespaceTest extends AbstractExceptionsHierarchy
         return '';
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // disabling original set up
-        return false;
+        return;
     }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\ExternalRootNamespaceHasToBeSuperior
-     * @expectedExceptionMessageRegExp ~^External root namespace .+ should differ to local root namespace~
+* @expectExceptionMessageRegExp ~^External root namespace .+ should differ to local root namespace~
      */
     public function I_can_not_use_inner_namespace_as_external()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\ExternalRootNamespaceHasToBeSuperior::class);
         new TestOfExceptionsHierarchy(
             $this->getTestedNamespace(),
             $this->getRootNamespace(),
@@ -55,11 +56,11 @@ class InvalidExternalParentRootNamespaceTest extends AbstractExceptionsHierarchy
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\ExternalRootNamespaceHasToBeSuperior
-     * @expectedExceptionMessageRegExp ~^External root namespace .+ should not be subordinate to local root namespace~
+* @expectExceptionMessageRegExp ~^External root namespace .+ should not be subordinate to local root namespace~
      */
     public function I_can_not_use_external_namespace_subordinated_to_internal()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\ExternalRootNamespaceHasToBeSuperior::class);
         new TestOfExceptionsHierarchy(
             $this->getTestedNamespace(),
             $this->getRootNamespace(),

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Partials;
@@ -233,10 +234,10 @@ abstract class AbstractMeleeWeaponlikeStrengthSanctionsTableTest extends Abstrac
      * @test
      * @dataProvider provideSanctionName
      * @param string $sanctionName
-     * @expectedException \DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength
      */
     public function I_can_not_get_any_sanction_for_too_much_missing_strength($sanctionName)
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Weapons\Exceptions\CanNotUseWeaponBecauseOfMissingStrength::class);
         $sanctionGetter = 'get' . ucfirst($sanctionName) . 'Sanction';
         (new MeleeWeaponStrengthSanctionsTable())->$sanctionGetter(11);
     }

@@ -1,10 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\Web\RulesContent;
 use Granam\Strict\Object\StrictObject;
+use Granam\WebContentBuilder\Web\Exceptions\UnknownWebFilesDir;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class RulesApplication extends StrictObject
 {
@@ -18,6 +20,8 @@ class RulesApplication extends StrictObject
     private $redirect;
     /** @var bool */
     private $canPassIn;
+    /** @var RulesContent */
+    private $notFoundContent;
 
     public function __construct(ServicesContainer $servicesContainer)
     {
@@ -27,13 +31,17 @@ class RulesApplication extends StrictObject
 
     public function run(): void
     {
-        $this->sendCustomHeaders();
-
-        if ($this->isRequestedWebVersionUpdate()) {
-            echo $this->updateCode();
-        } else {
-            $this->persistCurrentVersion();
-            echo $this->getContent()->getValue();
+        try {
+            $this->sendCustomHeaders();
+            if ($this->isRequestedWebVersionUpdate()) {
+                echo $this->updateCode();
+            } else {
+                $this->persistCurrentVersion();
+                echo $this->getContent()->getValue();
+            }
+        } catch (UnknownWebFilesDir | RouteNotFoundException | ResourceNotFoundException $invalidRoute) {
+            $this->sendNotFoundHeaders();
+            echo $this->getNotFoundContent()->getValue();
         }
     }
 
@@ -167,7 +175,7 @@ class RulesApplication extends StrictObject
     private function sendCustomHeaders(): void
     {
         if ($this->getContent()->containsTables()) {
-            if (\PHP_SAPI === 'cli') {
+            if ($this->servicesContainer->getRequest()->isCliRequest()) {
                 return;
             }
             // anyone can show content of this page
@@ -175,12 +183,38 @@ class RulesApplication extends StrictObject
         } elseif ($this->getContent()->containsPdf()) {
             $pdfFile = $this->servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile();
             $pdfFileBasename = \basename($pdfFile);
-            if (\PHP_SAPI === 'cli') {
+            if ($this->servicesContainer->getRequest()->isCliRequest()) {
                 return;
             }
             \header('Content-type: application/pdf');
             \header('Content-Length: ' . \filesize($pdfFile));
             \header("Content-Disposition: attachment; filename=\"$pdfFileBasename\"");
         }
+    }
+
+    private function sendNotFoundHeaders(): void
+    {
+        if ($this->servicesContainer->getRequest()->isCliRequest()) {
+            return;
+        }
+        http_response_code(404);
+    }
+
+    private function getNotFoundContent(): RulesContent
+    {
+        if ($this->notFoundContent) {
+            return $this->notFoundContent;
+        }
+        $servicesContainer = $this->servicesContainer;
+        $this->notFoundContent = new RulesContent(
+            $servicesContainer->getNotFoundContent(),
+            $servicesContainer->getMenu(),
+            $servicesContainer->getCurrentWebVersion(),
+            $servicesContainer->getNotFoundCache(),
+            RulesContent::NOT_FOUND,
+            $this->getRedirect()
+        );
+
+        return $this->notFoundContent;
     }
 }

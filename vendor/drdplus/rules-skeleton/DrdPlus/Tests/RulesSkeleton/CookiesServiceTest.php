@@ -1,28 +1,41 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\CookiesService;
-use Granam\Tests\Tools\TestWithMockery;
+use DrdPlus\RulesSkeleton\Request;
+use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use DrdPlus\Tests\RulesSkeleton\Partials\ClassesTrait;
 
-class CookiesServiceTest extends TestWithMockery
+class CookiesServiceTest extends AbstractContentTest
 {
+    use ClassesTrait;
+
     /**
      * @test
-     * @backupGlobals enabled
      */
-    public function I_can_set_get_and_delete_cookie(): void
+    public function I_can_set_get_overwrite_and_delete_cookie(): void
     {
-        $cookiesServiceClass = static::getSutClass();
+        $cookiesServiceClass = $this->getCookiesServiceClass();
+        $requestClass = $this->getRequestClass();
+        /** @var Request $request */
+        $request = new $requestClass($this->getBot(), $this->getEnvironment(), [], [], [], []);
         /** @var CookiesService $cookiesService */
-        $cookiesService = new $cookiesServiceClass();
+        $cookiesService = new $cookiesServiceClass($request);
+
+        self::assertNull($request->getValueFromCookie('foo'));
         self::assertNull($cookiesService->getCookie('foo'));
+
         self::assertTrue($cookiesService->setCookie('foo', 'bar'));
         self::assertSame('bar', $cookiesService->getCookie('foo'));
-        self::assertSame('bar', $_COOKIE['foo'] ?? false);
+        self::assertSame('bar', $request->getValueFromCookie('foo'));
+
+        self::assertTrue($cookiesService->setCookie('foo', 'baz'));
+        self::assertSame('baz', $cookiesService->getCookie('foo'));
+        self::assertSame('baz', $request->getValueFromCookie('foo'));
+
         self::assertTrue($cookiesService->deleteCookie('foo'));
         self::assertNull($cookiesService->getCookie('foo'));
-        self::assertFalse(\array_key_exists('foo', $_COOKIE), 'Cookie should be removed from global array as well');
+        self::assertNull($request->getValueFromCookie('foo'));
     }
 }

@@ -8,6 +8,10 @@ p {
     margin: 0;
 }
 
+p .fa p .fab, p .far, p .fas {
+    text-indent: initial;
+}
+
 caption {
     caption-side: top;
 }

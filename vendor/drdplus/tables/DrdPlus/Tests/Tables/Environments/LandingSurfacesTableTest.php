@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Environments;
@@ -7,7 +8,7 @@ use DrdPlus\Codes\Environment\LandingSurfaceCode;
 use DrdPlus\BaseProperties\Agility;
 use DrdPlus\Tables\Environments\LandingSurfacesTable;
 use DrdPlus\Tests\Tables\TableTest;
-use Granam\Integer\IntegerWithHistory;
+use Granam\Integer\IntegerObject;
 use Granam\Integer\PositiveIntegerObject;
 
 class LandingSurfacesTableTest extends TableTest
@@ -36,9 +37,7 @@ class LandingSurfacesTableTest extends TableTest
             $expectedPowerOfWoundModifier,
             $baseOfWoundsModifier->getValue()
         );
-        self::assertInstanceOf(IntegerWithHistory::class, $baseOfWoundsModifier);
-        $history = $baseOfWoundsModifier->getHistory();
-        self::assertNotEmpty($history);
+        self::assertInstanceOf(IntegerObject::class, $baseOfWoundsModifier);
     }
 
     public function provideValuesToGetPowerOfWoundModifier(): array

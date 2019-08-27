@@ -31,11 +31,11 @@ PHPDOC
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition
-     * @expectedExceptionMessageRegExp ~123~
      */
     public function I_can_not_create_it_with_invalid_points_to_annotation()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition::class);
+        $this->expectExceptionMessageRegExp('~123~');
         new Difficulty([123, 456]);
     }
 
@@ -153,31 +153,31 @@ PHPDOC
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidValueForMinimalDifficulty
-     * @expectedExceptionMessageRegExp ~-1~
      */
     public function I_can_not_create_it_with_negative_minimum()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidValueForMinimalDifficulty::class);
+        $this->expectExceptionMessageRegExp('~-1~');
         new Difficulty(['-1', '65', '12=13']);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidValueForMaximalDifficulty
-     * @expectedExceptionMessageRegExp ~-15~
      */
     public function I_can_not_create_it_with_negative_maximum()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidValueForMaximalDifficulty::class);
+        $this->expectExceptionMessageRegExp('~-15~');
         new Difficulty(['6', '-15', '12=13']);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\MinimalDifficultyCanNotBeGreaterThanMaximal
-     * @expectedExceptionMessageRegExp ~12.+11~
      */
     public function I_can_not_create_it_with_lesser_maximum_than_minimum()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\MinimalDifficultyCanNotBeGreaterThanMaximal::class);
+        $this->expectExceptionMessageRegExp('~12.+11~');
         new Difficulty(['12', '11', '12=13']);
     }
 }

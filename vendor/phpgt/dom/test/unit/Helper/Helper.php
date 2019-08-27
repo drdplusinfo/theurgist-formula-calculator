@@ -141,6 +141,12 @@ HTML;
 	</select>
 
 	<select id="select_empty"></select>
+	
+	<select id="select_inferred_value">
+		<option>One</option>
+		<option selected>Two</option>
+		<option>Three</option>
+	</select>
 
 </body>
 </html>
@@ -235,6 +241,7 @@ HTML;
 // https://en.wikipedia.org/wiki/Classification_of_ethnicity_in_the_United_Kingdom
 const HTML_FORM_WITH_RADIOS = <<<HTML
 <!doctype>
+<a href="/homepage">Go to homepage</a>
 <form>
 	<fieldset title="Ethnicity">
 		<p>What is your ethnic group?</p>
@@ -326,6 +333,72 @@ const HTML_FORM_PROPERTY = <<<HTML
 	
 </body>
 </html>
+HTML;
+
+	const HTML_JSON_HEAD = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" content=""><meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1">
+	<script type="application/ld+json" class="php-schema-rating">
+	{
+		"@context": "http://schema.org",
+		"@id": "https://www.example.com#organisation",
+		"@type": "Organization",
+		"aggregateRating": {
+			"@type": "AggregateRating",
+			"ratingValue": "__RATING_VALUE__",
+			"ratingCount": "__RATING_COUNT__"
+		},
+		"additionalType": [
+			"http://www.productontology.org/doc/Example"
+		]
+	}
+	</script>
+</head>
+<body>
+	<h1>JSON is in the head!</h1>
+</body>
+</html>
+HTML;
+
+	const HTML_FORM_WITH_DATES = <<<HTML
+<!doctype html>
+<form>
+	<label>
+		<span>Date of birth</span>
+		<input name="dob" type="date" />
+	</label>
+</form>
+HTML;
+
+	const HTML_SELECTS = <<<HTML
+<!doctype html>
+<form>
+	<label>
+		<span>From:</span>
+		<select name="from">
+			<option value="0">Zero</option>		
+			<option value="1">One</option>		
+			<option value="2">Two</option>		
+			<option value="3">Three</option>		
+			<option value="4">Four</option>		
+			<option value="5">Five</option>		
+		</select>
+	</label>
+	
+	<label>
+		<span>To:</span>
+		<select name="to">
+			<option value="5">Five</option>		
+			<option value="6">Six</option>		
+			<option value="7">Seven</option>		
+			<option value="8">Eight</option>		
+			<option value="9">Nine</option>		
+			<option value="10">Ten</option>
+		</select>
+	</label>
+</form>
 HTML;
 
 }

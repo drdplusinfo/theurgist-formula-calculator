@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\Code;
@@ -11,9 +12,9 @@ use Granam\Tests\Tools\TestWithMockery;
 abstract class AbstractCodeTest extends TestWithMockery
 {
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        self::assertContains(__NAMESPACE__, static::class, 'Code test has to be in "Tests" namespace');
+        self::assertStringContainsString(__NAMESPACE__, static::class, 'Code test has to be in "Tests" namespace');
     }
 
     /**
@@ -71,22 +72,22 @@ abstract class AbstractCodeTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @expectedExceptionMessageRegExp ~da Vinci~
      */
     public function I_can_not_create_code_from_unknown_value()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode::class);
+        $this->expectExceptionMessageRegExp('~da Vinci~');
         $sutClass = self::getSutClass();
         $sutClass::getIt('da Vinci');
     }
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
-     * @expectedExceptionMessageRegExp ~\DateTime~
      */
     public function I_can_not_create_code_from_invalid_value_format()
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum::class);
+        $this->expectExceptionMessageRegExp('~\DateTime~');
         $sutClass = self::getSutClass();
         /** @noinspection PhpUnhandledExceptionInspection */
         $sutClass::getIt(new \DateTime());

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\Configuration;
@@ -14,9 +15,6 @@ use Gt\Dom\Element;
 use Gt\Dom\TokenList;
 use Mockery\MockInterface;
 
-/**
- * @backupGlobals enabled
- */
 class RulesApplicationTest extends AbstractContentTest
 {
     /**
@@ -35,9 +33,11 @@ class RulesApplicationTest extends AbstractContentTest
             self::assertTrue($menu->classList->contains('top'), 'Contacts should be positioned on top');
             self::assertFalse($menu->classList->contains('fixed'), 'Contacts should not be fixed as application does not say so');
         }
-        $configurationWithFixedMenu = $this->createCustomConfiguration([Configuration::WEB => [Configuration::MENU_POSITION_FIXED => true]]);
+        $configurationWithFixedMenu = $this->createCustomConfiguration(
+            [Configuration::WEB => [Configuration::MENU_POSITION_FIXED => true]]
+        );
         self::assertTrue($configurationWithFixedMenu->isMenuPositionFixed(), 'Expected configuration with menu position fixed');
-        $rulesApplication = $this->createRulesApplication($configurationWithFixedMenu);
+        $rulesApplication = $this->createRulesApplication($this->createServicesContainer($configurationWithFixedMenu));
         if ($this->isSkeletonChecked()) {
             $content = $this->fetchNonCachedContent($rulesApplication);
             $htmlDocument = new HtmlDocument($content);
@@ -130,6 +130,7 @@ class RulesApplicationTest extends AbstractContentTest
 
     /**
      * @test
+     * @backupGlobals enabled
      * @dataProvider provideRequestType
      * @param string $requestType
      * @throws \ReflectionException
@@ -142,7 +143,7 @@ class RulesApplicationTest extends AbstractContentTest
         $now = \time();
         $trialExpiredAt = $now + 240 + 1;
         $trialExpiredAtSecondAfter = $trialExpiredAt++;
-        if ($this->isSkeletonChecked() || $this->getTestsConfiguration()->hasProtectedAccess()) {
+        if ($this->getTestsConfiguration()->hasProtectedAccess()) {
             self::assertNull(
                 $_GET[Request::TRIAL] ?? $_POST[Request::TRIAL] ?? $_COOKIE[Request::TRIAL] ?? null,
                 'Globals have not been reset'
@@ -189,10 +190,9 @@ class RulesApplicationTest extends AbstractContentTest
         self::assertCount(0, $this->getMetaRefreshes($this->getHtmlDocument()), 'No meta tag with refresh meaning expected');
         $this->passOut();
         self::assertNull($_POST[Request::TRIAL] ?? null, 'Globals have not been reset');
-        /** @noinspection PhpUnhandledExceptionInspection */
-        $this->createServicesContainer()->getUsagePolicy()->activateTrial(new \DateTimeImmutable('+1 year'));
-        $_POST[Request::TRIAL] = '1';
-        $content = $this->fetchNonCachedContent();
+        $rulesApplication = $this->createRulesApplication($servicesContainer = $this->createServicesContainer());
+        $servicesContainer->getUsagePolicy()->activateTrial(new \DateTimeImmutable('+1 year'));
+        $content = $this->fetchNonCachedContent($rulesApplication);
         $document = new HtmlDocument($content);
         $metaRefreshes = $this->getMetaRefreshes($document);
         self::assertCount(0, $metaRefreshes, 'No meta tag with refresh meaning expected as we are owners');
@@ -200,16 +200,28 @@ class RulesApplicationTest extends AbstractContentTest
 
     /**
      * @test
+     * @backupGlobals enabled
      */
     public function I_can_get_pdf(): void
     {
         $_GET[Request::PDF] = '1';
         $content = $this->fetchNonCachedContent();
         if (!$this->getTestsConfiguration()->hasPdf()) {
-            self::assertSame(0, strlen($content), 'No PDF expected due to tests configuration');
+            self::assertStringStartsWith(
+                '<!DOCTYPE html>',
+                $content,
+                sprintf("No PDF expected due to tests configuration '%s'", TestsConfiguration::HAS_PDF)
+        );
         } else {
             $pdfFile = glob($this->getDirs()->getPdfRoot() . '/*.pdf')[0] ?? null;
-            self::assertNotNull($pdfFile, 'No PDF file found in ' . $this->getDirs()->getPdfRoot() . '/*.pdf');
+            self::assertNotNull(
+                $pdfFile,
+                sprintf(
+                    "No PDF file found in %s/*.pdf as says test comfiguration '%s'",
+                    $this->getDirs()->getPdfRoot(),
+                    TestsConfiguration::HAS_PDF
+                )
+            );
             self::assertSame(md5_file($pdfFile), md5($content));
         }
     }

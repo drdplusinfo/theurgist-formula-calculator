@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Riding;
@@ -22,11 +23,11 @@ class RideTest extends TestCase
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Riding\Exceptions\InvalidRideValue
-     * @expectedExceptionMessageRegExp ~devil-like~
      */
     public function I_can_not_create_ride_with_non_integer()
     {
+        $this->expectException(\DrdPlus\Tables\Riding\Exceptions\InvalidRideValue::class);
+        $this->expectExceptionMessageRegExp('~devil-like~');
         new Ride('devil-like');
     }
 }

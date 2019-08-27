@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials;
@@ -15,11 +16,11 @@ abstract class CastingParameterTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition
-     * @expectedExceptionMessageRegExp ~123~
      */
     public function I_can_not_create_it_with_invalid_points_to_annotation()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\MissingValueForFormulaDifficultyAddition::class);
+        $this->expectExceptionMessageRegExp('~123~');
         $this->createSut([123]);
     }
 
@@ -74,11 +75,11 @@ abstract class CastingParameterTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForCastingParameter
-     * @expectedExceptionMessageRegExp ~infinite~
      */
     public function I_can_not_create_it_non_numeric()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForCastingParameter::class);
+        $this->expectExceptionMessageRegExp('~infinite~');
         $this->createSut(['infinite', '332211']);
     }
 
@@ -118,7 +119,7 @@ abstract class CastingParameterTest extends TestWithMockery
         $reflectionClass = new \ReflectionClass($className);
         $classBaseName = StringTools::getClassBaseName($className);
         if (strpos($reflectionClass->getDocComment() ?: '', 'getWithAddition') !== false) {
-            self::assertContains(<<<PHPDOC
+            self::assertStringContainsString(<<<PHPDOC
  * @method {$classBaseName} getWithAddition(\$additionValue)
 PHPDOC
                 ,
@@ -127,7 +128,7 @@ PHPDOC
             );
         } else {
             $reflectionMethod = $reflectionClass->getMethod('getWithAddition');
-            self::assertContains(<<<PHPDOC
+            self::assertStringContainsString(<<<PHPDOC
  * @return {$classBaseName}|CastingParameter
 PHPDOC
                 ,

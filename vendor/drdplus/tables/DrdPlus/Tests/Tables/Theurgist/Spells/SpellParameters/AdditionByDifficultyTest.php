@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
@@ -101,11 +100,11 @@ class AdditionByDifficultyTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\AdditionByDifficultyWithoutStepsCanNotBeChanged
-     * @expectedExceptionMessageRegExp ~7~
      */
     public function I_can_not_change_it_by_add_when_no_step()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\AdditionByDifficultyWithoutStepsCanNotBeChanged::class);
+        $this->expectExceptionMessageRegExp('~7~');
         try {
             $additionByDifficulty = new AdditionByDifficulty('1=0');
             $additionByDifficulty->add(0);
@@ -117,11 +116,11 @@ class AdditionByDifficultyTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\AdditionByDifficultyWithoutStepsCanNotBeChanged
-     * @expectedExceptionMessageRegExp ~9~
      */
     public function I_can_not_change_it_by_sub_when_no_step()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\AdditionByDifficultyWithoutStepsCanNotBeChanged::class);
+        $this->expectExceptionMessageRegExp('~9~');
         try {
             $additionByDifficulty = new AdditionByDifficulty('999=0');
             $additionByDifficulty->sub(0);
@@ -133,59 +132,59 @@ class AdditionByDifficultyTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
      */
     public function I_can_not_create_it_without_value()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation::class);
         new AdditionByDifficulty('');
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
-     * @expectedExceptionMessageRegExp ~1=2=3~
      */
     public function I_can_not_create_it_with_too_many_parts()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation::class);
+        $this->expectExceptionMessageRegExp('~1=2=3~');
         new AdditionByDifficulty('1=2=3');
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
      */
     public function I_can_not_create_it_with_empty_difficulty_price()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation::class);
         new AdditionByDifficulty('=2');
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfDifficultyIncrement
-     * @expectedExceptionMessageRegExp ~foo~
      */
     public function I_can_not_create_it_with_invalid_difficulty_price()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfDifficultyIncrement::class);
+        $this->expectExceptionMessageRegExp('~foo~');
         new AdditionByDifficulty('foo=2');
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation
-     * @expectedExceptionMessageRegExp ~5=~
      */
     public function I_can_not_create_it_with_empty_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyNotation::class);
+        $this->expectExceptionMessageRegExp('~5=~');
         new AdditionByDifficulty('5=');
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyValue
-     * @expectedExceptionMessageRegExp ~bar~
      */
     public function I_can_not_create_it_with_invalid_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByDifficultyValue::class);
+        $this->expectExceptionMessageRegExp('~bar~');
         new AdditionByDifficulty('13=bar');
     }
 }

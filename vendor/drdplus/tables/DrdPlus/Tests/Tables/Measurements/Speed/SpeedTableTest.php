@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Speed;
@@ -33,10 +34,10 @@ class SpeedTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_use_too_low_bonus_to_value()
     {
+        $this->expectException(\OutOfRangeException::class);
         $speedTable = new SpeedTable();
         $speedTable->toSpeed(new SpeedBonus(-21, $speedTable))->getMetersPerRound();
     }
@@ -67,30 +68,30 @@ class SpeedTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit()
     {
+        $this->expectException(\OutOfRangeException::class);
         $speedTable = new SpeedTable();
         $speedTable->toSpeed(new SpeedBonus(100, $speedTable))->getMetersPerRound();
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_low_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $speedTable = new SpeedTable();
         $speedTable->toBonus(new Speed(0.09, SpeedUnitCode::METER_PER_ROUND, $speedTable));
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $speedTable = new SpeedTable();
         $speedTable->toBonus(new Speed(32001, SpeedUnitCode::KILOMETER_PER_HOUR, $speedTable));
     }

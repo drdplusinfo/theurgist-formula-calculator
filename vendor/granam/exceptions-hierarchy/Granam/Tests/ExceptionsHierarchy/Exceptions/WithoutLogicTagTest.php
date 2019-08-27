@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class WithoutLogicTagTest extends AbstractExceptionsHierarchyTest
@@ -9,11 +10,12 @@ class WithoutLogicTagTest extends AbstractExceptionsHierarchyTest
      * I_am_stopped_if_runtime_tag_is_missing
      *
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\TagInterfaceNotFound
-     * @expectedExceptionMessageRegExp ~^Logic tag interface .+\\Logic not found$~
+
+     * @expectExceptionMessageRegExp ~^Logic tag interface .+\\Logic not found$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\TagInterfaceNotFound::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

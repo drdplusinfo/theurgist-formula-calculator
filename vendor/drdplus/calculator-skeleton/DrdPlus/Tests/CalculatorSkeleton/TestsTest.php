@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
@@ -11,7 +10,7 @@ class TestsTest extends \DrdPlus\Tests\RulesSkeleton\TestsTest
      */
     public function All_rules_skeleton_tests_are_used(): void
     {
-        $reflectionClass = new \ReflectionClass(static::class);
+        $reflectionClass = new \ReflectionClass(parent::class);
         $rulesSkeletonDir = \dirname($reflectionClass->getFileName());
         foreach ($this->getClassesFromDir($rulesSkeletonDir) as $rulesSkeletonTestClass) {
             if (\is_a($rulesSkeletonTestClass, \Throwable::class, true)) {

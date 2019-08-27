@@ -9,12 +9,12 @@ use Granam\Strict\Object\StrictObject;
  */
 class WebFiles extends StrictObject implements \IteratorAggregate
 {
-    /** @var string */
-    private $sourceDir;
+    /** @var SourceDirProviderInterface */
+    private $sourceDirProvider;
 
-    public function __construct(string $sourceDir)
+    public function __construct(SourceDirProviderInterface $sourceDirProvider)
     {
-        $this->sourceDir = $sourceDir;
+        $this->sourceDirProvider = $sourceDirProvider;
     }
 
     /**
@@ -51,7 +51,7 @@ class WebFiles extends StrictObject implements \IteratorAggregate
 
     protected function getWebFilesDir(): string
     {
-        return $this->sourceDir;
+        return $this->sourceDirProvider->getSourceDir();
     }
 
     /**

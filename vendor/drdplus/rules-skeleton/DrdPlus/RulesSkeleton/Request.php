@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton;
 
@@ -22,59 +21,90 @@ class Request extends StrictObject
 
     /** @var Bot */
     private $botParser;
+    /** @var Environment */
+    private $environment;
+    /** @var array */
+    private $get;
+    /** @var array */
+    private $post;
+    /** @var array */
+    private $cookies;
+    /** @var array */
+    private $server;
 
-    public function __construct(Bot $botParser)
+    public static function createFromGlobals(Bot $botParser, Environment $environment): Request
+    {
+        return new static($botParser, $environment, $_GET ?? [], $_POST ?? [], $_COOKIE ?? [], $_SERVER ?? []);
+    }
+
+    public function __construct(Bot $botParser, Environment $environment, array $get, array $post, array $cookies, array $server)
     {
         $this->botParser = $botParser;
+        $this->environment = $environment;
+        $this->get = $get;
+        $this->post = $post;
+        $this->cookies = $cookies;
+        $this->server = $server;
     }
 
     public function getServerUrl(): string
     {
         $protocol = 'http';
-        if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-            $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
-        } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        if (!empty($this->server['HTTP_X_FORWARDED_PROTO'])) {
+            $protocol = $this->server['HTTP_X_FORWARDED_PROTO'];
+        } elseif (!empty($this->server['HTTPS']) && $this->server['HTTPS'] !== 'off') {
             $protocol = 'https';
-        } elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
-            $protocol = $_SERVER['REQUEST_SCHEME'];
+        } elseif (!empty($this->server['REQUEST_SCHEME'])) {
+            $protocol = $this->server['REQUEST_SCHEME'];
         }
-        if (empty($_SERVER['SERVER_NAME'])) {
+        if (empty($this->server['SERVER_NAME'])) {
             return '';
         }
         $port = 80;
-        if (!empty($_SERVER['SERVER_PORT']) && \is_numeric($_SERVER['SERVER_PORT'])) {
-            $port = (int)$_SERVER['SERVER_PORT'];
+        if (!empty($this->server['SERVER_PORT']) && \is_numeric($this->server['SERVER_PORT'])) {
+            $port = (int)$this->server['SERVER_PORT'];
         }
         $portString = $port === 80 || $port === 443
             ? ''
             : (':' . $port);
 
-        return "{$protocol}://{$_SERVER['SERVER_NAME']}{$portString}";
+        return "{$protocol}://{$this->server['SERVER_NAME']}{$portString}";
     }
 
     public function isVisitorBot(string $userAgent = null): bool
     {
-        $this->botParser->setUserAgent($userAgent ?? $_SERVER['HTTP_USER_AGENT'] ?? '');
+        $this->botParser->setUserAgent($userAgent ?? $this->server['HTTP_USER_AGENT'] ?? '');
         $this->botParser->discardDetails();
 
         return (bool)$this->botParser->parse();
     }
 
-    public function getCurrentUrl(array $parameters = []): string
+    public function getCurrentUrl(array $overwriteParameters = [], array $excludeParameters = []): string
     {
-        $url = $_SERVER['REQUEST_URI'] ?? '/';
-        if ($parameters === []) {
+        $url = $this->server['REQUEST_URI'] ?? '/';
+        if ($overwriteParameters === [] && ($excludeParameters === [] || $this->get === [] /* nothing to exclude here */)) {
             return $url;
         }
         $path = parse_url($url, PHP_URL_PATH);
-        $queryParameters = \array_merge($_GET ?? [], $parameters);
+        $queryParameters = $this->get ?? [];
+        foreach ($excludeParameters as $excludeParameter) {
+            unset($queryParameters[$excludeParameter]);
+        }
+        $queryParameters = \array_merge($queryParameters ?? [], $overwriteParameters);
 
         return $path . '?' . \http_build_query($queryParameters);
     }
 
+    public function getCurrentUrlWithoutAutomaticValues(array $overwriteParameters = [], array $excludeParameters = []): string
+    {
+        $excludeParameters[] = self::TRIAL_EXPIRED_AT;
+        return $this->getCurrentUrl($overwriteParameters, $excludeParameters);
+    }
+
     public function getPath(): string
     {
-        return parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        $requestUri = preg_replace('~/{2,}~', '/', $this->server['REQUEST_URI'] ?? '/');
+        return parse_url($requestUri, PHP_URL_PATH);
     }
 
     /**
@@ -83,32 +113,42 @@ class Request extends StrictObject
      */
     public function getValue(string $name)
     {
-        return $_POST[$name] ?? $_GET[$name] ?? $_COOKIE[$name] ?? null;
+        return $this->post[$name] ?? $this->get[$name] ?? $this->cookies[$name] ?? null;
     }
 
     public function isCliRequest(): bool
     {
-        return \PHP_SAPI === 'cli';
+        return $this->environment->isCliRequest();
     }
 
     public function getValuesFromGet(): array
     {
-        return $_GET ?? [];
+        return $this->get ?? [];
+    }
+
+    public function getValuesFromPost(): array
+    {
+        return $this->post ?? [];
+    }
+
+    public function getValuesFromCookies(): array
+    {
+        return $this->cookies ?? [];
     }
 
     public function getValueFromPost(string $name)
     {
-        return $_POST[$name] ?? null;
+        return $this->post[$name] ?? null;
     }
 
     public function getValueFromGet(string $name)
     {
-        return $_GET[$name] ?? null;
+        return $this->get[$name] ?? null;
     }
 
     public function getValueFromCookie(string $name)
     {
-        return $_COOKIE[$name] ?? null;
+        return $this->cookies[$name] ?? null;
     }
 
     /**
@@ -120,7 +160,7 @@ class Request extends StrictObject
             function (string $id) {
                 return \trim($id);
             },
-            \explode(',', $_GET[self::TABLES] ?? $_GET[self::TABULKY] ?? '')
+            \explode(',', $this->get[self::TABLES] ?? $this->get[self::TABULKY] ?? '')
         );
 
         return \array_filter(
@@ -138,12 +178,12 @@ class Request extends StrictObject
 
     public function getPathInfo(): string
     {
-        return $_SERVER['PATH_INFO'] ?? '';
+        return $this->server['PATH_INFO'] ?? '';
     }
 
     public function getQueryString(): string
     {
-        return $_SERVER['QUERY_STRING'] ?? '';
+        return $this->server['QUERY_STRING'] ?? '';
     }
 
     public function isRequestedPdf(): bool
@@ -151,13 +191,28 @@ class Request extends StrictObject
         return $this->getQueryString() === self::PDF || $this->getValueFromGet(self::PDF) !== null;
     }
 
-    public function getPhpSapi(): string
-    {
-        return \PHP_SAPI;
-    }
-
     public function trialJustExpired(): bool
     {
-        return !empty($_GET[static::TRIAL_EXPIRED_AT]) && ((int)$_GET[static::TRIAL_EXPIRED_AT]) <= \time();
+        return !empty($this->get[static::TRIAL_EXPIRED_AT]) && ((int)$this->get[static::TRIAL_EXPIRED_AT]) <= \time();
+    }
+
+    public function getServerName(): string
+    {
+        return $this->server['SERVER_NAME'] ?? '';
+    }
+
+    public function isHttpsUsed(): bool
+    {
+        return !empty($this->server['HTTPS']) && $this->server['HTTPS'] !== 'off';
+    }
+
+    public function overwriteCookie(string $name, $value)
+    {
+        $this->cookies[$name] = $value;
+    }
+
+    public function deleteCookie(string $name)
+    {
+        unset($this->cookies[$name]);
     }
 }

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Weapons;
@@ -10,19 +11,19 @@ class MissingWeaponSkillTableTest extends AbstractArmamentSkillTableTest
 {
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function I_can_not_use_negative_rank()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank::class);
         (new MissingWeaponSkillTable())->getAttackNumberMalusForSkillRank(-1);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank
      */
     public function I_can_not_use_higher_rank_than_three()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Partials\Exceptions\UnexpectedSkillRank::class);
         (new MissingWeaponSkillTable())->getBaseOfWoundsMalusForSkillRank(4);
     }
 

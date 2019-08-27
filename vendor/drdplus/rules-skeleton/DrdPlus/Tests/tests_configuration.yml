@@ -16,4 +16,3 @@ too_short_success_names:
 too_short_result_names:
   - 'Bonus'
   - 'Postih'
-has_pdf: true

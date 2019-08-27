@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
@@ -90,7 +91,7 @@ class PassingTest extends AbstractContentTest
      */
     public function Crawlers_can_pass_without_licence_owning_confirmation(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasProtectedAccess()) {
+        if (!$this->getTestsConfiguration()->hasProtectedAccess()) {
             self::assertTrue(true, 'Crawlers can access content as anyone else');
 
             return;
@@ -122,7 +123,6 @@ class PassingTest extends AbstractContentTest
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_see_message_about_trial_expiration_if_happens(): void
     {

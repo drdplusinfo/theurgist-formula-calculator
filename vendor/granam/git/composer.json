@@ -21,8 +21,8 @@
     "granam/strict-object": "^3.0"
   },
   "require-dev": {
-    "granam/exceptions-hierarchy": "^4.0",
-    "phpunit/phpunit": "^7.3"
+    "granam/exceptions-hierarchy": "^5.0",
+    "phpunit/phpunit": "^8.3"
   },
   "config": {
     "sort-packages": true

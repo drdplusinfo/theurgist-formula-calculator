@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class UnusedCustomExceptionIsReportedAsUnusedTest extends AbstractExceptionsHierarchyTest
@@ -29,11 +30,11 @@ class UnusedCustomExceptionIsReportedAsUnusedTest extends AbstractExceptionsHier
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\UnusedException
-     * @expectedExceptionMessageRegExp ~DoesAnybodyWantMe~
+* @expectExceptionMessageRegExp ~DoesAnybodyWantMe~
      */
     public function My_exceptions_are_used()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\UnusedException::class);
         // overloaded parent annotation
         parent::My_exceptions_are_used();
     }

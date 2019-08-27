@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class NotAnExceptionTest extends AbstractExceptionsHierarchyTest
@@ -6,11 +7,11 @@ class NotAnExceptionTest extends AbstractExceptionsHierarchyTest
     /** @noinspection SenselessProxyMethodInspection */
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~.+ should be child of \\Exception$~
+* @expectExceptionMessageRegExp ~.+ should be child of \\Exception$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Armors;
@@ -100,7 +101,6 @@ class HelmsTableTest extends AbstractArmorsTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentHelmIsUnderSameName
      * @dataProvider provideSlightlyDifferentHelmProperties
      * @param int $strengthValue
      * @param int $restrictionValue
@@ -122,6 +122,7 @@ class HelmsTableTest extends AbstractArmorsTableTest
         int $newWeightValue
     )
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Armors\Exceptions\DifferentHelmIsUnderSameName::class);
         $helmCode = $this->createHelm(uniqid('bar', true));
         $helmsTable = Tables::getIt()->getHelmsTable();
         $added = $helmsTable->addCustomHelm(

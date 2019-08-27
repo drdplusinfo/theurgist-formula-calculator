@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Price;
@@ -42,30 +43,30 @@ class PriceTest extends AbstractTestOfMeasurement
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
      */
     public function Broken_unit_check_is_detected_on_cast_to_copper()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
         $price = new BrokenPriceMeasurement(123, 'non-existing unit');
         $price->getCopperCoins();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
      */
     public function Broken_unit_check_is_detected_on_cast_to_silver()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
         $price = new BrokenPriceMeasurement(123, 'non-existing unit');
         $price->getSilverCoins();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
      */
     public function Broken_unit_check_is_detected_on_cast_to_gold()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
         $price = new BrokenPriceMeasurement(123, 'non-existing unit');
         $price->getGoldCoins();
     }

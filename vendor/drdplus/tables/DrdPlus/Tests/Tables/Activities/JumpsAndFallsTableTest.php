@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Activities;
@@ -20,7 +21,7 @@ use DrdPlus\Tables\Properties\SpeedInterface;
 use DrdPlus\Tables\Tables;
 use DrdPlus\Tests\Tables\TableTest;
 use Granam\DiceRolls\Templates\Rolls\Roll1d6;
-use Granam\Integer\IntegerWithHistory;
+use Granam\Integer\IntegerObject;
 use Granam\Integer\PositiveInteger;
 use Granam\Integer\PositiveIntegerObject;
 
@@ -329,7 +330,7 @@ class JumpsAndFallsTableTest extends TableTest
         $landingSurfacesTable->shouldReceive('getBaseOfWoundsModifier')
             ->zeroOrMoreTimes()
             ->with($landingSurfaceCode, $agility, $armorProtection)
-            ->andReturn(new IntegerWithHistory($modifier));
+            ->andReturn(new IntegerObject($modifier));
 
         return $landingSurfacesTable;
     }

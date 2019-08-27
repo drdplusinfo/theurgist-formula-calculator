@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Environments;
@@ -35,22 +36,22 @@ class MalusesToAutomaticSearchingTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Environments\Exceptions\CanNotSearchWithCurrentActivity
-     * @expectedExceptionMessageRegExp ~trans~
      */
     public function I_can_not_get_malus_to_searching_when_in_trans()
     {
+        $this->expectException(\DrdPlus\Tables\Environments\Exceptions\CanNotSearchWithCurrentActivity::class);
+        $this->expectExceptionMessageRegExp('~trans~');
         (new MalusesToAutomaticSearchingTable())
             ->getMalusWhenSearchingAtTheSameTimeWith(ActivityIntensityCode::getIt(ActivityIntensityCode::TRANS));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Environments\Exceptions\CanNotSearchWithCurrentActivity
-     * @expectedExceptionMessageRegExp ~energizing~
      */
     public function I_can_not_get_malus_to_searching_when_doing_activity_with_unknown_intensity()
     {
+        $this->expectException(\DrdPlus\Tables\Environments\Exceptions\CanNotSearchWithCurrentActivity::class);
+        $this->expectExceptionMessageRegExp('~energizing~');
         (new MalusesToAutomaticSearchingTable())
             ->getMalusWhenSearchingAtTheSameTimeWith($this->createActivityIntensityCode('energizing'));
     }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -13,7 +12,7 @@ class StandardModeTest extends AbstractContentTest
      */
     public function I_get_notes_styled(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasNotes()) {
+        if (!$this->getTestsConfiguration()->hasNotes()) {
             self::assertEmpty(
                 $this->getHtmlDocument()->getElementsByClassName(HtmlHelper::CLASS_NOTE),
                 "No elements with '" . HtmlHelper::CLASS_NOTE . "' class expected according to tests config"

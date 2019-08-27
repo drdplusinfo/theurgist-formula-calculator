@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
@@ -44,11 +43,11 @@ class RealmsAffectionTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatForNegativeCastingParameter
-     * @expectedExceptionMessageRegExp ~1~
      */
     public function I_can_not_create_positive_affection()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatForNegativeCastingParameter::class);
+        $this->expectExceptionMessageRegExp('~1~');
         new RealmsAffection(['1']);
     }
 

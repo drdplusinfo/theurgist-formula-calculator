@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\ItemHoldingCode;
@@ -47,11 +48,11 @@ class ItemHoldingCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Exceptions\ThereIsNoOppositeForTwoHandsHolding
-     * @expectedExceptionMessageRegExp ~two_hands~
      */
     public function I_can_not_get_opposite_holding_for_two_hands()
     {
+        $this->expectException(\DrdPlus\Codes\Exceptions\ThereIsNoOppositeForTwoHandsHolding::class);
+        $this->expectExceptionMessageRegExp('~two_hands~');
         ItemHoldingCode::getIt(ItemHoldingCode::TWO_HANDS)->getOpposite();
     }
 }

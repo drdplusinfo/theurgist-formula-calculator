@@ -11,10 +11,10 @@ class RouteMatchTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\MissingRequiredPathInRouteMatch
      */
     public function I_can_not_create_it_without_path()
     {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\MissingRequiredPathInRouteMatch::class);
         new RouteMatch([]);
     }
 

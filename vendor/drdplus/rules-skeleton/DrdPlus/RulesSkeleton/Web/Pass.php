@@ -1,9 +1,9 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
 use DrdPlus\RulesSkeleton\Configuration;
+use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\RulesSkeleton\UsagePolicy;
 use Granam\Strict\Object\StrictObject;
 use Granam\String\StringInterface;
@@ -14,11 +14,16 @@ class Pass extends StrictObject implements StringInterface
     private $configuration;
     /** @var UsagePolicy */
     private $usagePolicy;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    public function __construct(Configuration $configuration, UsagePolicy $usagePolicy)
+    public function __construct(Configuration $configuration, UsagePolicy $usagePolicy, Request $request)
     {
         $this->configuration = $configuration;
         $this->usagePolicy = $usagePolicy;
+        $this->request = $request;
     }
 
     public function __toString()
@@ -49,6 +54,8 @@ HTML;
     {
         /** @noinspection PhpUnusedLocalVariableInspection */
         $configuration = $this->configuration;
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        $request = $this->request;
         ob_start();
         include __DIR__ . '/content/pass.php';
         return ob_get_clean();

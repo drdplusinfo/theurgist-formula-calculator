@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
@@ -251,11 +252,11 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetFormulasFor
-     * @expectedExceptionMessageRegExp ~black and white~
      */
     public function I_can_not_get_formulas_to_unknown_modifier()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetFormulasFor::class);
+        $this->expectExceptionMessageRegExp('~black and white~');
         (new ModifiersTable(Tables::getIt()))->getFormulaCodes($this->createModifierCode('black and white'));
     }
 
@@ -367,11 +368,11 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetProfilesFor
-     * @expectedExceptionMessageRegExp ~magnified~
      */
     public function I_can_not_get_profiles_to_unknown_modifiers()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetProfilesFor::class);
+        $this->expectExceptionMessageRegExp('~magnified~');
         (new ModifiersTable(Tables::getIt()))->getProfileCodes($this->createModifierCode('magnified'));
     }
 
@@ -423,7 +424,7 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
             }
         }
         foreach ($fromParentMatchingProfiles as $matchingProfile) {
-            self::assertContains(
+            self::assertStringContainsString(
                 '_venus',
                 $matchingProfile,
                 'Only venus profiles can be used on parent modifier side for connection (and mars on child side)'
@@ -479,7 +480,7 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
             }
         }
         foreach ($fromChildrenMatchingProfiles as $matchingProfile) {
-            self::assertContains(
+            self::assertStringContainsString(
                 '_mars',
                 $matchingProfile,
                 'Only mars profiles can be used by child modifiers to connect to parent (and venus on parent side)'
@@ -489,22 +490,22 @@ class ModifiersTableTest extends AbstractTheurgistTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetParentModifiersFor
-     * @expectedExceptionMessageRegExp ~dancing~
      */
     public function I_can_not_get_parent_modifiers_for_unknown_modifier()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetParentModifiersFor::class);
+        $this->expectExceptionMessageRegExp('~dancing~');
         $modifiersTable = new ModifiersTable(Tables::getIt());
         $modifiersTable->getParentModifierCodes($this->createModifierCode('dancing'));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetChildModifiersFor
-     * @expectedExceptionMessageRegExp ~lazy~
      */
     public function I_can_not_get_child_modifiers_for_unknown_modifier()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\UnknownModifierToGetChildModifiersFor::class);
+        $this->expectExceptionMessageRegExp('~lazy~');
         $modifiersTable = new ModifiersTable(Tables::getIt());
         $modifiersTable->getChildModifierCodes($this->createModifierCode('lazy'));
     }

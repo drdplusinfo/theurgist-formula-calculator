@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Armors;
@@ -210,10 +211,10 @@ class ArmorStrengthSanctionsTableTest extends AbstractStrengthSanctionsTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Exceptions\CanNotUseArmorBecauseOfMissingStrength
      */
     public function I_can_not_get_agility_malus_if_unbearable()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\CanNotUseArmorBecauseOfMissingStrength::class);
         $armorSanctionsTable = new ArmorStrengthSanctionsTable();
         self::assertSame(0, $armorSanctionsTable->getAgilityMalus(11));
     }

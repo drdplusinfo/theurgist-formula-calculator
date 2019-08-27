@@ -29,14 +29,9 @@
     "composer-plugin-api": "^1.0",
     "drdplus/web-versions": "^1.0",
     "erusev/parsedown": "^1.7",
-    "granam/exceptions-hierarchy": "^4.0",
     "granam/git": "^1.2",
-    "granam/strict-object": "^3.0",
-    "granam/string": "^3.2",
-    "granam/tools": "^3.0",
-    "granam/web-content-builder": "^1.1",
+    "granam/web-content-builder": "^2.0",
     "granam/yaml-reader": "^1.0",
-    "phpgt/dom": "~1.1",
     "phpmailer/phpmailer": "^6.0",
     "piwik/device-detector": "^3.11",
     "symfony/config": "^4.3",
@@ -46,9 +41,10 @@
     "tracy/tracy": "^2.4"
   },
   "require-dev": {
-    "composer/composer": "^1.8",
+    "composer/composer": "^1.9",
+    "granam/exceptions-hierarchy": "^5.0",
     "mockery/mockery": "^1.2",
-    "phpunit/phpunit": "^7.5",
+    "phpunit/phpunit": "^8.3",
     "roave/security-advisories": "dev-master"
   },
   "config": {

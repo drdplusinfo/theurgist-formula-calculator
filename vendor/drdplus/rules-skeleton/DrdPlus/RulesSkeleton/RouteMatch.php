@@ -32,7 +32,7 @@ class RouteMatch extends StrictObject
     public function __construct(array $values)
     {
         try {
-            $this->path = ToString::toString($values['path'] ?? null);
+            $this->path = ToString::toString($values['path'] ?? null /* intentionally NULL to raise an exception in case of missing path */);
         } catch (\Granam\Scalar\Tools\Exceptions\Exception $exception) {
             throw new Exceptions\MissingRequiredPathInRouteMatch('Got matches ' . var_export($values, true));
         }

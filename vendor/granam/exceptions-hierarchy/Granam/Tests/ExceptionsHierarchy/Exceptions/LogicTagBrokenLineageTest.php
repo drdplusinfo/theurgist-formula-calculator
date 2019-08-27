@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class LogicTagBrokenLineageTest extends AbstractExceptionsHierarchyTest
@@ -7,11 +8,11 @@ class LogicTagBrokenLineageTest extends AbstractExceptionsHierarchyTest
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~^Tag .+\\BrokenLineage\\LogicTagWithoutParent\\Logic should be child of .+\\BrokenLineage\\Logic~
+* @expectExceptionMessageRegExp ~^Tag .+\\BrokenLineage\\LogicTagWithoutParent\\Logic should be child of .+\\BrokenLineage\\Logic~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

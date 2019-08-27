@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Environments;
@@ -40,11 +41,11 @@ class MaterialResistancesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Environments\Exceptions\UnknownMaterialToGetResistanceFor
-     * @expectedExceptionMessageRegExp ~water~
      */
     public function I_can_not_get_resistance_for_unknown_material()
     {
+        $this->expectException(\DrdPlus\Tables\Environments\Exceptions\UnknownMaterialToGetResistanceFor::class);
+        $this->expectExceptionMessageRegExp('~water~');
         (new MaterialResistancesTable())->getResistanceOfMaterial($this->createMaterialCode('water'));
     }
 

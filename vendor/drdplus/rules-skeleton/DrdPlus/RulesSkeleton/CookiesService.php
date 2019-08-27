@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton;
 
@@ -8,6 +7,14 @@ use Granam\Strict\Object\StrictObject;
 class CookiesService extends StrictObject
 {
     public const VERSION = 'version';
+
+    /** @var Request */
+    private $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     public function setMinorVersionCookie(string $version): bool
     {
@@ -24,14 +31,14 @@ class CookiesService extends StrictObject
      */
     public function setCookie(string $cookieName, string $value, bool $httpOnly = true, \DateTimeInterface $expiresAt = null): bool
     {
-        if (PHP_SAPI !== 'cli') {
+        if (!$this->request->isCliRequest()) {
             $cookieSet = \setcookie(
                 $cookieName,
                 $value,
                 $expiresAt ? $expiresAt->getTimestamp() : 0 /* ends with browser session */,
                 '/', // path
-                $_SERVER['SERVER_NAME'] ?? '', // domain
-                !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', // secure if possible
+                $this->request->getServerName(), // domain
+                $this->request->isHttpsUsed(), // secure if possible
                 $httpOnly // not HTTP only allows JS to read it
             );
             if (!$cookieSet) {
@@ -39,7 +46,7 @@ class CookiesService extends StrictObject
             }
         }
 
-        $_COOKIE[$cookieName] = $value;
+        $this->request->overwriteCookie($cookieName, $value);
 
         return true;
     }
@@ -50,14 +57,14 @@ class CookiesService extends StrictObject
      */
     public function getCookie(string $cookieName)
     {
-        return $_COOKIE[$cookieName] ?? null;
+        return $this->request->getValueFromCookie($cookieName);
     }
 
     public function deleteCookie(string $cookieName): bool
     {
         $set = $this->setCookie($cookieName, '');
         if ($set) {
-            unset($_COOKIE[$cookieName]);
+            $this->request->deleteCookie($cookieName);
         }
 
         return $set;

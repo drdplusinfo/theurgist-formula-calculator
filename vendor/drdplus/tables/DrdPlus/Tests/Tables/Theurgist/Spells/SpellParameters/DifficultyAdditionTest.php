@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
 
@@ -88,59 +87,59 @@ class DifficultyAdditionTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation
      */
     public function I_can_not_create_it_without_value()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation::class);
         new DifficultyAddition('', 0);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation
-     * @expectedExceptionMessageRegExp ~1=2=3~
      */
     public function I_can_not_create_it_with_too_many_parts()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation::class);
+        $this->expectExceptionMessageRegExp('~1=2=3~');
         new DifficultyAddition('1=2=3', 0);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation
      */
     public function I_can_not_create_it_with_empty_realm_price()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation::class);
         new DifficultyAddition('=2', 0);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfRealmsIncrement
-     * @expectedExceptionMessageRegExp ~foo~
      */
     public function I_can_not_create_it_with_invalid_realm_price()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfRealmsIncrement::class);
+        $this->expectExceptionMessageRegExp('~foo~');
         new DifficultyAddition('foo=2', 0);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation
-     * @expectedExceptionMessageRegExp ~5=~
      */
     public function I_can_not_create_it_with_empty_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsNotation::class);
+        $this->expectExceptionMessageRegExp('~5=~');
         new DifficultyAddition('5=', 0);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsValue
-     * @expectedExceptionMessageRegExp ~bar~
      */
     public function I_can_not_create_it_with_invalid_addition()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfAdditionByRealmsValue::class);
+        $this->expectExceptionMessageRegExp('~bar~');
         new DifficultyAddition('13=bar', 0);
     }
 }

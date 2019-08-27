@@ -1,5 +1,8 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy;
 
 class WithSameNamedExternalNonParentExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 {
@@ -40,15 +43,15 @@ class WithSameNamedExternalNonParentExceptionHierarchyTest extends AbstractExcep
     protected function getExternalRootExceptionsSubDir()
     {
         return false; // exceptions are directly in the external root namespace
-    }/** @noinspection SenselessProxyMethodInspection */
+    }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~Exception .+\\WithSameNamedExternalNonParent\\IAmSameNamed .+ parent .+\\WithSameNamedParent\\IAmSameNamed~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(InvalidExceptionHierarchy::class);
+        $this->expectExceptionMessageRegExp('~Exception .+\\\WithSameNamedExternalNonParent\\\IAmSameNamed .+ parent .+\\\WithSameNamedParent\\\IAmSameNamed~');
         parent::My_exceptions_are_in_family_tree();
     }
 

@@ -6,7 +6,7 @@ use Granam\Strict\Object\StrictObject;
 use Granam\String\StringInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
-class RulesUrlMatcher extends StrictObject
+    class RulesUrlMatcher extends StrictObject
 {
     /**
      * @var UrlMatcherInterface
@@ -21,6 +21,7 @@ class RulesUrlMatcher extends StrictObject
     /**
      * @param string|StringInterface $pathInfo
      * @return RouteMatch
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function match($pathInfo): RouteMatch
     {

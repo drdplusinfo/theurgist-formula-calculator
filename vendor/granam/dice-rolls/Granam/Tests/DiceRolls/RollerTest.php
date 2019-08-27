@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\DiceRolls;
 
@@ -162,10 +161,10 @@ class RollerTest extends AbstractRollerTest
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Exceptions\InvalidDiceRange
      */
     public function I_can_not_use_strange_dice_with_minimum_greater_than_maximum()
     {
+        $this->expectException(\Granam\DiceRolls\Exceptions\InvalidDiceRange::class);
         new Roller(
             $this->createDice(2, 1),
             $this->createNumber(),
@@ -177,10 +176,10 @@ class RollerTest extends AbstractRollerTest
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Exceptions\InvalidNumberOfRolls
      */
     public function I_can_not_use_zero_number_of_standard_rolls()
     {
+        $this->expectException(\Granam\DiceRolls\Exceptions\InvalidNumberOfRolls::class);
         new Roller(
             $this->createDice(),
             $this->createNumber(0),
@@ -192,10 +191,10 @@ class RollerTest extends AbstractRollerTest
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Exceptions\InvalidNumberOfRolls
      */
     public function I_can_not_use_negative_number_of_standard_rolls()
     {
+        $this->expectException(\Granam\DiceRolls\Exceptions\InvalidNumberOfRolls::class);
         new Roller(
             $this->createDice(),
             $this->createNumber(-1),
@@ -207,10 +206,10 @@ class RollerTest extends AbstractRollerTest
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Exceptions\BonusAndMalusChanceConflict
      */
     public function I_can_not_use_bonus_and_malus_with_same_triggering_values()
     {
+        $this->expectException(\Granam\DiceRolls\Exceptions\BonusAndMalusChanceConflict::class);
         new Roller(
             $this->createDice(1, 5),
             $this->createNumber(),

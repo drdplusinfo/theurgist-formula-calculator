@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Square;
@@ -89,12 +90,12 @@ class SquareTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideInSpecificUnitGetters
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
-     * @expectedExceptionMessageRegExp ~drop~
      * @param string $getInUnit
      */
     public function Can_not_cast_it_from_unknown_unit(string $getInUnit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
+        $this->expectExceptionMessageRegExp('~drop~');
         /** @var Square|\Mockery\MockInterface $squareWithInvalidUnit */
         $squareWithInvalidUnit = $this->mockery(Square::class);
         $squareWithInvalidUnit->shouldReceive('getUnit')
@@ -117,13 +118,13 @@ class SquareTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideSquareUnits
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
-     * @expectedExceptionMessageRegExp ~first~
      * @param string $unit
      * @throws \ReflectionException
      */
     public function Can_not_cast_it_to_unknown_unit(string $unit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
+        $this->expectExceptionMessageRegExp('~first~');
         $square = new \ReflectionClass(Square::class);
         $getValueInDifferentUnit = $square->getMethod('getValueInDifferentUnit');
         $getValueInDifferentUnit->setAccessible(true);
@@ -175,31 +176,31 @@ class SquareTest extends AbstractTestOfMeasurement
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_low_value_to_bonus(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $distance = new Square(0.01 /* minimal distance with known bonus */ ** 2 /* power of two to get square */ - 1 /* out of range */, SquareUnitCode::SQUARE_METER, Tables::getIt()->getDistanceTable());
         $distance->getBonus();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange
      */
     public function I_can_not_convert_too_high_value_to_bonus(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\RequestedDataOutOfTableRange::class);
         $distance = new Square(900 /* maximal distance with known bonus */ ** 2 /* power of two to get square */ + 1 /* out of range */, SquareUnitCode::SQUARE_KILOMETER, Tables::getIt()->getDistanceTable());
         $distance->getBonus();
     }
 
     /**
      * @test
-     * @expectedException  \DrdPlus\Tables\Measurements\Square\Exceptions\UnknownSquareUnit
-     * @expectedExceptionMessageRegExp ~penny~
      */
     public function Exception_is_thrown_if_unit_is_somehow_broken_after_initial_check()
     {
+        $this->expectException( \DrdPlus\Tables\Measurements\Square\Exceptions\UnknownSquareUnit::class);
+        $this->expectExceptionMessageRegExp('~penny~');
         $cheapSquare = new class(123, Square::SQUARE_METER, Tables::getIt()->getDistanceTable()) extends Square
         {
             public function getUnit(): string

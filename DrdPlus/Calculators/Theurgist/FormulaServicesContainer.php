@@ -4,12 +4,15 @@ namespace DrdPlus\Calculators\Theurgist;
 
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
 use DrdPlus\RulesSkeleton\Dirs;
+use DrdPlus\RulesSkeleton\RoutedDirs;
 use DrdPlus\RulesSkeleton\Web\WebPartsContainer;
 use DrdPlus\Tables\Tables;
 
 class FormulaServicesContainer extends CalculatorServicesContainer
 {
+    /** @var FormulaWebPartsContainer */
     private $formulaWebPartsContainer;
+    /** @var CurrentFormulaValues */
     private $currentFormulaValues;
 
     /**
@@ -24,16 +27,11 @@ class FormulaServicesContainer extends CalculatorServicesContainer
                 $this->getDirs(),
                 $this->getHtmlHelper(),
                 $this->getRequest(),
-                $this->getTables(),
-                $this->getCurrentFormulaValues()
+                $this->getCurrentFormulaValues(),
+                $this->getTables()
             );
         }
         return $this->formulaWebPartsContainer;
-    }
-
-    public function getTables(): Tables
-    {
-        return Tables::getIt();
     }
 
     public function getCurrentFormulaValues(): CurrentFormulaValues
@@ -48,9 +46,13 @@ class FormulaServicesContainer extends CalculatorServicesContainer
         return $this->currentFormulaValues;
     }
 
-    protected function createRoutedDirs(Dirs $dirs): Dirs
+    public function getTables(): Tables
     {
-        $match = $this->getRulesUrlMatcher()->match($this->getRequest()->getCurrentUrl());
-        return new FormulaDirs($dirs->getProjectRoot(), $match->getPath());
+        return Tables::getIt();
+    }
+
+    protected function createRoutedDirs(Dirs $dirs): RoutedDirs
+    {
+        return new FormulaDirs($dirs->getProjectRoot(), $this->getPathProvider());
     }
 }

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class RuntimeTagBrokenLineageTest extends AbstractExceptionsHierarchyTest
@@ -7,11 +8,11 @@ class RuntimeTagBrokenLineageTest extends AbstractExceptionsHierarchyTest
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~^Tag .+\\BrokenLineage\\RuntimeTagWithoutParent\\Runtime should be child of .+\\BrokenLineage\\Runtime~
+* @expectExceptionMessageRegExp ~^Tag .+\\BrokenLineage\\RuntimeTagWithoutParent\\Runtime should be child of .+\\BrokenLineage\\Runtime~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

@@ -15,7 +15,7 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
     /**
      * @throws \ReflectionException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $sutClass = self::getSutClass();
@@ -29,7 +29,7 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
     /**
      * @throws \ReflectionException
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // clean up custom translations
         $translatableExtendableCode = new \ReflectionClass(TranslatableExtendableCode::class);
@@ -69,16 +69,22 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
         $translations->setValue(null);
         $translations->setAccessible(false);
         self::assertNotContains('foo', $sutClass::getPossibleValues());
+        self::assertFalse($sutClass::hasIt('foo'));
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
+
         self::assertTrue($sutClass::$addNewCode('foo', []));
         self::assertFalse(
             $sutClass::$addNewCode('foo', ['en' => ['one' => 'foo']]),
             'Same custom code to register should be skipped. Have you overloaded getDefaultValues method?'
         );
         self::assertContains('foo', $sutClass::getPossibleValues());
+        self::assertTrue($sutClass::hasIt('foo'));
+
         self::assertTrue($sutClass::$addNewCode('bar', ['cs' => ['one' => 'taková laťka']]));
         self::assertContains('bar', $sutClass::getPossibleValues());
+        self::assertTrue($sutClass::hasIt('bar'));
+
         if ((new \ReflectionClass($sutClass))->isAbstract()) {
             return;
         }
@@ -137,11 +143,11 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidLanguageCode
-     * @expectedExceptionMessageRegExp ~a1~
      */
     public function I_can_not_use_invalid_language_code_format_for_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidLanguageCode::class);
+        $this->expectExceptionMessageRegExp('~a1~');
         /** @var TranslatableExtendableCode $sutClass */
         $sutClass = self::getSutClass();
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
@@ -162,11 +168,11 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~this should be array~
      */
     public function I_can_not_use_invalid_data_format_of_translations_for_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp('~this should be array~');
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var TranslatableExtendableCode $sutClass */
@@ -179,11 +185,11 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownTranslationPlural
-     * @expectedExceptionMessageRegExp ~all~
      */
     public function I_can_not_use_invalid_plural_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownTranslationPlural::class);
+        $this->expectExceptionMessageRegExp('~all~');
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var TranslatableExtendableCode $sutClass */
@@ -196,11 +202,11 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~NULL~
      */
     public function I_can_not_use_non_string_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp('~NULL~');
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var TranslatableExtendableCode $sutClass */
@@ -213,11 +219,11 @@ abstract class TranslatableExtendableCodeTest extends TranslatableCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~''~
      */
     public function I_can_not_use_empty_string_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp("~''~");
         /** like @see \DrdPlus\Codes\Armaments\ArrowCode::addNewArrowCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var TranslatableExtendableCode $sutClass */

@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Body;
@@ -64,21 +65,21 @@ class CorrectionByHeightTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\Exceptions\UnexpectedHeightToGetCorrectionFor
-     * @expectedExceptionMessageRegExp ~0~
      */
     public function I_can_not_get_correction_for_too_low_height()
     {
+        $this->expectException(\DrdPlus\Tables\Body\Exceptions\UnexpectedHeightToGetCorrectionFor::class);
+        $this->expectExceptionMessageRegExp('~0~');
         (new CorrectionByHeightTable())->getCorrectionByHeight($this->createHeight(0));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\Exceptions\UnexpectedHeightToGetCorrectionFor
-     * @expectedExceptionMessageRegExp ~10~
      */
     public function I_can_not_get_correction_for_too_high_height()
     {
+        $this->expectException(\DrdPlus\Tables\Body\Exceptions\UnexpectedHeightToGetCorrectionFor::class);
+        $this->expectExceptionMessageRegExp('~10~');
         (new CorrectionByHeightTable())->getCorrectionByHeight($this->createHeight(10));
     }
 }

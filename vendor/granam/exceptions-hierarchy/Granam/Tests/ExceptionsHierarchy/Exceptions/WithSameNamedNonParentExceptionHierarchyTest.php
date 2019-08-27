@@ -1,5 +1,8 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy;
 
 class WithSameNamedNonParentExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 {
@@ -25,16 +28,15 @@ class WithSameNamedNonParentExceptionHierarchyTest extends AbstractExceptionsHie
     protected function getExceptionsSubDir()
     {
         return false; // exceptions are directly in the tested namespace
-    }/** @noinspection SenselessProxyMethodInspection */
+    }
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~^Exception .+\\WithSameNamedNonParent\\Children\\IAmSameNamedButNotFromFamily should extends parent .+\\WithSameNamedNonParent\\IAmSameNamedButNotFromFamily~
      */
     public function My_exceptions_are_in_family_tree()
     {
-        // overloading parent method annotations
+        $this->expectException(InvalidExceptionHierarchy::class);
+        $this->expectExceptionMessageRegExp('~^Exception .+\\\WithSameNamedNonParent\\\Children\\\IAmSameNamedButNotFromFamily should extends parent .+\\\WithSameNamedNonParent\\\IAmSameNamedButNotFromFamily~');
         parent::My_exceptions_are_in_family_tree();
     }
 

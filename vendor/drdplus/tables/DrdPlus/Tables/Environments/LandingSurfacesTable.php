@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tables\Environments;
@@ -6,7 +7,7 @@ namespace DrdPlus\Tables\Environments;
 use DrdPlus\Codes\Environment\LandingSurfaceCode;
 use DrdPlus\BaseProperties\Agility;
 use DrdPlus\Tables\Partials\AbstractFileTable;
-use Granam\Integer\IntegerWithHistory;
+use Granam\Integer\IntegerObject;
 use Granam\Integer\PositiveInteger;
 
 /**
@@ -52,13 +53,13 @@ class LandingSurfacesTable extends AbstractFileTable
      * @param LandingSurfaceCode $landingSurfaceCode
      * @param Agility $agility
      * @param PositiveInteger $armorProtection
-     * @return IntegerWithHistory
+     * @return IntegerObject
      */
     public function getBaseOfWoundsModifier(
         LandingSurfaceCode $landingSurfaceCode,
         Agility $agility,
         PositiveInteger $armorProtection
-    ): IntegerWithHistory
+    ): IntegerObject
     {
         /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
         $row = $this->getRow($landingSurfaceCode);
@@ -87,24 +88,24 @@ class LandingSurfacesTable extends AbstractFileTable
         return $baseOfWoundsModifier;
     }
 
-    private function createBaseOfWoundsModifier(array $row): IntegerWithHistory
+    private function createBaseOfWoundsModifier(array $row): IntegerObject
     {
-        return new IntegerWithHistory($row[self::POWER_OF_WOUND_MODIFIER]);
+        return new IntegerObject($row[self::POWER_OF_WOUND_MODIFIER]);
     }
 
     private function lowerByPositiveAgility(
-        IntegerWithHistory $baseOfWoundsModifier,
+        IntegerObject $baseOfWoundsModifier,
         Agility $agility,
         int $agilityMultiplierBonus
-    ): IntegerWithHistory
+    ): IntegerObject
     {
         return $baseOfWoundsModifier->sub($agilityMultiplierBonus * $agility->getValue());
     }
 
     private function increaseByNegativeAgility(
-        IntegerWithHistory $baseOfWoundsModifier,
+        IntegerObject $baseOfWoundsModifier,
         Agility $agility
-    ): IntegerWithHistory
+    ): IntegerObject
     {
         // yes, it INCREASES wounds (minus minus = plus) and yes, only by agility value itself, without multiplier
         return $baseOfWoundsModifier->sub($agility->getValue());
@@ -112,16 +113,16 @@ class LandingSurfacesTable extends AbstractFileTable
 
     private function lowerByArmorMaximalProtection(
         int $armorMaximalProtection,
-        IntegerWithHistory $baseOfWoundsModifier
-    ): IntegerWithHistory
+        IntegerObject $baseOfWoundsModifier
+    ): IntegerObject
     {
         return $baseOfWoundsModifier->sub($armorMaximalProtection);
     }
 
     private function lowerByArmor(
         PositiveInteger $armorProtection,
-        IntegerWithHistory $baseOfWoundsModifier
-    ): IntegerWithHistory
+        IntegerObject $baseOfWoundsModifier
+    ): IntegerObject
     {
         return $baseOfWoundsModifier->sub($armorProtection);
     }

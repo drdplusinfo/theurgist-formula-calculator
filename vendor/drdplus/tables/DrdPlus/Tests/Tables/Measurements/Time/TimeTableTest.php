@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Time;
@@ -26,20 +27,20 @@ class TimeTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_use_too_low_bonus_to_value()
     {
+        $this->expectException(\OutOfRangeException::class);
         $timeTable = new TimeTable();
         $timeTable->toTime(new TimeBonus(-1, $timeTable))->getRounds();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $timeTable->toTime(new TimeBonus(100, $timeTable))->getRounds();
     }
@@ -86,20 +87,20 @@ class TimeTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_low_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $timeTable = new TimeTable();
         $timeTable->toBonus(new Time(0, TimeUnitCode::ROUND, $timeTable))->getValue();
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $timeTable = new TimeTable();
         $timeTable->toBonus(new Time(84001, TimeUnitCode::ROUND, $timeTable))->getValue();
     }

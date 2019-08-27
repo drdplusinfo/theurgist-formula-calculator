@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\DiceRolls\Templates\Rolls;
 
@@ -41,10 +40,10 @@ class Roll1d6Test extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\DiceRolls\Templates\Rolls\Exceptions\UnexpectedDice
      */
     public function I_can_not_create_it_with_roll_of_different_dice_than_1d6()
     {
+        $this->expectException(\Granam\DiceRolls\Templates\Rolls\Exceptions\UnexpectedDice::class);
         new Roll1d6($this->createDiceRoll($this->mockery(Dice::class)));
     }
 }

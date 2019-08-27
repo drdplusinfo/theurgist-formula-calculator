@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Armaments;
 
 use DrdPlus\Codes\Armaments\WeaponCategoryCode;
@@ -106,11 +107,11 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidLanguageCode
-     * @expectedExceptionMessageRegExp ~a1~
      */
     public function I_can_not_use_invalid_language_code_format_for_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidLanguageCode::class);
+        $this->expectExceptionMessageRegExp('~a1~');
         /** @var WeaponCode $sutClass */
         $sutClass = self::getSutClass();
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
@@ -136,11 +137,11 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~this should be array~
      */
     public function I_can_not_use_invalid_data_format_of_translations_for_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp('~this should be array~');
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var WeaponCode $sutClass */
@@ -154,11 +155,11 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownTranslationPlural
-     * @expectedExceptionMessageRegExp ~all~
      */
     public function I_can_not_use_invalid_plural_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownTranslationPlural::class);
+        $this->expectExceptionMessageRegExp('~all~');
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var WeaponCode $sutClass */
@@ -176,11 +177,11 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~NULL~
      */
     public function I_can_not_use_non_string_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp('~NULL~');
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var WeaponCode $sutClass */
@@ -194,11 +195,11 @@ abstract class WeaponCodeTest extends WeaponlikeCodeTest
     /**
      * @test
      * @runInSeparateProcess
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat
-     * @expectedExceptionMessageRegExp ~''~
      */
     public function I_can_not_use_empty_string_for_translation_of_custom_code()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\InvalidTranslationFormat::class);
+        $this->expectExceptionMessageRegExp("~''~");
         /** like @see \DrdPlus\Codes\Armaments\MeleeWeaponCode::addNewMeleeWeaponCode */
         $addNewCode = 'addNew' . $this->getSutBaseName();
         /** @var WeaponCode $sutClass */

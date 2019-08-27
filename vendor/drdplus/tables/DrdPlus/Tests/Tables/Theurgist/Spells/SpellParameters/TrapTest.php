@@ -49,21 +49,21 @@ class TrapTest extends CastingParameterTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfPropertyUsedForTrap
-     * @expectedExceptionMessageRegExp ~goodness~
      */
     public function I_can_not_create_it_with_unknown_property(): void
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfPropertyUsedForTrap::class);
+        $this->expectExceptionMessageRegExp('~goodness~');
         new Trap(['35689', '332211', 'goodness'], Tables::getIt());
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfPropertyUsedForTrap
-     * @expectedExceptionMessageRegExp ~nothing~
      */
     public function I_can_not_create_it_without_property(): void
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\InvalidFormatOfPropertyUsedForTrap::class);
+        $this->expectExceptionMessageRegExp('~nothing~');
         new Trap(['35689', '332211'], Tables::getIt());
     }
 

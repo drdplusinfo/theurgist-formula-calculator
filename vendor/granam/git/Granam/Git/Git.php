@@ -129,11 +129,12 @@ class Git extends StrictObject
 
     /**
      * @param string $repositoryDir
+     * @param int $maxAttempts
      * @return array|string[] Rows with result of branch update
      * @throws \Granam\Git\Exceptions\CanNotLocallyCloneWebVersionViaGit
      * @throws \Granam\Git\Exceptions\UnknownMinorVersion
      */
-    public function update(string $repositoryDir): array
+    public function update(string $repositoryDir, int $maxAttempts = 3): array
     {
         $repositoryDirEscaped = escapeshellarg($repositoryDir);
         $attempt = 1;
@@ -147,18 +148,18 @@ class Git extends StrictObject
             try {
                 return $this->executeCommandsChainArray($commands);
             } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
-                if (preg_match("~Unable to create '[^']+[.]lock': File exists[.]~", $executingCommandFailed->getMessage())) {
-                    $attempt++;
-                    if ($attempt === 3) {
-                        throw $executingCommandFailed;
-                    }
-                    sleep($this->sleepMultiplierOnLock * $attempt); // some update currently proceeds
-                    $commands[0] = "echo 'attempt number $attempt'";
-                    continue;
+                if (!preg_match("~Unable to create '[^']+[.]lock': File exists[.]~", $executingCommandFailed->getMessage())) {
+                    throw $executingCommandFailed;
                 }
-                throw $executingCommandFailed;
+                if ($attempt === $maxAttempts) {
+                    throw $executingCommandFailed;
+                }
+                sleep($this->sleepMultiplierOnLock * $attempt); // like 1 s, 2 s, ...
+                $attempt++;
+                $commands[0] = "echo 'attempt number $attempt'";
+                continue;
             }
-        } while ($attempt < 3);
+        } while ($attempt <= $maxAttempts);
     }
 
     /**

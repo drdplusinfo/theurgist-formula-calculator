@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Partials;
@@ -33,10 +34,10 @@ class MeasurementTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnknownUnit
      */
     public function I_cannot_create_measurement_with_unknown_unit()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnknownUnit::class);
         new DeAbstractedMeasurement(123, 'non-existing unit');
     }
 

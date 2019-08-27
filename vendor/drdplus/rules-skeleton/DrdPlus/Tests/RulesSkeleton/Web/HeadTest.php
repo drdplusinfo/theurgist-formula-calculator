@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton\Web;
 
@@ -16,7 +15,7 @@ class HeadTest extends AbstractContentTest
     {
         /** @var Head $headClass */
         $headClass = static::getSutClass();
-        $servicesContainer = $this->createServicesContainer();
+        $servicesContainer = $this->createServicesContainer(null, $this->createHtmlHelper(null, true /* forced production mode */));
         /** @var Head $head */
         $head = new $headClass(
             $servicesContainer->getConfiguration(),
@@ -48,6 +47,37 @@ HTML
     /**
      * @test
      */
+    public function Head_does_not_contain_google_analytics_if_not_in_production(): void
+    {
+        /** @var Head $headClass */
+        $headClass = static::getSutClass();
+        $servicesContainer = $this->createServicesContainer(); // non-production mode will be detected
+        /** @var Head $head */
+        $head = new $headClass(
+            $servicesContainer->getConfiguration(),
+            $servicesContainer->getHtmlHelper(),
+            $servicesContainer->getCssFiles(),
+            $servicesContainer->getJsFiles()
+        );
+        $headString = $head->getValue();
+        $htmlDocument = new HtmlDocument(<<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Foo</title>
+{$headString}
+</head>
+</html>
+HTML
+        );
+        /** @var \DOMElement $googleAnalytics */
+        $googleAnalytics = $htmlDocument->getElementById('googleAnalyticsId');
+        self::assertEmpty($googleAnalytics, 'Google analytics has not been expected on non-production mode');
+    }
+
+    /**
+     * @test
+     */
     public function I_can_set_own_page_name(): void
     {
         /** @var Head $headClass */
@@ -62,6 +92,6 @@ HTML
         );
         $expectedPageTitle = \trim($this->getConfiguration()->getTitleSmiley() . ' ' . $pageName);
         self::assertSame($expectedPageTitle, $head->getPageTitle());
-        self::assertContains("<title>$expectedPageTitle</title>", $head->getValue());
+        self::assertStringContainsString("<title>$expectedPageTitle</title>", $head->getValue());
     }
 }

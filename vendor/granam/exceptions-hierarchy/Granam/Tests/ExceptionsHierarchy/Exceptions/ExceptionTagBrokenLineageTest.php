@@ -1,17 +1,18 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
+
+use Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy;
 
 class ExceptionTagBrokenLineageTest extends AbstractExceptionsHierarchyTest
 {
-    /** @noinspection SenselessProxyMethodInspection */
-
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidExceptionHierarchy
-     * @expectedExceptionMessageRegExp ~^Tag .+\\BrokenLineage\\ExceptionTagWithoutParent\\Exception should be child of .+\\BrokenLineage\\Exception~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(InvalidExceptionHierarchy::class);
+        $this->expectExceptionMessageRegExp('~^Tag .+\\\BrokenLineage\\\ExceptionTagWithoutParent\\\Exception should be child of .+\\\BrokenLineage\\\Exception~');
         parent::My_exceptions_are_in_family_tree();
     }
 

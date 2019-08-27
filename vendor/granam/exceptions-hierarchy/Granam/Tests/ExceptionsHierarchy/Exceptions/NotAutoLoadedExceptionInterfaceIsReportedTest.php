@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class NotAutoLoadedExceptionInterfaceIsReportedTest extends AbstractExceptionsHierarchyTest
@@ -6,11 +7,11 @@ class NotAutoLoadedExceptionInterfaceIsReportedTest extends AbstractExceptionsHi
     /** @noinspection SenselessProxyMethodInspection */
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\ExceptionClassNotFoundByAutoloader
-     * @expectedExceptionMessageRegExp ~class .+ interface .+AutoLoaderCanNotFindMeBecauseSomeoneNamedMeWrongly~
+* @expectExceptionMessageRegExp ~class .+ interface .+AutoLoaderCanNotFindMeBecauseSomeoneNamedMeWrongly~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\ExceptionClassNotFoundByAutoloader::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

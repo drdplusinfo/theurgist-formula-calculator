@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -19,13 +19,9 @@ use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 
 /**
- * Mocker for invocations which are sent from
- * MockObject objects.
- *
- * Keeps track of all expectations and stubs as well as registering
- * identifications for builders.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
+final class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
 {
     /**
      * @var MatcherInvocation[]
@@ -38,7 +34,7 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
     private $builderMap = [];
 
     /**
-     * @var string[]
+     * @var ConfigurableMethod[]
      */
     private $configurableMethods;
 
@@ -69,14 +65,13 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
         return false;
     }
 
-    /**
-     * @return null|bool
-     */
-    public function lookupId($id)
+    public function lookupId($id): Match
     {
         if (isset($this->builderMap[$id])) {
             return $this->builderMap[$id];
         }
+
+        return null;
     }
 
     /**
@@ -93,15 +88,12 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
         $this->builderMap[$id] = $builder;
     }
 
-    /**
-     * @return BuilderInvocationMocker
-     */
-    public function expects(MatcherInvocation $matcher)
+    public function expects(MatcherInvocation $matcher): BuilderInvocationMocker
     {
         return new BuilderInvocationMocker(
             $this,
             $matcher,
-            $this->configurableMethods
+            ...$this->configurableMethods
         );
     }
 
@@ -137,7 +129,7 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
             return $returnValue;
         }
 
-        if ($this->returnValueGeneration === false) {
+        if (!$this->returnValueGeneration) {
             $exception = new ExpectationFailedException(
                 \sprintf(
                     'Return value inference disabled and no expectation set up for %s::%s()',
@@ -158,10 +150,7 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
         return $invocation->generateReturnValue();
     }
 
-    /**
-     * @return bool
-     */
-    public function matches(Invocation $invocation)
+    public function matches(Invocation $invocation): bool
     {
         foreach ($this->matchers as $matcher) {
             if (!$matcher->matches($invocation)) {
@@ -174,10 +163,8 @@ class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     *
-     * @return bool
      */
-    public function verify()
+    public function verify(): void
     {
         foreach ($this->matchers as $matcher) {
             $matcher->verify();

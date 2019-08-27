@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters\Partials;
 
@@ -14,22 +13,21 @@ abstract class PositiveCastingParameterTest extends CastingParameterTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter
-     * @expectedExceptionMessageRegExp ~infinite~
      */
     public function I_can_not_create_it_non_numeric()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter::class);
         $sutClass = self::getSutClass();
         new $sutClass(['infinite', '332211'], Tables::getIt());
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter
-     * @expectedExceptionMessageRegExp ~-5~
      */
     public function I_can_not_create_it_negative()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Partials\Exceptions\InvalidValueForPositiveCastingParameter::class);
+        $this->expectExceptionMessageRegExp('~-5~');
         $sutClass = self::getSutClass();
         new $sutClass(['-5'], Tables::getIt());
     }

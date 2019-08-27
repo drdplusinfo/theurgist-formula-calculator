@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -20,7 +19,7 @@ class TablesTest extends AbstractContentTest
         $htmlDocumentWithTablesOnly = $this->getHtmlDocument([Request::TABLES => '' /* all of them */]);
         /** @var NodeList|Element[] $tables */
         $tables = $htmlDocumentWithTablesOnly->getElementsByTagName('table');
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
+        if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(0, $tables, 'No tables expected due to tests configuration');
             self::assertCount(0, $this->getTableIds(), 'No tables expected due to tests configuration');
 
@@ -97,7 +96,7 @@ class TablesTest extends AbstractContentTest
      */
     public function I_can_get_wanted_tables_from_content(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasTables()) {
+        if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertFalse(false, 'Disabled by tests configuration');
 
             return;

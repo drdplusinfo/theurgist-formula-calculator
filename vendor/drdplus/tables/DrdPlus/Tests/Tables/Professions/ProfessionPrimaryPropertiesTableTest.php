@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Professions;
@@ -55,11 +56,11 @@ class ProfessionPrimaryPropertiesTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Professions\Exceptions\UnknownProfession
-     * @expectedExceptionMessageRegExp ~ninja~
      */
     public function I_can_not_get_primary_properties_for_unknown_profession()
     {
+        $this->expectException(\DrdPlus\Tables\Professions\Exceptions\UnknownProfession::class);
+        $this->expectExceptionMessageRegExp('~ninja~');
         (new ProfessionPrimaryPropertiesTable())->getPrimaryPropertiesOf($this->createProfessionCode('ninja'));
     }
 

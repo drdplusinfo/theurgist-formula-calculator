@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells;
@@ -138,11 +139,11 @@ class SpellTraitTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\Exceptions\CanNotChangeNotExistingTrap
-     * @expectedExceptionMessageRegExp ~345~
      */
     public function I_can_not_create_spell_trait_without_trap_with_trap_change()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\Exceptions\CanNotChangeNotExistingTrap::class);
+        $this->expectExceptionMessageRegExp('~345~');
         $spellTraitCode = SpellTraitCode::getIt(SpellTraitCode::INVISIBLE);
         $tables = $this->createTablesWithSpellTraitsTable($spellTraitCode, null /* no trap */);
         new SpellTrait($spellTraitCode, $tables, 345);

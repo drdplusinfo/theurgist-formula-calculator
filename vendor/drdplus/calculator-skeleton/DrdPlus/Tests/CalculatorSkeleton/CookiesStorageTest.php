@@ -1,16 +1,13 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CookiesStorage;
 use DrdPlus\RulesSkeleton\CookiesService;
-use Granam\Tests\Tools\TestWithMockery;
+use DrdPlus\RulesSkeleton\Request;
+use DrdPlus\Tests\CalculatorSkeleton\Partials\AbstractCalculatorContentTest;
 
-/**
- * @backupGlobals enabled
- */
-class CookiesStorageTest extends TestWithMockery
+class CookiesStorageTest extends AbstractCalculatorContentTest
 {
     use Partials\CalculatorContentTestTrait;
 
@@ -19,14 +16,18 @@ class CookiesStorageTest extends TestWithMockery
      */
     public function Values_from_global_request_values_are_ignored(): void
     {
-        $cookiesStorage = new CookiesStorage(new CookiesService(), 'foo');
+        $cookiesStorage = new CookiesStorage(new CookiesService($this->getRequest()), 'foo');
         self::assertNull($cookiesStorage->getValue('from'));
         $cookiesStorage->storeValues(['from' => 'inner memory'], null);
         self::assertSame('inner memory', $cookiesStorage->getValue('from'));
-        $_GET['from'] = 'get';
-        $_POST['from'] = 'post';
-        $_COOKIE['from'] = 'cookie';
-        $_REQUEST['from'] = 'request';
+
+        $cookiesStorage = new CookiesStorage(
+            new CookiesService(
+                new Request($this->getBot(), $this->getEnvironment(), ['from' => 'get'], ['from' => 'post'], ['from' => 'cookie'], [])
+            ),
+            'foo'
+        );
+        $cookiesStorage->storeValues(['from' => 'inner memory'], null);
         self::assertSame('inner memory', $cookiesStorage->getValue('from'));
     }
 
@@ -35,7 +36,7 @@ class CookiesStorageTest extends TestWithMockery
      */
     public function Values_can_be_stored_replaced_and_deleted(): void
     {
-        $cookiesStorage = new CookiesStorage(new CookiesService(), 'foo');
+        $cookiesStorage = new CookiesStorage(new CookiesService($this->getRequest()), 'foo');
         self::assertSame([], $cookiesStorage->getValues());
         self::assertNull($cookiesStorage->getValue('bar'));
 

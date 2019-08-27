@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Partials;
@@ -29,10 +30,10 @@ class AbstractBonusTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\BonusRequiresInteger
      */
     public function I_cannot_create_bonus_from_number_with_decimal()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\BonusRequiresInteger::class);
         new DeAbstractedBonus($value = 123.456);
     }
 

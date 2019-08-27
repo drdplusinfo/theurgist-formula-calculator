@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Body;
 
 use DrdPlus\Codes\Body\SeriousWoundOriginCode;
@@ -42,11 +43,11 @@ class SeriousWoundOriginCodeTest extends WoundOriginCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @expectedExceptionMessageRegExp ~Bathroom slipping~
      */
     public function I_can_not_create_custom_origin()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode::class);
+        $this->expectExceptionMessageRegExp('~Bathroom slipping~');
         SeriousWoundOriginCode::getEnum('Bathroom slipping');
     }
 

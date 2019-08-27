@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\IntegerEnum;
 
@@ -75,10 +74,10 @@ class IntegerEnumTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function float_with_decimal_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum(12.345);
     }
@@ -95,20 +94,20 @@ class IntegerEnumTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function string_float_with_decimal_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum('12.345');
     }
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function string_with_partial_integer_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum('12foo');
     }
@@ -127,30 +126,30 @@ class IntegerEnumTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function to_string_object_with_non_numeric_value_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum(new WithToStringTestObject('foo'));
     }
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function empty_string_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum('');
     }
 
     /**
      * @test
-     * @expectedException \Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum
      */
     public function null_cause_exception(): void
     {
+        $this->expectException(\Granam\IntegerEnum\Exceptions\WrongValueForIntegerEnum::class);
         $enumClass = $this->getEnumClass();
         $enumClass::getEnum(null);
     }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -15,8 +14,12 @@ class CalculationsTest extends AbstractContentTest
      */
     public function Calculation_has_descriptive_name(): void
     {
+        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
+            self::assertFalse(false, 'Nothing to test here');
+            return;
+        }
         $tooShortResultNames = $this->getTestsConfiguration()->getTooShortResultNames();
-        if (!$tooShortResultNames && !$this->isSkeletonChecked()) {
+        if (!$tooShortResultNames) {
             self::assertFalse(false, 'Nothing to test here');
 
             return;
@@ -49,8 +52,8 @@ class CalculationsTest extends AbstractContentTest
         if ($calculations === null) {
             $document = $this->getHtmlDocument();
             $calculations = $document->getElementsByClassName(HtmlHelper::CLASS_CALCULATION);
-            if (\count($calculations) === 0 && !$this->isSkeletonChecked()) {
-                self::assertFalse(false, 'No calculations in current document');
+            if (!$this->getTestsConfiguration()->hasCalculations()) {
+                self::assertCount(0, $calculations, 'No calculations in current document');
             } else {
                 self::assertNotEmpty($calculations, 'Some calculations expected for skeleton testing');
             }
@@ -64,9 +67,13 @@ class CalculationsTest extends AbstractContentTest
      */
     public function Result_content_trap_has_descriptive_name(): void
     {
+        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
+            self::assertFalse(false, 'Nothing to test here');
+            return;
+        }
         $tooShortFailureNames = $this->getTestsConfiguration()->getTooShortFailureNames();
         $tooShortSuccessNames = $this->getTestsConfiguration()->getTooShortSuccessNames();
-        if (!$tooShortFailureNames && !$tooShortSuccessNames && !$this->isSkeletonChecked()) {
+        if (!$tooShortFailureNames && !$tooShortSuccessNames) {
             self::assertFalse(false, 'Nothing to test here');
 
             return;
@@ -81,8 +88,8 @@ class CalculationsTest extends AbstractContentTest
                 $contents[] = $contentsFromCalculation;
             }
         }
-        if (\count($contents) === 0 && !$this->isSkeletonChecked()) {
-            self::assertFalse(false, 'No content classes in current document');
+        if (!$this->getTestsConfiguration()->hasMarkedContent()) {
+            self::assertCount(0, $contents, 'No content classes in current document');
 
             return;
         }

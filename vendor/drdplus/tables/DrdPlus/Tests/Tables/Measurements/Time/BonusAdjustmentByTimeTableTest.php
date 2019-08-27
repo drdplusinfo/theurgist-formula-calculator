@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Time;
@@ -70,11 +71,11 @@ class BonusAdjustmentByTimeTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\NotApplicableOnShorterThanDay
-     * @expectedExceptionMessageRegExp ~at least one day~
      */
     public function I_can_not_adjust_less_than_a_day()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\NotApplicableOnShorterThanDay::class);
+        $this->expectExceptionMessageRegExp('~at least one day~');
         $bonusAdjustmentByTimeTable = new BonusAdjustmentByTimeTable(new TimeTable());
         $bonusAdjustmentByTimeTable->adjustTimeByHoursPerDay(new Time(0.9, TimeUnitCode::DAY, new TimeTable()), 15, false);
     }
@@ -82,11 +83,11 @@ class BonusAdjustmentByTimeTableTest extends TableTest
     /**
      * @test
      * @dataProvider provideNonSenseHours
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\UnexpectedHoursPerDayForTimeBonusAdjustment
      * @param int $nonSenseHours
      */
     public function I_can_not_adjust_by_non_sense_hours_of_daily_activity($nonSenseHours)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\UnexpectedHoursPerDayForTimeBonusAdjustment::class);
         $bonusAdjustmentByTimeTable = new BonusAdjustmentByTimeTable(new TimeTable());
         $bonusAdjustmentByTimeTable->adjustTimeByHoursPerDay(new Time(10, TimeUnitCode::DAY, new TimeTable()), $nonSenseHours, true);
     }
@@ -101,10 +102,10 @@ class BonusAdjustmentByTimeTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotProlongActivityPerDayWithLimitedTime
      */
     public function I_can_hasten_but_not_prolong_activity_with_limited_time()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotProlongActivityPerDayWithLimitedTime::class);
         $timeTable = new TimeTable();
         $bonusAdjustmentByTimeTable = new BonusAdjustmentByTimeTable($timeTable);
         $original = new Time(10, TimeUnitCode::DAY, $timeTable);

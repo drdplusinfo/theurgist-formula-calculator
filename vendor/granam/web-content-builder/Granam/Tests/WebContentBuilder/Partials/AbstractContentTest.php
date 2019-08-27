@@ -111,23 +111,4 @@ abstract class AbstractContentTest extends TestWithMockery
     {
         return $this->getDirs()->getProjectRoot();
     }
-
-    protected function unifyPath(string $path): string
-    {
-        $path = \str_replace('\\', '/', $path);
-        $path = \preg_replace('~/\.(?:/|$)~', '/', $path);
-
-        return $this->squashTwoDots($path);
-    }
-
-    private function squashTwoDots(string $path): string
-    {
-        $originalPath = $path;
-        $path = \preg_replace('~/[^/.]+/\.\.~', '', $path);
-        if ($originalPath === $path) {
-            return $originalPath; // nothing has been squashed
-        }
-
-        return $this->squashTwoDots($path);
-    }
 }

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\DiceRolls\Templates\Dices;
 
@@ -21,28 +20,28 @@ class DicesTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function without_dices_exception_is_thrown()
     {
+        $this->expectException(\LogicException::class);
         new Dices([]);
     }
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function non_dice_parameter_cause_exception()
     {
+        $this->expectException(\LogicException::class);
         new Dices([$this->mockery(Dice::class), new \stdClass()]);
     }
 
     /**
      * @test
-     * @expectedException \LogicException
      */
     public function null_as_dice_parameter_cause_exception()
     {
+        $this->expectException(\LogicException::class);
         new Dices([$this->mockery(Dice::class), null]);
     }
 

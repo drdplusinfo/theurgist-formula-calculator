@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 use Granam\ExceptionsHierarchy\TestOfExceptionsHierarchy;
@@ -12,16 +13,14 @@ abstract class AbstractExceptionsHierarchyTest extends TestCase
      */
     private $testOfExceptionsHierarchy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->testOfExceptionsHierarchy = new TestOfExceptionsHierarchy(
             $this->getTestedNamespace(),
             $this->getRootNamespace(),
             $this->getExceptionsSubDir(),
             (array)$this->getExternalRootNamespaces(),
-            $this->getExternalRootExceptionsSubDir(),
-            $this->getExceptionClassesSkippedFromUsageTest(),
-            $this->getExceptionsUsageRootDir()
+            $this->getExternalRootExceptionsSubDir()
         );
     }
 

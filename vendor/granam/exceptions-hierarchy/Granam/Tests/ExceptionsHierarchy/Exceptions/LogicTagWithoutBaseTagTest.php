@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 class LogicTagWithoutBaseTagTest extends AbstractExceptionsHierarchyTest
@@ -7,11 +8,11 @@ class LogicTagWithoutBaseTagTest extends AbstractExceptionsHierarchyTest
 
     /**
      * @test
-     * @expectedException \Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy
-     * @expectedExceptionMessageRegExp ~^Logic tag interface .+ is not a child of .+\\Exception$$~
+* @expectExceptionMessageRegExp ~^Logic tag interface .+ is not a child of .+\\Exception$$~
      */
     public function My_exceptions_are_in_family_tree()
     {
+        $this->expectException(\Granam\ExceptionsHierarchy\Exceptions\InvalidTagInterfaceHierarchy::class);
         parent::My_exceptions_are_in_family_tree();
     }
 

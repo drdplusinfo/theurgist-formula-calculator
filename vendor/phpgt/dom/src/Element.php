@@ -1,10 +1,10 @@
 <?php
 namespace Gt\Dom;
 
+use DateTime;
+use DOMAttr;
 use DOMDocument;
 use DOMElement;
-use DOMXPath;
-use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
  * The most general base class from which all objects in a Document inherit.
@@ -25,14 +25,24 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  * parsed from the given string
  * @property string $innerText
  * @property-read StringMap $dataset
+ *
+ * @method Attr setAttribute(string $name, string $value)
+ * @method Attr setAttributeNode(DOMAttr $attr)
+ * @method Attr getAttributeNode(string $name)
  */
-class Element extends DOMElement {
+class Element extends DOMElement implements PropertyAttribute {
 	use LiveProperty, NonDocumentTypeChildNode, ChildNode, ParentNode;
 
-	/** @var  TokenList */
+	const VALUE_ELEMENTS = ["BUTTON", "INPUT", "METER", "OPTION", "PROGRESS", "PARAM"];
+
+	/** @var TokenList */
 	protected $liveProperty_classList;
 	/** @var StringMap */
 	protected $liveProperty_dataset;
+	/** @var ?DateTime */
+	protected $liveProperty_valueAsDate;
+	/** @var ?float */
+	protected $liveProperty_valueAsNumber;
 	/**
 	 * @const Array
 	 * @link https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement#Elements_that_are_considered_form_controls
@@ -91,7 +101,6 @@ class Element extends DOMElement {
 		return $value;
 	}
 
-
 	public function prop_get_className() {
 		return $this->getAttribute("class");
 	}
@@ -114,6 +123,10 @@ class Element extends DOMElement {
 			return $this->$methodName();
 		}
 
+		if(in_array(strtoupper($this->tagName), self::VALUE_ELEMENTS)) {
+			return $this->getAttribute("value");
+		}
+
 		return null;
 	}
 
@@ -122,6 +135,8 @@ class Element extends DOMElement {
 		if(method_exists($this, $methodName)) {
 			return $this->$methodName($newValue);
 		}
+
+		$this->setAttribute("value", $newValue);
 	}
 
 	public function prop_get_id():?string {
@@ -270,6 +285,18 @@ class Element extends DOMElement {
 		return null;
 	}
 
+	public function prop_get_valueAsDate() {
+		if($this->tagName === "input") {
+			return new DateTime($this->value);
+		}
+	}
+
+	public function prop_get_valueAsNumber() {
+		if($this->tagName === "input") {
+			return (float)$this->value;
+		}
+	}
+
 	protected function createDataset():StringMap {
 		return new StringMap(
 			$this,
@@ -287,12 +314,21 @@ class Element extends DOMElement {
 		$newSelectedIndex = null;
 
 		for($i = $options->length - 1; $i >= 0; --$i) {
-			if($this->isSelectOptionSelected($options->item($i))) {
-				$selectedIndexes[] = $i;
+			$option = $options->item($i);
+
+			if($this->isSelectOptionSelected($option)) {
+				$selectedIndexes []= $i;
 			}
 
-			if($options->item($i)->getAttribute('value') == $newValue) {
-				$newSelectedIndex = $i;
+			if($option->hasAttribute("value")) {
+				if($option->getAttribute("value") == $newValue) {
+					$newSelectedIndex = $i;
+				}
+			}
+			else {
+				if(trim($option->innerText) === $newValue) {
+					$newSelectedIndex = $i;
+				}
 			}
 		}
 
@@ -316,12 +352,13 @@ class Element extends DOMElement {
 
 		foreach($options as $option) {
 			if($this->isSelectOptionSelected($option)) {
-				$value = $option->getAttribute('value');
+				$value = $option->getAttribute('value')
+					?? trim($option->innerText);
 				break;
 			}
 		}
 
-		return $value;
+		return $value ?? "";
 	}
 
 	private function value_set_input(string $newValue) {

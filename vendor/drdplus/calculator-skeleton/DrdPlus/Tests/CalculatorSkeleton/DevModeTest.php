@@ -1,8 +1,10 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
+/**
+ * @backupGlobals enabled
+ */
 class DevModeTest extends \DrdPlus\Tests\RulesSkeleton\DevModeTest
 {
     use Partials\CalculatorContentTestTrait;

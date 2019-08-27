@@ -1,9 +1,9 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\CalculatorSkeleton;
 
 use DrdPlus\CalculatorSkeleton\CalculatorApplication;
+use DrdPlus\CalculatorSkeleton\CalculatorRequest;
 use DrdPlus\CalculatorSkeleton\CalculatorServicesContainer;
 use DrdPlus\CalculatorSkeleton\History;
 use DrdPlus\CalculatorSkeleton\Memory;
@@ -23,11 +23,11 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
      */
     public function History_and_memory_is_solved_before_run(bool $historyDeletionRequested): void
     {
-        $request = $this->createRequestMock($historyDeletionRequested);
+        $request = $this->createRequestForHistoryDeletion($historyDeletionRequested);
         $request->shouldReceive('getValuesFromGet')
             ->atLeast()->once()
             ->andReturn($valuesFromGet = ['foo' => 'bar']);
-        $memory = $this->createMemoryMock();
+        $memory = $this->createMemoryForHistoryDeletion();
         $memory->shouldReceive('saveMemory')
             ->atLeast()->once()
             ->with($valuesFromGet);
@@ -35,7 +35,7 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
             $memory->shouldReceive('deleteMemory')
                 ->atLeast()->once();
         }
-        $history = $this->createHistoryMock();
+        $history = $this->createHistoryForHistoryDeletion();
         $history->shouldReceive('saveHistory')
             ->atLeast()->once()
             ->with($valuesFromGet);
@@ -44,9 +44,9 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
                 ->atLeast()->once();
         }
         $calculatorServicesContainer = $this->createServicesContainerMock($request, $memory, $history);
-        $sutClass = static::getSutClass();
+        $applicationClass = $this->getRulesApplicationClass();
         /** @var CalculatorApplication $calculatorApplication */
-        $calculatorApplication = new $sutClass($calculatorServicesContainer);
+        $calculatorApplication = new $applicationClass($calculatorServicesContainer);
         \ob_start();
         $calculatorApplication->run();
         \ob_end_clean();
@@ -62,11 +62,11 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
 
     /**
      * @param bool $isRequestedHistoryDeletion
-     * @return Request|MockInterface
+     * @return CalculatorRequest|MockInterface
      */
-    private function createRequestMock(bool $isRequestedHistoryDeletion): Request
+    protected function createRequestForHistoryDeletion(bool $isRequestedHistoryDeletion): CalculatorRequest
     {
-        $request = $this->mockery(Request::class);
+        $request = $this->mockery(CalculatorRequest::class, [$this->getBot(), $this->getEnvironment(), [], [], [], []]);
         $request->shouldReceive('isRequestedHistoryDeletion')
             ->atLeast()->once()
             ->andReturn($isRequestedHistoryDeletion);
@@ -77,17 +77,25 @@ class CalculatorApplicationTest extends AbstractCalculatorContentTest
     /**
      * @return Memory|MockInterface
      */
-    private function createMemoryMock(): Memory
+    protected function createMemoryForHistoryDeletion(): Memory
     {
-        return $this->mockery(Memory::class);
+        $memory = $this->mockery(Memory::class);
+        $memory->shouldReceive('getValue')
+            ->andReturnNull();
+        $memory->makePartial();
+        return $memory;
     }
 
     /**
      * @return History|MockInterface
      */
-    private function createHistoryMock(): History
+    protected function createHistoryForHistoryDeletion(): History
     {
-        return $this->mockery(History::class);
+        $history = $this->mockery(History::class);
+        $history->shouldReceive('getValue')
+            ->andReturnNull();
+        $history->makePartial();
+        return $history;
     }
 
     /**

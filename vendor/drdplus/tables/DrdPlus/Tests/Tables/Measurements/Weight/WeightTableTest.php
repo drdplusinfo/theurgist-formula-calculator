@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Weight;
@@ -43,20 +44,20 @@ class WeightTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_use_too_low_bonus_to_value()
     {
+        $this->expectException(\OutOfRangeException::class);
         $weightTable = new WeightTable();
         $weightTable->toWeight(new WeightBonus(-41, $weightTable));
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_bonus_into_too_detailed_unit()
     {
+        $this->expectException(\OutOfRangeException::class);
         $weightTable = new WeightTable();
         $weightTable->toWeight(new WeightBonus(60, $weightTable));
     }
@@ -80,20 +81,20 @@ class WeightTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_low_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $weightTable = new WeightTable();
         $weightTable->toBonus(new Weight(0.09, Weight::KG, $weightTable));
     }
 
     /**
      * @test
-     * @expectedException \OutOfRangeException
      */
     public function I_can_not_convert_too_high_value_to_bonus()
     {
+        $this->expectException(\OutOfRangeException::class);
         $weightTable = new WeightTable();
         $weightTable->toBonus(new Weight(9001, Weight::KG, $weightTable))->getValue();
     }
@@ -110,11 +111,11 @@ class WeightTableTest extends MeasurementTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Partials\Exceptions\BonusRequiresInteger
-     * @expectedExceptionMessageRegExp ~tiny~
      */
     public function I_can_not_convert_non_number_as_simplified_weight_bonus_to_bonus()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Partials\Exceptions\BonusRequiresInteger::class);
+        $this->expectExceptionMessageRegExp('~tiny~');
         $weightTable = new WeightTable();
         $weightTable->getBonusFromSimplifiedBonus('tiny');
     }

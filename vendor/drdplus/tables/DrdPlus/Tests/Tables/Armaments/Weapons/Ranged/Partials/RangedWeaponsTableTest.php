@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Weapons\Ranged\Partials;
@@ -25,11 +26,11 @@ abstract class RangedWeaponsTableTest extends WeaponlikeTableTest
      * @test
      * @dataProvider provideValueName
      * @param string $valueName
-     * @expectedException \DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon
-     * @expectedExceptionMessageRegExp ~skull_crasher~
      */
     public function I_can_not_get_value_of_unknown_melee_weapon(string $valueName): void
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\UnknownRangedWeapon::class);
+        $this->expectExceptionMessageRegExp('~skull_crasher~');
         $getValueNameOf = $this->assembleValueGetter($valueName);
         $sutClass = self::getSutClass();
         /** @var RangedWeaponsTable $shootingArmamentsTable */
@@ -126,11 +127,11 @@ abstract class RangedWeaponsTableTest extends WeaponlikeTableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Weapons\Exceptions\NewWeaponIsNotOfRequiredType
-     * @expectedExceptionMessageRegExp ~sword.+cake~
      */
     public function I_can_not_add_new_melee_weapon_with_unexpected_category()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Weapons\Exceptions\NewWeaponIsNotOfRequiredType::class);
+        $this->expectExceptionMessageRegExp('~sword.+cake~');
         $sut = $this->createSut();
         $name = uniqid('cake', true);
         RangedWeaponCode::addNewRangedWeaponCode($name, $this->getWeaponCategory(), []);
@@ -153,7 +154,6 @@ abstract class RangedWeaponsTableTest extends WeaponlikeTableTest
     /**
      * @test
      * @dataProvider provideNewWeaponSlightlyChangedParameters
-     * @expectedException \DrdPlus\Tables\Armaments\Weapons\Exceptions\DifferentWeaponIsUnderSameName
      * @param int $templateRequiredStrength
      * @param DistanceBonus $templateRange
      * @param int $templateOffensiveness
@@ -190,6 +190,7 @@ abstract class RangedWeaponsTableTest extends WeaponlikeTableTest
         bool $twoHandedOnly
     ): void
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Weapons\Exceptions\DifferentWeaponIsUnderSameName::class);
         $sut = $this->createSut();
         $name = 'hailstone_' . static::getSutClass(); // unique per SUT
         $addNew = $this->assembleAddNewMethod();

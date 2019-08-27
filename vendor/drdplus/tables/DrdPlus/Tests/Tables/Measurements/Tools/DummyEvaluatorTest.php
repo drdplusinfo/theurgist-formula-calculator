@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Tools;
@@ -11,10 +12,10 @@ class DummyEvaluatorTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Exceptions\UnsupportedMethodCalled
      */
     public function I_can_not_use_it_for_evaluation()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Exceptions\UnsupportedMethodCalled::class);
         $evaluator = new DummyEvaluator();
         $evaluator->evaluate(123);
     }

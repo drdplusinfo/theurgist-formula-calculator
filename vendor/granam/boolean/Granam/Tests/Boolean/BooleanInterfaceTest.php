@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 namespace Granam\Tests\Boolean;
 
 use Granam\Boolean\BooleanInterface;
@@ -7,13 +8,17 @@ use PHPUnit\Framework\TestCase;
 
 class BooleanInterfaceTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function interface_exists(): void
     {
         self::assertTrue(interface_exists(BooleanInterface::class));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function inherits_from_scalar_interface(): void
     {
         self::assertTrue(\is_a(

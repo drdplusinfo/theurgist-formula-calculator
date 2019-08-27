@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes;
 
 use DrdPlus\Codes\Code;
@@ -97,13 +98,13 @@ class AllCodesTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @expectedExceptionMessageRegExp ~da Vinci~
      * @dataProvider provideCodeClasses
      * @param string $codeClass
      */
     public function I_can_not_create_code_from_unknown_value(string $codeClass)
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode::class);
+        $this->expectExceptionMessageRegExp('~da Vinci~');
         /** @var AbstractCode $codeClass */
         self::assertFalse($codeClass::hasIt('da Vinci'));
         $codeClass::getIt('da Vinci');
@@ -125,13 +126,13 @@ class AllCodesTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum
-     * @expectedExceptionMessageRegExp ~\DateTime~
      * @dataProvider provideCodeClasses
      * @param string $codeClass
      */
     public function I_can_not_create_code_from_invalid_value_format(string $codeClass)
     {
+        $this->expectException(\Granam\ScalarEnum\Exceptions\WrongValueForScalarEnum::class);
+        $this->expectExceptionMessageRegExp('~\DateTime~');
         /** @var AbstractCode $codeClass */
         $codeClass::getIt(new \DateTime());
     }
@@ -163,14 +164,14 @@ class AllCodesTest extends TestWithMockery
             $reflectionClass = new \ReflectionClass($codeClass);
             $classBaseName = preg_replace('~^.*[\\\](\w+)$~', '$1', $codeClass);
             if (strpos($reflectionClass->getDocComment(), 'getIt') !== false) {
-                self::assertContains(<<<PHPDOC
+                self::assertStringContainsString(<<<PHPDOC
  * @method static {$classBaseName} getIt(\$codeValue)
 PHPDOC
                     , $reflectionClass->getDocComment(),
                     "Missing getIt method annotation in $codeClass"
                 );
             } else {
-                self::assertContains(<<<PHPDOC
+                self::assertStringContainsString(<<<PHPDOC
  * @return {$classBaseName}|AbstractCode
 PHPDOC
                     , preg_replace('~ +~', ' ', $reflectionClass->getMethod('getIt')->getDocComment()),
@@ -178,14 +179,14 @@ PHPDOC
                 );
             }
             if (strpos($reflectionClass->getDocComment(), 'findIt') !== false) {
-                self::assertContains(<<<PHPDOC
+                self::assertStringContainsString(<<<PHPDOC
  * @method static {$classBaseName} findIt(\$codeValue)
 PHPDOC
                     , $reflectionClass->getDocComment(),
                     "Missing findIt method annotation in $codeClass"
                 );
             } else {
-                self::assertContains(<<<PHPDOC
+                self::assertStringContainsString(<<<PHPDOC
  * @return {$classBaseName}|AbstractCode
 PHPDOC
                     , preg_replace('~ +~', ' ', $reflectionClass->getMethod('findIt')->getDocComment()),

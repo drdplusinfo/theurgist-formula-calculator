@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Theurgist\Spells\SpellParameters;
@@ -40,11 +41,11 @@ class EpicenterShiftTest extends CastingParameterTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\EpicenterShiftDistanceDoesNotMatch
-     * @expectedExceptionMessageRegExp ~0~
      */
     public function I_can_not_create_it_with_non_matching_distance()
     {
+        $this->expectException(\DrdPlus\Tables\Theurgist\Spells\SpellParameters\Exceptions\EpicenterShiftDistanceDoesNotMatch::class);
+        $this->expectExceptionMessageRegExp('~0~');
         new EpicenterShift(['40', '332211'], Tables::getIt(), new Distance(1, DistanceUnitCode::METER, Tables::getIt()->getDistanceTable()));
     }
 }

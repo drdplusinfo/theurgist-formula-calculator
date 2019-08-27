@@ -13,7 +13,7 @@
 ```php
 <?php
 use Granam\DiceRolls\Templates\Rollers\Roller1d6;
-use Granam\DiceRolls\Templates\Rollers\Roller2d6Granam;
+use Granam\DiceRolls\Templates\Rollers\Roller2d6DrdPlus;
 
 $roller1d6 = new Roller1d6();
 $rolledValue = $roller1d6->roll();
@@ -23,7 +23,7 @@ if ($rolledValue === 6) {
     echo 'Try harder';
 }
 
-$roller2d6Granam = new Roller2d6Granam();
+$roller2d6Granam = new Roller2d6DrdPlus();
 while (($roll = $roller2d6Granam->roll()) && $roll->getValue() <= 12) {
     echo 'Still no bonus :( ...';
 }

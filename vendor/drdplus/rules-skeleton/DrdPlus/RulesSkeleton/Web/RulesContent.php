@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\RulesSkeleton\Web;
 
@@ -20,6 +19,7 @@ class RulesContent extends StrictObject implements StringInterface
     public const FULL = ' full';
     public const PDF = 'pdf';
     public const PASS = 'pass';
+    public const NOT_FOUND = 'not_found';
 
     /** @var HtmlContentInterface */
     private $htmlContent;
@@ -159,6 +159,11 @@ class RulesContent extends StrictObject implements StringInterface
     public function containsPass(): bool
     {
         return $this->contentType === self::PASS;
+    }
+
+    public function containsNotFound(): bool
+    {
+        return $this->contentType === self::NOT_FOUND;
     }
 
 }

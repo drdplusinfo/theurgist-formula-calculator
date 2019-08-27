@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\History;
@@ -95,11 +96,11 @@ class BackgroundPointsDistributionTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\History\Exceptions\UnknownExceptionalityCode
-     * @expectedExceptionMessageRegExp ~happy~
      */
     public function I_can_not_get_max_points_for_unknown_background()
     {
+        $this->expectException(\DrdPlus\Tables\History\Exceptions\UnknownExceptionalityCode::class);
+        $this->expectExceptionMessageRegExp('~happy~');
         (new BackgroundPointsDistributionTable())->getMaxPointsToDistribute(
             $this->createExceptionalityCode('happy'),
             new AncestryTable(),

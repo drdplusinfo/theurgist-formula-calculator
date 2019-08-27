@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Granam\Tests\ExceptionsHierarchy\Exceptions;
 
 use Granam\Tests\ExceptionsHierarchy\Exceptions\ExceptionsUsedInParentDirs\PerfectLife;

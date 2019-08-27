@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -12,11 +11,11 @@ class UsagePolicyTest extends AbstractContentTest
 {
     /**
      * @test
-     * @expectedException \DrdPlus\RulesSkeleton\Exceptions\ArticleNameCanNotBeEmptyForUsagePolicy
      */
     public function I_can_not_create_it_without_article_name(): void
     {
-        new UsagePolicy('', new Request($this->getBot()), new CookiesService());
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\ArticleNameCanNotBeEmptyForUsagePolicy::class);
+        new UsagePolicy('', Request::createFromGlobals($this->getBot(), $this->getEnvironment()), $this->getCookiesService());
     }
 
     /**
@@ -25,31 +24,53 @@ class UsagePolicyTest extends AbstractContentTest
      */
     public function I_can_confirm_ownership_of_visitor(): void
     {
-        $_COOKIE = [];
-        $usagePolicy = new UsagePolicy('foo', new Request($this->getBot()), new CookiesService());
-        self::assertNotEmpty($_COOKIE);
-        self::assertSame('confirmedOwnershipOfFoo', $_COOKIE[UsagePolicy::OWNERSHIP_COOKIE_NAME]);
-        self::assertSame('trialOfFoo', $_COOKIE[UsagePolicy::TRIAL_COOKIE_NAME]);
-        self::assertSame(Request::TRIAL_EXPIRED_AT, $_COOKIE[UsagePolicy::TRIAL_EXPIRED_AT_COOKIE_NAME]);
-        self::assertArrayNotHasKey('confirmedOwnershipOfFoo', $_COOKIE);
-        /** @noinspection PhpUnhandledExceptionInspection */
+        $request = $this->createRequest();
+        self::assertSame([], $request->getValuesFromCookies());
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            $request,
+            $cookiesService = $this->createCookiesService($request)
+        );
+        self::assertSame('confirmedOwnershipOfFoo', $request->getValueFromCookie(UsagePolicy::OWNERSHIP_COOKIE_NAME));
+        self::assertSame('trialOfFoo', $request->getValueFromCookie(UsagePolicy::TRIAL_COOKIE_NAME));
+        self::assertSame(Request::TRIAL_EXPIRED_AT, $request->getValueFromCookie(UsagePolicy::TRIAL_EXPIRED_AT_COOKIE_NAME));
+        self::assertNull($request->getValueFromCookie('confirmedOwnershipOfFoo'));
+
         $usagePolicy->confirmOwnershipOfVisitor($expiresAt = new \DateTime());
-        self::assertSame((string)$expiresAt->getTimestamp(), $_COOKIE['confirmedOwnershipOfFoo']);
+        self::assertSame((string)$expiresAt->getTimestamp(), $request->getValueFromCookie('confirmedOwnershipOfFoo'));
     }
 
     /**
      * @test
-     * @backupGlobals enabled
      */
     public function I_can_find_out_if_trial_expired(): void
     {
-        $usagePolicy = new UsagePolicy('foo', new Request($this->getBot()), new CookiesService());
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            new Request($this->getBot(), $this->getEnvironment(), [], [], [], []),
+            $this->getCookiesService()
+        );
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration yet');
-        $_GET[Request::TRIAL_EXPIRED_AT] = \time();
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            new Request($this->getBot(), $this->getEnvironment(), [Request::TRIAL_EXPIRED_AT => time()], [], [], []),
+            $this->getCookiesService()
+        );
         self::assertTrue($usagePolicy->trialJustExpired(), 'Expected trial expiration');
-        $_GET[Request::TRIAL_EXPIRED_AT] = \time() + 2;
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            new Request($this->getBot(), $this->getEnvironment(), [Request::TRIAL_EXPIRED_AT => time() + 2], [], [], []),
+            $this->getCookiesService()
+        );
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration as its time is in future');
-        $_GET[Request::TRIAL_EXPIRED_AT] = 0;
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            new Request($this->getBot(), $this->getEnvironment(), [Request::TRIAL_EXPIRED_AT => 0], [], [], []),
+            $this->getCookiesService()
+        );
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration now');
     }
 
@@ -59,17 +80,35 @@ class UsagePolicyTest extends AbstractContentTest
      */
     public function I_can_find_out_if_visitor_is_using_valid_trial(): void
     {
-        $usagePolicy = new UsagePolicy('foo', new Request($this->getBot()), new CookiesService());
-        unset($_GET[Request::TRIAL_EXPIRED_AT], $_COOKIE[$usagePolicy->getTrialName()]);
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [], []),
+            new CookiesService($request)
+        );
         self::assertFalse($usagePolicy->isVisitorUsingValidTrial(), 'Did not expects valid trial yet');
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration yet');
-        $_COOKIE[$usagePolicy->getTrialName()] = true;
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [$usagePolicy->getTrialName() => true], []),
+            new CookiesService($request)
+        );
         self::assertTrue($usagePolicy->isVisitorUsingValidTrial(), 'Expects valid trial');
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration yet');
-        $_GET[Request::TRIAL_EXPIRED_AT] = \PHP_INT_MAX;
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            $request = new Request($this->getBot(), $this->getEnvironment(), [Request::TRIAL_EXPIRED_AT => PHP_INT_MAX], [], [$usagePolicy->getTrialName() => true], []),
+            new CookiesService($request)
+        );
         self::assertTrue($usagePolicy->isVisitorUsingValidTrial(), 'Expects valid trial');
         self::assertFalse($usagePolicy->trialJustExpired(), 'Did not expects trial expiration yet');
-        $_GET[Request::TRIAL_EXPIRED_AT] = \time() - 1;
+
+        $usagePolicy = new UsagePolicy(
+            'foo',
+            $request = new Request($this->getBot(), $this->getEnvironment(), [Request::TRIAL_EXPIRED_AT => time() - 1], [], [$usagePolicy->getTrialName() => true], []),
+            new CookiesService($request)
+        );
         self::assertFalse($usagePolicy->isVisitorUsingValidTrial(), 'Expects trial to be valid no more');
         self::assertTrue($usagePolicy->trialJustExpired(), 'Expects trial to be expired');
     }

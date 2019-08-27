@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Body\Healing;
@@ -66,11 +67,11 @@ class HealingByActivityTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Body\Healing\Exceptions\UnknownCodeOfHealingInfluence
-     * @expectedExceptionMessageRegExp ~swimming_with_dolphins~
      */
     public function I_can_not_get_healing_bonus_for_unknown_activity()
     {
+        $this->expectException(\DrdPlus\Tables\Body\Healing\Exceptions\UnknownCodeOfHealingInfluence::class);
+        $this->expectExceptionMessageRegExp('~swimming_with_dolphins~');
         (new HealingByActivityTable())->getHealingBonusByActivity('swimming_with_dolphins');
     }
 

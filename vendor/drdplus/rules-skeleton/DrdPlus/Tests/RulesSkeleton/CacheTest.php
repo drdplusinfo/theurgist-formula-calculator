@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace DrdPlus\Tests\RulesSkeleton;
 
@@ -38,9 +37,9 @@ class CacheTest extends AbstractContentTest
         $cache = new $cacheClass(
             $this->createCurrentWebVersionMock($version),
             $dirs,
-            $this->createRequest(),
+            $this->getRequest(),
             $this->getContentIrrelevantParametersFilter(),
-            $this->createGit(),
+            $this->getGit(),
             Cache::NOT_IN_PRODUCTION,
             'foo'
         );
@@ -48,14 +47,14 @@ class CacheTest extends AbstractContentTest
     }
 
     /**
-     * @param string $version
+     * @param string $currentMinorVersion
      * @return CurrentWebVersion|MockInterface
      */
-    private function createCurrentWebVersionMock(string $version): CurrentWebVersion
+    private function createCurrentWebVersionMock(string $currentMinorVersion): CurrentWebVersion
     {
         $currentWebVersions = $this->mockery($this->getCurrentWebVersionClass());
         $currentWebVersions->shouldReceive('getCurrentMinorVersion')
-            ->andReturn($version);
+            ->andReturn($currentMinorVersion);
 
         return $currentWebVersions;
     }
@@ -92,7 +91,7 @@ class CacheTest extends AbstractContentTest
             $this->getDirs(),
             $request,
             $this->getContentIrrelevantParametersFilter(),
-            $this->createGit(),
+            $this->getGit(),
             Cache::NOT_IN_PRODUCTION,
             \uniqid(__FUNCTION__, true)
         );
@@ -124,7 +123,7 @@ class CacheTest extends AbstractContentTest
             $this->getDirs(),
             $this->createRequest([Request::CACHE => $cacheParameter]),
             $this->getContentIrrelevantParametersFilter(),
-            $this->createGit(),
+            $this->getGit(),
             Cache::NOT_IN_PRODUCTION,
             \uniqid(__FUNCTION__, true)
         );
@@ -159,14 +158,21 @@ class CacheTest extends AbstractContentTest
      */
     public function I_will_get_same_cached_content_for_cache_irrelevant_parameters_as_for_full(array $cacheIrrelevantParameters): void
     {
+        $contentIrrelevantParametersFilter = $this->getServicesContainer()->getContentIrrelevantParametersFilter();
+        self::assertSame(
+            [],
+            $contentIrrelevantParametersFilter->removeContentIrrelevantParameters($cacheIrrelevantParameters),
+            'Some parameters are not irrelevant for cache (and therefore page content)'
+        );
+
         $cacheClass = $this->getCacheClass();
         /** @var Cache $cacheWithoutTrial */
         $cacheWithoutTrial = new $cacheClass(
             $this->getCurrentWebVersion(),
             $this->getDirs(),
-            $this->createRequest(),
-            $this->getServicesContainer()->getContentIrrelevantParametersFilter(),
-            $this->createGit(),
+            $this->getRequest(),
+            $contentIrrelevantParametersFilter,
+            $this->getGit(),
             Cache::NOT_IN_PRODUCTION,
             $prefix = \uniqid(__FUNCTION__, true)
         );
@@ -174,15 +180,16 @@ class CacheTest extends AbstractContentTest
         $cacheWithoutTrial->cacheContent($content = 'foo of bar over baz!');
         self::assertTrue($cacheWithoutTrial->isCacheValid(), 'Expected content to be cached now');
         self::assertSame($content, $cacheWithoutTrial->getCachedContent());
+
         /** @var Cache $cacheWithTrialRequest */
         $cacheWithTrialRequest = new $cacheClass(
             $this->getCurrentWebVersion(),
             $this->getDirs(),
             $this->createRequest($cacheIrrelevantParameters),
-            $this->getServicesContainer()->getContentIrrelevantParametersFilter(),
-            $this->createGit(),
+            $contentIrrelevantParametersFilter,
+            $this->getGit(),
             Cache::NOT_IN_PRODUCTION,
-            $prefix
+            $prefix //same prefix
         );
         self::assertTrue($cacheWithTrialRequest->isCacheValid(), 'Expected content to be already cached');
         self::assertSame($content, $cacheWithTrialRequest->getCachedContent());
@@ -192,8 +199,6 @@ class CacheTest extends AbstractContentTest
     {
         return [
             Request::TRIAL => [[Request::TRIAL => 1]],
-            Request::TRIAL_EXPIRED_AT => [[Request::TRIAL_EXPIRED_AT => \time()]],
-            Request::TRIAL . ' and ' . Request::TRIAL_EXPIRED_AT => [[Request::TRIAL => 1, Request::TRIAL_EXPIRED_AT => \time()]],
         ];
     }
 }

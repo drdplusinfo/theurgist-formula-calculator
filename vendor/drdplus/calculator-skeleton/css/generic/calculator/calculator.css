@@ -1,8 +1,3 @@
-body {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 16px;
-}
-
 .note, .example {
     font-style: italic;
     font-size: smaller;
@@ -28,17 +23,6 @@ body {
 
 button[type="submit"]:not(.manual), input[type="submit"]:not(.manual) {
     display: none;
-}
-
-.block {
-    clear: left;
-    float: left;
-    max-width: 100%;
-    margin-bottom: 0.3em;
-}
-
-.panel {
-    float: left;
 }
 
 .clear {

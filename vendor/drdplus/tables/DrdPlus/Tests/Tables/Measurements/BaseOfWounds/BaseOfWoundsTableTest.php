@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\BaseOfWounds;
@@ -142,11 +143,11 @@ class BaseOfWoundsTableTest extends TableTest
     /**
      * @test
      * @dataProvider provideNoBonuses
-     * @expectedException \DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\SumOfBonusesResultsIntoNull
      * @param array $bonuses
      */
     public function I_can_not_intersect_nothing_or_null_as_first_bonus(array $bonuses)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\SumOfBonusesResultsIntoNull::class);
         (new BaseOfWoundsTable())->getBonusesIntersection($bonuses);
     }
 
@@ -176,11 +177,11 @@ class BaseOfWoundsTableTest extends TableTest
     /**
      * @test
      * @dataProvider provideNoBonuses
-     * @expectedException \DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\SumOfBonusesResultsIntoNull
      * @param array $bonuses
      */
     public function I_can_not_sum_nothing_or_null_as_first_bonus(array $bonuses)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\SumOfBonusesResultsIntoNull::class);
         (new BaseOfWoundsTable())->sumValuesViaBonuses($bonuses);
     }
 
@@ -235,19 +236,19 @@ class BaseOfWoundsTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\NoRowExistsOnProvidedIndex
      */
     public function I_can_not_get_single_value_by_invalid_row_index()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\NoRowExistsOnProvidedIndex::class);
         self::assertSame(-1, (new BaseOfWoundsTable())->getValue(new IntegerObject(999), new IntegerObject(5)));
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\NoColumnExistsOnProvidedIndex
      */
     public function I_can_not_get_single_value_by_invalid_column_index()
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\BaseOfWounds\Exceptions\NoColumnExistsOnProvidedIndex::class);
         self::assertSame(-1, (new BaseOfWoundsTable())->getValue(6, 999));
     }
 

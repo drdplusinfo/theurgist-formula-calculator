@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Armaments\Armors;
@@ -92,10 +93,10 @@ abstract class AbstractArmorsTableTest extends TableTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Armaments\Exceptions\UnknownArmor
      */
     public function I_can_not_get_value_for_unknown_armor()
     {
+        $this->expectException(\DrdPlus\Tables\Armaments\Exceptions\UnknownArmor::class);
         $sutClass = self::getSutClass();
         /** @var AbstractArmorsTable $armorsTable */
         $armorsTable = new $sutClass();

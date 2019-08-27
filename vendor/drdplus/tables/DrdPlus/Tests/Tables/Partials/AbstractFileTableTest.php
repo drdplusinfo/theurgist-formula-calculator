@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Partials;
@@ -26,90 +27,90 @@ final class AbstractFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\CanNotReadFile
      */
     public function I_am_stopped_if_datafile_has_not_been_read()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\CanNotReadFile::class);
         $table = new TableWithWrongFileReference();
         @$table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\NoDataFetched
      */
     public function I_am_stopped_if_datafile_is_empty()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\NoDataFetched::class);
         $table = new TableWithEmptyFile();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted
      */
     public function I_am_stopped_if_header_row_is_missing()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted::class);
         $table = new TableWithMissingHeaderRow();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted
      */
     public function I_am_stopped_if_header_column_is_missing()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted::class);
         $table = new TableWithMissingHeaderColumn();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted
      */
     public function I_am_stopped_if_header_value_is_invalid()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\DataAreCorrupted::class);
         $table = new TableWithUnexpectedDataHeaderValue();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\UnknownTypeForColumn
      */
     public function I_can_not_use_table_with_unknown_column_type()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\UnknownTypeForColumn::class);
         $table = new TableWithUnknownColumnScalarType();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\NoRowRequested
      */
     public function I_can_not_request_row_without_providing_indexes()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\NoRowRequested::class);
         $table = new TableWithPublicHeaders();
         $table->getRow([]);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\RequiredRowNotFound
      */
     public function I_can_not_get_row_by_invalid_index()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\RequiredRowNotFound::class);
         $table = new TableWithPublicHeaders();
         $table->getRow(['non-existing index']);
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\RequiredColumnNotFound
      */
     public function I_can_not_get_value_by_invalid_indexes()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\RequiredColumnNotFound::class);
         $table = new TableWithPublicHeaders();
         $table->getValue(['baz'], 'non-existing column index');
     }
@@ -126,20 +127,20 @@ final class AbstractFileTableTest extends TestWithMockery
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\UnknownFetchedColumn
      */
     public function I_can_not_create_table_with_missing_expected_header_record()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\UnknownFetchedColumn::class);
         $table = new TableWithMissingExpectedDataHeader();
         $table->getIndexedValues();
     }
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Partials\Exceptions\ExpectedDataHeaderNamesToTypesAreEmpty
      */
     public function I_can_not_create_table_with_empty_expected_header_record()
     {
+        $this->expectException(\DrdPlus\Tables\Partials\Exceptions\ExpectedDataHeaderNamesToTypesAreEmpty::class);
         $table = new TableWithEmptyExpectedDataHeader();
         $table->getIndexedValues();
     }

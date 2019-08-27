@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace DrdPlus\Tests\Codes\Partials;
 
 use DrdPlus\Codes\Partials\TranslatableCode;
@@ -9,12 +10,12 @@ abstract class TranslatableCodeTest extends AbstractCodeTest
 
     /**
      * @test
-     * @expectedException \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode
-     * @expectedExceptionMessageRegExp ~da Vinci~
      * @throws \ReflectionException
      */
     public function I_can_not_create_code_from_unknown_value()
     {
+        $this->expectException(\DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode::class);
+        $this->expectExceptionMessageRegExp('~da Vinci~');
         if ((new \ReflectionClass(self::getSutClass()))->isAbstract()) {
             throw new \DrdPlus\Codes\Partials\Exceptions\UnknownValueForCode(
                 'Even da Vinci can not create instance from abstract class'

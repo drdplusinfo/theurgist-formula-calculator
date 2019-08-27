@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types = 1);
+
 declare(strict_types=1);
 
 namespace DrdPlus\Tests\Tables\Measurements\Time;
@@ -43,12 +44,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToRoundsConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param string $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_rounds_conversion($value, string $unit)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -70,12 +71,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToMinutesConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_minutes_conversion($value, $unit)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -97,12 +98,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToHoursConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_hours_conversion($value, $unit)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -124,12 +125,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToDaysConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_days_conversion(int $value, string $unit)
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -151,12 +152,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToMonthsConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_months_conversion(int $value, string $unit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -179,12 +180,12 @@ class TimeTest extends AbstractTestOfMeasurement
     /**
      * @test
      * @dataProvider provideUnsupportedUnitToYearsConversion
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit
      * @param $value
      * @param $unit
      */
     public function I_got_null_on_find_and_exception_on_get_of_unsupported_to_years_conversion(int $value, string $unit): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\CanNotConvertTimeToRequiredUnit::class);
         $timeTable = new TimeTable();
         $time = new Time($value, $unit, $timeTable);
         try {
@@ -260,11 +261,11 @@ class TimeTest extends AbstractTestOfMeasurement
 
     /**
      * @test
-     * @expectedException \DrdPlus\Tables\Measurements\Time\Exceptions\UnknownTimeUnit
-     * @expectedExceptionMessageRegExp ~cake~
      */
     public function It_will_throw_an_exception_on_unknown_unit(): void
     {
+        $this->expectException(\DrdPlus\Tables\Measurements\Time\Exceptions\UnknownTimeUnit::class);
+        $this->expectExceptionMessageRegExp('~cake~');
         $round = new class(1, TimeUnitCode::ROUND, new TimeTable()) extends Time
         {
             public function getUnit(): string
