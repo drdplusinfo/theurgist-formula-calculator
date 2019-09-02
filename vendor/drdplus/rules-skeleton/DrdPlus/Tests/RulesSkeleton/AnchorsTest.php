@@ -27,15 +27,26 @@ class AnchorsTest extends AbstractContentTest
             self::assertCount(
                 0,
                 $localAnchors,
-                'No local anchors expected as tests config says there are no IDs to make anchors from: '
-                . "\n" . \implode("\n", \array_map(function (Element $anchor) {
-                    return $anchor->getAttribute('href');
-                }, $localAnchors))
+                sprintf(
+                    "No local anchors expected as tests config says by '%s'. But there are IDs to make anchors from: %s",
+                    TestsConfiguration::HAS_LOCAL_LINKS,
+                    "\n" . \implode(
+                        "\n", \array_map(
+                            function (Element $anchor) {
+                                return $anchor->getAttribute('href');
+                            },
+                            $localAnchors
+                        )
+                    )
+                )
             );
 
             return;
         }
-        self::assertNotEmpty($localAnchors, 'Some local anchors expected');
+        self::assertNotEmpty(
+            $localAnchors,
+            sprintf("Some local anchors expected as tests config says by '%s'", TestsConfiguration::HAS_LOCAL_LINKS)
+        );
         foreach ($this->getLocalAnchors() as $localAnchor) {
             $expectedId = \substr($localAnchor->getAttribute('href'), 1); // just remove leading #
             /** @var Element $target */
@@ -368,13 +379,17 @@ class AnchorsTest extends AbstractContentTest
      */
     public function I_can_navigate_to_every_calculation_as_it_has_its_id_with_anchor(): void
     {
+        $document = $this->getHtmlDocument();
+        $calculations = $document->getElementsByClassName(HtmlHelper::CLASS_CALCULATION);
         if (!$this->getTestsConfiguration()->hasCalculations()) {
-            self::assertFalse(false, 'No calculations in current document');
+            self::assertCount(
+                0,
+                $calculations,
+                'No calculations expected according to tests configuration ' . TestsConfiguration::HAS_CALCULATIONS
+            );
 
             return;
         }
-        $document = $this->getHtmlDocument();
-        $calculations = $document->getElementsByClassName(HtmlHelper::CLASS_CALCULATION);
         self::assertNotEmpty(
             $calculations,
             'Some calculations expected according to tests config ' . TestsConfiguration::HAS_CALCULATIONS
@@ -388,7 +403,10 @@ class AnchorsTest extends AbstractContentTest
         foreach ($calculations as $calculation) {
             self::assertNotEmpty($calculation->id, 'Missing ID for calculation: ' . \trim($calculation->innerHTML));
             $originalId = $calculation->getAttribute('data-original-id');
-            self::assertNotEmpty($originalId, 'Missing data-original-id attribute for calculation of ID ' . $calculation->id);
+            self::assertNotEmpty(
+                $originalId,
+                sprintf("Missing data-original-id attribute for calculation of ID '%s', maybe si the ID duplicated?", $calculation->id)
+            );
             self::assertRegExp("~^($allowedCalculationIdPrefixesRegexp) ~u", $originalId);
             self::assertRegExp("~^($allowedCalculationIdConstantLikePrefixesRegexp)_~u", $calculation->id);
         }

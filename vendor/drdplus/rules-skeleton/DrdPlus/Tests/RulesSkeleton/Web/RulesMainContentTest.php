@@ -4,6 +4,7 @@ namespace DrdPlus\Tests\RulesSkeleton\Web;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
+use DrdPlus\Tests\RulesSkeleton\TestsConfiguration;
 use Gt\Dom\Element;
 use Gt\Dom\Node;
 
@@ -183,5 +184,25 @@ class RulesMainContentTest extends MainContentTest
         $this->passOut();
         self::assertSame(404, $response['responseHttpCode']);
         self::assertStringContainsStringIgnoringCase('kde nic tu nic', $response['content']);
+    }
+
+    /**
+     * @test
+     */
+    public function Content_is_styled()
+    {
+        $contents = $this->getHtmlDocument()->getElementsByClassName(HtmlHelper::CLASS_CONTENT);
+        if ($this->isRulesSkeletonChecked() || $this->getTestsConfiguration()->hasMarkedContent()) {
+            self::assertNotEmpty(
+                $contents,
+                sprintf("Expected some content marked by '%s' class as tests configuration says by '%s'", HtmlHelper::CLASS_CONTENT, TestsConfiguration::HAS_MARKED_CONTENT)
+            );
+        } else {
+            self::assertCount(
+                0,
+                $contents,
+                sprintf("No content marked by '%s' class expected as tests configuration says by '%s'", HtmlHelper::CLASS_CONTENT, TestsConfiguration::HAS_MARKED_CONTENT)
+            );
+        }
     }
 }

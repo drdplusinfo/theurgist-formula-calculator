@@ -30,6 +30,8 @@ interface TestsConfigurationReader
 
     public function hasMarkedContent(): bool;
 
+    public function hasMarkedResult(): bool;
+
     public function hasLocalLinks(): bool;
 
     public function hasLinksToAltar();

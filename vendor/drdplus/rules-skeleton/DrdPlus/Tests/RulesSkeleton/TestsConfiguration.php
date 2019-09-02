@@ -26,6 +26,8 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     /** @see \DrdPlus\RulesSkeleton\HtmlHelper::CLASS_CALCULATION */
     public const HAS_MARKED_CONTENT = 'has_marked_content';
     /** @see \DrdPlus\RulesSkeleton\HtmlHelper::CLASS_CONTENT */
+    public const HAS_MARKED_RESULT = 'has_marked_result';
+    /** @see \DrdPlus\RulesSkeleton\HtmlHelper::CLASS_RESULT */
     public const HAS_LOCAL_LINKS = 'has_local_links';
     public const HAS_LINKS_TO_ALTAR = 'has_links_to_altar';
     public const HAS_PROTECTED_ACCESS = 'has_protected_access';
@@ -94,6 +96,8 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     private $hasShownHomeButtonOnRoutes = true;
     /** @var bool */
     private $hasMarkedContent = true;
+    /** @var bool */
+    private $hasMarkedResult = true;
     /** @var string */
     private $expectedWebName;
     /** @var string */
@@ -169,6 +173,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->setHasShownHomeButtonOnRoutes($values);
         $this->setHasButtons($values);
         $this->setHasMarkedContent($values);
+        $this->setHasMarkedResult($values);
     }
 
     /**
@@ -355,6 +360,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->hasMarkedContent = (bool)($values[self::HAS_MARKED_CONTENT] ?? $this->hasMarkedContent);
     }
 
+    private function setHasMarkedResult(array $values)
+    {
+        $this->hasMarkedResult = (bool)($values[self::HAS_MARKED_RESULT] ?? $this->hasMarkedResult);
+    }
+
     private function setHasLocalLinks(array $values)
     {
         $this->hasLocalLinks = (bool)($values[self::HAS_LOCAL_LINKS] ?? $this->hasLocalLinks);
@@ -530,6 +540,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public function hasMarkedContent(): bool
     {
         return $this->hasMarkedContent;
+    }
+
+    public function hasMarkedResult(): bool
+    {
+        return $this->hasMarkedResult;
     }
 
     public function hasShownHomeButton(): bool

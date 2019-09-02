@@ -25,8 +25,10 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
     public const CLASS_INVISIBLE = 'invisible';
     public const CLASS_DELIMITER = 'delimiter';
     public const CLASS_CONTENT = 'content';
+    public const CLASS_RESULT = 'result';
     public const CLASS_EXTERNAL_URL = 'external-url';
     public const CLASS_HIDDEN = 'hidden';
+    public const CLASS_FORMULA = 'formula';
     public const CLASS_SOURCE_CODE_TITLE = 'source-code-title';
     public const DATA_CACHE_STAMP = 'data-cache-stamp';
     public const DATA_CACHED_AT = 'data-cached-at';

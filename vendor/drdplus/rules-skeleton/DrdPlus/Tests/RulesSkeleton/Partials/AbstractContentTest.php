@@ -21,6 +21,7 @@ use DrdPlus\WebVersions\WebVersions;
 use Granam\Git\Git;
 use Granam\String\StringTools;
 use Granam\Tests\Tools\TestWithMockery;
+use Granam\Tools\DirName;
 use Granam\WebContentBuilder\HtmlDocument;
 use Granam\WebContentBuilder\Web\HeadInterface;
 use Gt\Dom\Element;
@@ -154,7 +155,7 @@ abstract class AbstractContentTest extends TestWithMockery
                 $contents[$key],
                 'Nothing has been fetched with GET ' . \var_export($get, true) . ', POST ' . \var_export($post, true)
                 . ' and COOKIE ' . \var_export($cookies, true)
-                . ' from ' . DRD_PLUS_INDEX_FILE_NAME_TO_TEST
+                . ' from ' . DirName::getPathWithResolvedParents(DRD_PLUS_INDEX_FILE_NAME_TO_TEST)
             );
         }
 
@@ -254,7 +255,7 @@ abstract class AbstractContentTest extends TestWithMockery
         $_GET[Request::CACHE] = Request::DISABLE;
         \ob_start();
         /** @noinspection PhpIncludeInspection */
-        include $this->getProjectRoot() . '/index.php';
+        include DRD_PLUS_INDEX_FILE_NAME_TO_TEST;
         $content = \ob_get_clean();
         if ($backupGlobals) {
             $_GET = $originalGet;
@@ -755,7 +756,7 @@ TEXT
         static $projectRoot;
         if ($projectRoot === null) {
             self::assertDirectoryExists(\DRD_PLUS_PROJECT_ROOT, 'Project root has not been found');
-            $projectRoot = \DRD_PLUS_PROJECT_ROOT;
+            $projectRoot = DirName::getPathWithResolvedParents(\DRD_PLUS_PROJECT_ROOT);
         }
 
         return $projectRoot;
