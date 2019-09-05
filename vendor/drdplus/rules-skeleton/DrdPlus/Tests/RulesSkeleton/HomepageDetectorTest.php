@@ -6,6 +6,9 @@ use DrdPlus\RulesSkeleton\HomepageDetector;
 use DrdPlus\RulesSkeleton\PathProvider;
 use Granam\Tests\Tools\TestWithMockery;
 use Mockery\MockInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class HomepageDetectorTest extends TestWithMockery
 {
@@ -34,6 +37,37 @@ class HomepageDetectorTest extends TestWithMockery
         $pathProvider = $this->mockery(PathProvider::class);
         $pathProvider->shouldReceive('getPath')
             ->andReturn($path);
+        return $pathProvider;
+    }
+
+    /**
+     * @test
+     * @dataProvider provideExceptionOfPathProvider
+     * @param ExceptionInterface $exception
+     */
+    public function I_will_get_false_if_route_is_not_found(ExceptionInterface $exception)
+    {
+        $homepageDetectorWithNothing = new HomepageDetector($this->createBrokenPathProvider($exception));
+        self::assertFalse($homepageDetectorWithNothing->isHomepageRequested());
+    }
+
+    public function provideExceptionOfPathProvider(): array
+    {
+        return [
+            [new RouteNotFoundException()],
+            [new ResourceNotFoundException()],
+        ];
+    }
+
+    /**
+     * @param ExceptionInterface $exception
+     * @return PathProvider|MockInterface
+     */
+    private function createBrokenPathProvider(ExceptionInterface $exception): PathProvider
+    {
+        $pathProvider = $this->mockery(PathProvider::class);
+        $pathProvider->shouldReceive('getPath')
+            ->andThrow($exception);
         return $pathProvider;
     }
 }

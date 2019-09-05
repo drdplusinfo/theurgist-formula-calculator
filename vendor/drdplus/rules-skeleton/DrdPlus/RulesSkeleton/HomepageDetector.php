@@ -3,6 +3,8 @@
 namespace DrdPlus\RulesSkeleton;
 
 use Granam\Strict\Object\StrictObject;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class HomepageDetector extends StrictObject
 {
@@ -18,7 +20,11 @@ class HomepageDetector extends StrictObject
 
     public function isHomepageRequested(): bool
     {
-        $path = $this->pathProvider->getPath();
-        return $path === '' || $path === '/';
+        try {
+            $path = $this->pathProvider->getPath();
+            return $path === '' || $path === '/';
+        } catch (RouteNotFoundException | ResourceNotFoundException $notFoundException) {
+            return false;
+        }
     }
 }

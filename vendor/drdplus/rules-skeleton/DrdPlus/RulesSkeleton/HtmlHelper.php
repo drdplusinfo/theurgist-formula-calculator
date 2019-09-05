@@ -107,25 +107,6 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
         return \array_intersect_key($tablesWithIds, $unifiedRequiredIds);
     }
 
-    /**
-     * @param HtmlDocument $htmlDocument
-     * @return HtmlDocument
-     */
-    public function makeDrdPlusLinksLocal(HtmlDocument $htmlDocument): HtmlDocument
-    {
-        /** @var Element $anchor */
-        foreach ($htmlDocument->getElementsByTagName('a') as $anchor) {
-            $anchor->setAttribute('href', static::turnToLocalLink($anchor->getAttribute('href')));
-        }
-        /** @var Element $iFrame */
-        foreach ($htmlDocument->getElementsByTagName('iframe') as $iFrame) {
-            $iFrame->setAttribute('src', static::turnToLocalLink($iFrame->getAttribute('src')));
-            $iFrame->setAttribute('id', \str_replace('drdplus.info', 'drdplus.loc', $iFrame->getAttribute('id')));
-        }
-
-        return $htmlDocument;
-    }
-
     public function markExternalLinksByClass(HtmlDocument $htmlDocument): HtmlDocument
     {
         /** @var Element $anchor */

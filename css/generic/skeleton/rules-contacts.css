@@ -5,16 +5,22 @@
     z-index: 1030;
 }
 
-.contacts .desktop {
+.contacts .wide-screen {
     display: inherit;
 }
 
-.contacts .tablet {
+.contacts .small-screen {
     display: none;
 }
 
-.contacts .mobile {
-    display: none;
+@media (max-width: 1023px) {
+    .contacts .wide-screen {
+        display: none;
+    }
+
+    .contacts .small-screen {
+        display: inherit;
+    }
 }
 
 @media (max-width: 768px) {
@@ -110,7 +116,11 @@
 }
 
 .contact a.facebook-contact, a.facebook-contact:visited {
-    color: rgba(66, 103, 178, 0.91);
+    color: rgba(70, 109, 188, 0.9);
+}
+
+.contact a.twitter-contact, a.twitter-contact:visited {
+    color: rgba(26, 170, 255, 0.9);
 }
 
 .contact a.discord-contact, .contact a.discord-contact:visited {

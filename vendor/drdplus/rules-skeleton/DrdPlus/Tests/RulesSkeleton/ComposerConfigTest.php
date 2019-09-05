@@ -61,6 +61,39 @@ class ComposerConfigTest extends AbstractContentTest
     public function Has_licence_matching_to_access(): void
     {
         $expectedLicence = $this->getTestsConfiguration()->getExpectedLicence();
-        self::assertSame($expectedLicence, $this->getComposerConfig()['license'], "Expected licence '$expectedLicence'");
+        self::assertSame(
+            $expectedLicence,
+            $this->getComposerConfig()['license'] ?? '',
+            sprintf(
+                "Expected licence '$expectedLicence' as test configuration says by '%s'",
+                TestsConfiguration::EXPECTED_LICENCE
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function Local_repositories_are_not_forgotten()
+    {
+        $localRepositories = $this->getComposerConfig()['repositories'] ?? [];
+        if (!$this->isRulesSkeletonChecked() && $this->getTestsConfiguration()->hasLocalRepositories()) {
+            self::assertNotEmpty(
+                $localRepositories,
+                sprintf(
+                    "Expected some local repositories as test configuration says by '%s'",
+                    TestsConfiguration::HAS_LOCAL_REPOSITORIES
+                )
+            );
+        } else {
+            self::assertCount(
+                0,
+                $localRepositories,
+                sprintf(
+                    "No local repositories expected as test configuration says by '%s'",
+                    TestsConfiguration::HAS_LOCAL_REPOSITORIES
+                )
+            );
+        }
     }
 }

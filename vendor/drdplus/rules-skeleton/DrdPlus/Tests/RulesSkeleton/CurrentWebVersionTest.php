@@ -133,14 +133,28 @@ class CurrentWebVersionTest extends AbstractContentTest
         }
         $gitHeadFile = \trim(\preg_replace('~ref:\s*~', '', \file_get_contents($dir . '/.git/HEAD')));
         $gitHeadFilePath = $dir . '/.git/' . $gitHeadFile;
-        if (!\is_readable($gitHeadFilePath)) {
-            throw new Exceptions\CanNotReadGitHead(
-                "Could not read $gitHeadFilePath, in that dir are files "
-                . \implode(',', \scandir(\dirname($gitHeadFilePath), SCANDIR_SORT_NONE))
-            );
+        if (\is_readable($gitHeadFilePath)) {
+            return \trim(\file_get_contents($gitHeadFilePath));
         }
-
-        return \trim(\file_get_contents($gitHeadFilePath));
+        $packedRefsFilePath = $dir . '/.git/packed-refs';
+        if (\is_readable($packedRefsFilePath)) {
+            $packedRefs = \trim(\file_get_contents($packedRefsFilePath));
+            if (preg_match('~(^|[^[:alnum:]])(?<hash>[[:alnum:]]+)\s+' . preg_quote($gitHeadFile, '~') . '($|[^[:alnum:]])~', $packedRefs, $matches)) {
+                return $matches['hash'];
+            }
+        }
+        throw new Exceptions\CanNotReadGitHead(
+            "Could not read $gitHeadFilePath, in that dir are files "
+            . \implode(
+                ',',
+                array_filter(
+                    \scandir(\dirname($gitHeadFilePath), SCANDIR_SORT_NONE),
+                    function (string $dirName) {
+                        return $dirName !== '.' && $dirName !== '..';
+                    }
+                )
+            )
+        );
     }
 
     /**

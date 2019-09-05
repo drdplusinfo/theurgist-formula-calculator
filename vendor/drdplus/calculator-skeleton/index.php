@@ -18,6 +18,6 @@ if (PHP_SAPI !== 'cli') {
 
 $configuration = $configuration ?? \DrdPlus\CalculatorSkeleton\CalculatorConfiguration::createFromYml($dirs);
 $servicesContainer = $servicesContainer ?? new \DrdPlus\CalculatorSkeleton\CalculatorServicesContainer($configuration, $htmlHelper);
-$calculatorApplication = $calculatorApplication ?? $rulesApplication ?? new \DrdPlus\CalculatorSkeleton\CalculatorApplication($servicesContainer);
+$calculatorApplication = $rulesApplication ?? $controller ?? new \DrdPlus\CalculatorSkeleton\CalculatorApplication($servicesContainer);
 
 $calculatorApplication->run();

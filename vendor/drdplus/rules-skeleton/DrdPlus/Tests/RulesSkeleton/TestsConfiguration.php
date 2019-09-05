@@ -40,6 +40,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public const HAS_SHOWN_HOME_BUTTON = 'has_shown_home_button';
     public const HAS_SHOWN_HOME_BUTTON_ON_HOMEPAGE = 'has_shown_home_button_on_homepage';
     public const HAS_SHOWN_HOME_BUTTON_ON_ROUTES = 'has_shown_home_button_on_routes';
+    public const HAS_LOCAL_REPOSITORIES = 'has_local_repositories';
 
     public const SOME_EXPECTED_TABLE_IDS = 'some_expected_table_ids';
     public const EXPECTED_PUBLIC_URL = 'expected_public_url';
@@ -98,6 +99,8 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     private $hasMarkedContent = true;
     /** @var bool */
     private $hasMarkedResult = true;
+    /** @var bool */
+    private $hasLocalRepositories = false;
     /** @var string */
     private $expectedWebName;
     /** @var string */
@@ -174,6 +177,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->setHasButtons($values);
         $this->setHasMarkedContent($values);
         $this->setHasMarkedResult($values);
+        $this->setHasLocalRepositories($values);
     }
 
     /**
@@ -365,6 +369,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->hasMarkedResult = (bool)($values[self::HAS_MARKED_RESULT] ?? $this->hasMarkedResult);
     }
 
+    private function setHasLocalRepositories(array $values)
+    {
+        $this->hasLocalRepositories = (bool)($values[self::HAS_LOCAL_REPOSITORIES] ?? $this->hasLocalRepositories);
+    }
+
     private function setHasLocalLinks(array $values)
     {
         $this->hasLocalLinks = (bool)($values[self::HAS_LOCAL_LINKS] ?? $this->hasLocalLinks);
@@ -545,6 +554,11 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public function hasMarkedResult(): bool
     {
         return $this->hasMarkedResult;
+    }
+
+    public function hasLocalRepositories(): bool
+    {
+        return $this->hasLocalRepositories;
     }
 
     public function hasShownHomeButton(): bool

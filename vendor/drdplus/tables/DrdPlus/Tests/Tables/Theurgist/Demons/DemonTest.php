@@ -205,6 +205,38 @@ class DemonTest extends TestWithMockery
 
     /**
      * @test
+     */
+    public function I_can_ask_demon_if_has_unlimited_capacity()
+    {
+        $demonCode = DemonCode::getIt(DemonCode::DEMON_OF_MOVEMENT);
+        $demonsTable = $this->createDemonsTable();
+        $nonUnlimitedCapacityDemonTraits = [];
+        foreach (DemonTraitCode::getPossibleValues() as $demonTraitCodeValue) {
+            if ($demonTraitCodeValue === DemonTraitCode::CHEAP_UNLIMITED_CAPACITY
+                || $demonTraitCodeValue === DemonTraitCode::UNLIMITED_CAPACITY
+            ) {
+                continue;
+            }
+            $nonUnlimitedCapacityDemonTraits[] = $this->createDemonTrait(DemonTraitCode::getIt($demonTraitCodeValue));
+        }
+
+        $demon = $this->createDemon($demonCode, $this->createTables($demonsTable), [], $nonUnlimitedCapacityDemonTraits);
+        self::assertFalse($demon->hasUnlimitedCapacity(), 'Unlimited capacity has not been expected');
+
+        $demon = $this->createDemon(
+            $demonCode,
+            $this->createTables($demonsTable),
+            [],
+            [
+                $this->createDemonTrait(DemonTraitCode::getIt(DemonTraitCode::UNLIMITED_CAPACITY)),
+                $this->createDemonTrait(DemonTraitCode::getIt(DemonTraitCode::CHEAP_UNLIMITED_CAPACITY)),
+            ]
+        );
+        self::assertTrue($demon->hasUnlimitedCapacity(), 'Unlimited capacity has been expected');
+    }
+
+    /**
+     * @test
      * @throws \Exception
      */
     public function I_can_create_it_with_addition_for_every_demon()

@@ -4,6 +4,7 @@ namespace DrdPlus\Tests\RulesSkeleton;
 
 use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
+use Granam\String\StringTools;
 use Gt\Dom\Element;
 use Gt\Dom\HTMLCollection;
 
@@ -14,10 +15,6 @@ class CalculationsTest extends AbstractContentTest
      */
     public function Calculation_has_descriptive_name(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
-            self::assertFalse(false, 'Nothing to test here');
-            return;
-        }
         $tooShortResultNames = $this->getTestsConfiguration()->getTooShortResultNames();
         if (!$tooShortResultNames) {
             self::assertFalse(false, 'Nothing to test here');
@@ -52,10 +49,23 @@ class CalculationsTest extends AbstractContentTest
         if ($calculations === null) {
             $document = $this->getHtmlDocument();
             $calculations = $document->getElementsByClassName(HtmlHelper::CLASS_CALCULATION);
-            if (!$this->getTestsConfiguration()->hasCalculations()) {
-                self::assertCount(0, $calculations, 'No calculations in current document');
+            if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
+                self::assertCount(
+                    0,
+                    $calculations,
+                    sprintf(
+                        "No calculations expected in current document as test configuration says by '%s'",
+                        TestsConfiguration::HAS_CALCULATIONS
+                    )
+                );
             } else {
-                self::assertNotEmpty($calculations, 'Some calculations expected for skeleton testing');
+                self::assertNotEmpty(
+                    $calculations,
+                    sprintf(
+                        "Some calculations expected for skeleton testing as test configuration says by '%s'",
+                        TestsConfiguration::HAS_CALCULATIONS
+                    )
+                );
             }
         }
 
@@ -67,10 +77,6 @@ class CalculationsTest extends AbstractContentTest
      */
     public function Result_content_trap_has_descriptive_name(): void
     {
-        if (!$this->isSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
-            self::assertFalse(false, 'Nothing to test here');
-            return;
-        }
         $tooShortFailureNames = $this->getTestsConfiguration()->getTooShortFailureNames();
         $tooShortSuccessNames = $this->getTestsConfiguration()->getTooShortSuccessNames();
         if (!$tooShortFailureNames && !$tooShortSuccessNames) {
@@ -88,12 +94,24 @@ class CalculationsTest extends AbstractContentTest
                 $results[] = $resultsFromCalculation;
             }
         }
-        if (!$this->getTestsConfiguration()->hasMarkedResult()) {
-            self::assertCount(0, $results, 'No result classes in calculations expected');
+        if (!$this->getTestsConfiguration()->hasCalculations() || !$this->getTestsConfiguration()->hasMarkedResult()) {
+            self::assertCount(
+                0,
+                $results,
+                sprintf(
+                    "No result classes in calculations expected as test configuration says by '%s'",
+                    !$this->getTestsConfiguration()->hasCalculations()
+                        ? TestsConfiguration::HAS_CALCULATIONS
+                        : TestsConfiguration::HAS_MARKED_RESULT
+                )
+            );
 
             return;
         }
-        self::assertNotEmpty($results, 'Some result class inside calculation class expected');
+        self::assertNotEmpty(
+            $results,
+            sprintf("Some result class inside calculation class expected as test cofiguration says by '%s'", TestsConfiguration::HAS_MARKED_RESULT)
+        );
         /** @var Element $result */
         foreach ($results as $result) {
             $result = $this->removeClasses($result, [HtmlHelper::CLASS_INVISIBLE_ID, HtmlHelper::CLASS_INVISIBLE, HtmlHelper::CLASS_FORMULA]);
@@ -109,9 +127,9 @@ class CalculationsTest extends AbstractContentTest
                     }
                 }
                 $failName = \strtolower(\trim($parts[0] ?? ''));
-                self::assertNotRegExp("~^($tooShortFailureNamesRegexp)$~i", $failName, "Expected more specific name of failure for result\n$result->outerHTML");
+                self::assertNotRegExp("~^($tooShortFailureNamesRegexp)$~iu", $failName, "Expected more specific name of failure for result\n$result->outerHTML");
                 $tooShortSuccessNames = \strtolower(\trim($parts[2] ?? ''));
-                self::assertNotRegExp("~^($tooShortSuccessNamesRegexp)$~i", $tooShortSuccessNames, "Expected more specific name of success for result\n$result->outerHTML");
+                self::assertNotRegExp("~^($tooShortSuccessNamesRegexp)$~iu", $tooShortSuccessNames, "Expected more specific name of success for result\n$result->outerHTML");
             }
         }
     }
@@ -139,4 +157,65 @@ class CalculationsTest extends AbstractContentTest
 
         return $textContents;
     }
+
+    /**
+     * @test
+     */
+    public function I_can_navigate_to_every_calculation_as_it_has_its_id_with_anchor(): void
+    {
+        if (!$this->isRulesSkeletonChecked() && !$this->getTestsConfiguration()->hasCalculations()) {
+            self::assertCount(
+                0,
+                $this->getCalculations(),
+                sprintf("No calculations expected as test configuration says by '%s'", TestsConfiguration::HAS_CALCULATIONS)
+            );
+            return;
+        }
+        $allowedCalculationIdPrefixes = $this->getTestsConfiguration()->getAllowedCalculationIdPrefixes();
+        $allowedCalculationIdPrefixesRegexp = $this->toRegexpOr($allowedCalculationIdPrefixes);
+        $allowedCalculationIdConstantLikePrefixes = \array_map(
+            function (string $allowedPrefix) {
+                return StringTools::toConstantLikeValue($allowedPrefix);
+            },
+            $allowedCalculationIdPrefixes
+        );
+        $allowedCalculationIdConstantLikePrefixesRegexp = $this->toRegexpOr($allowedCalculationIdConstantLikePrefixes);
+        foreach ($this->getCalculations() as $calculation) {
+            self::assertNotEmpty($calculation->id, 'Missing ID for calculation: ' . \trim($calculation->innerHTML));
+            $originalId = $calculation->getAttribute('data-original-id');
+            self::assertNotEmpty(
+                $originalId,
+                sprintf(
+                    "Missing data-original-id attribute for calculation of ID '%s', maybe si the ID duplicated?",
+                    $calculation->id
+                )
+            );
+            self::assertRegExp("~^($allowedCalculationIdPrefixesRegexp) ~u", $originalId);
+            self::assertRegExp("~^($allowedCalculationIdConstantLikePrefixesRegexp)_~u", $calculation->id);
+            $anchorToCalculation = null;
+            foreach ($calculation->getElementsByTagName('a') as $anchor) {
+                if ($anchor->getAttribute('href') === "#{$calculation->id}") {
+                    $anchorToCalculation = $anchor;
+                    break;
+                }
+            }
+            self::assertNotNull($anchorToCalculation, "No anchor found in calculation with ID '{$originalId}'");
+            self::assertNotSame(
+                '',
+                trim($anchorToCalculation->textContent),
+                "No text content found in the anchor if calculation with ID '{$originalId}', therefore the anchor can not be clicked: '{$anchorToCalculation->outerHTML}'"
+            );
+        }
+    }
+
+    private function toRegexpOr(array $values, string $regexpDelimiter = '~'): string
+    {
+        $escaped = [];
+        foreach ($values as $value) {
+            $escaped[] = \preg_quote($value, $regexpDelimiter);
+        }
+
+        return \implode('|', $escaped);
+    }
+
 }

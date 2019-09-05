@@ -372,6 +372,17 @@ class Demon extends StrictObject
         return false;
     }
 
+    public function hasUnlimitedCapacity(): bool
+    {
+        foreach ($this->getDemonTraits() as $demonTrait) {
+            $demonTraitCode = $demonTrait->getDemonTraitCode();
+            if ($demonTraitCode->is(DemonTraitCode::UNLIMITED_CAPACITY) || $demonTraitCode->is(DemonTraitCode::CHEAP_UNLIMITED_CAPACITY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getCurrentSpellSpeed(): ?SpellSpeed
     {
         return $this->getSpellSpeedWithAddition();

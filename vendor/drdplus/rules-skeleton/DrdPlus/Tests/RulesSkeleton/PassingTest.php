@@ -136,7 +136,14 @@ class PassingTest extends AbstractContentTest
         self::assertCount(0, $warningsOnFirstVisit, 'No warnings expected so far');
         $warningsOnTrialExpiration = $this->getHtmlDocument([Request::TRIAL_EXPIRED_AT => time() - 1])
             ->getElementsByClassName('warning');
-        self::assertCount(1, $warningsOnTrialExpiration, 'Expected single warning about trial expiration');
+        self::assertCount(
+            1,
+            $warningsOnTrialExpiration,
+            sprintf(
+                "Expected single warning about trial expiration as test configuration says by '%s'",
+                TestsConfiguration::HAS_PROTECTED_ACCESS
+            )
+        );
         /** @var Element $warningAboutTrialExpiration */
         $warningAboutTrialExpiration = $warningsOnTrialExpiration->current();
         self::assertSame('⌛ Čas tvého testování se naplnil ⌛', $warningAboutTrialExpiration->textContent);

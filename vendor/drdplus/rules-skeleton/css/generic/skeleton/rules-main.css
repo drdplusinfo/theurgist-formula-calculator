@@ -185,3 +185,19 @@ h1 + .quote, h2 + .quote, h3 + .quote, h4 + .quote, h5 + .quote, h6 + .quote {
     height: 1em;
     vertical-align: text-top;
 }
+
+.on-hover .show-on-hover {
+    display: none;
+}
+
+.on-hover:hover .show-on-hover {
+    display: inherit;
+}
+
+.on-hover .hide-on-hover {
+    display: inherit;
+}
+
+.on-hover:hover .hide-on-hover {
+    display: none;
+}

@@ -197,30 +197,67 @@ class HtmlHelper extends StrictObject
     {
         foreach ($this->getElementsWithId($htmlDocument) as $id => $elementWithId) {
             if (!in_array($elementWithId->nodeName, ['a', 'button'], true)
-                && $elementWithId->getElementsByTagName('a')->length === 0 // already have some anchors, skip it to avoid wrapping them by another one
                 && !$elementWithId->prop_get_classList()->contains(self::CLASS_INVISIBLE_ID)
                 && !$elementWithId->prop_get_classList()->contains(self::CLASS_WITHOUT_ANCHOR_TO_ID)
             ) {
-                $toMove = [];
-                /** @var \DOMElement $childNode */
-                foreach ($elementWithId->childNodes as $childNode) {
-                    if (!in_array($childNode->nodeName, ['span', 'strong', 'b', 'i', '#text'], true)) {
-                        break;
-                    }
-                    $toMove[] = $childNode;
-                }
-                if ($toMove) {
-                    $anchorToSelf = new Element('a');
-                    $elementWithId->replaceChild($anchorToSelf, $toMove[0]); // pairs anchor with parent element
-                    $anchorToSelf->setAttribute('href', '#' . $id);
-                    foreach ($toMove as $index => $item) {
-                        $anchorToSelf->appendChild($item);
-                    }
-                }
+                $this->wrapById($elementWithId, $id);
             }
         }
 
         return $htmlDocument;
+    }
+
+    private function wrapById(Element $element, string $id)
+    {
+        $toMove = [];
+        $atLeastOneChildHasContent = false;
+        $nonEmptyBlockChild = null;
+        /** @var Element $childNode */
+        foreach ($element->childNodes as $childNode) {
+            if (!in_array($childNode->nodeName, ['span', 'strong', 'b', 'i', '#text'], true)) {
+                if (!$nonEmptyBlockChild && $this->isNonEmptyBlockElement($childNode)) {
+                    $nonEmptyBlockChild = $childNode;
+                }
+                break;
+            }
+            $atLeastOneChildHasContent = $atLeastOneChildHasContent || trim($childNode->textContent) !== '';
+            $toMove[] = $childNode;
+        }
+        if ($toMove && $atLeastOneChildHasContent) {
+            $anchorToSelf = new Element('a');
+            $element->replaceChild($anchorToSelf, $toMove[0]); // pairs anchor with parent element
+            $anchorToSelf->setAttribute('href', '#' . $id);
+            foreach ($toMove as $index => $item) {
+                $anchorToSelf->appendChild($item);
+            }
+        } elseif ($nonEmptyBlockChild) {
+            /** @var Element $divWithContent */
+            $this->wrapById($nonEmptyBlockChild, $id);
+        }
+    }
+
+    private function isNonEmptyBlockElement(Element $element): bool
+    {
+        return ($element->nodeName === 'div' && trim($element->textContent) !== '')
+            || $this->isOrHasNonEmptyTableHeadCellOrCaption($element);
+    }
+
+    private function isOrHasNonEmptyTableHeadCellOrCaption(Element $element)
+    {
+        return (in_array($element->nodeName, ['th', 'caption'], true) && trim($element->textContent) !== '')
+            || (in_array($element->nodeName, ['table', 'thead', 'tr'], true) && ($this->hasNonEmptyCaption($element) || $this->hasNonEmptySingleHeadCell($element)));
+    }
+
+    private function hasNonEmptyCaption(Element $element): bool
+    {
+        $captions = $element->getElementsByTagName('caption');
+        return count($captions) === 1 && trim($captions[0]->textContent) !== '';
+    }
+
+    private function hasNonEmptySingleHeadCell(Element $element): bool
+    {
+        $tableHeadCells = $element->getElementsByTagName('th');
+        return count($tableHeadCells) === 1 && trim($tableHeadCells[0]->textContent) !== '';
     }
 
     /**

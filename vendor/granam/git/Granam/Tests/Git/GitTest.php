@@ -200,4 +200,98 @@ class GitTest extends TestCase
             $git->update($tempGitDir);
         }
     }
+
+    /**
+     * @test
+     * @dataProvider provideRestorableError
+     * @param string $errorMessage
+     */
+    public function It_will_try_to_restore_from_restorable_errors(string $errorMessage)
+    {
+        $maxAttempts = 5;
+        $git = new class($errorMessage, $maxAttempts) extends Git
+        {
+            private $errorMessage;
+            private $throwOnAttemptsLesserThan;
+            private $attempt = 0;
+
+            public function __construct(string $errorMessage, int $throwOnAttemptsLesserThan)
+            {
+                parent::__construct(0 /* no sleep */);
+                $this->errorMessage = $errorMessage;
+                $this->throwOnAttemptsLesserThan = $throwOnAttemptsLesserThan;
+            }
+
+            protected function executeArray(string $command, bool $sendErrorsToStdOut = true, bool $solveMissingHomeDir = true): array
+            {
+                $this->attempt++;
+                if ($this->attempt < $this->throwOnAttemptsLesserThan) {
+                    throw new ExecutingCommandFailed($this->errorMessage);
+                }
+                return [$command];
+            }
+        };
+        $output = $git->update('foo', $maxAttempts);
+        self::assertStringContainsString("attempt number $maxAttempts", $output[0]);
+    }
+
+    public function provideRestorableError()
+    {
+        return [
+            [<<<TEXT
+From gitlab.com:drdplusinfo/bestiar
+   7e73a42..606b6c3  1.0        -> origin/1.0
+   7e73a42..606b6c3  master     -> origin/master
+ * [new tag]         1.0.11     -> 1.0.11
+Updating 7e73a42..606b6c3
+Fast-forward
+ composer.json                                      |  6 --
+ composer.lock                                      | 26 +++---
+ .../generic/skeleton/rules-images.css              |  0
+ css/generic/skeleton/rules-main.css                | 18 ++++-
+ vendor/composer/installed.json                     | 28 ++++---
+ .../DrdPlus/RulesSkeleton/HomepageDetector.php     | 10 ++-
+ .../DrdPlus/RulesSkeleton/RulesUrlMatcher.php      |  1 +
+ .../DrdPlus/RulesSkeleton/Web/content/menu.php     |  4 +-
+ .../DrdPlus/Tests/RulesSkeleton/AnchorsTest.php    | 80 ++++++------------
+ .../Tests/RulesSkeleton/CalculationsTest.php       | 94 ++++++++++++++++++----
+ .../Tests/RulesSkeleton/ComposerConfigTest.php     | 35 +++++++-
+ .../Tests/RulesSkeleton/CurrentWebVersionTest.php  | 10 ++-
+ .../Tests/RulesSkeleton/HomepageDetectorTest.php   | 34 ++++++++
+ .../DrdPlus/Tests/RulesSkeleton/HtmlHelperTest.php | 15 +++-
+ .../Partials/TestsConfigurationReader.php          |  2 +
+ .../DrdPlus/Tests/RulesSkeleton/PassingTest.php    |  9 ++-
+ .../Tests/RulesSkeleton/StandardModeTest.php       | 12 ++-
+ .../Tests/RulesSkeleton/TableOfContentsTest.php    | 12 ++-
+ .../Tests/RulesSkeleton/TestsConfiguration.php     | 14 ++++
+ .../Tests/RulesSkeleton/TestsConfigurationTest.php |  3 +-
+ .../DrdPlus/Tests/RulesSkeleton/Web/MenuTest.php   | 39 +++++++++
+ .../RulesSkeleton/Web/RulesMainContentTest.php     | 40 +++++++--
+ .../css/generic/skeleton/rules-images.css          |  0
+ .../css/generic/skeleton/rules-main.css            | 18 ++++-
+ vendor/drdplus/rules-skeleton/web/04 headings.html |  7 +-
+ .../drdplus/rules-skeleton/web/24 calculation.html | 31 ++++++-
+ .../Tests/WebContentBuilder/HtmlHelperTest.php     | 73 ++++++++++++++++-
+ .../Granam/WebContentBuilder/Dirs.php              | 13 +--
+ .../Granam/WebContentBuilder/HtmlHelper.php        | 70 ++++++++++++----
+ 29 files changed, 559 insertions(+), 145 deletions(-)
+ rename vendor/drdplus/rules-skeleton/css/generic/skeleton/rulesimages.css => css/generic/skeleton/rules-images.css (100%)
+ rename css/generic/skeleton/rulesimages.css => vendor/drdplus/rules-skeleton/css/generic/skeleton/rules-images.css (100%)
+It doesn't make sense to pull all tags; you probably meant:
+  git fetch --tags
+TEXT
+                ,
+                <<<TEXT
+attempt number 1
+error: Ref refs/remotes/origin/1.0 is at 606b6c32a03cfd02982dd55b413a2cf01f53a175 but expected 7e73a42f1593894e5ebb0f636010df2461dc9ce6
+From gitlab.com:drdplusinfo/bestiar
+ ! 7e73a42..606b6c3  1.0        -> origin/1.0  (unable to update local ref)
+error: Ref refs/remotes/origin/master is at 606b6c32a03cfd02982dd55b413a2cf01f53a175 but expected 7e73a42f1593894e5ebb0f636010df2461dc9ce6
+ ! 7e73a42..606b6c3  master     -> origin/master  (unable to update local ref)
+ * [new tag]         1.0.11     -> 1.0.11
+TEXT
+                ,
+            ],
+        ];
+    }
 }

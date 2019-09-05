@@ -15,12 +15,20 @@ class StandardModeTest extends AbstractContentTest
         if (!$this->getTestsConfiguration()->hasNotes()) {
             self::assertEmpty(
                 $this->getHtmlDocument()->getElementsByClassName(HtmlHelper::CLASS_NOTE),
-                "No elements with '" . HtmlHelper::CLASS_NOTE . "' class expected according to tests config"
+                sprintf(
+                    "No elements with '%s' class expected as test configuration says by '%s'",
+                    HtmlHelper::CLASS_NOTE,
+                    TestsConfiguration::HAS_NOTES
+                )
             );
         } else {
             self::assertNotEmpty(
                 $this->getHtmlDocument()->getElementsByClassName(HtmlHelper::CLASS_NOTE),
-                "Expected at least a single element with '" . HtmlHelper::CLASS_NOTE . "' class according to tests config"
+                sprintf(
+                    "Expected at least a single element with '%s' class as test configuration says by '%s'",
+                    HtmlHelper::CLASS_NOTE,
+                    TestsConfiguration::HAS_NOTES
+                )
             );
         }
     }

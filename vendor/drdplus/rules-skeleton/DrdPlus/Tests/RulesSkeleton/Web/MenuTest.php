@@ -4,6 +4,7 @@ namespace DrdPlus\Tests\RulesSkeleton\Web;
 
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\HomepageDetector;
+use DrdPlus\RulesSkeleton\PathProvider;
 use DrdPlus\RulesSkeleton\Web\Menu;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use Granam\WebContentBuilder\HtmlDocument;
@@ -279,4 +280,42 @@ HTML
         }
     }
 
+    /**
+     * @test
+     */
+    public function I_can_get_menu_even_on_not_found_route(): void
+    {
+        $configuration = $this->createCustomConfiguration(
+            [Configuration::WEB => [
+                Configuration::SHOW_HOME_BUTTON => false,
+                Configuration::SHOW_HOME_BUTTON_ON_HOMEPAGE => false,
+                Configuration::SHOW_HOME_BUTTON_ON_ROUTES => true,
+            ]]
+        );
+        self::assertTrue($configuration->isShowHomeButtonOnRoutes(), 'Expected configuration with shown home button on routes');
+        $menu = new Menu(
+            $configuration,
+            new HomepageDetector(
+                new PathProvider(
+                    $this->getServicesContainer()->getRulesUrlMatcher(),
+                    uniqid('/non/existing/path', true)
+                )
+            )
+        );
+        $htmlDocument = new HtmlDocument(<<<HTML
+<html lang="cs">
+<body>
+{$menu->getValue()}
+</body>
+</html>
+HTML
+        );
+        /** @var Element $homeButton */
+        $homeButton = $htmlDocument->getElementById('homeButton');
+        self::assertNotEmpty($homeButton, 'Home button is missing');
+        self::assertSame(
+            'https://www.drdplus.info',
+            $homeButton->getAttribute('href'), 'Link of home button should lead to home'
+        );
+    }
 }

@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
      * @param string|StringInterface $pathInfo
      * @return RouteMatch
      * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     * @throws \Symfony\Component\Routing\Exception\RouteNotFoundException
      */
     public function match($pathInfo): RouteMatch
     {

@@ -454,17 +454,17 @@
     },
     {
         "name": "drdplus/calculator-skeleton",
-        "version": "1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "1.1.10",
+        "version_normalized": "1.1.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/calculator-skeleton.git",
-            "reference": "6ad0f0bfdc3654291ca511661cb94a1d1d5b54b1"
+            "reference": "4ffdc3832386d3c7ffd8112f51834b0812a993fb"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/6ad0f0bfdc3654291ca511661cb94a1d1d5b54b1",
-            "reference": "6ad0f0bfdc3654291ca511661cb94a1d1d5b54b1",
+            "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/4ffdc3832386d3c7ffd8112f51834b0812a993fb",
+            "reference": "4ffdc3832386d3c7ffd8112f51834b0812a993fb",
             "shasum": ""
         },
         "require": {
@@ -480,7 +480,7 @@
             "phpunit/phpunit": "~8.3",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-08-27T06:48:39+00:00",
+        "time": "2019-09-05T08:56:01+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "DrdPlus\\CalculatorSkeleton\\CalculatorInjectorComposerPlugin"
@@ -540,17 +540,17 @@
     },
     {
         "name": "drdplus/rules-skeleton",
-        "version": "1.6.0",
-        "version_normalized": "1.6.0.0",
+        "version": "1.6.13",
+        "version_normalized": "1.6.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-            "reference": "1b4c3fda903574f139df15e959ee44670d72c2eb"
+            "reference": "0dc416604dde774fac164b5a49034fab582d526d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/1b4c3fda903574f139df15e959ee44670d72c2eb",
-            "reference": "1b4c3fda903574f139df15e959ee44670d72c2eb",
+            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/0dc416604dde774fac164b5a49034fab582d526d",
+            "reference": "0dc416604dde774fac164b5a49034fab582d526d",
             "shasum": ""
         },
         "require": {
@@ -583,7 +583,7 @@
             "phpunit/phpunit": "^8.3",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-08-28T06:11:39+00:00",
+        "time": "2019-09-05T14:10:37+00:00",
         "bin": [
             "bin/fix_web_permissions.sh"
         ],
@@ -611,17 +611,17 @@
     },
     {
         "name": "drdplus/tables",
-        "version": "2.5.0",
-        "version_normalized": "2.5.0.0",
+        "version": "2.5.1",
+        "version_normalized": "2.5.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/tables.git",
-            "reference": "5cea455c2ce12f30e645e2976ef31496b00fef47"
+            "reference": "874048b690acafea7e90219952ee7872a637a148"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/5cea455c2ce12f30e645e2976ef31496b00fef47",
-            "reference": "5cea455c2ce12f30e645e2976ef31496b00fef47",
+            "url": "https://api.github.com/repos/drdplusinfo/tables/zipball/874048b690acafea7e90219952ee7872a637a148",
+            "reference": "874048b690acafea7e90219952ee7872a637a148",
             "shasum": ""
         },
         "require": {
@@ -638,7 +638,7 @@
             "phpunit/phpunit": "^8.3",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-08-23T11:11:34+00:00",
+        "time": "2019-09-03T07:45:38+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -938,17 +938,17 @@
     },
     {
         "name": "granam/git",
-        "version": "1.2.5",
-        "version_normalized": "1.2.5.0",
+        "version": "1.2.6",
+        "version_normalized": "1.2.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/granam/git.git",
-            "reference": "4ab6eb312a0b7cb4ac1c414ccc84f1f80341d796"
+            "reference": "d01c93b17c15996dd7f96092e06b64739a3606bc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/granam/git/zipball/4ab6eb312a0b7cb4ac1c414ccc84f1f80341d796",
-            "reference": "4ab6eb312a0b7cb4ac1c414ccc84f1f80341d796",
+            "url": "https://api.github.com/repos/granam/git/zipball/d01c93b17c15996dd7f96092e06b64739a3606bc",
+            "reference": "d01c93b17c15996dd7f96092e06b64739a3606bc",
             "shasum": ""
         },
         "require": {
@@ -959,7 +959,7 @@
             "granam/exceptions-hierarchy": "^5.0",
             "phpunit/phpunit": "^8.3"
         },
-        "time": "2019-08-26T13:33:59+00:00",
+        "time": "2019-09-04T11:51:57+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1401,17 +1401,17 @@
     },
     {
         "name": "granam/web-content-builder",
-        "version": "2.0.1",
-        "version_normalized": "2.0.1.0",
+        "version": "2.1.1",
+        "version_normalized": "2.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/granam/web-content-builder.git",
-            "reference": "5d7206ffae7d0526b0ba4c1f5fc72b119eca7acd"
+            "reference": "e2f9c54f89852b83897b3f18faf5d59f682d83a4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/granam/web-content-builder/zipball/5d7206ffae7d0526b0ba4c1f5fc72b119eca7acd",
-            "reference": "5d7206ffae7d0526b0ba4c1f5fc72b119eca7acd",
+            "url": "https://api.github.com/repos/granam/web-content-builder/zipball/e2f9c54f89852b83897b3f18faf5d59f682d83a4",
+            "reference": "e2f9c54f89852b83897b3f18faf5d59f682d83a4",
             "shasum": ""
         },
         "require": {
@@ -1431,7 +1431,7 @@
             "phpunit/phpunit": "^8.3",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-08-23T06:57:57+00:00",
+        "time": "2019-09-05T07:19:28+00:00",
         "bin": [
             "bin/assets"
         ],

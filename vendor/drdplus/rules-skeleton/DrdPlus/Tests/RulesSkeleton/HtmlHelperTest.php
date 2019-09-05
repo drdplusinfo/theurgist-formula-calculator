@@ -174,7 +174,10 @@ HTML
             self::assertCount(
                 0,
                 $this->getHtmlDocument()->getElementsByTagName('table'),
-                'No tables with IDs expected according to tests config'
+                sprintf(
+                    "No tables with IDs expected as test configuration says by '%s'",
+                    TestsConfiguration::HAS_TABLES
+                )
             );
 
             return;
@@ -183,7 +186,15 @@ HTML
         $htmlHelperClass = static::getSutClass();
         $htmlHelper = $htmlHelperClass::createFromGlobals($this->getDirs(), $this->getEnvironment());
         $someExpectedTableIds = $this->getTestsConfiguration()->getSomeExpectedTableIds();
-        self::assertGreaterThan(0, \count($someExpectedTableIds), 'Some tables expected according to tests config');
+        self::assertGreaterThan(
+            0,
+            \count($someExpectedTableIds),
+            sprintf(
+                "Some table IDs expected under '%s' as test configuration says by '%s'",
+                TestsConfiguration::SOME_EXPECTED_TABLE_IDS,
+                TestsConfiguration::HAS_TABLES
+            )
+        );
         $tableId = \current($someExpectedTableIds);
         $tables = $htmlHelper->findTablesWithIds($this->getHtmlDocument(), [$tableId, $tableId]);
         self::assertCount(1, $tables);

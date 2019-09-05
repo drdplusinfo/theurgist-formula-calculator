@@ -15,8 +15,9 @@ class TestsConfigurationTest extends AbstractContentTest
     public function I_can_use_it(): void
     {
         $testsConfiguration = $this->createTestsConfiguration();
+        $booleanGettersWithDefaultFalse = ['hasShownHomeButton', 'hasLocalRepositories'];
         foreach ($this->getBooleanGetters() as $hasGetter) {
-            if ($hasGetter === 'hasShownHomeButton') {
+            if (in_array($hasGetter, $booleanGettersWithDefaultFalse, true)) {
                 self::assertFalse(
                     $testsConfiguration->$hasGetter(),
                     "$hasGetter should return false as it is deprecated and replaced by another configurations"
@@ -55,11 +56,13 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function I_can_disable_every_boolean_option()
     {
-        $testsConfiguration = $this->createTestsConfiguration(array_fill_keys($this->getBooleanOptionNames(), false));
-        foreach ($this->getBooleanGetters() as $hasGetter) {
+        $booleanOptionNames = $this->getBooleanOptionNames();
+        foreach ($booleanOptionNames as $booleanOptionName) {
+            $testsConfiguration = $this->createTestsConfiguration([$booleanOptionName => false]);
+            $testedOptionGetter = StringTools::assembleGetterForName($booleanOptionName, '');
             self::assertFalse(
-                $testsConfiguration->$hasGetter(),
-                "$hasGetter() should return false in this test, is that value properly initialized in constructor?"
+                $testsConfiguration->$testedOptionGetter(),
+                "$testedOptionGetter() should return false in this test, is that value properly initialized in constructor?"
             );
         }
     }
@@ -83,6 +86,23 @@ class TestsConfigurationTest extends AbstractContentTest
             }
         }
         return $booleanProperties;
+    }
+
+    /**
+     * @test
+     * @throws \ReflectionException
+     */
+    public function I_can_enable_every_boolean_option()
+    {
+        $booleanOptionNames = $this->getBooleanOptionNames();
+        foreach ($booleanOptionNames as $booleanOptionName) {
+            $testsConfiguration = $this->createTestsConfiguration([$booleanOptionName => true]);
+            $testedOptionGetter = StringTools::assembleGetterForName($booleanOptionName, '');
+            self::assertTrue(
+                $testsConfiguration->$testedOptionGetter(),
+                "$testedOptionGetter() should return true in this test, is that value properly initialized in constructor?"
+            );
+        }
     }
 
     /**
@@ -340,7 +360,7 @@ class TestsConfigurationTest extends AbstractContentTest
      */
     public function Skeleton_boolean_tests_configuration_is_strict(string $directive, $value)
     {
-        if (!$this->isSkeletonChecked()) {
+        if (!$this->isRulesSkeletonChecked()) {
             self::assertTrue(true, 'SKeleton already checked this for you');
             return;
         }

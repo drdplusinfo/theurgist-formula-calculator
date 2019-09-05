@@ -32,6 +32,8 @@ interface TestsConfigurationReader
 
     public function hasMarkedResult(): bool;
 
+    public function hasLocalRepositories(): bool;
+
     public function hasLocalLinks(): bool;
 
     public function hasLinksToAltar();

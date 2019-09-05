@@ -26,12 +26,20 @@ class TableOfContentsTest extends AbstractContentTest
         }
         self::assertNotEmpty(
             $tableOfContents,
-            \sprintf("Missing table of contents with ID '%s' as tests configuration requests", HtmlHelper::toId(HtmlHelper::ID_TABLE_OF_CONTENTS))
+            \sprintf(
+                "Missing table of contents with ID '%s' as test configuration says by '%s'",
+                HtmlHelper::toId(HtmlHelper::ID_TABLE_OF_CONTENTS),
+                TestsConfiguration::HAS_TABLE_OF_CONTENTS
+            )
         );
         $contents = $tableOfContents->getElementsByClassName('content');
         self::assertNotEmpty(
             $contents,
-            'Expected some ".content" elements as items of a table of contents #tableOfContents' . $tableOfContents->outerHTML
+            sprintf(
+                "Expected some elements with class '%s' as items of a '%s'",
+                HtmlHelper::CLASS_CONTENT,
+                $tableOfContents->outerHTML
+            )
         );
         foreach ($contents as $content) {
             $anchors = $content->getElementsByTagName('a');

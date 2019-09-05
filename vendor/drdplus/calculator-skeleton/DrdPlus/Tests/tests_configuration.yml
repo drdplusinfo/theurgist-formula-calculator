@@ -16,6 +16,7 @@ has_character_sheet: false
 has_links_to_journals: false
 has_link_to_single_journal: false
 has_table_of_contents: false
+has_marked_content: false
 has_headings: true
 has_local_links: true
 local_anchors:

@@ -148,7 +148,10 @@ class Git extends StrictObject
             try {
                 return $this->executeCommandsChainArray($commands);
             } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
-                if (!preg_match("~Unable to create '[^']+[.]lock': File exists[.]~", $executingCommandFailed->getMessage())) {
+                if (!preg_match(
+                    "~(Unable to create '[^']+[.]lock': File exists[.]|It doesn't make sense to pull all tags|is at [[:alnum:]]{20,} but expected [[:alnum:]]{20,})~",
+                    $executingCommandFailed->getMessage()
+                )) {
                     throw $executingCommandFailed;
                 }
                 if ($attempt === $maxAttempts) {
@@ -321,7 +324,7 @@ class Git extends StrictObject
      * @return string[]|array
      * @throws \Granam\Git\Exceptions\ExecutingCommandFailed
      */
-    private function executeArray(string $command, bool $sendErrorsToStdOut = true, bool $solveMissingHomeDir = true): array
+    protected function executeArray(string $command, bool $sendErrorsToStdOut = true, bool $solveMissingHomeDir = true): array
     {
         if ($sendErrorsToStdOut) {
             $command .= ' 2>&1';
