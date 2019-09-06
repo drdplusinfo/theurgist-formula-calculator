@@ -75,4 +75,8 @@ interface TestsConfigurationReader
     public function getTooShortResultNames(): array;
 
     public function hasTableOfContents(): bool;
+
+    public function getExpectedHomeButtonTargetFromHomepage(): string;
+
+    public function getExpectedHomeButtonTargetFromRoutes(): string;
 }

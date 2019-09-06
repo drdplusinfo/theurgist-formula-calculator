@@ -180,6 +180,8 @@ class CalculationsTest extends AbstractContentTest
             $allowedCalculationIdPrefixes
         );
         $allowedCalculationIdConstantLikePrefixesRegexp = $this->toRegexpOr($allowedCalculationIdConstantLikePrefixes);
+        $idsWithMissingAnchors = [];
+        $emptyAnchors = [];
         foreach ($this->getCalculations() as $calculation) {
             self::assertNotEmpty($calculation->id, 'Missing ID for calculation: ' . \trim($calculation->innerHTML));
             $originalId = $calculation->getAttribute('data-original-id');
@@ -199,13 +201,44 @@ class CalculationsTest extends AbstractContentTest
                     break;
                 }
             }
-            self::assertNotNull($anchorToCalculation, "No anchor found in calculation with ID '{$originalId}'");
-            self::assertNotSame(
-                '',
-                trim($anchorToCalculation->textContent),
-                "No text content found in the anchor if calculation with ID '{$originalId}', therefore the anchor can not be clicked: '{$anchorToCalculation->outerHTML}'"
-            );
+            if ($anchorToCalculation === null) {
+                $idsWithMissingAnchors[] = $originalId;
+            } elseif (trim($anchorToCalculation->textContent) === '') {
+                $emptyAnchors[$originalId] = $anchorToCalculation;
+            }
         }
+        self::assertCount(
+            0,
+            $idsWithMissingAnchors,
+            sprintf(
+                "No anchor found in calculations with IDs %s",
+                implode(
+                    ', ',
+                    array_map(
+                        function (string $id) {
+                            return "'{$id}'";
+                        },
+                        $idsWithMissingAnchors
+                    )
+                )
+            )
+        );
+        self::assertCount(
+            0,
+            $emptyAnchors,
+            sprintf(
+                "No text content found some anchors to calculations, therefore those anchors can not be clicked:\n%s'",
+                implode(
+                    "\n",
+                    array_map(
+                        function (Element $anchor) {
+                            return $anchor->prop_get_outerHTML();
+                        },
+                        $emptyAnchors
+                    )
+                )
+            )
+        );
     }
 
     private function toRegexpOr(array $values, string $regexpDelimiter = '~'): string

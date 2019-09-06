@@ -540,17 +540,17 @@
     },
     {
         "name": "drdplus/rules-skeleton",
-        "version": "1.6.13",
-        "version_normalized": "1.6.13.0",
+        "version": "1.6.17",
+        "version_normalized": "1.6.17.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-            "reference": "0dc416604dde774fac164b5a49034fab582d526d"
+            "reference": "8e0574151536a86f009d7b0416e6b872d2c655a1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/0dc416604dde774fac164b5a49034fab582d526d",
-            "reference": "0dc416604dde774fac164b5a49034fab582d526d",
+            "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/8e0574151536a86f009d7b0416e6b872d2c655a1",
+            "reference": "8e0574151536a86f009d7b0416e6b872d2c655a1",
             "shasum": ""
         },
         "require": {
@@ -583,7 +583,7 @@
             "phpunit/phpunit": "^8.3",
             "roave/security-advisories": "dev-master"
         },
-        "time": "2019-09-05T14:10:37+00:00",
+        "time": "2019-09-06T15:55:16+00:00",
         "bin": [
             "bin/fix_web_permissions.sh"
         ],
@@ -1289,17 +1289,17 @@
     },
     {
         "name": "granam/string",
-        "version": "4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "4.0.1",
+        "version_normalized": "4.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/granam/string.git",
-            "reference": "31d321fc71e4f67651d1a026d8ebfec2daad5710"
+            "reference": "820504996a259190bb55b9713e7dfca9dac80894"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/granam/string/zipball/31d321fc71e4f67651d1a026d8ebfec2daad5710",
-            "reference": "31d321fc71e4f67651d1a026d8ebfec2daad5710",
+            "url": "https://api.github.com/repos/granam/string/zipball/820504996a259190bb55b9713e7dfca9dac80894",
+            "reference": "820504996a259190bb55b9713e7dfca9dac80894",
             "shasum": ""
         },
         "require": {
@@ -1320,7 +1320,7 @@
             "ext-intl": "*",
             "ext-mbstring": "*"
         },
-        "time": "2019-08-22T14:57:56+00:00",
+        "time": "2019-09-06T08:13:36+00:00",
         "type": "project",
         "installation-source": "dist",
         "autoload": {
@@ -1335,8 +1335,8 @@
         "authors": [
             {
                 "name": "Jaroslav Týc",
-                "role": "Original author",
-                "homepage": "https://www.jaroslavtyc.com"
+                "homepage": "https://www.jaroslavtyc.com",
+                "role": "Original author"
             }
         ],
         "description": "Lightweight string wrapper",

@@ -249,7 +249,6 @@ HTML
 
     /**
      * @test
-     * @dataProvider provideConfigurationToHideHomeButtonOnRoutes
      */
     public function Home_button_target_leads_to_expected_link(): void
     {
@@ -290,6 +289,7 @@ HTML
                 Configuration::SHOW_HOME_BUTTON => false,
                 Configuration::SHOW_HOME_BUTTON_ON_HOMEPAGE => false,
                 Configuration::SHOW_HOME_BUTTON_ON_ROUTES => true,
+                Configuration::HOME_BUTTON_TARGET => $expectedTarget = '/foo/bar?baz=qux',
             ]]
         );
         self::assertTrue($configuration->isShowHomeButtonOnRoutes(), 'Expected configuration with shown home button on routes');
@@ -314,7 +314,7 @@ HTML
         $homeButton = $htmlDocument->getElementById('homeButton');
         self::assertNotEmpty($homeButton, 'Home button is missing');
         self::assertSame(
-            'https://www.drdplus.info',
+            $expectedTarget,
             $homeButton->getAttribute('href'), 'Link of home button should lead to home'
         );
     }

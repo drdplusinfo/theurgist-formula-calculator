@@ -47,11 +47,32 @@ class AnchorsTest extends AbstractContentTest
             $localAnchors,
             sprintf("Some local anchors expected as tests config says by '%s'", TestsConfiguration::HAS_LOCAL_LINKS)
         );
+        $targets = [];
+        $missingTargets = [];
         foreach ($this->getLocalAnchors() as $localAnchor) {
             $expectedId = \substr($localAnchor->getAttribute('href'), 1); // just remove leading #
             /** @var Element $target */
             $target = $html->getElementById($expectedId);
-            self::assertNotEmpty($target, 'No element found by ID ' . $expectedId);
+            if (!$target) {
+                $missingTargets[] = $expectedId;
+            } else {
+                $targets[$expectedId] = $target;
+            }
+        }
+        self::assertCount(
+            0,
+            $missingTargets,
+            'Some local anchors point to non-existing IDs: ' . implode(
+                ',',
+                array_map(
+                    function (string $id) {
+                        return "'$id'";
+                    },
+                    $missingTargets
+                )
+            )
+        );
+        foreach ($targets as $expectedId => $target) {
             foreach ($this->classesAllowingInnerLinksTobeHidden() as $classAllowingInnerLinksTobeHidden) {
                 if ($target->classList->contains($classAllowingInnerLinksTobeHidden)) {
                     return;
