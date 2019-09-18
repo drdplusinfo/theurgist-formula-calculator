@@ -16,8 +16,7 @@
       <ul>
         <li>
           <label for="trial">
-            chci se na <strong><?= $configuration->getWebName() ?></strong> jen na chvíli podívat, ať vím, o co
-            jde
+            chci se na <strong><?= $configuration->getWebName() ?></strong> jen na chvíli podívat, ať vím, o co jde
           </label>
         </li>
       </ul>

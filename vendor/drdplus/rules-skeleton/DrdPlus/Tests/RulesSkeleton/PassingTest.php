@@ -148,4 +148,58 @@ class PassingTest extends AbstractContentTest
         $warningAboutTrialExpiration = $warningsOnTrialExpiration->current();
         self::assertSame('⌛ Čas tvého testování se naplnil ⌛', $warningAboutTrialExpiration->textContent);
     }
+
+    /**
+     * @test
+     */
+    public function I_do_not_lost_previous_url_because_of_pass(): void
+    {
+        if (!$this->getTestsConfiguration()->hasProtectedAccess()) {
+            self::assertFalse(false, 'Free content does not have trial');
+
+            return;
+        }
+        if (!$this->isSkeletonChecked()) {
+            self::assertTrue(true, 'Already checked by a skeleton');
+
+            return;
+        }
+        $this->passOut();
+        $forms = $this->getHtmlDocument(['foo' => 'bar'], [], [], '/routed')->getElementsByTagName('form');
+        self::assertNotEmpty($forms, 'Expeted some forms on pass');
+        foreach ($forms as $form) {
+            $action = $form->getAttribute('action');
+            if (strpos($action, 'https://obchod.altar.cz') === 0) {
+                continue;
+            }
+            self::assertSame('/routed?foo=bar', $action, 'Expected passing link with original values');
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function I_am_not_bordered_by_empty_query_on_pass(): void
+    {
+        if (!$this->getTestsConfiguration()->hasProtectedAccess()) {
+            self::assertFalse(false, 'Free content does not have trial');
+
+            return;
+        }
+        if (!$this->isSkeletonChecked()) {
+            self::assertTrue(true, 'Already checked by a skeleton');
+
+            return;
+        }
+        $this->passOut();
+        $forms = $this->getHtmlDocument([Request::TRIAL_EXPIRED_AT => time() - 1])->getElementsByTagName('form');
+        self::assertNotEmpty($forms, 'Expeted some forms on pass');
+        foreach ($forms as $form) {
+            $action = $form->getAttribute('action');
+            if (strpos($action, 'https://obchod.altar.cz') === 0) {
+                continue;
+            }
+            self::assertSame('/', $action, 'Expected empty pass link');
+        }
+    }
 }

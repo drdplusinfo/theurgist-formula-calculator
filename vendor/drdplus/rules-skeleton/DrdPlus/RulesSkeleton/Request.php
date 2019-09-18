@@ -91,6 +91,9 @@ class Request extends StrictObject
             unset($queryParameters[$excludeParameter]);
         }
         $queryParameters = \array_merge($queryParameters ?? [], $overwriteParameters);
+        if (!$queryParameters) {
+            return $path;
+        }
 
         return $path . '?' . \http_build_query($queryParameters);
     }

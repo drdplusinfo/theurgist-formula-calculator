@@ -160,6 +160,25 @@ class RequestTest extends AbstractContentTest
     /**
      * @test
      */
+    public function I_will_get_clean_root_url_without_query_if_everything_filtered_as_automatic_values(): void
+    {
+        $request = new Request(
+            $this->getBot(),
+            $this->getEnvironment(),
+            [Request::TRIAL_EXPIRED_AT => time()],
+            [],
+            [],
+            []
+        );
+        self::assertSame(
+            '/',
+            $request->getCurrentUrlWithoutAutomaticValues()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function I_can_get_value_from_get(): void
     {
         $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [], []);
@@ -335,6 +354,25 @@ class RequestTest extends AbstractContentTest
     {
         $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [], []);
         self::assertSame('/', $request->getCurrentUrl([], ['foo' => 123]));
+    }
+
+    /**
+     * @test
+     */
+    public function I_will_get_clean_root_url_without_query_if_everything_filtered(): void
+    {
+        $request = new Request(
+            $this->getBot(),
+            $this->getEnvironment(),
+            ['foo' => 'bar'],
+            [],
+            [],
+            []
+        );
+        self::assertSame(
+            '/',
+            $request->getCurrentUrl([], ['foo'])
+        );
     }
 
     /**
