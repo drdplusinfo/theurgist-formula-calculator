@@ -1,40 +1,44 @@
-cutBrowsingOnTrialExpiration();
+cutBrowsingOnTrialExpiration()
 
 function cutBrowsingOnTrialExpiration() {
-    var ownershipCookieName = Cookies.get('ownershipCookieName');
+    let ownershipCookieName = Cookies.get('ownershipCookieName')
     if (ownershipCookieName) {
-        var ownershipExpiresAt = Cookies.get(ownershipCookieName);
+        let ownershipExpiresAt = Cookies.get(ownershipCookieName)
         if (ownershipExpiresAt) {
-            return false;
+            return false
         }
     }
-    var trialCookieName = Cookies.get('trialCookieName');
+    let trialCookieName = Cookies.get('trialCookieName')
     if (!trialCookieName) {
-        return false;
+        return false
     }
-    var trialExpiresAt = Cookies.get(trialCookieName);
+    let trialExpiresAt = Cookies.get(trialCookieName)
     if (typeof trialExpiresAt === 'undefined' || trialExpiresAt === '') {
-        return false;
+        return false
     }
-    var trialExpiresAtMs = parseInt(trialExpiresAt) * 1000;
-    var trialExpiredAtName = Cookies.get('trialExpiredAtCookieName');
+    let trialExpiresAtMs = parseInt(trialExpiresAt) * 1000
+    let trialExpiredAtName = Cookies.get('trialExpiredAtCookieName')
     if (typeof trialExpiredAtName === 'undefined' || !trialExpiredAtName) {
-        trialExpiredAtName = 'trial_expired_at';
+        trialExpiredAtName = 'trial_expired_at'
     }
-    setTimeout(function () {
-        // have to use replace because reload is not sufficient as it ask for sending FORM again
-        window.location.replace('/?' + encodeURIComponent(trialExpiredAtName) + '=' + trialExpiresAt);
-    }, trialExpiresAtMs - Date.now());
-    showSandGlass();
+    setTimeout(
+        function () {
+            const reloadTarget = '/?' + encodeURIComponent(trialExpiredAtName) + '=' + trialExpiresAt + String(window.location.hash)
+            // have to use replace because reload is not sufficient as it ask for sending FORM again
+            window.location.replace(reloadTarget)
+        },
+        trialExpiresAtMs - Date.now()
+    )
+    showSandGlass()
 }
 
 function showSandGlass() {
     document.addEventListener('DOMContentLoaded', function () {
-        var sandGlass = document.createElement('span');
-        sandGlass.classList.add('sand-glass');
-        sandGlass.innerHTML = '⏳';
-        sandGlass.title = 'Jen zkoušíš';
-        var body = document.getElementsByTagName('body')[0];
-        body.appendChild(sandGlass);
-    });
+        let sandGlass = document.createElement('span')
+        sandGlass.classList.add('sand-glass')
+        sandGlass.innerHTML = '⏳'
+        sandGlass.title = 'Jen zkoušíš'
+        let body = document.getElementsByTagName('body')[0]
+        body.appendChild(sandGlass)
+    })
 }

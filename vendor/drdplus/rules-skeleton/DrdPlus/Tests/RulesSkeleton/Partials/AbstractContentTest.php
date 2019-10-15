@@ -5,6 +5,7 @@ namespace DrdPlus\Tests\RulesSkeleton\Partials;
 use DeviceDetector\Parser\Bot;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\ContentIrrelevantParametersFilter;
+use DrdPlus\RulesSkeleton\ContentIrrelevantRequestAliases;
 use DrdPlus\RulesSkeleton\CookiesService;
 use DrdPlus\RulesSkeleton\CurrentWebVersion;
 use DrdPlus\RulesSkeleton\Dirs;
@@ -135,8 +136,9 @@ abstract class AbstractContentTest extends TestWithMockery
             if ($cookies) {
                 $_COOKIE = \array_merge($_COOKIE, $cookies);
             }
-            if ($url !== '/') {
-                $_SERVER['REQUEST_URI'] = $url;
+            $_SERVER['REQUEST_URI'] = $url;
+            if ($_GET) {
+                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
             }
             if ($this->needPassIn()) {
                 $this->passIn();
@@ -385,6 +387,15 @@ TEXT
         }
 
         return $this->configuration;
+    }
+
+    protected function getContentIrrelevantRequestAliases(): ContentIrrelevantRequestAliases
+    {
+        static $contentIrrelevantRequestAliases;
+        if ($contentIrrelevantRequestAliases === null) {
+            $contentIrrelevantRequestAliases = $this->createServicesContainer()->getContentIrrelevantRequestAliases();
+        }
+        return $contentIrrelevantRequestAliases;
     }
 
     protected function getContentIrrelevantParametersFilter(): ContentIrrelevantParametersFilter

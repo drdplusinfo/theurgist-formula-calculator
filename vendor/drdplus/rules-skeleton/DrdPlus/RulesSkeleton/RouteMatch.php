@@ -11,6 +11,8 @@ class RouteMatch extends StrictObject
     private $type;
     private $prefix;
     private $path;
+    private $query;
+    private $routeName;
     private $host;
     private $schemes;
     private $methods;
@@ -36,6 +38,8 @@ class RouteMatch extends StrictObject
         } catch (\Granam\Scalar\Tools\Exceptions\Exception $exception) {
             throw new Exceptions\MissingRequiredPathInRouteMatch('Got matches ' . var_export($values, true));
         }
+        $this->routeName = $values['_route'] ?? null;
+        parse_str($values['query'] ?? '', $this->query);
         $this->resource = $values['resource'] ?? null;
         $this->type = $values['type'] ?? null;
         $this->prefix = $values['prefix'] ?? null;
@@ -54,9 +58,19 @@ class RouteMatch extends StrictObject
         $this->utf8 = $values['utf8'] ?? null;
     }
 
+    public function getRouteName(): ?string
+    {
+        return $this->routeName;
+    }
+
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    public function getQuery(): array
+    {
+        return $this->query;
     }
 
     /**

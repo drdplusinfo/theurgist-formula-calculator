@@ -5,13 +5,8 @@ namespace DrdPlus\RulesSkeleton;
 use Granam\Git\Git;
 use Granam\Strict\Object\StrictObject;
 
-class Cache extends StrictObject
+abstract class Cache extends StrictObject
 {
-    public const TABLES = 'tables';
-    public const PAGES = 'pages';
-    public const PASS = 'pass';
-    public const PASSED = 'passed';
-    public const NOT_FOUND = 'not_found';
     // named parameters
     public const IN_PRODUCTION = true;
     public const NOT_IN_PRODUCTION = false;
@@ -19,7 +14,7 @@ class Cache extends StrictObject
     /** @var string */
     protected $projectRootDir;
     /** @var string */
-    protected $cacheRootDir;
+    private $cacheRootDir;
     /** @var array|string[] */
     protected $cacheRoots;
     /** @var CurrentWebVersion */
@@ -28,41 +23,43 @@ class Cache extends StrictObject
     private $request;
     /** @var Git */
     private $git;
-    /** @var string */
-    protected $cachePrefix;
     /** @var bool */
     protected $isInProduction;
+    /** @var ContentIrrelevantRequestAliases */
+    private $contentIrrelevantRequestAliases;
     /** @var ContentIrrelevantParametersFilter */
     private $contentIrrelevantParametersFilter;
 
     /**
      * @param CurrentWebVersion $currentWebVersion
-     * @param Dirs $dirs
+     * @param string $projectRootDir
+     * @param string $cacheRootDir
      * @param Request $request
+     * @param ContentIrrelevantRequestAliases $contentIrrelevantRequestAliases
      * @param ContentIrrelevantParametersFilter $contentIrrelevantParametersFilter
      * @param Git $git
      * @param bool $isInProduction
-     * @param string $cachePrefix
      * @throws \RuntimeException
      */
     public function __construct(
         CurrentWebVersion $currentWebVersion,
-        Dirs $dirs,
+        string $projectRootDir,
+        string $cacheRootDir,
         Request $request,
+        ContentIrrelevantRequestAliases $contentIrrelevantRequestAliases,
         ContentIrrelevantParametersFilter $contentIrrelevantParametersFilter,
         Git $git,
-        bool $isInProduction,
-        string $cachePrefix
+        bool $isInProduction
     )
     {
         $this->currentWebVersion = $currentWebVersion;
-        $this->projectRootDir = $dirs->getProjectRoot();
-        $this->cacheRootDir = $dirs->getCacheRoot();
+        $this->projectRootDir = $projectRootDir;
+        $this->cacheRootDir = $cacheRootDir;
         $this->request = $request;
+        $this->contentIrrelevantRequestAliases = $contentIrrelevantRequestAliases;
         $this->contentIrrelevantParametersFilter = $contentIrrelevantParametersFilter;
         $this->git = $git;
         $this->isInProduction = $isInProduction;
-        $this->cachePrefix = $cachePrefix;
     }
 
     /**
@@ -94,7 +91,15 @@ class Cache extends StrictObject
     {
         $filteredGetParameters = $this->contentIrrelevantParametersFilter
             ->removeContentIrrelevantParameters($this->request->getValuesFromGet());
-        return \md5($this->request->getPath() . \serialize($filteredGetParameters));
+        $contentRelevantPath = $this->contentIrrelevantRequestAliases->getTruePath(
+            $this->request->getPath(),
+            $filteredGetParameters
+        );
+        $contentRelevantGetParameters = $this->contentIrrelevantRequestAliases->getTrueParameters(
+            $this->request->getPath(),
+            $filteredGetParameters
+        );
+        return \md5($contentRelevantPath . \serialize($contentRelevantGetParameters));
     }
 
     /**
@@ -121,14 +126,12 @@ class Cache extends StrictObject
 
     private function getCurrentContentHash(): string
     {
-        $prefix = \md5($this->getCachePrefix() . $this->getGitStamp());
-
-        return "{$this->currentWebVersion->getCurrentPatchVersion()}_{$prefix}_{$this->currentWebVersion->getCurrentCommitHash()}";
-    }
-
-    protected function getCachePrefix(): string
-    {
-        return $this->cachePrefix;
+        return sprintf(
+            '%s_%s_%s',
+            $this->currentWebVersion->getCurrentPatchVersion(),
+            $this->currentWebVersion->getCurrentCommitHash(),
+            $this->getGitStamp()
+        );
     }
 
     private function getGitStamp(): string
@@ -208,17 +211,15 @@ class Cache extends StrictObject
     private function clearOldCache(): void
     {
         $foldersToSkip = ['.', '..', '.gitignore'];
-        $currentCacheStamp = $this->currentWebVersion->getCurrentCommitHash();
         $currentVersion = $this->currentWebVersion->getCurrentMinorVersion();
         $cacheRoot = $this->cacheRoots[$currentVersion];
+
+        $currentContentHash = $this->getCurrentContentHash();
         foreach (\scandir($cacheRoot, \SCANDIR_SORT_NONE) as $folder) {
             if (\in_array($folder, $foldersToSkip, true)) {
                 continue;
             }
-            if (\strpos($folder, $currentVersion) === false) { // we will clear old cache only of currently selected version
-                continue;
-            }
-            if (\strpos($folder, $currentCacheStamp) !== false) { // that file is valid
+            if (\strpos($folder, $currentContentHash) !== false) { // that file is valid
                 continue;
             }
             \unlink($cacheRoot . '/' . $folder);

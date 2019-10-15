@@ -451,7 +451,7 @@ class CurrentFormulaValues extends StrictObject
     public function createModifierInputIndex(array $modifiersChain): string
     {
         $wrapped = array_map(
-            function (string $chainPart) {
+            static function (string $chainPart) {
                 return "[$chainPart]";
             },
             $modifiersChain
@@ -462,7 +462,7 @@ class CurrentFormulaValues extends StrictObject
     public function createSpellTraitInputIndex(array $modifiersChain, string $spellTraitName): string
     {
         $wrapped = array_map(
-            function (string $chainPart) {
+            static function (string $chainPart) {
                 return "[!$chainPart!]"; // wrapped by ! to avoid conflict with same named spell trait on long chain
             },
             $modifiersChain

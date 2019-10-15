@@ -134,18 +134,18 @@ class CalculatorServicesContainer extends ServicesContainer
             $this->calculatorWebContent = new RulesMainContent(
                 $this->getHtmlHelper(),
                 $this->getHead(),
-                $this->getWebPartsContainer()->getRulesMainBody()
+                $this->getRoutedWebPartsContainer()->getRulesMainBody()
             );
         }
         return $this->calculatorWebContent;
     }
 
-    public function getWebPartsContainer(): \DrdPlus\RulesSkeleton\Web\WebPartsContainer
+    public function getRoutedWebPartsContainer(): \DrdPlus\RulesSkeleton\Web\WebPartsContainer
     {
         if ($this->calculatorWebPartsContainer === null) {
             $this->calculatorWebPartsContainer = new CalculatorWebPartsContainer(
                 $this->getPass(),
-                $this->getWebFiles(),
+                $this->getRoutedWebFiles(),
                 $this->getDirs(),
                 $this->getHtmlHelper(),
                 $this->getRequest()

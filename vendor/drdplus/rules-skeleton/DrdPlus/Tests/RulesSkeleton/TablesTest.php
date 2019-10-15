@@ -13,10 +13,14 @@ class TablesTest extends AbstractContentTest
 {
     /**
      * @test
+     * @dataProvider provideParametersToGetTablesOnly
+     * @param array $get
+     * @param string $url
      */
-    public function I_can_get_tables_only(): void
+    public function I_can_get_tables_only(array $get, string $url): void
     {
-        $htmlDocumentWithTablesOnly = $this->getHtmlDocument([Request::TABLES => '' /* all of them */]);
+        $this->passOut(); // tables should be accessible for free
+        $htmlDocumentWithTablesOnly = $this->getHtmlDocument($get, [], [], $url);
         /** @var NodeList|Element[] $tables */
         $tables = $htmlDocumentWithTablesOnly->getElementsByTagName('table');
         if (!$this->getTestsConfiguration()->hasTables()) {
@@ -25,6 +29,8 @@ class TablesTest extends AbstractContentTest
 
             return;
         }
+        self::assertGreaterThan(0, count($tables), 'Some tables expected due to tests configuration');
+
         $expectedTableIds = $this->getTableIds();
         $fetchedTableIds = $this->getElementsIds($tables);
         $missingIds = \array_diff($expectedTableIds, $fetchedTableIds);
@@ -33,10 +39,20 @@ class TablesTest extends AbstractContentTest
         $this->Expected_table_ids_are_present($fetchedTableIds);
     }
 
+    public function provideParametersToGetTablesOnly(): array
+    {
+        return [
+            'via query parameter' => [[Request::TABLES => '' /* all of them */], '/'],
+            'via english path' => [[], '/' . Request::TABLES],
+            'via czech path' => [[], '/' . Request::TABULKY],
+        ];
+    }
+
     protected function getTableIds(): array
     {
         static $tableIds;
         if ($tableIds === null) {
+            $this->passIn(); // parse table IDs from passed content
             $tableIds = $this->parseTableIds($this->getHtmlDocument());
             \sort($tableIds);
             $this->Expected_table_ids_are_present($tableIds);

@@ -18,7 +18,7 @@ abstract class AbstractPublicFiles extends StrictObject implements \IteratorAggr
 
     protected function removeMapFiles(array $files)
     {
-        return \array_filter($files, function (string $file) {
+        return \array_filter($files, static function (string $file) {
             return !\preg_match('~[.]map$~', $file);
         });
     }

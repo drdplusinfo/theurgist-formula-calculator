@@ -174,7 +174,7 @@ class Request extends StrictObject
         );
     }
 
-    public function areRequestedTables(): bool
+    public function areTablesRequested(): bool
     {
         return $this->getValueFromGet(self::TABLES) !== null || $this->getValueFromGet(self::TABULKY) !== null;
     }

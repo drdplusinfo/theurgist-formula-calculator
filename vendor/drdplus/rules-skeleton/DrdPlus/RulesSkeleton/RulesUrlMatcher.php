@@ -6,7 +6,7 @@ use Granam\Strict\Object\StrictObject;
 use Granam\String\StringInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
-    class RulesUrlMatcher extends StrictObject
+class RulesUrlMatcher extends StrictObject
 {
     /**
      * @var UrlMatcherInterface

@@ -2,7 +2,7 @@
 
 namespace DrdPlus\RulesSkeleton;
 
-class DummyWebCache extends Cache
+class DummyWebCache extends WebCache
 {
     public function isCacheValid(): bool
     {

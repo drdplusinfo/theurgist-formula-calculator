@@ -18,12 +18,12 @@ class FormulaServicesContainer extends CalculatorServicesContainer
     /**
      * @return WebPartsContainer|FormulaWebPartsContainer
      */
-    public function getWebPartsContainer(): WebPartsContainer
+    public function getRoutedWebPartsContainer(): WebPartsContainer
     {
         if ($this->formulaWebPartsContainer === null) {
             $this->formulaWebPartsContainer = new FormulaWebPartsContainer(
                 $this->getPass(),
-                $this->getWebFiles(),
+                $this->getRoutedWebFiles(),
                 $this->getDirs(),
                 $this->getHtmlHelper(),
                 $this->getRequest(),

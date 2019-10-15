@@ -8,15 +8,18 @@ class TablesTest extends \DrdPlus\Tests\RulesSkeleton\TablesTest
 
     /**
      * @test
+     * @dataProvider provideParametersToGetTablesOnly
+     * @param array $get
+     * @param string $url
      */
-    public function I_can_get_tables_only(): void
+    public function I_can_get_tables_only(array $get, string $url): void
     {
         if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertFalse(false, 'No tables expected in calculator');
 
             return;
         }
-        parent::I_can_get_tables_only();
+        parent::I_can_get_tables_only($get, $url);
     }
 
     /**

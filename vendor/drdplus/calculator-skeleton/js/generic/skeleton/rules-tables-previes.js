@@ -1,162 +1,162 @@
-var removeIdsFromElement = function (element) {
-    element.id = '';
-    for (var i = 0, childrenLength = element.children.length; i < childrenLength; i++) {
-        removeIdsFromElement(element.children[i]);
+let removeIdsFromElement = function (element) {
+    element.id = ''
+    for (let i = 0, childrenLength = element.children.length; i < childrenLength; i++) {
+        removeIdsFromElement(element.children[i])
     }
-};
+}
 
-var removeAnchorsFromElement = function (element) {
+let removeAnchorsFromElement = function (element) {
     if (element.tagName === 'A') {
         element.onclick = function () {
-            return false;
+            return false
         }
     }
-    for (var i = 0, childrenLength = element.children.length; i < childrenLength; i++) {
-        var child = element.children[i];
+    for (let i = 0, childrenLength = element.children.length; i < childrenLength; i++) {
+        let child = element.children[i]
         if (child.tagName === 'A') {
-            var replacement = document.createElement('span');
-            replacement.innerHTML = child.innerHTML;
-            element.replaceChild(replacement, child);
+            let replacement = document.createElement('span')
+            replacement.innerHTML = child.innerHTML
+            element.replaceChild(replacement, child)
         } else {
-            removeAnchorsFromElement(element.children[i]);
+            removeAnchorsFromElement(element.children[i])
         }
     }
-};
+}
 
-var showPreview = function (onElement, getElementByHrefForPreview) {
-    var previewWrapped = onElement.getElementsByClassName('preview');
-    var preview;
+let showPreview = function (onElement, getElementByHrefForPreview) {
+    let previewWrapped = onElement.getElementsByClassName('preview')
+    let preview
 
     if (previewWrapped.length > 0) {
-        preview = previewWrapped[0];
-        preview.className = preview.className.replace('hidden', '').trim(); // reveal if hidden
-        return true;
+        preview = previewWrapped[0]
+        preview.className = preview.className.replace('hidden', '').trim() // reveal if hidden
+        return true
     }
 
-    preview = document.createElement('div');
-    preview.className = 'preview';
-    var linkedTable = getElementByHrefForPreview(onElement.href);
+    preview = document.createElement('div')
+    preview.className = 'preview'
+    let linkedTable = getElementByHrefForPreview(onElement.href)
     if (!linkedTable) {
-        console.log('No linked element found for ' + onElement.href);
-        return false;
+        console.log('No linked element found for ' + onElement.href)
+        return false
     }
-    preview.appendChild(linkedTable);
-    onElement.appendChild(preview); // add newly created
-    return true;
-};
+    preview.appendChild(linkedTable)
+    onElement.appendChild(preview) // add newly created
+    return true
+}
 
-var addPreviewToTableLinks = function (isDesiredAnchor, getElementByHrefForPreview) {
-    var anchors = document.getElementsByTagName('a');
-    for (var i = 0, anchorsLength = anchors.length; i < anchorsLength; i++) {
-        var anchor = anchors[i];
+let addPreviewToTableLinks = function (isDesiredAnchor, getElementByHrefForPreview) {
+    let anchors = document.getElementsByTagName('a')
+    for (let i = 0, anchorsLength = anchors.length; i < anchorsLength; i++) {
+        let anchor = anchors[i]
         if (!isDesiredAnchor(anchor)) {
-            continue;
+            continue
         }
         // to trigger mouseout after touch and its mouseover effect
         anchor.addEventListener('touchstart', function (event) {
-            event.target.dataset.blockPreview = true;
-        });
+            event.target.dataset.blockPreview = true
+        })
         anchor.addEventListener('mouseover', function (event) {
             if (event.target.dataset.blockPreview) {
-                event.target.dataset.blockPreview = false;
-                return;
+                event.target.dataset.blockPreview = false
+                return
             }
-            showPreview(this, getElementByHrefForPreview);
-        });
+            showPreview(this, getElementByHrefForPreview)
+        })
         anchor.addEventListener('mouseout', function () { // hide on mouse out
-            var previewWrapped = this.getElementsByClassName('preview');
+            let previewWrapped = this.getElementsByClassName('preview')
             if (previewWrapped.length === 0) {
-                console.log('Can not find .preview for anchor ' + this.href);
-                return;
+                console.log('Can not find .preview for anchor ' + this.href)
+                return
             }
-            var tablePreview = previewWrapped[0];
+            let tablePreview = previewWrapped[0]
             if (!tablePreview.className.includes('hidden')) {
-                tablePreview.className += ' hidden';
+                tablePreview.className += ' hidden'
             }
-        });
+        })
     }
-};
+}
 
-var elementParentIsTargetTable = function (element, tableId) {
-    var parent = element.parentNode;
+let elementParentIsTargetTable = function (element, tableId) {
+    let parent = element.parentNode
     do {
         if (parent.id === tableId) {
-            return true;
+            return true
         }
         if (!parent.parentNode) {
-            return false;
+            return false
         }
-        parent = parent.parentNode;
-    } while (parent.tagName !== 'TABLE' && parent.tagName !== 'BODY' && parent.tagName !== 'HTML');
+        parent = parent.parentNode
+    } while (parent.tagName !== 'TABLE' && parent.tagName !== 'BODY' && parent.tagName !== 'HTML')
     if (parent.tagName !== 'TABLE') {
-        return false;
+        return false
     }
-    var titles = parent.getElementsByClassName('title');
-    for (var titlesLength = titles.length, titlesIndex = 0; titlesIndex < titlesLength; titlesIndex++) {
+    let titles = parent.getElementsByClassName('title')
+    for (let titlesLength = titles.length, titlesIndex = 0; titlesIndex < titlesLength; titlesIndex++) {
         if (titles[titlesIndex].id === tableId) {
-            return true;
+            return true
         }
     }
-    var headerCells = parent.getElementsByTagName('TH');
-    for (var headerCellsLength = headerCells.length, headerCellsIndex = 0; headerCellsIndex < headerCellsLength; headerCellsIndex++) {
+    let headerCells = parent.getElementsByTagName('TH')
+    for (let headerCellsLength = headerCells.length, headerCellsIndex = 0; headerCellsIndex < headerCellsLength; headerCellsIndex++) {
         if (headerCells[headerCellsIndex].id === tableId) {
-            return true;
+            return true
         }
     }
 
-    return false;
-};
+    return false
+}
 
-var isAnchorToTable = function (anchor) {
+let isAnchorToTable = function (anchor) {
     return anchor.hash !== 'undefined' && anchor.hash
         && anchor.hash.match(/#tabulka/i)
-        && !elementParentIsTargetTable(anchor, anchor.hash.substring(1) /* id */);
-};
+        && !elementParentIsTargetTable(anchor, anchor.hash.substring(1) /* id */)
+}
 
-var getTableByHrefForPreview = function (hrefToTable) {
+let getTableByHrefForPreview = function (hrefToTable) {
     if (hrefToTable === 'undefined' || !hrefToTable) {
-        console.log('Missing href to a table');
-        return '';
+        console.log('Missing href to a table')
+        return ''
     }
-    var element;
-    var id = hrefToTable.replace(/[^#]*#/, '');
+    let element
+    let id = hrefToTable.replace(/[^#]*#/, '')
     if (hrefToTable.match(/[^/]*\/\//)) { // two slashes = possible external URL
-        var linkHost = hrefToTable.match(/[^/]*\/\/([^/]+)\//)[1];
-        var currentHost = window.location.href.match(/[^/]*\/\/([^/]+)\//)[1];
+        let linkHost = hrefToTable.match(/[^/]*\/\/([^/]+)\//)[1]
+        let currentHost = window.location.href.match(/[^/]*\/\/([^/]+)\//)[1]
         if (linkHost !== currentHost) { // external URL
-            var iFrame = document.getElementById(linkHost);
+            let iFrame = document.getElementById(linkHost)
             if (!iFrame) {
-                console.log('Could not find iframe by ID ' + linkHost);
-                return '';
+                console.log('Could not find iframe by ID ' + linkHost)
+                return ''
             }
-            element = iFrame.contentWindow.document.getElementById(id);
+            element = iFrame.contentWindow.document.getElementById(id)
         }
     }
     if (!element) {
-        element = document.getElementById(id);
+        element = document.getElementById(id)
     }
     if (element === 'undefined' || !element) {
-        console.log('Element in a table not found by ID ' + hrefToTable);
-        return '';
+        console.log('Element in a table not found by ID ' + hrefToTable)
+        return ''
     }
-    var searchedTable = element;
+    let searchedTable = element
     while (searchedTable.tagName !== 'TABLE' && searchedTable.tagName !== 'BODY') {
-        searchedTable = searchedTable.parentNode;
+        searchedTable = searchedTable.parentNode
     }
     if (searchedTable.tagName !== 'TABLE') {
-        console.log('Wrapping table not found for an element with ID ' + hrefToTable);
-        return '';
+        console.log('Wrapping table not found for an element with ID ' + hrefToTable)
+        return ''
     }
-    var table = searchedTable.cloneNode(true);
-    removeIdsFromElement(table);
-    removeAnchorsFromElement(table);
+    let table = searchedTable.cloneNode(true)
+    removeIdsFromElement(table)
+    removeAnchorsFromElement(table)
 
-    return table;
-};
+    return table
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-        // var just second level domain to be the document domain to allow access to iframes from other sub-domains
-        document.domain = document.domain.replace(/^(?:[^.]+\.)*([^.]+\.[^.]+).*/, '$1');
-        addPreviewToTableLinks(isAnchorToTable, getTableByHrefForPreview);
+        // let just second level domain to be the document domain to allow access to iframes from other sub-domains
+        document.domain = document.domain.replace(/^(?:[^.]+\.)*([^.]+\.[^.]+).*/, '$1')
+        addPreviewToTableLinks(isAnchorToTable, getTableByHrefForPreview)
     }
-);
+)

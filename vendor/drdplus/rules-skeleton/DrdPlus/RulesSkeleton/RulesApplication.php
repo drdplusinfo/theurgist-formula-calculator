@@ -35,6 +35,7 @@ class RulesApplication extends StrictObject
             $this->sendCustomHeaders();
             if ($this->isRequestedWebVersionUpdate()) {
                 echo $this->updateCode();
+                $this->clearCache();
             } else {
                 $this->persistCurrentVersion();
                 echo $this->getContent()->getValue();
@@ -58,6 +59,11 @@ class RulesApplication extends StrictObject
         );
     }
 
+    protected function clearCache()
+    {
+        $this->servicesContainer->getCacheCleaner()->clearCache();
+    }
+
     private function persistCurrentVersion(): bool
     {
         return $this->servicesContainer->getCookiesService()->setMinorVersionCookie(
@@ -71,7 +77,7 @@ class RulesApplication extends StrictObject
             return $this->content;
         }
         $servicesContainer = $this->servicesContainer;
-        if ($servicesContainer->getRequest()->areRequestedTables()) {
+        if ($servicesContainer->getTablesRequestDetector()->areTablesRequested()) {
             $this->content = new RulesContent(
                 $servicesContainer->getTablesContent(),
                 $servicesContainer->getMenu(),
@@ -83,7 +89,7 @@ class RulesApplication extends StrictObject
 
             return $this->content;
         }
-        if ($servicesContainer->getRequest()->isRequestedPdf() && $servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile()) {
+        if ($servicesContainer->getRequest()->isRequestedPdf() && $servicesContainer->getRoutedWebPartsContainer()->getPdfBody()->getPdfFile()) {
             $this->content = new RulesContent(
                 $servicesContainer->getPdfContent(),
                 $servicesContainer->getEmptyMenu(),
@@ -181,7 +187,7 @@ class RulesApplication extends StrictObject
             // anyone can show content of this page
             \header('Access-Control-Allow-Origin: *');
         } elseif ($this->getContent()->containsPdf()) {
-            $pdfFile = $this->servicesContainer->getWebPartsContainer()->getPdfBody()->getPdfFile();
+            $pdfFile = $this->servicesContainer->getRoutedWebPartsContainer()->getPdfBody()->getPdfFile();
             $pdfFileBasename = \basename($pdfFile);
             if ($this->servicesContainer->getRequest()->isCliRequest()) {
                 return;

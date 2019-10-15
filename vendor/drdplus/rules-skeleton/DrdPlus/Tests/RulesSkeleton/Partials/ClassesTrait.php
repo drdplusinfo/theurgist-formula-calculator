@@ -3,7 +3,6 @@
 namespace DrdPlus\Tests\RulesSkeleton\Partials;
 
 use DeviceDetector\Parser\Bot;
-use DrdPlus\RulesSkeleton\Cache;
 use DrdPlus\RulesSkeleton\Configuration;
 use DrdPlus\RulesSkeleton\CookiesService;
 use DrdPlus\RulesSkeleton\Dirs;
@@ -12,6 +11,7 @@ use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\RulesSkeleton\RulesApplication;
 use DrdPlus\RulesSkeleton\CurrentWebVersion;
+use DrdPlus\RulesSkeleton\WebCache;
 
 trait ClassesTrait
 {
@@ -24,11 +24,11 @@ trait ClassesTrait
     }
 
     /**
-     * @return string|Cache
+     * @return string|WebCache
      */
-    protected function getCacheClass(): string
+    protected function getWebCacheClass(): string
     {
-        return Cache::class;
+        return WebCache::class;
     }
 
     /**
