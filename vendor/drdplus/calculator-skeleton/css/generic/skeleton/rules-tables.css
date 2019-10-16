@@ -36,7 +36,16 @@ table.content th:last-child {
     text-align: right;
 }
 
+table.content th:first-child {
+    text-align: left;
+}
+
+table.content td:last-child {
+    text-align: right;
+}
+
 table.content td:first-child {
+    text-align: left;
     padding-left: 24px;
 }
 
@@ -46,10 +55,6 @@ table.content tr.main td:first-child, table.content td.main {
 
 table.content td.sub {
     padding-left: 36px;
-}
-
-table.content td:last-child {
-    text-align: right;
 }
 
 table.basic {

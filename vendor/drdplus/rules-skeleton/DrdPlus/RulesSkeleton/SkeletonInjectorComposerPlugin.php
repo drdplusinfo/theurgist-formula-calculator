@@ -191,7 +191,6 @@ class SkeletonInjectorComposerPlugin extends StrictObject implements PluginInter
             [
                 'mkdir -p cache',
                 'chmod 0775 cache',
-                'chgrp www-data cache',
                 "cp ./vendor/{$this->skeletonPackageName}/cache/.gitignore ./cache/.gitignore",
             ],
             $documentRoot

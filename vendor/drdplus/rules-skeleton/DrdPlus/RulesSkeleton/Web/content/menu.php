@@ -12,7 +12,7 @@ if ($configuration->isShowHomeButton()
     $homeButton = <<<HTML
 <span class="menu">
     <a id="homeButton" class="internal-url" href="{$configuration->getHomeButtonTarget()}">
-        <img class="home" alt="Small dragon menu" src="/images/generic/skeleton/rules-drd-plus-dragon-menu-2x22.png">
+        <img class="home" alt="Small dragon menu" src="/images/generic/skeleton/drdplus-dragon-menu-2x22.png">
     </a>
 </span>
 HTML;

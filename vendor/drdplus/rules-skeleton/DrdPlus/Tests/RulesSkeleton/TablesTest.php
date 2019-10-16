@@ -23,15 +23,14 @@ class TablesTest extends AbstractContentTest
         $htmlDocumentWithTablesOnly = $this->getHtmlDocument($get, [], [], $url);
         /** @var NodeList|Element[] $tables */
         $tables = $htmlDocumentWithTablesOnly->getElementsByTagName('table');
+        $expectedTableIds = $this->getTableIds();
         if (!$this->getTestsConfiguration()->hasTables()) {
             self::assertCount(0, $tables, 'No tables expected due to tests configuration');
-            self::assertCount(0, $this->getTableIds(), 'No tables expected due to tests configuration');
-
-            return;
+            self::assertCount(0, $expectedTableIds, 'No tables expected due to tests configuration');
+        } else {
+            self::assertGreaterThan(0, count($tables), 'Some tables expected due to tests configuration');
+            self::assertGreaterThan(0, count($expectedTableIds), 'Some tables expected due to tests configuration');
         }
-        self::assertGreaterThan(0, count($tables), 'Some tables expected due to tests configuration');
-
-        $expectedTableIds = $this->getTableIds();
         $fetchedTableIds = $this->getElementsIds($tables);
         $missingIds = \array_diff($expectedTableIds, $fetchedTableIds);
         self::assertEmpty($missingIds, 'Some tables with IDs are missing: ' . \implode(',', $missingIds));

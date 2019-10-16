@@ -71,7 +71,7 @@ class RulesMainContentTest extends MainContentTest
         $idsCount = \array_count_values($ids);
         $duplicatedIds = \array_filter(
             $idsCount,
-            function (int $count) {
+            static function (int $count) {
                 return $count > 1;
             }
         );

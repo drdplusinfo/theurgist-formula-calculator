@@ -8,6 +8,7 @@ use DrdPlus\RulesSkeleton\HtmlHelper;
 use DrdPlus\RulesSkeleton\Request;
 use DrdPlus\RulesSkeleton\ServicesContainer;
 use DrdPlus\RulesSkeleton\Web\RulesMainContent;
+use DrdPlus\RulesSkeleton\Web\WebPartsContainer;
 use Granam\Git\Git;
 use Granam\String\StringTools;
 
@@ -38,7 +39,10 @@ class CalculatorServicesContainer extends ServicesContainer
     private $calculatorWebContent;
 
     /** @var CalculatorWebPartsContainer */
-    private $calculatorWebPartsContainer;
+    private $calculatorRoutedWebPartsContainer;
+
+    /** @var CalculatorWebPartsContainer */
+    private $calculatorRootWebPartsContainer;
 
     /** @var GitReader */
     private $gitReader;
@@ -142,8 +146,8 @@ class CalculatorServicesContainer extends ServicesContainer
 
     public function getRoutedWebPartsContainer(): \DrdPlus\RulesSkeleton\Web\WebPartsContainer
     {
-        if ($this->calculatorWebPartsContainer === null) {
-            $this->calculatorWebPartsContainer = new CalculatorWebPartsContainer(
+        if ($this->calculatorRoutedWebPartsContainer === null) {
+            $this->calculatorRoutedWebPartsContainer = new CalculatorWebPartsContainer(
                 $this->getPass(),
                 $this->getRoutedWebFiles(),
                 $this->getDirs(),
@@ -151,7 +155,21 @@ class CalculatorServicesContainer extends ServicesContainer
                 $this->getRequest()
             );
         }
-        return $this->calculatorWebPartsContainer;
+        return $this->calculatorRoutedWebPartsContainer;
+    }
+
+    public function getRootWebPartsContainer(): WebPartsContainer
+    {
+        if ($this->calculatorRootWebPartsContainer === null) {
+            $this->calculatorRootWebPartsContainer = new CalculatorWebPartsContainer(
+                $this->getPass(),
+                $this->getRootWebFiles(),
+                $this->getDirs(),
+                $this->getHtmlHelper(),
+                $this->getRequest()
+            );
+        }
+        return $this->calculatorRootWebPartsContainer;
     }
 
     public function getGit(): Git

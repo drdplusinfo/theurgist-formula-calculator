@@ -15,8 +15,7 @@ class TestsTest extends AbstractContentTest
      */
     public function Every_test_lives_in_drd_plus_tests_namespace(): void
     {
-        $reflectionClass = new \ReflectionClass(static::class);
-        $testsDir = \dirname($reflectionClass->getFileName());
+        $testsDir = $this->getTestsDir();
         $testClasses = $this->getClassesFromDir($testsDir);
         self::assertNotEmpty($testClasses, "No test classes found in {$testsDir}");
         foreach ($testClasses as $testClass) {
@@ -28,16 +27,21 @@ class TestsTest extends AbstractContentTest
         }
     }
 
+    protected function getTestsDir(): string
+    {
+        $reflectionClass = new \ReflectionClass(static::class);
+        return \dirname($reflectionClass->getFileName());
+    }
+
     /**
      * @test
      * @throws \ReflectionException
      */
     public function Every_test_reflects_test_class_namespace(): void
     {
-        $referenceTestClass = new \ReflectionClass($this->getRulesApplicationTestClass());
-        $referenceTestDir = \dirname($referenceTestClass->getFileName());
+        $testsDir = $this->getTestsDir();
         $testingClassesWithoutSut = $this->getTestingClassesWithoutSut();
-        foreach ($this->getClassesFromDir($referenceTestDir) as $testClass) {
+        foreach ($this->getClassesFromDir($testsDir) as $testClass) {
             $testClassReflection = new \ReflectionClass($testClass);
             if ($testClassReflection->isAbstract()
                 || $testClassReflection->isInterface()
@@ -88,17 +92,6 @@ class TestsTest extends AbstractContentTest
             TableOfContentsTest::class,
             GitTest::class,
         ];
-    }
-
-    private function getRulesApplicationTestClass(): string
-    {
-        $rulesApplicationTestClass = \str_replace('DrdPlus\\', 'DrdPlus\\Tests\\', $this->getRulesApplicationClass()) . 'Test';
-        self::assertTrue(
-            \class_exists($rulesApplicationTestClass),
-            'Estimated rules application test class does not exist: ' . $rulesApplicationTestClass
-        );
-
-        return $rulesApplicationTestClass;
     }
 
     protected function getClassesFromDir(string $dir): array

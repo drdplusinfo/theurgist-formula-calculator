@@ -87,16 +87,16 @@
         },
         {
             "name": "drdplus/calculator-skeleton",
-            "version": "1.1.11",
+            "version": "1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/calculator-skeleton.git",
-                "reference": "27854df8fed8ff237bbbcab3e1bf7591152b24b6"
+                "reference": "6a7c044ace115e857b8bd82fe2f4862d353a9291"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/27854df8fed8ff237bbbcab3e1bf7591152b24b6",
-                "reference": "27854df8fed8ff237bbbcab3e1bf7591152b24b6",
+                "url": "https://api.github.com/repos/drdplusinfo/calculator-skeleton/zipball/6a7c044ace115e857b8bd82fe2f4862d353a9291",
+                "reference": "6a7c044ace115e857b8bd82fe2f4862d353a9291",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
                 "MIT"
             ],
             "description": "Style and functionality helper of a DrD+ calculator",
-            "time": "2019-10-15T12:58:46+00:00"
+            "time": "2019-10-16T08:28:21+00:00"
         },
         {
             "name": "drdplus/codes",
@@ -169,16 +169,16 @@
         },
         {
             "name": "drdplus/rules-skeleton",
-            "version": "1.7.5",
+            "version": "1.7.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-                "reference": "efca18a5e5586f1dcb4c32d8f055030cbd9d218d"
+                "reference": "118cccca40a4136a0a9def39280f4c56f30e08b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/efca18a5e5586f1dcb4c32d8f055030cbd9d218d",
-                "reference": "efca18a5e5586f1dcb4c32d8f055030cbd9d218d",
+                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/118cccca40a4136a0a9def39280f4c56f30e08b0",
+                "reference": "118cccca40a4136a0a9def39280f4c56f30e08b0",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +234,7 @@
                 "helper",
                 "rules"
             ],
-            "time": "2019-10-15T12:27:36+00:00"
+            "time": "2019-10-16T14:35:27+00:00"
         },
         {
             "name": "drdplus/tables",
@@ -2512,23 +2512,23 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.8",
+            "version": "5.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4"
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/dcb6e1006bb5fd1e392b4daa68932880f37550d4",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44c6787311242a979fa15c704327c20e7221a0e4",
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.2.20",
+                "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
                 "json-schema/json-schema-test-suite": "1.2.0",
                 "phpunit/phpunit": "^4.8.35"
             },
@@ -2574,7 +2574,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2019-01-14T23:55:14+00:00"
+            "time": "2019-09-25T14:49:45+00:00"
         },
         {
             "name": "mockery/mockery",

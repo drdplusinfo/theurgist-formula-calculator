@@ -52,9 +52,13 @@ class ServicesContainer extends StrictObject
     /** @var JsFiles */
     private $jsFiles;
     /** @var WebFiles */
-    private $webFiles;
+    private $routedWebFiles;
+    /** @var WebFiles */
+    private $rootWebFiles;
     /** @var WebRootProvider */
-    private $webRootProvider;
+    private $routedWebRootProvider;
+    /** @var WebRootProvider */
+    private $rootWebRootProvider;
     /** @var PathProvider */
     private $pathProvider;
     /** @var Request */
@@ -68,7 +72,9 @@ class ServicesContainer extends StrictObject
     /** @var Bot */
     private $botParser;
     /** @var WebPartsContainer */
-    private $webPartsContainer;
+    private $rootWebPartsContainer;
+    /** @var WebPartsContainer */
+    private $routedWebPartsContainer;
     /** @var RulesMainContent */
     private $rulesMainContent;
     /** @var RulesMainContent */
@@ -191,8 +197,8 @@ class ServicesContainer extends StrictObject
 
     public function getRoutedWebPartsContainer(): WebPartsContainer
     {
-        if ($this->webPartsContainer === null) {
-            $this->webPartsContainer = new WebPartsContainer(
+        if ($this->routedWebPartsContainer === null) {
+            $this->routedWebPartsContainer = new WebPartsContainer(
                 $this->getPass(),
                 $this->getRoutedWebFiles(),
                 $this->getDirs(),
@@ -200,7 +206,7 @@ class ServicesContainer extends StrictObject
                 $this->getRequest()
             );
         }
-        return $this->webPartsContainer;
+        return $this->routedWebPartsContainer;
     }
 
     public function getTablesContent(): TablesContent
@@ -217,8 +223,8 @@ class ServicesContainer extends StrictObject
 
     public function getRootWebPartsContainer(): WebPartsContainer
     {
-        if ($this->webPartsContainer === null) {
-            $this->webPartsContainer = new WebPartsContainer(
+        if ($this->rootWebPartsContainer === null) {
+            $this->rootWebPartsContainer = new WebPartsContainer(
                 $this->getPass(),
                 $this->getRootWebFiles(),
                 $this->getDirs(),
@@ -226,7 +232,7 @@ class ServicesContainer extends StrictObject
                 $this->getRequest()
             );
         }
-        return $this->webPartsContainer;
+        return $this->rootWebPartsContainer;
     }
 
     public function getPdfContent(): PdfContent
@@ -336,34 +342,34 @@ class ServicesContainer extends StrictObject
 
     public function getRoutedWebFiles(): WebFiles
     {
-        if ($this->webFiles === null) {
-            $this->webFiles = new WebFiles($this->getRoutedWebRootProvider());
+        if ($this->routedWebFiles === null) {
+            $this->routedWebFiles = new WebFiles($this->getRoutedWebRootProvider());
         }
-        return $this->webFiles;
+        return $this->routedWebFiles;
     }
 
     protected function getRoutedWebRootProvider(): WebRootProvider
     {
-        if ($this->webRootProvider === null) {
-            $this->webRootProvider = new WebRootProvider($this->createRoutedDirs($this->getDirs()));
+        if ($this->routedWebRootProvider === null) {
+            $this->routedWebRootProvider = new WebRootProvider($this->createRoutedDirs($this->getDirs()));
         }
-        return $this->webRootProvider;
+        return $this->routedWebRootProvider;
     }
 
     public function getRootWebFiles(): WebFiles
     {
-        if ($this->webFiles === null) {
-            $this->webFiles = new WebFiles($this->getRootWebRootProvider());
+        if ($this->rootWebFiles === null) {
+            $this->rootWebFiles = new WebFiles($this->getRootWebRootProvider());
         }
-        return $this->webFiles;
+        return $this->rootWebFiles;
     }
 
     protected function getRootWebRootProvider(): WebRootProvider
     {
-        if ($this->webRootProvider === null) {
-            $this->webRootProvider = new WebRootProvider($this->getDirs());
+        if ($this->rootWebRootProvider === null) {
+            $this->rootWebRootProvider = new WebRootProvider($this->getDirs());
         }
-        return $this->webRootProvider;
+        return $this->rootWebRootProvider;
     }
 
     protected function createRoutedDirs(Dirs $dirs): RoutedDirs
