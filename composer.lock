@@ -169,16 +169,16 @@
         },
         {
             "name": "drdplus/rules-skeleton",
-            "version": "1.7.11",
+            "version": "1.7.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drdplusinfo/rules-skeleton.git",
-                "reference": "118cccca40a4136a0a9def39280f4c56f30e08b0"
+                "reference": "3b0ce9e2f6a2d40f2f2e5f51202d9eb0ecdee1f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/118cccca40a4136a0a9def39280f4c56f30e08b0",
-                "reference": "118cccca40a4136a0a9def39280f4c56f30e08b0",
+                "url": "https://api.github.com/repos/drdplusinfo/rules-skeleton/zipball/3b0ce9e2f6a2d40f2f2e5f51202d9eb0ecdee1f3",
+                "reference": "3b0ce9e2f6a2d40f2f2e5f51202d9eb0ecdee1f3",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +234,7 @@
                 "helper",
                 "rules"
             ],
-            "time": "2019-10-16T14:35:27+00:00"
+            "time": "2019-10-17T06:34:14+00:00"
         },
         {
             "name": "drdplus/tables",

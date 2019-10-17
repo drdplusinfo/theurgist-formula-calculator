@@ -40,28 +40,57 @@ class TestsTest extends AbstractContentTest
     public function Every_test_reflects_test_class_namespace(): void
     {
         $testsDir = $this->getTestsDir();
-        $testingClassesWithoutSut = $this->getTestingClassesWithoutSut();
         foreach ($this->getClassesFromDir($testsDir) as $testClass) {
-            $testClassReflection = new \ReflectionClass($testClass);
-            if ($testClassReflection->isAbstract()
-                || $testClassReflection->isInterface()
-                || $testClassReflection->isTrait()
-                || \in_array($testClass, $testingClassesWithoutSut, true)
-            ) {
-                continue;
-            }
-            if ($testClass === SkeletonInjectorComposerPlugin::class) {
-                self::assertTrue(
-                    \interface_exists(PluginInterface::class),
-                    "Composer package is required for this test, include it by\ncomposer require --dev composer/composer"
-                );
-            }
-            $testedClass = static::getSutClass($testClass);
+            $this->Test_is_testing_something($testClass);
+        }
+    }
+
+    protected function Test_is_testing_something(string $testClass)
+    {
+        $testingClassesWithoutSut = $this->getTestingClassesWithoutSut();
+        $testClassReflection = new \ReflectionClass($testClass);
+        if ($testClassReflection->isAbstract()
+            || $testClassReflection->isInterface()
+            || $testClassReflection->isTrait()
+            || \in_array($testClass, $testingClassesWithoutSut, true)
+        ) {
+            return;
+        }
+        if (is_a($testClass, SkeletonInjectorComposerPlugin::class, true)) {
             self::assertTrue(
-                \class_exists($testedClass),
-                "What is testing $testClass? Class $testedClass has not been found."
+                \interface_exists(PluginInterface::class),
+                "Composer package is required for this test, include it by\ncomposer require --dev composer/composer"
             );
         }
+        $sutClass = static::getSutClass($testClass);
+        $classExists = \class_exists($sutClass);
+        if (!$classExists) {
+            foreach ($testingClassesWithoutSut as $testClassWithoutSut) {
+                if (is_a($testClass, $testClassWithoutSut, true)) {
+                    return; // some parent of test class is on white list
+                }
+            }
+        }
+        if (!$classExists) {
+            $classExists = $this->isParentTestTestingSomeExistingClass($testClassReflection);
+        }
+        self::assertTrue(
+            $classExists,
+            "What is testing $testClass? Class $sutClass has not been found."
+        );
+    }
+
+    private function isParentTestTestingSomeExistingClass(\ReflectionClass $testClassReflection): bool
+    {
+        $testParentClassReflection = $testClassReflection->getParentClass();
+        if (!$testParentClassReflection || !preg_match('~Test$~', $testParentClassReflection->getName())) {
+            return false;
+        }
+        $parentSutClass = static::getSutClass($testParentClassReflection->getName());
+        if (class_exists($parentSutClass)) {
+            return true;
+        }
+        return $this->isParentTestTestingSomeExistingClass($testParentClassReflection);
     }
 
     protected function getTestingClassesWithoutSut(): array
