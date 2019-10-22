@@ -4,6 +4,7 @@ namespace DrdPlus\RulesSkeleton;
 
 use Granam\WebContentBuilder\HtmlDocument;
 use Gt\Dom\Element;
+use Gt\Dom\HTMLCollection;
 
 class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
 {
@@ -30,6 +31,7 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
     public const CLASS_HIDDEN = 'hidden';
     public const CLASS_FORMULA = 'formula';
     public const CLASS_SOURCE_CODE_TITLE = 'source-code-title';
+    public const CLASS_TABLES_RELATED = 'tables-related';
     public const DATA_CACHE_STAMP = 'data-cache-stamp';
     public const DATA_CACHED_AT = 'data-cached-at';
     public const DATA_HAS_MARKED_EXTERNAL_URLS = 'data-has-marked-external-urls';
@@ -105,6 +107,11 @@ class HtmlHelper extends \Granam\WebContentBuilder\HtmlHelper
         }
 
         return \array_intersect_key($tablesWithIds, $unifiedRequiredIds);
+    }
+
+    public function findTablesRelatedElements(HtmlDocument $htmlDocument): HTMLCollection
+    {
+        return $htmlDocument->getElementsByClassName(self::CLASS_TABLES_RELATED);
     }
 
     public function markExternalLinksByClass(HtmlDocument $htmlDocument): HtmlDocument

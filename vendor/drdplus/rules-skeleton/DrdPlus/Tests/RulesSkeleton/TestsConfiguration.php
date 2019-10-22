@@ -16,6 +16,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
 
     public const HAS_TABLES = 'has_tables';
     public const HAS_TABLE_OF_CONTENTS = 'has_table_of_contents';
+    public const HAS_TABLES_RELATED_CONTENT = 'has_tables_related_content';
     public const HAS_HEADINGS = 'has_headings';
     public const HAS_AUTHORS = 'has_authors';
     public const HAS_EXTERNAL_ANCHORS_WITH_HASHES = 'has_external_anchors_with_hashes';
@@ -65,6 +66,8 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
 
     /** @var bool */
     private $hasTables = true;
+    /** @var bool */
+    private $hasTablesRelatedContent = true;
     /** @var array|string[] */
     private $someExpectedTableIds = [];
     /** @var bool */
@@ -149,6 +152,7 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
     public function __construct(array $values)
     {
         $this->setHasTables($values);
+        $this->setHasTablesRelatedContent($values, $this->hasTables());
         $this->setSomeExpectedTableIds($values, $this->hasTables());
         $this->setHasTableOfContents($values);
         $this->setHasHeadings($values);
@@ -188,17 +192,28 @@ class TestsConfiguration extends StrictObject implements TestsConfigurationReade
         $this->setExpectedHomeButtonTargetFromRoutes($values);
     }
 
-    /**
-     * @param array $values
-     */
     private function setHasTables(array $values): void
     {
         $this->hasTables = (bool)($values[self::HAS_TABLES] ?? $this->hasTables);
     }
 
+    private function setHasTablesRelatedContent(array $values, bool $hasTables): void
+    {
+        if (!$hasTables) {
+            $this->hasTablesRelatedContent = false;
+            return;
+        }
+        $this->hasTablesRelatedContent = (bool)($values[self::HAS_TABLES_RELATED_CONTENT] ?? $this->hasTablesRelatedContent);
+    }
+
     public function hasTables(): bool
     {
         return $this->hasTables;
+    }
+
+    public function hasTablesRelatedContent(): bool
+    {
+        return $this->hasTablesRelatedContent;
     }
 
     /**

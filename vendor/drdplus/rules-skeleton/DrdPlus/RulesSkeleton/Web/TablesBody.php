@@ -33,10 +33,14 @@ class TablesBody extends StrictObject implements RulesBodyInterface
     {
         $rawContent = $this->rulesMainBody->getValue();
         $rawContentDocument = new HtmlDocument($rawContent);
-        $tables = $rawContentDocument->getElementsByTagName('table');
         $tablesContent = '';
+        $tables = $rawContentDocument->getElementsByTagName('table');
         foreach ($tables as $table) {
             $tablesContent .= $table->outerHTML . "\n";
+        }
+        $tablesRelatedElements = $rawContentDocument->getElementsByClassName(HtmlHelper::CLASS_TABLES_RELATED);
+        foreach ($tablesRelatedElements as $tablesRelatedElement) {
+            $tablesContent .= $tablesRelatedElement->outerHTML . "\n";
         }
 
         return <<<HTML
@@ -49,11 +53,15 @@ HTML;
     public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
     {
         $tablesWithIds = $this->htmlHelper->findTablesWithIds($htmlDocument, $this->request->getRequestedTablesIds());
+        $tablesRelatedElements = $this->htmlHelper->findTablesRelatedElements($htmlDocument);
         foreach ($htmlDocument->body->children as $child) {
             $child->remove();
         }
         foreach ($tablesWithIds as $table) {
             $htmlDocument->body->appendChild($table);
+        }
+        foreach ($tablesRelatedElements as $tablesRelatedElement) {
+            $htmlDocument->body->appendChild($tablesRelatedElement);
         }
 
         return $htmlDocument;

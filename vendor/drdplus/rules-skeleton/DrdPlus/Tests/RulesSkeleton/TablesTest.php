@@ -91,11 +91,12 @@ class TablesTest extends AbstractContentTest
     {
         $menuWrapper = $htmlDocument->getElementById(HtmlHelper::ID_MENU_WRAPPER);
         $menuWrapper->remove();
-        foreach ($htmlDocument->getElementsByClassName(HtmlHelper::CLASS_INVISIBLE_ID) as $invisible) {
-            $invisible->remove();
-        }
-        foreach ($htmlDocument->getElementsByClassName(HtmlHelper::CLASS_INVISIBLE) as $invisible) {
-            $invisible->remove();
+
+        $classesToRemove = [HtmlHelper::CLASS_INVISIBLE_ID, HtmlHelper::CLASS_INVISIBLE, HtmlHelper::CLASS_TABLES_RELATED];
+        foreach ($classesToRemove as $classToRemove) {
+            foreach ($htmlDocument->getElementsByClassName($classToRemove) as $elementToRemove) {
+                $elementToRemove->remove();
+            }
         }
         foreach ($htmlDocument->body->children as $child) {
             self::assertSame(
@@ -106,7 +107,7 @@ class TablesTest extends AbstractContentTest
         }
     }
 
-    /**<
+    /**
      * @test
      */
     public function I_can_get_wanted_tables_from_content(): void
@@ -117,24 +118,91 @@ class TablesTest extends AbstractContentTest
             return;
         }
         $tableIds = $this->getTableIds();
-        $implodedTables = \implode(',', $tableIds);
-        $htmlDocument = $this->getHtmlDocument([Request::TABLES => $implodedTables]);
+        $implodedTableIds = \implode(',', $tableIds);
+        $htmlDocument = $this->getHtmlDocument([Request::TABLES => $implodedTableIds]);
         $tables = $htmlDocument->body->getElementsByTagName('table');
         self::assertGreaterThan(
             0,
             $tables->count(),
             \sprintf(
                 'No tables have been fetched from %s, when required IDs %s',
-                $this->getTestsConfiguration()->getLocalUrl() . '?' . Request::TABLES . '=' . \urlencode($implodedTables),
-                $implodedTables
+                $this->getTestsConfiguration()->getLocalUrl() . '?' . Request::TABLES . '=' . \urlencode($implodedTableIds),
+                $implodedTableIds
             )
         );
-        self::assertCount(count($tableIds), $tableIds, 'Expected same amount of tables as requested');
+        self::assertCount(count($tableIds), $tables, 'Expected same amount of tables as requested');
         self::assertSame(
             [],
             \array_diff($this->getTestsConfiguration()->getSomeExpectedTableIds(), $tableIds),
             'Some expected table IDs are missing'
         );
         $this->There_is_no_other_content_than_tables($htmlDocument);
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_tables_related_content(): void
+    {
+        if (!$this->getTestsConfiguration()->hasTables()) {
+            self::assertFalse(false, 'Disabled by tests configuration');
+
+            return;
+        }
+        $htmlDocument = $this->getHtmlDocument([], [], [], '/tables');
+        $tablesRelatedElements = $htmlDocument->body->getElementsByClassName(HtmlHelper::CLASS_TABLES_RELATED);
+        if (!$this->getTestsConfiguration()->hasTablesRelatedContent()) {
+            self::assertCount(
+                0,
+                $tablesRelatedElements,
+                \sprintf(
+                    "No tables-related content expected when fetching %s as tests configuration '%s' says",
+                    $this->getTestsConfiguration()->getLocalUrl() . '/tables',
+                    TestsConfiguration::HAS_TABLES_RELATED_CONTENT
+                )
+            );
+            return;
+        }
+        self::assertGreaterThan(
+            0,
+            count($tablesRelatedElements),
+            sprintf(
+                "Expected some tables-related content when fetching %s as tests configuration '%s' says",
+                $this->getTestsConfiguration()->getLocalUrl() . '/tables',
+                TestsConfiguration::HAS_TABLES_RELATED_CONTENT
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_tables_only_even_with_query_in_url(): void
+    {
+        if ($this->getTestsConfiguration()->hasTables()) {
+            $tablesWithQuery = $this->getHtmlDocument(['foo' => 'bar'], [], [], '/tables');
+            self::assertGreaterThan(
+                0,
+                count($tablesWithQuery->getElementsByTagName('table')),
+                'Seems tables with query has broken routing, try URL /tables?foo=bar'
+            );
+        } else {
+            $tablesRoute = $this->getTestsConfiguration()->getLocalUrl() . '/tables?foo=bar&' . Request::TRIAL . '=1';
+            $this->passIn();
+            $response = $this->fetchContentFromUrl($tablesRoute, false);
+            $this->passOut();
+            $response['content'] = strlen($response['content']) > 123
+                ? (substr($response['content'], 0, 120) . '...')
+                : $response['content'];
+            self::assertContains(
+                $response['responseHttpCode'],
+                [200, 201, 202, 203],
+                sprintf(
+                    'Seems tables with query has broken routing, try URL %s (%s)',
+                    $tablesRoute,
+                    json_encode($response, JSON_PRETTY_PRINT)
+                )
+            );
+        }
     }
 }

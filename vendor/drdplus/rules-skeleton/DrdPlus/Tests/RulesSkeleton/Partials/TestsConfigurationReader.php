@@ -8,6 +8,8 @@ interface TestsConfigurationReader
 
     public function hasTables(): bool;
 
+    public function hasTablesRelatedContent(): bool;
+
     public function getSomeExpectedTableIds(): array;
 
     public function hasExternalAnchorsWithHashes(): bool;

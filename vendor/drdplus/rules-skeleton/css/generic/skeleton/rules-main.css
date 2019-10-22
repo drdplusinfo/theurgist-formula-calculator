@@ -129,6 +129,10 @@ h1 + .quote, h2 + .quote, h3 + .quote, h4 + .quote, h5 + .quote, h6 + .quote {
     right: 0;
 }
 
+.buried {
+    top: 0;
+}
+
 .out-of-flow {
     position: absolute;
 }

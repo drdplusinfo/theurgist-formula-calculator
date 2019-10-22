@@ -24,6 +24,7 @@ class TablesRequestDetector extends StrictObject
     public function areTablesRequested(): bool
     {
         return $this->rulesUrlMatcher->match($this->request->getCurrentUrl())->getRouteName() === 'tables'
+            || $this->rulesUrlMatcher->match($this->request->getCurrentUrl())->getRouteName() === 'tables_with_query'
             || $this->request->areTablesRequested();
     }
 }
