@@ -26,6 +26,7 @@ class RouteMatch extends StrictObject
     private $locale;
     private $format;
     private $utf8;
+    private $exclude;
 
     /**
      * @param array $values
@@ -56,6 +57,7 @@ class RouteMatch extends StrictObject
         $this->locale = $values['locale'] ?? null;
         $this->format = $values['format'] ?? null;
         $this->utf8 = $values['utf8'] ?? null;
+        $this->exclude = $values['exclude'] ?? null;
     }
 
     public function getRouteName(): ?string
@@ -201,4 +203,11 @@ class RouteMatch extends StrictObject
         return $this->utf8;
     }
 
+    /**
+     * @return mixed|null
+     */
+    public function getExclude()
+    {
+        return $this->exclude;
+    }
 }

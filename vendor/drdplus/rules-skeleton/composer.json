@@ -51,7 +51,7 @@
     "sort-packages": true
   },
   "extra": {
-    "class": "DrdPlus\\RulesSkeleton\\SkeletonInjectorComposerPlugin"
+    "class": "DrdPlus\\RulesSkeleton\\InjectorComposerPlugin\\SkeletonInjectorComposerPlugin"
   },
   "scripts": {
     "post-update-cmd": [

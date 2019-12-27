@@ -301,7 +301,7 @@ class RemoteFilesystem
 
         $actualContextOptions = stream_context_get_options($ctx);
         $usingProxy = !empty($actualContextOptions['http']['proxy']) ? ' using proxy ' . $actualContextOptions['http']['proxy'] : '';
-        $this->io->writeError((substr($origFileUrl, 0, 4) === 'http' ? 'Downloading ' : 'Reading ') . $origFileUrl . $usingProxy, true, IOInterface::DEBUG);
+        $this->io->writeError((substr($origFileUrl, 0, 4) === 'http' ? 'Downloading ' : 'Reading ') . $this->stripCredentialsFromUrl($origFileUrl) . $usingProxy, true, IOInterface::DEBUG);
         unset($origFileUrl, $actualContextOptions);
 
         // Check for secure HTTP, but allow insecure Packagist calls to $hashed providers as file integrity is verified with sha256
@@ -689,7 +689,7 @@ class RemoteFilesystem
             $message = "\n".'Could not fetch '.$this->fileUrl.', enter your ' . $this->originUrl . ' credentials ' .($httpStatus === 401 ? 'to access private repos' : 'to go over the API rate limit');
             $gitLabUtil = new GitLab($this->io, $this->config, null);
 
-            if ($this->io->hasAuthentication($this->originUrl) && ($auth = $this->io->getAuthentication($this->originUrl)) && $auth['password'] === 'private-token') {
+            if ($this->io->hasAuthentication($this->originUrl) && ($auth = $this->io->getAuthentication($this->originUrl)) && in_array($auth['password'], array('gitlab-ci-token', 'private-token'), true)) {
                 throw new TransportException("Invalid credentials for '" . $this->fileUrl . "', aborting.", $httpStatus);
             }
 
@@ -745,7 +745,7 @@ class RemoteFilesystem
                 throw new TransportException("Invalid credentials for '" . $this->fileUrl . "', aborting.", $httpStatus);
             }
 
-            $this->io->writeError('    Authentication required (<info>'.parse_url($this->fileUrl, PHP_URL_HOST).'</info>):');
+            $this->io->writeError('    Authentication required (<info>'.$this->originUrl.'</info>):');
             $username = $this->io->ask('      Username: ');
             $password = $this->io->askAndHideAnswer('      Password: ');
             $this->io->setAuthentication($this->originUrl, $username, $password);
@@ -820,7 +820,7 @@ class RemoteFilesystem
             } elseif ($this->config && in_array($originUrl, $this->config->get('gitlab-domains'), true)) {
                 if ($auth['password'] === 'oauth2') {
                     $headers[] = 'Authorization: Bearer '.$auth['username'];
-                } elseif ($auth['password'] === 'private-token') {
+                } elseif ($auth['password'] === 'private-token' || $auth['password'] === 'gitlab-ci-token') {
                     $headers[] = 'PRIVATE-TOKEN: '.$auth['username'];
                 }
             } elseif ('bitbucket.org' === $originUrl
@@ -873,7 +873,7 @@ class RemoteFilesystem
             $this->redirects++;
 
             $this->io->writeError('', true, IOInterface::DEBUG);
-            $this->io->writeError(sprintf('Following redirect (%u) %s', $this->redirects, $targetUrl), true, IOInterface::DEBUG);
+            $this->io->writeError(sprintf('Following redirect (%u) %s', $this->redirects, $this->stripCredentialsFromUrl($targetUrl)), true, IOInterface::DEBUG);
 
             $additionalOptions['redirects'] = $this->redirects;
 
@@ -1122,5 +1122,12 @@ class RemoteFilesystem
         }
 
         return $hostPort;
+    }
+
+    private function stripCredentialsFromUrl($url)
+    {
+        // GitHub repository rename result in redirect locations containing the access_token as GET parameter
+        // e.g. https://api.github.com/repositories/9999999999?access_token=github_token
+        return preg_replace('{([&?]access_token=)[^&]+}', '$1***', $url);
     }
 }

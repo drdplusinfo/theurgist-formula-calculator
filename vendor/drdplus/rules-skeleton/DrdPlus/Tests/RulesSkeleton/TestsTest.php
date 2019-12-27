@@ -3,7 +3,7 @@
 namespace DrdPlus\Tests\RulesSkeleton;
 
 use Composer\Plugin\PluginInterface;
-use DrdPlus\RulesSkeleton\SkeletonInjectorComposerPlugin;
+use DrdPlus\RulesSkeleton\InjectorComposerPlugin\SkeletonInjectorComposerPlugin;
 use DrdPlus\Tests\RulesSkeleton\Partials\AbstractContentTest;
 use DrdPlus\Tests\RulesSkeleton\Partials\TestsConfigurationReaderTest;
 

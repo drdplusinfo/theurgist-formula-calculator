@@ -230,4 +230,34 @@ class ConfigurationTest extends AbstractContentTest
         $configuration = new Configuration($this->getDirs(), $completeSettings);
         self::assertSame('..', $configuration->getHomeButtonTarget());
     }
+
+    /**
+     * @test
+     */
+    public function I_can_ommit_eshop_url_on_free_access()
+    {
+        $settings = $this->getSomeCompleteSettings();
+
+        $settings[Configuration::WEB][Configuration::PROTECTED_ACCESS] = false;
+        unset($settings[Configuration::WEB][Configuration::ESHOP_URL]);
+
+        $configuration = new Configuration($this->getDirs(), $settings);
+
+        self::assertFalse($configuration->hasProtectedAccess());
+        self::assertSame('', $configuration->getEshopUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_not_ommit_eshop_url_on_protected_access()
+    {
+        $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\InvalidEshopUrl::class);
+        $settings = $this->getSomeCompleteSettings();
+
+        $settings[Configuration::WEB][Configuration::PROTECTED_ACCESS] = true;
+        unset($settings[Configuration::WEB][Configuration::ESHOP_URL]);
+
+        new Configuration($this->getDirs(), $settings);
+    }
 }
