@@ -391,8 +391,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "http://jaroslavtyc.com"
+                    "homepage": "http://jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Lightweight boolean container with stand-alone converter",
@@ -441,8 +441,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "https://www.jaroslavtyc.com"
+                    "homepage": "https://www.jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Configurable roll of a dice",
@@ -495,8 +495,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "https://www.jaroslavtyc.com"
+                    "homepage": "https://www.jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Converter and wrapping object for a float value",
@@ -587,8 +587,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "http://jaroslavtyc.com"
+                    "homepage": "http://jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Lightweight integer container with stand-alone converter",
@@ -638,9 +638,9 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Developer",
                     "email": "mail@jaroslavtyc.com",
-                    "homepage": "https://www.jaroslavtyc.com"
+                    "homepage": "https://www.jaroslavtyc.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Enumeration with integers only",
@@ -682,8 +682,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "http://jaroslavtyc.com"
+                    "homepage": "http://jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Converter and wrapping object for a number (float or integer) value",
@@ -733,8 +733,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "http://jaroslavtyc.com"
+                    "homepage": "http://jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Lightweight scalar-type container",
@@ -782,9 +782,9 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Developer",
                     "email": "mail@jaroslavtyc.com",
-                    "homepage": "https://www.jaroslavtyc.com"
+                    "homepage": "https://www.jaroslavtyc.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Enumeration with scalar values",
@@ -828,8 +828,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "https://www.jaroslavtyc.com"
+                    "homepage": "https://www.jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Base object, checking access to undefined properties and methods",
@@ -939,8 +939,8 @@
             "authors": [
                 {
                     "name": "Jaroslav Týc",
-                    "role": "Original author",
-                    "homepage": "http://jaroslavtyc.com"
+                    "homepage": "http://jaroslavtyc.com",
+                    "role": "Original author"
                 }
             ],
             "description": "Toolbox",
@@ -1225,16 +1225,16 @@
         },
         {
             "name": "phpmailer/phpmailer",
-            "version": "v6.1.4",
+            "version": "v6.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPMailer/PHPMailer.git",
-                "reference": "c5e61d0729507049cec9673aa1a679f9adefd683"
+                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c5e61d0729507049cec9673aa1a679f9adefd683",
-                "reference": "c5e61d0729507049cec9673aa1a679f9adefd683",
+                "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
+                "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2019-12-10T11:17:38+00:00"
+            "time": "2020-05-27T12:24:03+00:00"
         },
         {
             "name": "piwik/device-detector",
@@ -2727,18 +2727,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "role": "Developer",
-                    "email": "sebastian@phpeople.de"
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "Developer",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -2774,18 +2774,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "role": "Developer",
-                    "email": "sebastian@phpeople.de"
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "Developer",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Library for handling version information and constraints",
@@ -3105,8 +3105,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
@@ -3147,8 +3147,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Simple template engine.",
@@ -3196,8 +3196,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
@@ -4218,8 +4218,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -4261,8 +4261,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
@@ -4685,8 +4685,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
