@@ -1,3 +1,5 @@
-.tables table {
-    float: left
+body > table {
+    float: left !important;
+    overflow: visible !important;
+    display: table !important;
 }

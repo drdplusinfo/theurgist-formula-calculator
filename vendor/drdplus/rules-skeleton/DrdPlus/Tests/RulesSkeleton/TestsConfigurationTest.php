@@ -194,7 +194,7 @@ class TestsConfigurationTest extends AbstractContentTest
     public function I_can_not_add_allowed_calculation_id_prefix_with_lowercase_first_letter(): void
     {
         $this->expectException(\DrdPlus\Tests\RulesSkeleton\Exceptions\AllowedCalculationPrefixShouldStartByUpperLetter::class);
-        $this->expectExceptionMessageRegExp('~říčany u čeho chceš~');
+        $this->expectExceptionMessageMatches('~říčany u čeho chceš~');
         $this->createTestsConfiguration(
             [TestsConfiguration::ALLOWED_CALCULATION_ID_PREFIXES => ['říčany u čeho chceš']]
         );
@@ -206,7 +206,7 @@ class TestsConfigurationTest extends AbstractContentTest
     public function I_can_not_set_allowed_calculation_id_prefixes_with_even_single_one_with_lowercase_first_letter(): void
     {
         $this->expectException(\DrdPlus\Tests\RulesSkeleton\Exceptions\AllowedCalculationPrefixShouldStartByUpperLetter::class);
-        $this->expectExceptionMessageRegExp('~žbrdloch~');
+        $this->expectExceptionMessageMatches('~žbrdloch~');
         $this->createTestsConfiguration(
             [TestsConfiguration::ALLOWED_CALCULATION_ID_PREFIXES => [
                 'Potvora na entou',
@@ -248,7 +248,7 @@ class TestsConfigurationTest extends AbstractContentTest
     public function I_can_not_create_it_with_invalid_public_url(): void
     {
         $this->expectException(\DrdPlus\Tests\RulesSkeleton\Exceptions\InvalidPublicUrl::class);
-        $this->expectExceptionMessageRegExp('~not valid~');
+        $this->expectExceptionMessageMatches('~not valid~');
         $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => 'example.com']); // missing protocol
     }
 
@@ -258,7 +258,7 @@ class TestsConfigurationTest extends AbstractContentTest
     public function I_can_not_create_it_with_public_url_without_https(): void
     {
         $this->expectException(\DrdPlus\Tests\RulesSkeleton\Exceptions\PublicUrlShouldUseHttps::class);
-        $this->expectExceptionMessageRegExp('~HTTPS~');
+        $this->expectExceptionMessageMatches('~HTTPS~');
         $this->createTestsConfiguration([TestsConfiguration::EXPECTED_PUBLIC_URL => 'http://example.com']);
     }
 

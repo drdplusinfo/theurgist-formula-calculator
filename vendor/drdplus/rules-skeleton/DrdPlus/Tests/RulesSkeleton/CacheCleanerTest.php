@@ -26,7 +26,7 @@ class CacheCleanerTest extends TestWithMockery
         self::assertSame($tempFiles, $this->getFilesFromDir($cacheRootDir));
 
         $cacheCleaner = new CacheCleaner($cacheRootDir, sys_get_temp_dir());
-        $cacheCleaner->clearCache();
+        self::assertTrue($cacheCleaner->clearCache(), 'Clearing a cache should return true if no problem occurs');
 
         self::assertFileNotExists($cacheRootDir, "{$cacheRootDir} should be removed during cache clean");
     }
@@ -49,7 +49,7 @@ class CacheCleanerTest extends TestWithMockery
     public function I_can_not_use_cache_cleaner_on_dir_not_matching_name_pattern()
     {
         $this->expectException(CacheRootDirIsNotSafe::class);
-        $this->expectExceptionMessageRegExp('~what~');
+        $this->expectExceptionMessageMatches('~what~');
         new CacheCleaner('foo', 'what');
     }
 
@@ -59,7 +59,18 @@ class CacheCleanerTest extends TestWithMockery
     public function I_have_to_use_some_cache_dir_name_safety_check()
     {
         $this->expectException(InvalidCacheRootDirSafetyCheck::class);
-        $this->expectExceptionMessageRegExp('~empty string~');
+        $this->expectExceptionMessageMatches('~empty string~');
         new CacheCleaner('foo', '');
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_clean_cache_even_if_cache_dir_exists_no_more()
+    {
+        $cacheRootDir = sys_get_temp_dir() . '/' . uniqid(__FUNCTION__, true);
+        self::assertFileNotExists($cacheRootDir, 'Cache root dirt should not exist for this test');
+        $cacheCleaner = new CacheCleaner($cacheRootDir, sys_get_temp_dir());
+        self::assertTrue($cacheCleaner->clearCache(), 'Cache cleaner should return true if target cache dir does not exist');
     }
 }

@@ -35,7 +35,7 @@ HTML;
       </a>
     </span>
     <span class="contact">
-      <a target="_blank" class="discord-contact" href="https://discordapp.com/invite/FVz5V3Q">
+      <a target="_blank" class="discord-contact" href="https://discord.com/invite/FVz5V3Q">
         <span class="small-screen"><i class="fab fa-discord"></i></span>
         <span class="wide-screen"><i class="fab fa-discord"></i> Discord</span>
       </a>

@@ -83,7 +83,7 @@ final class TestRunner extends BaseTestRunner
     private $loader;
 
     /**
-     * @var ResultPrinter
+     * @psalm-var Printer&TestListener
      */
     private $printer;
 
@@ -117,7 +117,7 @@ final class TestRunner extends BaseTestRunner
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      */
-    public function doRun(Test $suite, array $arguments = [], bool $exit = true): TestResult
+    public function doRun(Test $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -269,11 +269,11 @@ final class TestRunner extends BaseTestRunner
 
         if ($this->printer === null) {
             if (isset($arguments['printer'])) {
-                if ($arguments['printer'] instanceof Printer) {
+                if ($arguments['printer'] instanceof Printer && $arguments['printer'] instanceof TestListener) {
                     $this->printer = $arguments['printer'];
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
                     try {
-                        $class = new \ReflectionClass($arguments['printer']);
+                        new \ReflectionClass($arguments['printer']);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
@@ -284,7 +284,7 @@ final class TestRunner extends BaseTestRunner
                     }
                     // @codeCoverageIgnoreEnd
 
-                    if ($class->isSubclassOf(ResultPrinter::class)) {
+                    if (\is_subclass_of($arguments['printer'], ResultPrinter::class)) {
                         $this->printer = $this->createPrinter($arguments['printer'], $arguments);
                     }
                 }
@@ -331,7 +331,7 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
-        foreach ($arguments['warnings'] as $warning) {
+        foreach ($warnings as $warning) {
             $this->writeMessage('Warning', $warning);
         }
 
@@ -1303,6 +1303,13 @@ final class TestRunner extends BaseTestRunner
         $this->messagePrinted = true;
     }
 
+    /**
+     * @template T as Printer
+     *
+     * @param class-string<T> $class
+     *
+     * @return T
+     */
     private function createPrinter(string $class, array $arguments): Printer
     {
         return new $class(

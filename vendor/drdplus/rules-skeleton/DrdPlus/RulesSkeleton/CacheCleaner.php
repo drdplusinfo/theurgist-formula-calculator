@@ -42,16 +42,28 @@ class CacheCleaner extends StrictObject
 
     public function clearCache(): bool
     {
-        $recursiveDirectoryIterator = new \RecursiveDirectoryIterator($this->cacheRootDir, \RecursiveDirectoryIterator::SKIP_DOTS);
+        try {
+            $recursiveDirectoryIterator = new \RecursiveDirectoryIterator($this->cacheRootDir, \RecursiveDirectoryIterator::SKIP_DOTS);
+        } catch (\UnexpectedValueException $unexpectedValueException) {
+            if (!file_exists($this->cacheRootDir)) {
+                return true;
+            }
+            throw $unexpectedValueException;
+        }
         $files = new \RecursiveIteratorIterator($recursiveDirectoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
         /** @var \SplFileInfo $file */
         foreach ($files as $file) {
             if ($file->isDir()) {
-                rmdir($file->getPathname());
-            } else {
-                unlink($file->getPathname());
+                if (!@rmdir($file->getPathname()) && file_exists($file->getPathname())) {
+                    throw new Exceptions\CanNotDeleteCacheDir("Can not delete cache directory '{$file->getPathname()}'");
+                }
+            } elseif (!@unlink($file->getPathname()) && file_exists($file->getPathname())) {
+                throw new Exceptions\CanNotDeleteCacheFile("Can not delete cache file '{$file->getPathname()}'");
             }
         }
-        return rmdir($this->cacheRootDir);
+        if (!@rmdir($this->cacheRootDir) && file_exists($this->cacheRootDir)) {
+            throw new Exceptions\CanNotDeleteCacheDir("Can not delete cache root directory '{$this->cacheRootDir}'");
+        }
+        return true;
     }
 }

@@ -350,7 +350,16 @@ class RequestTest extends AbstractContentTest
     /**
      * @test
      */
-    public function I_will_get_root_url_if_only_excluded_parameters_are_set()
+    public function I_will_get_homepage_on_double_dot_as_only_request_uri(): void
+    {
+        $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [], ['REQUEST_URI' => ':']);
+        self::assertSame('/', $request->getPath());
+    }
+
+    /**
+     * @test
+     */
+    public function I_will_get_root_url_if_only_excluded_parameters_are_set(): void
     {
         $request = new Request($this->getBot(), $this->getEnvironment(), [], [], [], []);
         self::assertSame('/', $request->getCurrentUrl([], ['foo' => 123]));

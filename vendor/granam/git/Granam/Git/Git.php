@@ -144,19 +144,27 @@ class Git extends StrictObject
             'git pull --ff-only',
             'git pull --tags',
         ];
+        $previousFailureMessages = [];
         do {
             try {
                 return $this->executeCommandsChainArray($commands);
             } catch (Exceptions\ExecutingCommandFailed $executingCommandFailed) {
-                if (!preg_match(
-                    "~(Unable to create '[^']+[.]lock': File exists[.]|It doesn't make sense to pull all tags|is at [[:alnum:]]{20,} but expected [[:alnum:]]{20,})~",
-                    $executingCommandFailed->getMessage()
-                )) {
-                    throw $executingCommandFailed;
+                if ($attempt >= $maxAttempts) {
+                    $uniquePreviousFailureMessages = array_unique($previousFailureMessages);
+                    if (count($uniquePreviousFailureMessages) === 0) {
+                        throw $executingCommandFailed;
+                    }
+                    throw new Exceptions\ExecutingCommandFailed(
+                        sprintf(
+                            '%s (%s)',
+                            $executingCommandFailed->getMessage(),
+                            implode(';', $uniquePreviousFailureMessages)
+                        ),
+                        $executingCommandFailed->getCode(),
+                        $executingCommandFailed
+                    );
                 }
-                if ($attempt === $maxAttempts) {
-                    throw $executingCommandFailed;
-                }
+                $previousFailureMessages[] = $executingCommandFailed->getMessage();
                 sleep($this->sleepMultiplierOnLock * $attempt); // like 1 s, 2 s, ...
                 $attempt++;
                 $commands[0] = "echo 'attempt number $attempt'";
@@ -358,9 +366,9 @@ class Git extends StrictObject
     {
         if ($returnCode !== 0) {
             throw new Exceptions\ExecutingCommandFailed(
-                "Error while executing '$command', expected return '0', got '$returnCode'"
+                "Error while executing '$command', expected return code '0', got '$returnCode'"
                 . ($output !== null ?
-                    (" with output: '" . implode("\n", $output) . "'")
+                    sprintf(" with output: '%s", implode("\n", $output))
                     : ''
                 ),
                 $returnCode

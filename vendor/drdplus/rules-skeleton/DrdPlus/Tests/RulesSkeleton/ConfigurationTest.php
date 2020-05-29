@@ -127,7 +127,7 @@ class ConfigurationTest extends AbstractContentTest
     public function I_can_not_create_it_with_invalid_google_analytics_id(): void
     {
         $this->expectException(\DrdPlus\RulesSkeleton\Exceptions\InvalidGoogleAnalyticsId::class);
-        $this->expectExceptionMessageRegExp('~GoogleItself~');
+        $this->expectExceptionMessageMatches('~GoogleItself~');
         $completeSettings = $this->getSomeCompleteSettings();
         $completeSettings[Configuration::GOOGLE][Configuration::ANALYTICS_ID] = 'GoogleItself';
         new Configuration($this->getDirs(), $completeSettings);

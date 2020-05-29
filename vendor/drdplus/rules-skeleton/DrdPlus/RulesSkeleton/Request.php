@@ -106,8 +106,24 @@ class Request extends StrictObject
 
     public function getPath(): string
     {
-        $requestUri = preg_replace('~/{2,}~', '/', $this->server['REQUEST_URI'] ?? '/');
-        return parse_url($requestUri, PHP_URL_PATH);
+        $requestUri = $this->server['REQUEST_URI'] ?? '/';
+        if ($requestUri === ':') {
+            $requestUri = '/';
+        }
+        $requestUri = preg_replace('~/{2,}~', '/', $requestUri);
+        $path = parse_url($requestUri, PHP_URL_PATH);
+        if (is_string($path)) {
+            return $path;
+        }
+        trigger_error(
+            sprintf(
+                'Can not parse path from sanitized request URI %s, built from original request URI %s',
+                var_export($requestUri, true),
+                var_export($this->server['REQUEST_URI'], true)
+            ),
+            E_USER_WARNING
+        );
+        return '/';
     }
 
     /**

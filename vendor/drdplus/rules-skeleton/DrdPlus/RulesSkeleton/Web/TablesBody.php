@@ -43,11 +43,7 @@ class TablesBody extends StrictObject implements RulesBodyInterface
             $tablesContent .= $tablesRelatedElement->outerHTML . "\n";
         }
 
-        return <<<HTML
-<div id="tables_only">
-  $tablesContent
-</div>
-HTML;
+        return $tablesContent;
     }
 
     public function postProcessDocument(HtmlDocument $htmlDocument): HtmlDocument
